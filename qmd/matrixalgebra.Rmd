@@ -1,0 +1,1306 @@
+---
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+# (APPENDIX) Appendix {.unnumbered}
+
+# 행렬 {#matrixalgebra}
+
+이 장에서는 회귀분석의 이론 전개에 필요한 행렬 이론과 선형 대수의 기초에
+대하여 알아볼 것이다.
+
+## 벡터와 행렬
+
+다음 $p$-차원 벡터(vector) 또는 열벡터(column vector) $\bm a$ 는 $p$개의
+원소 $a_1, a_2, \dots, a_p$ 를 하나의 열(column)에 배치한 형태를 가진
+개체이다.
+
+```{=tex}
+\begin{equation*}
+\bm a = 
+\begin{bmatrix}
+a_1 \\
+a_2 \\
+\vdots \\
+a_p 
+\end{bmatrix}
+\end{equation*}
+```
+차원이 $n \times p$ 인 행렬 $\bm A$ 는 다음과 같이 $n$개의 행과 $p$ 개의
+열에 원소 $a_{ij}$를 다음과 같이 배치한 형태를 가진다.
+
+```{=tex}
+\begin{equation*}
+\bm A = 
+\begin{bmatrix}
+a_{11} & a_{12} & \dots & a_{1p} \\
+a_{21} & a_{22} & \dots & a_{2p} \\
+\vdots & \vdots &    & \dots \\
+a_{n1} & a_{n2} & \dots & a_{np} 
+\end{bmatrix}
+\end{equation*}
+```
+## 벡터와 행렬의 곱셈
+
+$n \times p$ 인 행렬 $\bm A$ 와 $p$-차원 벡터(vector) $\bm b$는 다음과
+같이 두 개의 서로 다른 형태로 나타낼 수 있다.
+
+먼저 행렬과 벡터의 곱셈은 행렬 $\bm A$ 의 행벡터와 벡터 $\bm b$ 의
+내적(inner product)로 나타낼 수 있다.
+
+```{=tex}
+\begin{align*}
+{\bm A} {\bm b} & = 
+\begin{bmatrix}
+a_{11} & a_{12} & \dots & a_{1p} \\
+a_{21} & a_{22} & \dots & a_{2p} \\
+\vdots & \vdots &    & \dots \\
+a_{n1} & a_{n2} & \dots & a_{np} 
+\end{bmatrix}
+\begin{bmatrix}
+b_1 \\
+b_2 \\
+\vdots \\
+b_p 
+\end{bmatrix} \\
+& = 
+\begin{bmatrix}
+{\bm r}^t_1 \\
+{\bm r}^t_2 \\
+\vdots \\
+{\bm r}^t_n 
+\end{bmatrix} 
+\begin{bmatrix}
+b_1 \\
+b_2 \\
+\vdots \\
+b_p 
+\end{bmatrix} 
+\quad 
+\text{ where }
+{\bm r}^t_i =
+\begin{bmatrix}
+a_{i1} & a_{i2} & \dots & a_{ip} 
+\end{bmatrix}  \\
+& = 
+\begin{bmatrix}
+{\bm r}^t_1 {\bm b} \\
+{\bm r}^t_2 {\bm b} \\
+\vdots \\
+{\bm r}^t_n {\bm b}
+\end{bmatrix}  
+ = 
+\begin{bmatrix}
+\sum_{j=1}^p a_{1j} b_j \\
+\sum_{j=1}^p a_{2j} b_j \\
+\vdots \\
+\sum_{j=1}^p a_{nj} b_j
+\end{bmatrix} \\
+& = 
+\begin{bmatrix}
+ <\bm r_1, \bm b>  \\
+ <\bm r_2, \bm b> \\
+\vdots \\
+ <\bm r_n, \bm b>
+\end{bmatrix}
+\end{align*}
+```
+위에서 $< \bm a, \bm b>$ 는 다음과 같은 두 벡터의 내적(inner product)을
+의미한다.
+
+$$ < \bm a, \bm b> = {\bm a}^t {\bm b} = \sum_{i=1}^p a_i b_i $$
+
+이제 행렬과 벡터의 곱셈을 행렬을 구성하는 열벡터들의 선형조합(linear
+combination)으로 나타낼 수 있다.
+
+```{=tex}
+\begin{align*}
+{\bm A} {\bm b} & = 
+\begin{bmatrix}
+a_{11} & a_{12} & \dots & a_{1p} \\
+a_{21} & a_{22} & \dots & a_{2p} \\
+\vdots & \vdots &    & \dots \\
+a_{n1} & a_{n2} & \dots & a_{np} 
+\end{bmatrix}
+\begin{bmatrix}
+b_1 \\
+b_2 \\
+\vdots \\
+b_p 
+\end{bmatrix} \\
+& = 
+\begin{bmatrix}
+{\bm c}_1 & {\bm c}_2 & \dots & {\bm c}_p 
+\end{bmatrix} 
+\begin{bmatrix}
+b_1 \\
+b_2 \\
+\vdots \\
+b_p 
+\end{bmatrix} 
+\quad 
+\text{ where }
+{\bm c}_j =
+\begin{bmatrix}
+a_{1j} \\
+a_{2j} \\
+\vdots \\
+a_{nj} 
+\end{bmatrix} \\
+& =
+b_1 
+\begin{bmatrix}
+a_{11} \\
+a_{21} \\
+\vdots \\
+a_{n1} 
+\end{bmatrix} 
++ 
+b_2 
+\begin{bmatrix}
+a_{12} \\
+a_{22} \\
+\vdots \\
+a_{n2} 
+\end{bmatrix} 
++ \cdots + 
+b_p 
+\begin{bmatrix}
+a_{1p} \\
+a_{2p} \\
+\vdots \\
+a_{np} 
+\end{bmatrix}  \\
+& =
+b_1 {\bm c}_1 + b_2 {\bm c}_2 + \cdots + b_p {\bm c}_p \\
+\end{align*}
+```
+## 기초적인 정의
+
+$\bm A^t$는 행렬의 전치(transpose)를 나타낸다.
+
+$i$번째 단위벡터 $\bm e_i$를 정의하자. 단위벡터 $\bm e_i$는 $n$- 차원
+벡터로서 $i$번째 원소만 1이고 나머지는 0인 벡터이다.
+
+$$ \bm e_i = [0 ~~0 ~~\dots~~ 0 ~~ 1 ~~ 0 ~~ \dots ~~ 0 ]^t $$
+
+즉 $n$-차원 항등행렬 $\bm I$는 n개의 단위벡터들을 모아놓은 것이다.
+
+$$  \bm I = [ \bm e_1 ~~ \bm e_2 ~~ \dots ~~ \bm e_n ] $$
+
+## 대각합
+
+$\bm A = \{ a_{ij} \}$를 $n \times n$ 정방행렬(square matrix)인 경우,
+행렬의 대각합(trace)을 $tr(\bm A)$로 표시한다.
+
+$$ tr(\bm A) = \sum_{i=1}^n a_{ii} $$
+
+행렬의 곱셈은 일반적으로 교환법칙이 성립하지 않지만 대각합의 연산은
+교환법칙이 성립한다.
+
+$$  tr(\bm A \bm B)  = tr( \bm B \bm A) $$
+
+두 행렬의 덧셈(뺄셈)에 대한 대각합에 대한 성질들은 다음과 같다.
+
+$$ tr( {\bm A} \pm {\bm B}) = tr({\bm A}) \pm tr({\bm B}) $$
+
+## 행렬식
+
+$\bm A$의 행렬식(determinant)을 $det(\bm A)=|\bm A|$로 표기한다.
+
+만약 행렬 $\bm A$가 대각행렬(diagonal matrix)이면 $|\bm A|$는 행렬의
+대각원소의 곱이다 ($| \bm A| =\prod a_{ii}$).
+
+두 행렬의 곱의 행렬식은 각 행렬의 행렬식의 곱이다.
+
+$$ |\bm A \bm B | = | \bm A| |\bm B| $$
+
+행렬식에 대한 유용한 공식들은 다음과 같다.
+
+-   $|{\bm A}^t| = |{\bm A}|$
+-   $|c {\bm A}| = c^n |{\bm A}|$
+
+만약 행렬 $\bm A$가 다음과 같은 분할행렬(partitioned matrix) 의 형태를
+가지면
+
+$$ 
+\bm A =
+\begin{bmatrix}
+{\bm A}_{11} & {\bm A}_{12} \\
+{\bm 0} & {\bm A}_{22}
+\end{bmatrix}
+$$
+
+행렬 $\bm A$의 행렬식은 다음과 같이 주어진다.
+
+$$ |{\bm A}| = |{\bm A}_{11}| |{\bm A}_{22} | $$
+
+만약 행렬 $\bm A$가 다음과 같은 분할행렬(partitioned matrix) 의 형태를
+가지면
+
+```{=tex}
+\begin{equation}
+\bm A=
+\begin{bmatrix}
+{\bm A}_{11} & {\bm A}_{12} \\
+{\bm A}_{21} & {\bm A}_{22}
+\end{bmatrix}
+(\#eq:mat-partition)
+\end{equation}
+```
+행렬 $\bm A$의 행렬식은 다음과 같이 주어진다.
+
+```{=tex}
+\begin{equation}
+|{\bm A}| = |{\bm A}_{11}| |{\bm A}_{22} - {\bm A}_{21} {\bm A}_{11}^{-1} {\bm A}_{12} |
+= |{\bm A}_{22}| |{\bm A}_{11} - {\bm A}_{12} {\bm A}_{22}^{-1} {\bm A}_{21} | 
+(\#eq:mat-partition-det)
+\end{equation}
+```
+위의 식 \@ref(eq:mat-partition)에서 행렬 $\bm A_{ij}$ 가 다음과 같이
+주어진 경우
+
+-   $\bm A_{11} = \bm I_p$
+-   $\bm A_{12} = - \bm B$, 행렬 $\bm B$ 의 차원은 $p \times n$
+-   $\bm A_{11} = \bm C$, 행렬 $\bm C$ 의 차원은 $n \times p$
+-   $\bm A_{22} = \bm I_n$
+
+즉
+
+$$ \bm A =
+\begin{bmatrix}
+\bm I_p & - \bm B \\
+\bm C & \bm I_n
+\end{bmatrix}
+$$ 인 경우는 식 \@ref(eq:mat-partition-det)를 이용하면 다음 식이
+성립한다 (Weinstein--Aronszajn 공식).
+
+```{=tex}
+\begin{equation}
+| \bm I_n +  \bm C \bm B | = | \bm I_p + \bm B \bm C |
+(\#eq:mat-weinstein)
+\end{equation}
+```
+또한, 위의 식 \@ref(eq:mat-partition)에서 이 아닌 실수 $\lambda$에
+대하여 행렬 $\bm A_{ij}$ 가 다음과 같이 주어진 경우, 0
+
+-   $\bm A_{11} = -\lambda \bm I_p$
+-   $\bm A_{12} = \lambda \bm B$, 행렬 $\bm B$ 의 차원은 $p \times n$
+-   $\bm A_{11} = \bm C$, 행렬 $\bm C$ 의 차원은 $n \times p$
+-   $\bm A_{22} = -\lambda \bm I_n$
+
+즉
+
+$$ \bm A =
+\begin{bmatrix}
+ -\lambda \bm I_p &  \lambda \bm B \\
+\bm C &  -\lambda \bm I_n
+\end{bmatrix}
+$$ 인 경우는 식 \@ref(eq:mat-partition-det)를 이용하면 다음 식이
+성립한다 (Weinstein--Aronszajn 공식).
+
+```{=tex}
+\begin{align*}
+|\bm A| & = |-\lambda \bm I_p| | -\lambda \bm I_n -  \bm C (-\lambda \bm I_p)^{-1} (\lambda \bm B) | \\
+  & = (-\lambda)^p | \bm C  \bm B - \lambda \bm I_n | \\
+|\bm A|  & = |-\lambda \bm I_n| | -\lambda \bm I_p -  (\lambda \bm B) (-\lambda \bm I_n)^{-1} \bm C  | \\
+  & = (-\lambda)^n | \bm B  \bm C - \lambda \bm I_p | 
+\end{align*}
+```
+따라서 다음과 같은 공식을 얻는다.
+
+```{=tex}
+\begin{equation}
+| \bm C  \bm B - \lambda \bm I_n | = (-\lambda)^{(n-p)} | \bm B  \bm C - \lambda \bm I_p |
+(\#eq:mat-weinstein-2)
+\end{equation}
+```
+이제 다음과 같은 3개의 행렬이 있다고 하자.
+
+-   $p \times p$ 행렬 $\bm A$ 그리고 $\bm A^{-1}$ 는 존재
+-   $p \times n$ 행렬 $\bm B$
+-   $n \times p$ 행렬 $\bm C$
+
+그러면 위의 공식 \@ref(eq:mat-weinstein) 를 사용하면 다음과 같은 공식이
+성립한다.
+
+```{=tex}
+\begin{align*}
+| {\bm A} + {\bm B}{\bm C}| & = | {\bm A}(  {\bm I}_p + {\bm A}^{-1}{\bm B}{\bm C})| \\  
+ & = |{\bm A }| | {\bm I}_p + {\bm A}^{-1} {\bm B} {\bm C} | \\
+ & = |{\bm A }| | {\bm I}_n + {\bm C} {\bm A}^{-1} {\bm B} | 
+\end{align*}
+```
+위의 Weinstein--Aronszajn 공식을 사용하면 다음과 같이 특별한 행렬의
+행렬식을 계산할 수 있다. 임의의 $a>0$, $b>0$ 에 대하여
+
+```{=tex}
+\begin{align*}
+|a  \bm I_n + b \bm 1_n \bm  1^t_n | & = |a( \bm  I_n + (b/a) \bm  1_n \bm  1^t_n) | \\
+  &= a^n |\bm I_n + (b/a) \bm  1_n \bm  1^t_n | \\
+  & = a^n |1 + (b/a) \bm  1^t_n \bm  1_n  | \\
+  & = a^n |1 + (b/a) n  | \\
+  & = a^n (1 + (b/a) n  ) \\
+  & = a^{n-1} (a + n b) \\
+\end{align*}
+```
+## 역행렬
+
+만약 행렬 $\bm A$의 역행렬(inverse metrix)가 존재하면 $\bm A^{-1}$로
+표시하며 다음을 만족하는 행렬이다.
+
+$$ \bm A \bm A^{-1} = \bm A^{-1} = \bm I $$
+
+정방행렬의 역행렬 $\bm A^{-1}$ 이 존재할 다음 조건들은 모두
+동치이다(equivalent conditions).
+
+-   $|\bm A| \ne 0$
+-   $rank(\bm A) = n$
+
+역행렬의 행렬식은 다음과 같이 계산한다.
+
+$$ |A^{-1}| = |A|^{-1} $$
+
+## 우드베리 공식
+
+다음은 우드베리공식(Woodbury formula) 과 파생된 유용한 공식들이다.
+
+$$ (\bm A+\bm U\bm C\bm V)^{-1} = \bm A^{-1}-\bm A^{-1} \bm U (\bm C^{-1} + \bm V \bm A^{-1}\bm U)^{-1} \bm V \bm A^{-1} $$
+
+$$ (\bm I+\bm U\bm C\bm V)^{-1} = \bm I - \bm U (\bm C^{-1} + \bm V \bm U)^{-1} \bm V $$
+
+$$ (\bm A+\bm u\bm v^t)^{-1} = \bm A^{-1} - \frac{ \bm A^{-1} \bm u\bm v^t \bm A^{-1}}{1+\bm v^t \bm A^{-1}\bm u} $$
+
+$$ (a \bm I_n + b \bm 1_n \bm 1_n^t)^{-1} = \frac{1}{a} \left [ \bm I_n - \frac{b}{a+nb} \bm 1 \bm 1^t \right ] $$
+
+## 직교행렬
+
+만약 정방행렬 $\bm P$가 다음과 같은 조건을 만족하면 직교행렬(orthogonal
+matrix)라고 부른다.
+
+$$  \bm P \bm P^t = \bm P^t \bm P = \bm I $$
+
+따라서 $\bm P^{-1} = \bm P^t$이다. 만약 $\bm P$가 직교행렬이면 다음과
+같은 성질을 가진다.
+
+-   $| \bm P | = \pm 1$ , 왜냐하면
+    $$  | \bm P \bm P^t | = | \bm P | |\bm P^t |  = | \bm P|^2 = |\bm I| =1 $$
+
+-   임의의 정방행렬 $\bm A$에 대하여 다음이 성립한다.
+    $$ tr(\bm P \bm A \bm P^t) = tr(\bm A \bm P^t \bm P) = tr(\bm A) $$
+
+## 이차형식
+
+$n$-차원 벡터 $\bm x^t=[x_1,x_2,\dots,x_n]$과 대칭행렬 $\bm A$에 대하여
+이차형식(quadratic form)은 다음과 같이 정의된다.
+
+```{=tex}
+\begin{equation}
+Q_A(\bm x) = \bm x^t \bm A \bm x =\sum_{i=1}^n \sum_{j=1}^n a_{ij} x_i x_j 
+(\#eq:quadratic)
+\end{equation}
+```
+이차형식의 정의에서 반드시 행렬 $\bm A$를 대칭행렬로 정의하지 않아도
+되지만 임의의 행렬에 대하여 이차형식의 값이 동일한 대칭행렬이 존재하기
+때문에 정의에서 이차형식으로 국한하는 것이 일반적이다.
+
+::: {.definition name="양정치행렬"}
+이차형식 $Q_A(\bm x) = \bm x^t \bm A \bm x$가 영벡터가 아닌 모든 벡터
+$\bm x$에 대하여 0 보다 크면
+
+$$ \bm x^t \bm A \bm x  >0 $$
+
+$\bm A$를 양정치(positive definite)라고 부른다.
+
+만약 이차형식 $Q_A(\bm x) = \bm x^t \bm A \bm x$가 영벡터가 아닌 모든
+벡터 $\bm x$에 대하여 0 보다 크거나 같다면
+
+$$ \bm x^t \bm A \bm x  \ge 0 $$
+
+$\bm A$를 양반정치(positive semi-definite)라고 부른다.
+:::
+
+정칙행렬 $\bm B$에 대하여 다음과 같은 선형변환을 고려하자.
+
+$$   \bm x = \bm B \bm y \text{ or } \bm y = \bm {B}^{-1} \bm x $$
+
+벡터 $\bm x$로 정의된 이차형식은 벡터 $\bm y$의 형태로 다음과 같이
+변환할 수 있다.
+
+$$ Q(\bm x) = \bm x^t \bm A \bm x = \bm y^t \bm B^t \bm A \bm B \bm y =Q^*(\bm y) $$
+
+이차형식의 성질은 정칙 선형변환에서 유지된다. 즉 행렬 $\bm A$가
+양(반)정치 행렬이고 행렬 $\bm B$가 정칙행렬이면 행렬
+$\bm B^t \bm A \bm B$도 양(반)정치 행렬이다.
+
+## 고유치와 고유벡터
+
+$n$차원의 정방행렬 $\bm A$에 대하여 다음 $\lambda$에 대한 $n$차 다항
+방정식을 만족하는 해들을 고유치(eigen values)라고 하고
+$\lambda_1, \lambda_2, \dots , \lambda_n$이라고 표기한다.
+
+$$ | \lambda \bm I - \bm A | = 0 $$
+
+각 고유치 $\lambda_i$에 대하여 다음과 같은 방정식을 만족하는 0이 아닌
+벡터 $\bm x_i$ 를 $\lambda_i$ 에 대응하는 고유벡터(eigen vector) 라고
+한다.
+
+$$ \bm A \bm x_i = \lambda_i \bm x_i $$
+
+행렬 $\bm A$의 고유치가 모두 0이 아닌 조건은 역행렬이 존재하는, 즉 행렬
+$\bm A$가 정칙행렬(nonsungular metrix)이라는 조건과 동치이다.
+
+대각행렬 $\bm D = \{ d_{ii} \}$ 의 고유치는 대각원소가 된다. 즉
+
+$$ | \lambda \bm I - \bm D | = \prod_{i=1}^n (\lambda - d_{ii}) =0 $$
+
+행렬 $\bm P$가 직교행렬이라면 $\bm P \bm A \bm P^t|$와 $\bm A$는 동일한
+고유치를 가진다. 왜냐하면
+
+$$ | \lambda \bm I - \bm P \bm A \bm P | = |\lambda \bm P \bm P^t - \bm P \bm A \bm P^t| = |\bm P|^2 | \lambda \bm I - \bm A | $$
+
+대칭행렬과 고유값에 대한 중요한 성질들은 다음과 같다.
+
+-   대칭행렬 $\bm A$가 양반정치 행렬이면 고유값들은 음이 아닌 실수이다.
+
+-   행렬 $\bm A$가 양반정치 행렬이고 그 계수가 $r$이면 다음과 같이
+    최대열계수 $n \times r$ 행렬 $\bm L$으로 나타낼 수 있다.
+
+$$ \bm A = \bm P \bm \Lambda \bm P^t = \bm P 
+\begin{bmatrix}
+{\bm D}^{1/2}_r \\
+\bm 0
+\end{bmatrix}
+\begin{bmatrix}
+{\bm D}^{1/2}_r & \bm 0^t
+\end{bmatrix}
+\bm P^t =
+\bm L \bm L^t
+$$
+
+위에서 $\bm \Lambda = diag \{ \bm D_r, \bm 0 \}$ 이다.
+
+-   $\bm A$가 $m \times n$ 행렬이라면(정방행렬이 아닐 수도 있다)
+    $\bm A^t \bm A$와 $\bm A \bm A^t$는 양반정치 행렬이다.
+
+## 대칭행렬의 대각화
+
+$n$차원 대칭행렬 $\bm A$ 에 대하여 직교행렬 $\bm P$가 존재하여 다음과
+같은 분해가 가능하다.
+
+```{=tex}
+\begin{equation}
+ \bm P^t \bm A \bm P = \bm \Lambda = diag(\lambda_1, \lambda_2, \dots, \lambda_n) 
+ (\#eq:symmdecomp1)
+\end{equation}
+```
+식 \@ref(eq:symmdecomp1)의 분해에서 $\lambda_i$는 행렬 $\bm A$의
+고유치이며 행렬 $\bm P$의 $i$ 번째 열은 대응하는 고유벡터 $\bm p_i$ 로
+구성되어 있다.
+
+$$ \bm P = [ \bm p_1~~ \bm p_2 ~~ \dots ~~ \bm p_n ] $$ 이제 위의 분해를
+증명해 보자. 고유치 $\lambda_i$ 와 대응하는 고유벡터 $\bm p_i$의 정의에
+따라서 다음과 같은 $n$개의 식을 얻을 수 있고
+
+$$ \bm A \bm p_i = \lambda_i \bm p_i , \quad i=1,2,3\dots, n $$
+
+위의 식을을 합쳐서 표기하면 다음과 같은 식을 얻으며 이는 식
+\@ref(eq:symmdecomp1)를 의미한다.
+
+$$ \bm A \bm P = \bm P \bm \Lambda $$
+
+식 \@ref(eq:symmdecomp1)를 다시 쓰면 다음과 같은 스펙트럴 분해(spectral
+decomposition)를 얻는다.
+
+```{=tex}
+\begin{equation}
+ \bm A  = \bm P \bm \Lambda \bm P^t  = \sum_{i=1}^n \lambda_i \bm p_i \bm {p}_i^t 
+ (\#eq:spectral)
+\end{equation}
+```
+참고로 다음의 유용한 두 식을 기억하자.
+
+$$ tr(\bm A) = \sum_i \lambda_i ,\quad |\bm A| = \prod_i \lambda_i $$
+
+대칭행렬의 분해 \@ref(eq:symmdecomp1)를 이용하면 다음과 같은 이차형식의
+분해를 얻을 수 있다.
+
+```{=tex}
+\begin{equation}
+Q(\bm x) = \bm x^t \bm A \bm x = \bm x^t \bm P \bm \Lambda \bm P^t \bm x = \bm y^t \bm \Lambda \bm y= \sum_{i=1}^n \lambda_i y_i^2 
+(\#eq:quaddecomp)
+\end{equation}
+```
+이차형식의 분해식 \@ref(eq:quaddecomp) 를 보면 행렬 $\bm A$의 모든
+고유치가 0보다 크면 양정치 임을 알 수 있다. 또한 모든 고유치가 0보다
+크거나 같으면 양반정치 임을 알 수 있다.
+
+또한 $rank(\bm A) = rank(\bm \Lambda)$이며 이는 0이 아닌 고유치의 개수가
+행렬 $\bm A$의 계수(rank)임을 알 수 있다.
+
+## 멱등행렬
+
+$n$-차원 행렬 $\bm A$ 가 다음과 같은 성질을 가지면 멱등행렬(idenpotent
+matrix)라고 부른다.
+
+$$ \bm A^2 = \bm A \bm A = \bm A $$
+
+멱등행렬은 다음과 같은 성질을 가지고 있다.
+
+-   멱등행렬의 고유치는 0 또는 1이다.
+-   $tr(\bm A) =rank(\bm A)$
+-   멱등행렬은 양반정치 행렬이다.
+-   $\bm A$ 멱등행렬이면 $\bm I - \bm A$도 멱등행렬이다.
+
+특별히 대칭인 멱등행렬을 **사영행렬**(또는 투영행렬, projection
+matrix)라고 부른다.
+
+## 계수와 사영
+
+### 벡터의 선형독립
+
+$n$-차원의 벡터들이 $p$개 $\bm a_1, ~~ \bm a_2, ~~\dots ~~, \bm a_p$ 가
+있다고 하자. 만약 모두 $0$이 아닌 $p$개의 스칼라 $w_1,w_2,\dots,w_p$에
+대하여 다음이 성립하면 $p$개 벡터
+$\bm a_1, ~~ \bm a_2, ~~\dots ~~, \bm a_p$ 들은 선형종속(linearly
+dependent)라고 한다.
+
+```{=tex}
+\begin{equation}
+w_1 \bm a_1 + w_2 \bm a_2 + \dots + w_p \bm a_p = \bm 0 
+(\#eq:lineardep)
+\end{equation}
+```
+만약 식 \@ref(eq:lineardep)이 모든 스칼라가 0 인
+경우($w_1=w_2=\dots=w_p=0$)만 만족 한다면 $p$개 벡터
+$\bm a_1, ~~ \bm a_2, ~~\dots ~~, \bm a_p$ 들은 선형독립(linearly
+independent)라고 한다.
+
+### 행렬의 계수
+
+행렬 $\bm A$의 계수(rank)는 선형독립인 열벡터(또는 행벡터)의 개수로
+정의된다.
+
+$m \times n$ 행렬의 $\bm A$는 계수에 대하여 다음과 같은 성질을 가진다.
+
+-   $0 \le rank(\bm A) \le min(m,n)$
+-   $rank(\bm A) = rank({\bm A}^t)$
+-   $rank({\bm A}{\bm A}^t) = rank({\bm A}^t{\bm A}) = rank({\bm A})$
+
+### 벡터공간
+
+$m \times n$ 행렬 $\bm A$ 에 의하여 생성되는 벡터공간(vector space)
+$C(\bm A)$는 행렬 $\bm A$를 구성하는 열벡터의 선형조합으로 나타낼 수
+있는 모든 벡터들의 집합을 말한다.
+
+$$ C(\bm A) = \{ {\bm y } | {\bm y} = {\bm A} {\bm x}, {\bm x} \in R^n \}  \subset R^m$$
+
+$m \times n$ 행렬 $\bm A$ 에 의하여 생성되는 영공간(null space)
+$N(\bm A)$ 는 다음과 같이 정의되는 벡터들의 집합을 말한다.
+
+$$ N(\bm A) = \{ {\bm x} | {\bm A} {\bm x} = {\bm 0} \text{ for } {\bm x} \in R^n \} \subset R^n$$
+
+벡터공간과 영공간은 다음과 같은 성질을 가진다.
+
+-   $rank(\bm A) = \text{ dimension of } C(\bm A) = dim[C(\bm A)]$
+-   $dim[C(\bm A)] + dim[N(\bm A)] = n$
+
+### 두 벡터의 사영
+
+선형독립인 두 벡터 $\bm a_1$과 $\bm a_2$ 가 있다고 하자. 벡터
+$\bm a_1$과 같은 방향을 가지면서 벡터 $\bm a_2$에 가장 가까운 벡터를
+$proj_{\bm a_1} (\bm a_2)$ 라고 정의하고 이를 벡터 $\bm a_1$ 방향으로
+벡터 $\bm a_2$ 의 사영(projection)이라고 부른다.
+
+그러면 이러한 사영은 어떻게 구할 수 있나? 벡터 $\bm a_2$ 의 사영은 벡터
+$\bm a_1$ 방향에 있으므로 어떤 실수 $c$ 가 있어서 다음과 같이 표시할 수
+있다.
+
+$$ proj_{\bm a_1} (\bm a_2) =  c \bm a_1 $$
+
+이제 사영 $c \bm a_1$과 벡터 $\bm a_2$의 거리 $d(c)$ 를 생각하면 다음과
+같다. \begin{align*}
+d^2(c) & = \norm{\bm a_2 - c \bm a_1}^2 \\
+   & = (\bm a_2 - c \bm a_1)^t(\bm a_2 - c \bm a_1) \\
+   & = \bm a^t_2 \bm a_2 -2 c \bm a_2^t \bm a_1 + c^2 \bm a^t_1 \bm a_1
+\end{align*}
+
+위에서 $\norm{\bm a}$ 는 벡터 $\bm a$의 길이를 나타낸다.
+
+$$ d(\bm a) = \norm{\bm a} = \sqrt{\bm a^t \bm a} $$
+
+상수 $c$ 는 거리 $d(c)$를 최소로 만드는 수이다. $d^2(c)$은 $c$ 에 대하여
+미분 가능한 2차 함수이며 아래로 볼록한 함수이므로 이를 미분하여 $c$ 를
+구할 수 있다.
+
+$$ \pardiff{d^2(c)}{c} = - 2\bm a_2^t \bm a_1 + 2c \bm a^t_1 \bm a_1 =0 $$
+
+위의 방적식으로 부터 $c$를 얻고
+$$ c= \frac{\bm a_2^t \bm a_1  }{\bm a^t_1 \bm a_1} $$
+
+다음과 같이 벡터 $\bm a_1$ 방향으로 벡터 $\bm a_2$ 의 사영을 나타낼 수
+있다.
+
+```{=tex}
+\begin{equation} 
+proj_{\bm a_1} (\bm a_2) = \frac{ \bm a_2^t \bm a_1} {\bm a_1^t \bm a_1} \bm a_1
+(\#eq:proj1)
+\end{equation}
+```
+이제 위의 두 벡터의 사영을 이용하면 벡터 $\bm a_1$ 과 직교하는 벡터
+$\tilde {\bm q}_2$를 다음과 같이 찾을 수 있다.
+
+```{=tex}
+\begin{equation*} 
+\tilde {\bm q}_2 = \bm a_2 - proj_{\bm a_1} (\bm a_2) = \bm a_2 -  \frac{\bm a_2^t \bm a_1} {\bm a_1^t \bm a_1} \bm a_1 
+\end{equation*}
+```
+```{r projection, echo=FALSE, fig.cap='벡터의 사영', out.width='80%'}
+knitr::include_graphics("myimages/proj1.png")
+```
+
+두 벡터 $\bm a_1$와 $\tilde {\bm q}_2$의 직교성은 다음과 같이 보일 수
+있다.
+
+```{=tex}
+\begin{align}
+\bm a_1^t  \tilde {\bm q}_2 & =
+ \bm a_1^t  \left ( \bm a_2 -  \frac{ \bm a_2^t \bm a_1} {\bm a_1^t \bm a_1} \bm a_1 \right ) \notag \\
+ & = \bm a_1^t \bm a_2 - \frac{ \bm a_2^t \bm a_1} {\bm a_1^t \bm a_1}  \bm a_1^t \bm a_1 \notag \\
+ & = \bm a_1^t \bm a_2 - \bm a_2^t \bm a_1 \notag \\
+ & = 0 
+ (\#eq:proofortho)
+\end{align}
+```
+이제 두 벡터 $\bm q_1$과 $\bm q_2$ 를 다음과 같이 정규직교벡터로 만들 수
+있다. \begin{align*}
+\bm q_1 & =  \bm a_1 / \norm{\bm a_1 } \\
+\bm q_2 & =  \tilde {\bm q}_2 / \norm{\tilde {\bm q}_2}
+\end{align*}
+
+### 최소제곱법과 사영
+
+회귀계수벡터의 값을 구하는 최소제곱법의 기준을 다시 살펴보자.
+
+$$   \min_{\bm \beta } \norm{\bm y -  \bm X \bm \beta }^2= \min_{\bm \beta } ( \bm y -  \bm X \bm \beta )^t( \bm y -  \bm X \bm \beta )  $$
+
+위에서 $\bm X \bm \beta$는 행렬 $\bm X$의 열벡터
+$\bm x_0, \bm x_1, \dots, \bm x_p$ 로 이루어진 선형조합이다.
+
+$$ \bm X \bm \beta = [\bm x_0~\bm x_1~ \cdots \bm x_p]\bm \beta
+ = \beta_0 \bm x_0  + \beta_1 \bm x_1 + \cdots + \beta_p \bm x_p $$
+
+따라서 최소제곱법으로 구한 회귀계수 벡터 $\hat {\bm \beta}$는 반응값
+벡터 $\bm y$ 와 $\bm X {\bm \beta}$의 거리가 최소가 되도록 만들어 준다.
+
+$$ \hat {\bm \beta} = (\bm X^t \bm X)^{-1} \bm X^t \bm y, \quad 
+ \min_{\bm \beta } \norm{\bm y -  \bm X \bm \beta }^2 = \norm{\bm y -  \bm X \hat {\bm \beta} }^2
+ $$
+
+따라서 예측값 벡터 $\hat {\bm y}$ 는 행렬 $\bm X$의 열벡터로 생성한
+열공간 방향으로 반응값 벡터 $\bm y$를 사영한 벡터이다.
+
+$$ \hat {\bm y} = \bm X \hat {\bm \beta} = \bm  X(\bm X^t \bm X)^{-1} \bm X^t \bm y $$
+
+위에서 행렬 $\bm P = \bm X(\bm X^t \bm X)^{-1} \bm X^t$를 열공간
+$C(\bm X)$의 사영행렬(projection matrix)라고 부른다.
+
+```{r projection2, echo=FALSE, fig.cap='최소제곱법을 설명한 그림', out.width='80%'}
+knitr::include_graphics("myimages/proj2.png")
+```
+
+### Gram--Schmidt 방법
+
+서로 독립인 $n$차원의 벡터들이 $p$개 있을떄
+$$ \bm a_1, \bm a_2, \dots, \bm a_p $$ 이들이 만드는 열공간을 $C$ 라고
+하자.
+
+```{=tex}
+\begin{align} 
+C &= span \{ \bm a_1, \bm a_2, \dots, \bm a_p \} \notag \\
+ & = \{~c_1 \bm a_1 +c_2 \bm a_2+\dots+c_p \bm a_p ~|~ \text{ all possible  real values of } c_1,c_2, \dots ,c_p ~\} 
+ (\#eq:colspace) 
+\end{align}
+```
+이제 우리는 위와 동일한 열공간 $C$ 만드는 정규직교 벡터들을 찾는 방법을
+알아보고자 한다.
+
+$$ \bm q_1, \bm q_2, \dots, \bm q_p \quad \text{ where } \bm q_i^t \bm q_j = 0,~~  \bm q_i^t \bm q_i = 1 $$
+
+그리고 \begin{equation} 
+ C = span \{ \bm q_1, \bm q_2, \dots, \bm q_p \}  = span \{ \bm a_1, \bm a_2, \dots, \bm a_p \}
+(\#eq:colspace2)
+\end{equation}
+
+이제 앞 절의 벡터의 사영에 대한 결과를 사용하여 다음과 같은 직교하는 $p$
+개의 벡터들을 축차적으로 만들어 보자.
+
+```{=tex}
+\begin{align}
+\tilde {\bm q}_1 & = \bm a_1 \notag \\
+ \tilde {\bm q}_2 & = \bm a_2 - proj_{\tilde {\bm q}_1} (\bm a_2) \notag \\
+\tilde {\bm q}_3 & = \bm a_3 - proj_{\tilde {\bm q}_1} (\bm a_3)  -proj_{\tilde {\bm q}_2} (\bm a_3) \notag \\
+\tilde {\bm q}_4 & = \bm a_4 - proj_{\tilde {\bm q}_1} (\bm a_4)  -proj_{\tilde {\bm q}_2} (\bm a_4) -proj_{\tilde {\bm q}_3} (\bm a_4) \notag \\
+& \dots  \notag \\
+\tilde {\bm q}_p &= \bm a_p - \sum_{k=1}^p proj_{\tilde {\bm q}_k} (\bm a_p) 
+(\#eq:gram)
+\end{align}
+```
+축차적으로 만든 벡터들을 정규벡터로 만들면 원래의 벡터들
+$\bm a_1, \bm a_2, \dots, \bm a_p$이 생성하는 동일한 열공간을 만드는
+정규직교 벡터 $\bm q_1, \bm q_2, \dots, \bm q_p$를 만들 수 있다.
+
+```{=tex}
+\begin{equation} 
+ \bm q_i = \tilde {\bm q}_i / \norm{\tilde {\bm q}_i}, \quad i=1,2,\dots,p 
+(\#eq:gram2)
+\end{equation}
+```
+Gram--Schmidt 방법으로 만든 벡터들이 직교하는 것은 다음과 같이 증명할 수
+있다. 먼저 식 \@ref(eq:proofortho) 에 의하여 $\tilde {\bm q}_1$ 과
+$\tilde {\bm q}_2$는 직교한다. 이제 임의의 $i$에 대하여
+$\tilde {\bm q}_1, \tilde {\bm q}_2, \cdots, \tilde {\bm q}_{i-1}$
+벡터들이 직교한다고 가정하자. 모든 $1 \le j \le i-1$ 에 대하여
+
+```{=tex}
+\begin{align*}
+\tilde {\bm q}^t_{j} \tilde {\bm q}_{i}  & =
+  \tilde {\bm q}^t_{j} \left [ \bm a_i - \sum_{k=1}^{i-1} proj_{\tilde {\bm q}_k} (\bm a_i)  \right ]\\
+   & =  \tilde {\bm q}^t_{j} \left [ \bm a_i -proj_{\tilde {\bm q}_j} (\bm a_i) \right ]
+   -  \left [ \sum_{\substack{1\le k \le i-1 \\ k \ne j}} \tilde {\bm q}^t_{j} ~proj_{\tilde {\bm q}_k} (\bm a_i)  \right ]  \\
+   & = 0 + 0
+\end{align*}
+```
+위에서 마지막 단계의 직교성은 다음과 같은 사실로 부터 유도된다.
+
+-   $\bm a_i -proj_{\tilde {\bm q}_j} (\bm a_i)$는
+    $\tilde {\bm q}^t_{j}$와 직교한다.
+
+-   가정에 의하여
+    $\tilde {\bm q}_1, \tilde {\bm q}_2, \cdots, \tilde {\bm q}_{i-1}$
+    는 직교하고 $proj_{\tilde {\bm q}_k }(\bm a_i)$ 는
+    $\tilde {\bm q}_{k}$ 와 같은 방향을 가진다.
+
+```{=tex}
+\begin{equation*}
+ \tilde {\bm q}^t_{j}  proj_{\tilde {\bm q}_k} (\bm a_i) =0 \quad \text{ for  } 1 \le j,k \le i-1 , k \ne j 
+\end{equation*}
+```
+식 \@ref(eq:gram)과 \@ref(eq:gram2)의 알고리즘을 Gram--Schmidt
+방법이라고 부른다. 위의 두 식에 의한 알고리즘을 다음과 같은 사실을
+이용하면 좀 더 간단한 방법의 알고리즘이 나온다.
+
+$$ proj_{\tilde {\bm q}_k} (\bm a_l) = \frac{\bm a_l^t \tilde {\bm q}_k} {\tilde {\bm q}_k^t \tilde {\bm q}_k} \tilde {\bm q}_k = \frac{\bm a_l^t \tilde {\bm q}_k} {\norm{\tilde {\bm q}_k}^2} \tilde {\bm q}_k=  (\bm a_l^t \bm q_k) \bm q_k $$
+
+1.  $p$개의 벡터 $\bm a_1, \bm a_2, \dots, \bm a_p$에 대하여
+
+2.  for $i=1,2,\dots,p$
+
+    -   $\tilde {\bm q}_i = \bm a_i - (\bm q_1^t \bm a_i) \bm q_1 - \dots - (\bm q_{i-1}^t \bm a_i) \bm q_{i-1}$
+        (직교화)
+
+    -   $\bm q_i = \tilde {\bm q}_i/ \norm{\bm q_i}$ (정규화)
+
+다음은 Gram--Schmidt 방법을 설명한 그림이다.
+
+```{r , echo=FALSE, fig.cap='Gram–Schmidt 방법(출처:Introduction to Applied Linear Algebra by Boyd and Vandenberghe, 2019)', out.width='80%'}
+knitr::include_graphics("myimages/gram.png")
+```
+
+## 행렬의 분해
+
+### LU 분해
+
+정방행렬 $\bm A$를 다음과 같이 하삼각행렬 $\bm L$과 상삼각행렬 $\bm U$의
+곱으로 나타내는 것을 LU 분해라고 한다.
+
+$$ \bm A = \bm L \bm U $$
+
+```{r , echo=FALSE, fig.cap='LU 분해', out.width='80%'}
+knitr::include_graphics("myimages/lu.png")
+```
+
+이러한 LU 분해는 행렬 $\bm A$에 행연산을 적용하여 쉽게 구할 수 있다.
+예를 들어 위에서 고려한 $2 \times 2$ 행렬에 행연산을 적용하여 대각원소
+아래를 0으로 만들면 LU 분해를 쉽게 유도할 수 있다.
+
+$$
+\begin{bmatrix}
+1 & 0\\
+-3 & 1
+\end{bmatrix}
+\begin{bmatrix}
+1 & 2 \\
+3 & 4  
+\end{bmatrix}
+= 
+\begin{bmatrix}
+1 & 2\\
+0 & -2
+\end{bmatrix}
+$$
+
+따라서
+
+$$ 
+\begin{bmatrix}
+1 & 2 \\
+3 & 4  
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & 0\\
+3 & 1
+\end{bmatrix}
+\begin{bmatrix}
+1 & 2\\
+0 & -2
+\end{bmatrix}
+= \bm L \bm U
+$$
+
+### QR 분해
+
+식 \@ref(eq:gram) 과 \@ref(eq:gram2)에 주어진 Gram--Schmidt 방법을 원래
+벡터들 $\bm a_1, \bm a_2, \dots, \bm a_p$에 대하여 다시 다음과 같이
+나타낼 수 있다.
+
+```{=tex}
+\begin{align*}
+\bm a_1 & = \tilde {\bm q}_1  \\
+   &= \norm{\tilde {\bm q}_1} \bm q_1 \\
+\bm a_2 & = \tilde {\bm q}_2  + proj_{\tilde {\bm q}_1} (\bm a_2) \\
+       & = \tilde {\bm q}_2 + \frac{\bm a^t_2 \tilde {\bm q}_1}{\tilde {\bm q}^t_1 \tilde {\bm q}_1} \tilde {\bm q}_1 \\
+       &=  (\bm a^t_2 {\bm q}_1) {\bm q}_1 + \norm{\tilde {\bm q}_2} {\bm q}_2 \\
+\bm a_3 & = \tilde {\bm q}_3  + proj_{\tilde {\bm q}_1} (\bm a_3) + proj_{\tilde {\bm q}_2} (\bm a_3) \\
+       & = \tilde {\bm q}_3 + \frac{\bm a^t_3 \tilde {\bm q}_1}{\tilde {\bm q}^t_1 \tilde {\bm q}_1} \tilde {\bm q}_1 +\frac{\bm a^t_3 \tilde {\bm q}_2}{\tilde {\bm q}^t_2 \tilde {\bm q}_2} \tilde {\bm q}_2 \\
+       &=  (\bm a^t_3 {\bm q}_1) {\bm q}_1 + (\bm a^t_3 {\bm q}_2) {\bm q}_2+ \norm{\tilde {\bm q}_3} {\bm q}_3 \\
+       & \cdots \\
+\bm a_p & = (\bm a^t_p {\bm q}_1) {\bm q}_1 + (\bm a^t_p {\bm q}_2) {\bm q}_2+ \dots + (\bm a^t_p {\bm q}_{p-1}) {\bm q}_{p-1} +\norm{\tilde {\bm q}_p} {\bm q}_p
+\end{align*}
+```
+즉 위의 축차식을 보면 원래 벡터 $\bm a_i$ 는 Gram--Schmidt 방법으로 구한
+정규직교벡터 $\bm q_1,\bm q_2, \dots, \bm q_p$ 의 선형 조합으로 나타낼
+수 있다.
+
+이제 Gram--Schmidt 방법으로 구한 정규직교벡터들
+$\bm q_1, \bm q_2, \dots, \bm q_p$ 을 모아놓은 행렬을 $\bm Q$ 라고 하고
+위에서 $\bm a_i$들이 직교행렬의 선형조합으로 표시될때 계수들을 모아놓는
+상삼각행렬을 $\bm R$ 이라고 하자. 그려면 다음과 같은 QR 분해가 주어진다.
+
+```{=tex}
+\begin{equation} 
+\bm A = \bm Q \bm R
+(\#eq:qr1)
+\end{equation}
+```
+여기서
+
+```{=tex}
+\begin{align*}
+\bm Q & = [\bm q_1~~ \bm q_2 ~ \dots ~\bm q_p ], \quad  \bm Q^t \bm Q  =\bm I  \\
+& \\
+\bm R & =
+\begin{bmatrix} 
+\norm{\tilde {\bm q}_1} & \bm a^t_2 {\bm q}_1 & \bm a^t_3 {\bm q}_1 & \dots & \bm a^t_p {\bm q}_1 \\
+0 & \norm{\tilde {\bm q}_2} &  \bm a^t_3 {\bm q}_2 & \dots & \bm a^t_p {\bm q}_2 \\
+0 & 0 & \norm{\tilde {\bm q}_3}  & \dots & \bm a^t_p {\bm q}_3 \\
+& & & \dots & \\
+0 & 0 & 0 & \dots & \norm{\tilde {\bm q}_p}
+\end{bmatrix} 
+\end{align*}
+```
+이제 Gram--Schmidt 방법과 QR 분해를 실제 예제를 통하여 구해보자
+
+아래와 같이 4차원 벡터 3개가 있다.
+
+```{=tex}
+\begin{equation}
+\bm a_1 =
+\begin{bmatrix}
+-1 \\
+1 \\
+-1 \\
+1
+\end{bmatrix}
+\quad
+\bm a_2 =
+\begin{bmatrix}
+-1 \\
+3 \\
+-1 \\
+3
+\end{bmatrix}
+\quad
+\bm a_3 =
+\begin{bmatrix}
+1 \\
+3 \\
+5 \\
+7
+\end{bmatrix}
+(\#eq:exammat) 
+\end{equation}
+```
+위의 벡터 $\bm a_1 , \bm a_2 , \bm a_3$에 대하여 Gram--Schmidt 방법을
+적용해보자.
+
+1.  $i=1$. 먼저 $\norm{\tilde {\bm q}_1}= \norm{\bm a_1}=2$이므로 첫번째
+    벡터 $\bm q_1$를 만든다.
+
+$$ \bm q_1  = \tilde {\bm q}_1 / \norm{\tilde {\bm q}_1} =
+\begin{bmatrix}
+-1/2 \\
+1/2 \\
+-1/2 \\
+1/2
+\end{bmatrix}
+$$
+
+2.  $i=2$. 이제 두번째 직교벡터 $\bm q_2$를 만들자.
+    $\bm q^t_1 \bm a_2 =4$이므로
+
+$$
+\tilde {\bm q_2} = \bm a_2 -(\bm q_1^t \bm a_2) \bm q_1 =
+\begin{bmatrix}
+-1 \\
+3 \\
+-1 \\
+3
+\end{bmatrix}
+-4 
+\begin{bmatrix}
+-1/2 \\
+1/2 \\
+-1/2 \\
+1/2
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 \\
+1 \\
+1 \\
+1
+\end{bmatrix}
+$$
+
+그리고 $\norm{\tilde {\bm q}_2} = 2$이므로
+
+$$
+\bm q_2  = \tilde {\bm q}_2/\norm{\tilde {\bm q}_2}
+=
+\begin{bmatrix}
+1/2 \\
+1/2 \\
+1/2 \\
+1/2
+\end{bmatrix}
+$$
+
+3.  $i=3$ 마지막으로 $\bm q_1^t \bm a_3 =2$, $\bm q_2^t \bm a_3=8$
+    이므로
+
+$$
+\tilde {\bm q_3} = \bm a_3 -(\bm q_1^t \bm a_3) \bm q_1 -(\bm q_2^t \bm a_3) \bm q_2=
+\begin{bmatrix}
+1 \\
+3 \\
+5 \\
+7
+\end{bmatrix}
+-2 
+\begin{bmatrix}
+-1/2 \\
+1/2 \\
+-1/2 \\
+1/2
+\end{bmatrix}
+-8
+\begin{bmatrix}
+1/2 \\
+1/2 \\
+1/2 \\
+1/2
+\end{bmatrix}
+=
+\begin{bmatrix}
+-2 \\
+-2\\
+2 \\
+2
+\end{bmatrix}
+$$ 또한 $\norm{\tilde {\bm q}_3} = 4$이므로
+
+$$
+\bm q_3  = \tilde {\bm q}_3/\norm{\tilde {\bm q}_3}
+=
+\begin{bmatrix}
+-1/2 \\
+-1/2 \\
+1/2 \\
+1/2
+\end{bmatrix}
+$$
+
+따라서 Gram--Schmidt 방법으로 만든 정규직교벡터는 다음과 같다.
+
+$$ 
+\bm q_1 =
+\begin{bmatrix}
+-1/2 \\
+1/2 \\
+-1/2 \\
+1/2
+\end{bmatrix}
+\quad
+\bm q_2 =
+\begin{bmatrix}
+1/2 \\
+1/2 \\
+1/2 \\
+1/2
+\end{bmatrix}
+\quad
+\bm q_3 =
+\begin{bmatrix}
+-1/2 \\
+-1/2 \\
+1/2 \\
+1/2
+\end{bmatrix}
+$$
+
+이제 위에서 구한 Gram-Schmidt 방법으로 얻은 결과를 이용하여 QR 분해를
+구해보자.
+
+식 \@ref(eq:exammat) 에서 주어진 백터들을 열로 가진 행렬 $\bm A$의
+QR분해를 구해보자.
+
+$$ 
+\bm A =
+\begin{bmatrix}
+-1 & -1 & 1 \\
+1 & 3 & 3 \\
+-1 & -1 & 5 \\
+1 & 3 & 7
+\end{bmatrix}
+$$
+
+앞의 예제에서 구한 직교벡터를 그대로 이용하면 $\bm Q$는 쉽게 구해진다.
+
+$$ 
+\bm Q =
+\begin{bmatrix}
+-1/2 & 1/2 & -1/2 \\
+1/2 & 1/2 & -1/2 \\
+-1/2 & 1/2 & 1/2 \\
+1/2 & 1/2 & 1/2
+\end{bmatrix}
+$$
+
+또한 식 \@ref(eq:qr1)에 주어진 공식을 이용하면 행렬 $\bm R$은 다음과
+같이 구할 수 있다.
+
+$$ 
+\bm R  =
+\begin{bmatrix} 
+\norm{\tilde {\bm q}_1} & \bm a^t_2 {\bm q}_1 & \bm a^t_3 {\bm q}_1  \\
+0 & \norm{\tilde {\bm q}_2} &  \bm a^t_3 {\bm q}_2  \\
+0 & 0 & \norm{\tilde {\bm q}_3}  
+\end{bmatrix} 
+=
+\begin{bmatrix} 
+2 & 4 & 2  \\
+0 & 2 &  8  \\
+0 & 0 & 4
+\end{bmatrix} 
+$$
+
+### SVD 분해
+
+#### 특이값과 특이벡터
+
+고유값과 고유벡터는 정방행렬인 경우 정의되는 것으로서 행렬이 정방행렬이
+아닌 경우에는 구할 수 없다. 이제 고유값과 유사한 성질을 가지는 특이값을
+일반행렬에서 정의해보자.
+
+$\bm A$가 $m \times n$ 일반행렬이라고 가정하고 그 계수 $r$이라고 하자
+($r(\bm A)=r$). 이제 서로 직교하는 $n$-차원의 벡터들의 집합
+$\bm v_1, \bm v_2, \dots, \bm v_n$과 다른 직교하는 $m$-차원의 벡터들의
+집합 $\bm u_1, \bm u_2, \dots, \bm u_m$을 생각하자.
+
+행렬 $\bm A$의 특이값(singular values)
+$\sigma_1 \ge \sigma_2 \ge \dots \ge \sigma_r>0$과 왼쪽 특이벡터(left
+singular vectors) $\bm u_1, \bm u_2, \dots, \bm u_m$ 그리고 오른쪽
+특이벡터(right singular vectors) $\bm v_1, \bm v_2, \dots, \bm v_n$ 는
+다음과 같은 성질을 만족한다.
+
+```{=tex}
+\begin{equation} 
+\bm A \bm v_1 = \sigma_1 \bm u_1, \quad \bm A \bm v_2 = \sigma_2 \bm u_2, \quad \dots \quad
+\bm A \bm v_r = \sigma_r \bm u_r,  \quad \bm A \bm v_{r+1} =  \bm 0 , \quad \dots,  \quad
+\bm A \bm v_n = \bm 0
+(\#eq:svddef)
+\end{equation}
+```
+$n \times n$ 정방행렬 $\bm V$와 $m \times m$ 정방행렬 $\bm U$ 를 각각
+서로 직교하는 정규벡터 $\bm v_1, \bm v_2, \dots, \bm v_n$ 과
+$\bm u_1, \bm u_2, \dots, \bm u_m$ 으로 구성되는 직교행렬이라고 하자.
+$$ \bm V = [\bm v_1~ \bm v_2~ \dots~ \bm v_n], \quad 
+\bm U = [\bm u_1 ~ \bm u_2 ~ \dots ~ \bm u_m ]
+$$
+
+식 \@ref(eq:svddef)에 나타난 관계를 행렬 $\bm V$와 $\bm U$로 나타내면
+다음과 같이 표현할 수 있다.
+
+```{=tex}
+\begin{equation} 
+ \bm A \bm V =  \bm U \bm \Sigma
+ (\#eq:svddef2)
+\end{equation}
+```
+위에서 $m \times n$ 행렬 $\bm \Sigma$는 다음과 같은 형태를 가진다.
+
+$$ \bm \Sigma 
+=\begin{bmatrix}
+\bm \Sigma_r & \bm 0 \\
+\bm 0 & \bm 0
+\end{bmatrix}, \quad
+\bm \Sigma_r =
+\begin{bmatrix}
+\sigma_1 & & 0 & \\
+ & \sigma_2 & & \\
+ & & \ddots & \\
+ & 0 & & \sigma_r
+\end{bmatrix} 
+$$
+
+#### SVD 분해
+
+이제 행렬 $\bm V$가 직교행렬을 이용하면 다음과 같은 SVD 분해(singular
+value decomposition; 특이값 분해)을 정의할 수 있다.
+
+```{=tex}
+\begin{equation} 
+\underset{m \times n}{ \bm A}  = \underset{m \times m}{\bm U} ~~\underset{m \times n}{\bm \Sigma}~~ \underset{n \times n}{\bm V^t}
+(\#eq:svddef3)
+\end{equation}
+```
+위의 식 \@ref(eq:svddef3) 을 전개하면 다음과 같이 계수가 1인 행렬
+$\bm u_k \bm v_k^t$ 들의 선형조합으로 행렬 $\bm A$를 나타낼 수 있다.
+
+```{=tex}
+\begin{equation} 
+\bm A = \sigma_1 \bm u_1 \bm v_1^t + \sigma_2 \bm u_2 \bm v_2^t + \dots 
+\sigma_r \bm u_r \bm v_r^t
+(\#eq:svddef4)
+\end{equation}
+```
+또한 식 \@ref(eq:svddef2) 에서 $\bm \Sigma$에서 0이 되는 값을 제외하면
+처음 $r$개의 요소들만 이루어진 부분으로만 축소된 SVD 분해를 구할 수
+있다.
+
+```{=tex}
+\begin{equation} 
+ \bm A \bm V_r =  \bm U_r \bm \Sigma_r,  \quad
+ \bm A [ \bm v_1~ \bm v_2~ \dots~ \bm v_r] =
+[ \bm u_1~ \bm u_2~ \dots~ \bm u_r ] 
+\begin{bmatrix}
+\sigma_1 & & 0 & \\
+ & \sigma_2 & & \\
+ & & \ddots & \\
+ & 0 & & \sigma_r
+\end{bmatrix}
+(\#eq:reducesvd)
+\end{equation}
+```
+위의 식 \@ref(eq:reducesvd) 에서 주의할 점은 행렬 $\bm V_r$과
+$\bm U_r$은 정방행렬이 아니고 직교행렬도 아니다.
+$\bm V_r^t \bm V_r =\bm I$ 와 $\bm U^t_r \bm U_r = \bm I$이 성립하지만
+일반적으로 $\bm V_r \bm V^t_r \ne \bm I$,
+$\bm U_r \bm U^t_r \ne \bm I$이다.
+
+#### 특이값과 특이벡터의 계산
+
+$m \times n$ 행렬 $\bm A$의 SVD 분해 \@ref(eq:svddef3) 로 부터 행렬
+$\bm A^t \bm A$와 $\bm A \bm A^t$를 다음과 같이 나타낼 수 있다.
+
+```{=tex}
+\begin{align}
+\bm A^t \bm A & = (\bm V \bm \Sigma^t \bm U^t)(\bm U \bm \Sigma \bm V^t) 
+= \bm V \bm \Sigma^t  \bm \Sigma \bm V^t 
+(\#eq:ata-mat) \\ 
+\bm A \bm A^t & = (\bm U \bm \Sigma \bm V^t) (\bm V \bm \Sigma^t \bm U^t)
+= \bm U \bm \Sigma \Sigma^t \bm U^t  
+(\#eq:aat-mat)
+\end{align}
+```
+정방행렬의 역행렬은 다음과 같이 행렬식과 여인자 행렬을 이용하여 구한다.
+예를 들어 다음과 같은 $2 \times 2$ 행렬 $\bm A$의 역행렬은
+
+위에서 $\bm A^t \bm A$와 $\bm A \bm A^t$는 모두 대칭행렬이지만 서로
+차원이 다르다. 또한 식 \@ref(eq:ata-mat) 과 \@ref(eq:aat-mat)을 보면 두
+행렬이 모두 $\bm Q \bm \Lambda \bm Q^t$의 형식으로 분해되는 것을 알 수
+있다. 즉 다음과 같은 사실을 알 수 있다.
+
+-   $n \times n$ 비음정치행렬 $\bm A^t \bm A$의 고유벡터 행렬은
+    $\bm V$이다.
+-   $m \times m$ 비음정치행렬 $\bm A \bm A^t$의 고유벡터 행렬은
+    $\bm U$이다.
+-   행렬 $\bm A^t \bm A$와 $\bm A \bm A^t$의 0이 아닌 고유값은
+    $\sigma_1^2, \sigma_2^2,\dots, \sigma_r^2$ 이다.
+
+따라서 다음과 같은 방법으로 특이값과 특이벡터를 계산할 수 있다. 위의
+방법은 두 행렬 $\bm A^t \bm A$와 $\bm A \bm A^t$를 모두 구하지 않고
+$\bm A^t \bm A$의 고유값과 고유벡터만으로 SVD 분해를 구하는 방법이다
+(만약 행렬 $\bm A$가 $100000 \times 5$이라면 $\bm A \bm A^t$는
+$100000 \times 100000$이다!)
+
+먼저 $\bm A^t \bm A$의 고유벡터 $\bm v_1, \dots,\bm v_r$을 다음과 같은
+고유값과 고유벡터의 정의로 먼저 구한다.
+
+```{=tex}
+\begin{equation} 
+\bm A^t \bm A \bm v_k = \lambda_k \bm v_k= \sigma^2_k \bm v_k, \quad k=1,2,\dots,r 
+(\#eq:svdcal1)
+\end{equation}
+```
+다음으로 다음의 식으로 $\bm u_1, \dots,\bm u_r$ 를 구한다.
+
+```{=tex}
+\begin{equation}
+\bm u_k = \frac{\bm A \bm v_k}{\sigma_k}, \quad k=1,2,\dots, r 
+(\#eq:svdcal2)
+\end{equation}
+```
+식 \@ref(eq:svdcal2)에서 다음과 같이 $\bm u_k$가 행렬 $\bm A \bm A^t$의
+고유벡터임을 확인할 수 있다.
+
+$$ \bm A \bm A^t \bm u_k = \bm A \bm A^t \left ( \frac{\bm A \bm v_k}{\sigma_k} \right ) =
+\bm A \left ( \frac{\sigma^2_k \bm v_k}{\sigma_k} \right) = \sigma^2_k \bm u_k $$
+
+또한 식 \@ref(eq:svdcal1)에서 $\bm v_k$는 정규직교벡터이므로 다음과 같이
+$\bm u_k$도 정규직교행려임을 보일 수 있다.
+
+$$ \bm u^t_k \bm u_l = \left ( \frac{\bm A \bm v_k}{\sigma_k} \right )^t
+\left ( \frac{\bm A \bm v_l}{\sigma_l} \right ) =
+\frac{ \bm v_k^t (\bm A^t \bm A \bm v_l) }{\sigma_k \sigma_l} =
+\frac{\sigma_l}{\sigma_k} \bm v_k^t \bm v_l  =
+\begin{cases}
+1 & \text{ if } k=l \\
+0 & \text{ if } k \ne l 
+\end{cases}
+$$
+
+위에서 구한 $r$개의 $\bm v_k$와 $\bm u_k$외에 $n-r$과 $m-r$ 개의 서로
+직교하는 나머지 $\bm v$와 $\bm u$도 구할 수 있다.
+
+#### SVD 분해의 기하학적 의미
+
+다음은 SVD 분해의 기하학적 의미를 설명한 그림이다.
+
+```{r , echo=FALSE, fig.cap='SVD 분해의 기하학적 의미', out.width='80%'}
+knitr::include_graphics("myimages/svd.png")
+```

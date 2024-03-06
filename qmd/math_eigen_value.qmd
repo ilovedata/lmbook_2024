@@ -1,0 +1,273 @@
+# 고유값과 고유벡터 {#eigen-01}
+
+::: callout-caution
+고유값과 고유벡터는 정방행렬(square matrix)에 대해서만 정의된다.
+:::
+
+## 특성다항식
+
+특성다항식(Characteristic polynomial)은 다음과 같이 정의된다 
+
+실수 $\lambda \in \mathbb{R}$ 와  정방행렬(square matrix) $\boldsymbol{A} \in \mathbb{R}^{n \times n}$ 에 대하여
+
+$$
+\begin{aligned}
+p_{\boldsymbol{A}}(\lambda) & :=\operatorname{det}(\boldsymbol{A}-\lambda \boldsymbol{I}) \\
+& =c_0+c_1 \lambda+c_2 \lambda^2+\cdots+c_{n-1} \lambda^{n-1}+(-1)^n \lambda^n,
+\end{aligned}
+$$ {#eq-char-poly}
+
+
+## 고유값과 고유벡터
+
+### 정의
+
+$n$-차원 정방행렬 $\pmb A$ 이 있을 때, 다음 식을 만족하는 $\lambda$ 와 벡터 $\pmb x$가 존재하면 $\lambda$ 를 행렬 $\pmb A$ 의 고유값(eigenvalue), $\pmb x$ 를 행렬 $\pmb A$ 의 고유벡터(eigenvector)라고 한다 (부교재 definition 4.6)
+
+$$ \pmb A \pmb x = \lambda \pmb x $$
+
+-   고유벡터는 유일하지 않다. 즉, 벡터 $\pmb x$ 가 고유벡터이면 $c \pmb x$ 도 고유벡터이다.
+
+$$ \pmb A (c \pmb x) = c \pmb A \pmb x = c \lambda \pmb x = \lambda (c \pmb x) $$
+
+### 계산
+
+다음 3개의 문장은 동치이다
+
+-   $\lambda$ 는 행렬 $\pmb A$ 의 고유값이다.
+-   방정식 $(\pmb A - \lambda \pmb I)\pmb x = \pmb 0$ 은 영벡터이외의 해를 가진다(nontrivial solution)
+-   $\lambda$ 는 행렬 $\pmb A - \lambda \pmb I$ 의 행렬식이 0이다.
+
+$$ \operatorname{det}(\pmb A - \lambda \pmb I) = 0 $$ {#eq-char-poly2}
+
+-   $\lambda$ 는 행렬 $\pmb A - \lambda \pmb I$ 의 rank가 $n$ 보다 작다.
+
+-   Theorem 4.8 에 의하면 위에서 행렬식이 0 인 방정식 @eq-char-poly2 을 푸는 것은 @eq-char-poly 의 이 0 을 푸는 것과 동일하다는 것이다.
+
+### 중복도와 고유공간
+
+부교재의 Definition 4.9, 4.10, 4.11 에 대한 내용입니다.
+
+- 대수적 중복도(algebraic multiplicity) 는 특성다항식 @eq-char-poly 이 0인 방정식을 푸는 경우 다항식에서 고유값이 중근(multiple root)의 해로 나타나는 차수를 의미한다.
+
+-  기하적 중복도(geometric multiplicity) 는 고유값에 대응하는 고유벡터들 중 선형독립인 고유벡터들의 최대 개수를 의미한다.
+
+- 고유 공간(eigenspace)은 고유값에 대응하는 고유벡터들이 생성하는 벡터공간을 의미한다.
+
+---
+
+::: {#exr-Example-20-1}
+
+
+3차원 행렬 $\pmb A$ 가 다음과 같을 때
+
+$$\pmb A=\left[\begin{array}{ccc}0 & 0 & -2 \\ 1 & 2 & 1 \\ 1 & 0 & 3\end{array}\right]$$
+
+행렬 $\pmb A$의 특성다항식은 다음과 같다.
+
+$$
+\operatorname{det}(\lambda \pmb I -\pmb A)= 
+\left|\begin{array}{ccc}
+\lambda & 0 & 2 \\
+-1 & \lambda-2 & -1 \\
+-1 & 0 & \lambda-3
+\end{array}\right|=(\lambda-1)(\lambda-2)^2
+$$
+참고로 특성방정식을 푸는 경우, 방정식  $\operatorname{det}(\pmb A - \lambda \pmb I)=0$
+이나 $\operatorname{det}(\lambda \pmb I -\pmb A)= 0$ 중 어느 것을 사용해도 상관없다.
+
+첫번째 고유값은 $\lambda_1=1$ 이다. 고유벡터를 구하기 위해서는 다음과 같은  방정식을 풀면 된다.  
+
+$$ (\lambda_1 \pmb I -\pmb A )\pmb x = \pmb 0  $$ 
+
+위의 방정식을 풀면 
+
+
+$$
+(\lambda_1 \pmb I -\pmb A )\pmb x= (\pmb I -\pmb A )\pmb x
+=
+\begin{bmatrix}
+1 & 0 & 2 \\
+-1 & -1 & -1 \\
+-1 & 0 & -2
+\end{bmatrix}
+\begin{bmatrix}
+x_1 \\
+x_2 \\
+x_3 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+0 \\
+0 \\
+\end{bmatrix}
+$$
+
+아래와 같이 간단히 할 수 있으며 
+
+$$ x_1 = -2x_3, \quad x_2 = x_3 $$
+다음과 같은 고유값과 고유벡터를 얻을 수 있다.
+
+$$ \lambda_1=1 \quad \rightarrow \quad  x_1=\begin{bmatrix}-2 \\ 1 \\ 1\end{bmatrix} $$
+
+**첫번째 고유값은 $\lambda_1=1$ 이며  대수적 중복도는 1이고 기하적 중복도도 1이다.** 이 경우 고유공간 $E_1$ 은 한 개의 고유벡터 $\pmb x_1$ 이 생성하는 부분공간을 의미한다.
+
+$$
+E_1 = \text{span}\left\{\begin{bmatrix}-2 \\ 1 \\ 1\end{bmatrix} \right\}
+$$
+
+
+다음으로  두번째 고유값에 대한  방정식 $(\lambda_2 \pmb I -\pmb A )\pmb x = \pmb 0$ 을 풀면 다음과 같다.
+
+$$
+(\lambda_2 \pmb I -\pmb A )\pmb x= (2\pmb I -\pmb A )\pmb x =
+\begin{bmatrix}
+2 & 0 & 2 \\
+-1 & 0 & -1 \\
+-1 & 0 & -1
+\end{bmatrix}
+\begin{bmatrix}
+x_1 \\
+x_2 \\
+x_3 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+0 \\
+0 \\
+\end{bmatrix}
+$$
+
+이 방정식은 아래와 같이 간단히 할 수 있으며 
+
+$$ x_1 = -x_3 $$
+다음과 같은 두 개의 고유벡터를 얻을 수 있다.
+
+$$ 
+\lambda_2=2\quad \rightarrow \quad  x_2=\begin{bmatrix}-1 \\ 0 \\ 1\end{bmatrix} 
+\quad x_3=\begin{bmatrix}0 \\ 1 \\ 0\end{bmatrix} 
+$$
+
+위에서 **두번째 고유값은 $\lambda_2=2$ 이며  대수적 중복도는 2이다.** 또한 **선형독립인 2개의 고유벡터를 구할 수 있으므로 기하적 중복도는 2이다.** 
+
+이 경우 $E_2$ 는 두 개의 고유벡터 $\pmb x_1, \pmb x_2$ 가 생성하는 부분공간을 의미한다.
+
+$$
+E_2 = \text{span}\left\{\begin{bmatrix}-1 \\ 0 \\ 1\end{bmatrix}, \begin{bmatrix}0 \\ 1 \\ 0\end{bmatrix}\right\}
+$$
+
+$\blacksquare$
+
+::: 
+
+---
+
+
+이제 대수적 중복도와 기하적 중복도가 다른 경우에 대한  예제를 들어보자. 
+
+---
+
+::: {#exr-Example-20-2}
+
+
+3차원 행렬 $\pmb A$ 가 다음과 같을 때
+
+$$\pmb A=\left[\begin{array}{ccc}1 & 0 & 2 \\ -1 & 1 & 3 \\ 0 & 0 & 2\end{array}\right]$$
+
+행렬 $\pmb A$의 특성다항식은 다음과 같다.
+
+$$
+\operatorname{det}(\lambda \pmb I -\pmb A)= 
+\left|\begin{array}{ccc}
+\lambda-1 & 0 & -2 \\
+1 & \lambda-1 & -3  \\
+0 & 0 & \lambda-2
+\end{array}\right|=(\lambda-1)^2(\lambda-2)
+$$
+첫번째 고유값은 $\lambda_1=1$ 이다. 고유벡터를 구하기 위해서는 다음과 같은  방정식을 풀면 된다.  
+
+$$ (\lambda_1 \pmb I -\pmb A )\pmb x = \pmb 0  $$ 
+
+위의 방정식을 풀면 
+
+
+$$
+(\lambda_1 \pmb I -\pmb A )\pmb x= (\pmb I -\pmb A )\pmb x =
+\begin{bmatrix}
+0 & 0 & -2 \\
+1 & 0 & -3 \\
+0 & 0 & -1
+\end{bmatrix}
+\begin{bmatrix}
+x_1 \\
+x_2 \\
+x_3 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+0 \\
+0 \\
+\end{bmatrix}
+$$
+
+아래와 같이 간단히 할 수 있으며 
+
+$$ \quad x_1 = x_3 =0 $$
+다음과 같은 하나의 고유벡터를 얻을 수 있다.
+
+$$ \lambda_1=1 \quad \rightarrow \quad  x_1=\begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix} $$
+
+**첫번째 고유값은 $\lambda_1=1$ 이며  대수적 중복도는 2이지만  기하적 중복도는 1이다.** 이 경우 고유공간 $E_1$ 은 한 개의 고유벡터 $\pmb x_1$ 이 생성하는 부분공간을 의미한다.
+
+$$
+E_1 = \text{span}\left\{\begin{bmatrix}0 \\ 1 \\ 0\end{bmatrix} \right\}
+$$
+
+
+다음으로  두번째 고유값에 대한  방정식 $(\lambda_2 \pmb I -\pmb A )\pmb x = \pmb 0$ 을 풀면 다음과 같다.
+
+$$
+(\lambda_2 \pmb I -\pmb A )\pmb x= (2\pmb I -\pmb A )\pmb x = 
+\begin{bmatrix}
+1 & 0 & 2 \\
+1 & 1 & -3 \\
+0 & 0 & 0
+\end{bmatrix}
+\begin{bmatrix}
+x_1 \\
+x_2 \\
+x_3 \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+0 \\
+0 \\
+0 \\
+\end{bmatrix}
+$$
+
+이 방정식은 아래와 같이 간단히 할 수 있으며 
+
+$$ x_1 = -2x_3, \quad x_2=5x_3  $$
+다음과 같은 한 개의 고유벡터를 얻을 수 있다.
+
+$$ 
+\lambda_2=2\quad \rightarrow \quad  x_2=\begin{bmatrix}-2 \\ 5 \\ 1\end{bmatrix} 
+$$
+
+위에서  **두번째 고유값은 $\lambda_2=2$ 이며  대수적 중복도는 1이다.** 또한 **선형독립인 1개의 고유벡터를 구할 수 있으므로 기하적 중복도는 1이다.** 
+
+이 경우 $E_2$ 는 한 개의 고유벡터 $\pmb x_2$ 가 생성하는 부분공간을 의미한다.
+
+$$
+E_2 = \text{span}\left\{\begin{bmatrix}-2\\ 5 \\ 1\end{bmatrix}\right\}
+$$
+
+$\blacksquare$
+
+::: 
+
+---

@@ -1,0 +1,289 @@
+# 벡터공간 {#sec-vectorspace}
+
+
+## 벡터공간의 정의와 의미 
+
+
+**벡터공간(vector space)** 은 어떤 집합 $S$ 에 다음과 같은 두 개의 연산이 정의된 공간을 말한다.
+
+
+1. 두 개의 원소에 대한 더하기(addition, $+$) 연산의 정의되어 있다.
+
+    $$+ ~ ~ : S + S \rightarrow  S$$ {#eq-vectorspace-def-1}
+    
+2. 하나의 실수와  한 개의 원소에 대한 스칼라곱(scalar product, $\cdot$) 연산이 정의되어 있다.
+
+    $$\cdot ~ ~ : \RR \cdot S \rightarrow  S$$ {#eq-vectorspace-def-2}
+
+
+위에서 **더하기 연산이 정의되어 있다**는 의미는 다음에 주어진 규칙이 성립한다는 의미이다.
+
+- 집합 $S$ 가 연산에 대하여 닫혀있다 (closure).
+
+$$  s_1 + b \in S \quad \forall s_1,b \in S $$
+
+- 결합법칙이 성립한다 (Associativity).
+
+$$  (s_1 + s_2) + s_3 = s_1 + (s_2 +s_3)  \quad \forall s_1,s_2,s_3 \in S $$
+
+- 항등원이 존재한다 (Neutral element).
+
+$$  s + e = e + s = s \quad \exists e ~~\forall s \in S $$
+
+- 역원이 존재한다 (Inverse element).
+
+$$ s + i = i  + s = 0 \quad \exists i ~~\ \forall s \in S $$
+
+
+일반적으로 항등원($e$) 는 $0$ 으로 표시하며 역원($i$) 는 $-s$ 로 표시한다. 
+
+- 교환법칙이 성립한다 (Commutativity).
+
+$$  s_1 + s_2 = s_2 + s_1  \quad \forall s_1,s_2 \in S $$
+
+또한 위에서 **스칼라곱 연산이 정의되어 있다**는 의미는 다음에 주어진 규칙이 성립한다는 의미이다.
+
+
+- 스칼라곱 연산의 분배법칙이 성립한다 (Distributivity).
+
+
+$$  r_1(s_1+s_2) = r_1 s_1 + r_2 s_2,~~~ (r_1+r_2)s = r_1 s + r_2 s  \quad \forall s_1,s_2 \in S, ~~ \forall r_1,r_2 in \RR $$
+
+- 스칼라곱 연산의 결합법칙이 성립한다
+
+$$  r_1(r_2s) = (r_1 r_2) s  \quad \forall s \in S, ~~ \forall r_1,r_2 in \RR $$
+
+- 스칼라곱 연산의 항등원이 존재한다 (Neutral element).
+
+$$  1 \cdot s  = s \quad \forall s \in S $$
+
+일반적으로 벡터공간은 $(S,+,f)$ 라고 표시한다. 이러한 표시에서 함수 $f$ 는 스칼라곱 연산에 대한 정의를 나타내는 것이며 @eq-vectorspace-def-2 에 나타나는 대응을 의미한다.
+
+
+이 강좌에서는 스칼라로 실수만 사용하고 있으므로 벡터공간을 실벡터(real vector space) 라고 부른다. 
+
+$$ f : \RR \cdot S \rightarrow  S, \quad \text{즉} \quad f(rs) = r \cdot s =rs $$ 
+
+::: {.callout-caution}
+
+벡터 공간에서 주의할 점은 **두 벡터의 곱하기** 가 정의되어 있다는 것이 아니라 하나의 스칼라와 하나의 벡터에 대한 스칼라 곱하기가 정의되어 있다는 것이다.
+
+$$
+\begin{bmatrix}
+1 \\
+2 
+\end{bmatrix}
+\cdot
+\begin{bmatrix}
+3 \\
+4 
+\end{bmatrix}
+=?
+\quad {but} \quad
+3 \cdot
+\begin{bmatrix}
+1 \\
+2 
+\end{bmatrix}
+= 
+\begin{bmatrix}
+3 \\
+6
+\end{bmatrix}
+$$
+
+**두 벡터의 곱하기** 는 나중에 내적(inner product) 란 이름으로 따로 정의한다.
+
+:::
+
+
+## 벡터의 선형독립
+
+벡터공간에 속한 벡터 $\pmb v_1, ~~ \pmb v_2, ~~\dots ~~, \pmb v_n$ 의  선형결합(또는 선형결합, linear combination)이란 각 벡터에 스칼라를 곱하여 더한 것들이다. 즉 다음과 같은 형태의 식을 벡터 $\pmb v_1, ~~ \pmb v_2, ~~\dots ~~, \pmb v_n$의 선형결합(linear combination)이라고 한다:
+
+$$ r_1 \pmb v_1 + r_2 \pmb v_2 + \cdots + r_n \pmb v_n, \quad r_1,r_2,\dots, r_n \in \RR $$ {#eq-lin-comb}
+
+
+::: {#def-linear-indep}
+
+## 벡터의 선형독립과 선형종속
+
+벡터공간에 속한 벡터 $\pmb v_1, ~~ \pmb v_2, ~~\dots ~~, \pmb v_n$ 가 있다고 하자. 만약 다음 식이  만약 모두 $0$인  $n$개의 스칼라 $x_1,x_2,\dots,x_n$에 대해서만 성립하면 $n$개 벡터 $\pmb v_1, ~~ \pmb v_2, ~~\dots ~~, \pmb v_n$ 들은 선형독립(linearly independent)라고 한다.
+
+$$
+x_1 \pmb v_1 + x_2 \pmb v_2 + \dots + x_n \pmb v_n = \pmb 0 \quad \Longleftrightarrow
+x_1 = x_2 = \dots = x_n =0
+$$ {#eq-linear-indep}
+
+또한 벡터 $\pmb v_1, ~~ \pmb v_2, ~~\dots ~~, \pmb v_n$ 가 선형독립이 아니면 선형종속(linear dependent)라고 한다. 벡터 $\pmb v_1, ~~ \pmb v_2, ~~\dots ~~, \pmb v_n$ 가 선형종속이면 **모두 0이 아닌**  $x_1,x_2,\dots,x_n$ 이 존재하여 다음이 성립한다는 것이다.
+
+$$
+\exists~ x_1,x_2,\dots,x_n \in \RR \text{ s.t. } (x_1,x_2,\dots,x_n) \ne \pmb 0,\quad  \pmb v_1 + x_2 \pmb v_2 + \dots + x_n \pmb v_n = \pmb 0 
+$$ {#eq-linear-dep}
+
+$\blacksquare$
+
+:::
+
+
+
+예를 들어 다음과 같이 주어진 3개의 3-차원 벡터들은 선형종속이다.
+
+$$
+\pmb v_1 =
+\begin{bmatrix}
+1\\
+2\\
+3
+\end{bmatrix},
+\quad
+\pmb v_2 =
+\begin{bmatrix}
+1\\
+0\\
+1
+\end{bmatrix},
+\quad
+\pmb v_3 =
+\begin{bmatrix}
+3\\
+2\\
+5
+\end{bmatrix}
+$$ {#eq-vactors-lin-dep}
+
+
+왜냐하면 다음과 같이 모두 0이 아닌 스칼라에 의해서 다음 식이 성립하기 떄문이다. 즉
+벡터 $\pmb v_3$는 $\pmb v_2$ 에 2를 곱하여 $\pmb v_1$에 더한 값과 같다.
+
+
+$$ 
+\pmb v_3 = \pmb v_1 + 2 \pmb v_2 \quad \Longleftrightarrow \quad    \pmb v_1 + 2 \pmb v_2 -\pmb v_3 = 0 
+$$
+
+이제 다음과 같이 주어진 3개의 3-차원 벡터들은 선형독립이다. 즉 3개 벡터의 선형 조합이 0이 될 수 있도록 만드는 스칼라는 모두 0인 경우 밖에 없다.
+
+$$
+\pmb v_1 =
+\begin{bmatrix}
+1\\
+2\\
+3
+\end{bmatrix},
+\quad
+\pmb v_2 =
+\begin{bmatrix}
+1\\
+0\\
+1
+\end{bmatrix},
+\quad
+\pmb v_3 =
+\begin{bmatrix}
+3\\
+2\\
+4
+\end{bmatrix}
+$$ {#eq-vactors-lin-indep}
+
+
+이제 다음과 같이 주어진 4개의 3-차원 벡터들은 선형종속이다. 
+
+$$
+\pmb v_1 =
+\begin{bmatrix}
+1\\
+2\\
+3
+\end{bmatrix},
+\quad
+\pmb v_2 =
+\begin{bmatrix}
+1\\
+0\\
+1
+\end{bmatrix},
+\quad
+\pmb v_3 =
+\begin{bmatrix}
+3\\
+2\\
+4
+\end{bmatrix}
+\quad
+\pmb v_4 =
+\begin{bmatrix}
+0\\
+0\\
+1
+\end{bmatrix}
+$$ {#eq-vactors-lin-dep-4}
+
+$\pmb v_3$ 가 다음과 같이 다른 벡터의 선형결합으로 나타난는 것을 보여준다.
+
+$$ \pmb v_3 = \begin{bmatrix}
+3\\
+2\\
+4
+\end{bmatrix}
+= (1)\pmb v_1 +  (2)\pmb v_2 +  (-1)\pmb v_4 
+= (1)
+\begin{bmatrix}
+1\\
+2\\
+3
+\end{bmatrix}
++
+(2)
+\begin{bmatrix}
+1\\
+0\\
+1
+\end{bmatrix}
++
+(-1)\begin{bmatrix}
+0\\
+0\\
+1
+\end{bmatrix}
+$$
+
+@eq-vactors-lin-dep-4 와 같이 3차원 벡터가 4개인 경우 벡터의 값에 관계없이 선형종속으로 나타난다.
+이러한 사실은 $\RR^n$의 $n+1$ 개의 벡터는 항상 선형종속이라는 정리(슬라이드 6페이지의 정리 참조)의 결과이다. 즉, $\RR^n$에서 $n$개보다 더 많은 벡터들은 항상 선형종속이다.
+
+
+## 생성집합과 기저
+
+
+::: {#def-generating-set}
+
+### 생성집합과 기저
+
+벡터공간 $V$ 의 벡터 $\pmb v_1,\pmb v_n, \dots, \pmb v_m$ 의 선형결합을 모두 모은 집합
+
+$$ W = span\{\pmb v_1,\pmb v_2, \dots, \pmb v_m \} = \{r_1\pmb v_1 + r_2 \pmb v_2 + \cdots+ r_m \pmb v_m:
+r_1,r_2,\dots,r_m \in \RR \}$$
+
+을 벡터 $\pmb v_1,\pmb v_n, \dots, \pmb v_m$ 의 생성(span)이라고 하며 $W$ 의 생성집합(generating set, spanning set) 이라고 한다.
+
+또한 어떤 벡터공간(혹은 부분공간)의 **생성집합에 속한 벡터들이 선형독립일 때** 이 생성집합을 기저 (basis)라고 한다
+
+$\blacksquare$
+
+:::
+
+
+
+
+## 중요한 내용과 정의
+
+- $\RR^n$ 의 모든 기저는 $n$개의 원소를 갖는다.
+- 임의의 벡터공간 $V$에 대해서 $V$의 부분집합 $B = \{\pmb b_1,\dots,\pmb b_n\}$ 가 $V$의 한 기저라고 하면 다음을 보일 수 있다.
+  + $V$ 의 모든 벡터들은 $\pmb b_1,\dots,\pmb b_n$ 의 선형결합으로 나타낼 수 있으며 유일하다.
+  + $V$ 의 부분집합이 $n$ 개보다 많은 벡터를 포함하면 이 부분집합의 벡터들은 선형종속이다.
+  + $V$ 의또 다른 기저 $C=\{\pmb c_1,\dots,\pmb c_m \}$ 가있다면$m=n$ 이다.
+
+- 벡터공간 $V$의 차원(dimension) 은 기저의 개수로 정의되며 $dim(V)$로 표시한다.
+
+
+

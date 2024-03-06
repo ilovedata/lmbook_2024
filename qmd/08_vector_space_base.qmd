@@ -1,0 +1,439 @@
+# 벡터공간의 기저와 차원 {#vector_space_base}
+
+::: callout-note
+강의자료 슬라이드 2-5 페이지(군, 필드의 정의)은 강의 범위에 포함되지 않습니다.
+
+이 연습장에 포함된 예제와 부교재 40-47 페이지를 공부하세요.
+:::
+
+
+## 벡터의 일차독립
+
+벡터공간에 속한 벡터 $\pmb v_1, ~~ \pmb v_2, ~~\dots ~~, \pmb v_n$ 의  일차결합(또는 선형결합, linear combination)이란 각 벡터에 스칼라를 곱하여 더한 것들이다. 즉 다음과 같은 형태의 식을 벡터 $\pmb v_1, ~~ \pmb v_2, ~~\dots ~~, \pmb v_n$의 일차결합(linear combination)이라고 한다:
+
+$$ r_1 \pmb v_1 + r_2 \pmb v_2 + \cdots + r_n \pmb v_n, \quad r_1,r_2,\dots, r_n \in \RR $$ {#eq-lin-comb}
+
+
+::: {#def-linear-indep}
+
+## 벡터의 일차독립과 일차종속
+
+벡터공간에 속한 벡터 $\pmb v_1, ~~ \pmb v_2, ~~\dots ~~, \pmb v_n$ 가 있다고 하자. 만약 다음 식이  만약 모두 $0$인  $n$개의 스칼라 $x_1,x_2,\dots,x_n$에 대해서만 성립하면 $n$개 벡터 $\pmb v_1, ~~ \pmb v_2, ~~\dots ~~, \pmb v_n$ 들은 일차독립(linearly independent)라고 한다.
+
+$$
+x_1 \pmb v_1 + x_2 \pmb v_2 + \dots + x_n \pmb v_n = \pmb 0 \quad \Longleftrightarrow
+x_1 = x_2 = \dots = x_n =0
+$$ {#eq-linear-indep}
+
+또한 벡터 $\pmb v_1, ~~ \pmb v_2, ~~\dots ~~, \pmb v_n$ 가 일차독립이 아니면 일차종속(linear dependent)라고 한다. 벡터 $\pmb v_1, ~~ \pmb v_2, ~~\dots ~~, \pmb v_n$ 가 일차종속이면 **모두 0이 아닌**  $x_1,x_2,\dots,x_n$ 이 존재하여 다음이 성립한다는 것이다.
+
+$$
+\exists~ x_1,x_2,\dots,x_n \in \RR \text{ s.t. } (x_1,x_2,\dots,x_n) \ne \pmb 0,\quad  \pmb v_1 + x_2 \pmb v_2 + \dots + x_n \pmb v_n = \pmb 0 
+$$ {#eq-linear-dep}
+
+$\blacksquare$
+
+:::
+
+
+
+예를 들어 다음과 같이 주어진 3개의 3-차원 벡터들은 선형종속이다.
+
+$$
+\pmb v_1 =
+\begin{bmatrix}
+1\\
+2\\
+3
+\end{bmatrix},
+\quad
+\pmb v_2 =
+\begin{bmatrix}
+1\\
+0\\
+1
+\end{bmatrix},
+\quad
+\pmb v_3 =
+\begin{bmatrix}
+3\\
+2\\
+5
+\end{bmatrix}
+$$ {#eq-vactors-lin-dep}
+
+
+왜냐하면 다음과 같이 모두 0이 아닌 스칼라에 의해서 다음 식이 성립하기 떄문이다. 즉
+벡터 $\pmb v_3$는 $\pmb v_2$ 에 2를 곱하여 $\pmb v_1$에 더한 값과 같다.
+
+
+$$ 
+\pmb v_3 = \pmb v_1 + 2 \pmb v_2 \quad \Longleftrightarrow \quad    \pmb v_1 + 2 \pmb v_2 -\pmb v_3 = 0 
+$$
+주어진 벡터들이 서로 일차독립임을 확인할 수 있는 일반적인 방법은 다음과 같이 가우스소거법을 이용하는 것이다. 
+
+1. 주어진 벡터들을 열로 구성하는 행렬을 만들고 가우스소거법(또는 행사다리꼴)을 적용한다.
+2. 이때 피봇을 포함하는 열의 개수가 선형독립인 벡터의 개수이다.    
+
+다음과 같이 @eq-vactors-lin-dep 의 3개의 벡터를 각 열로 합친 $3 \times 3$-차원 행렬에 행연산을  적용하여 피봇이 1인 행사다리꼴을 만들어보자.
+
+
+$$
+\begin{aligned}
+& 
+\begin{bmatrix}
+1 & 1 & 3 \\
+2 & 0 & 2 \\
+3 & 1 & 5 \\
+\end{bmatrix}
+\begin{array}{c}
+\\
+(-2)(\text{1st row}) + (\text{2nd row}) \\
+(-3)(\text{1st row}) + (\text{3rd row}) 
+\end{array} \\
+& \\
+\rightarrow
+& 
+\begin{bmatrix}
+1 & 1 & 3 \\
+0 & -2 & -4 \\
+0 & -2 & -4  \\
+\end{bmatrix}
+\begin{array}{c}
+\\
+\\
+(-1)(\text{2nd row}) + (\text{3rd row}) 
+\end{array} \\
+& \\
+\rightarrow
+& 
+\begin{bmatrix}
+1 & 1 & 3 \\
+0 & -2 & -4 \\
+0 & 0 & 0  \\
+\end{bmatrix}
+\begin{array}{c}
+\\
+(-1/2)(\text{2nd row})  \\
+\\
+\end{array} \\
+& \\
+\rightarrow
+& 
+\begin{bmatrix}
+1 & 1 & 3\\
+0 & 1 & 2\\
+0 & 0 & 0 \\
+\end{bmatrix}
+\begin{array}{c}
+(-1)(\text{2nd row}) + (\text{1st row})  \\
+\\
+\\
+\end{array} \\
+& \\
+\rightarrow
+& 
+\begin{bmatrix}
+\color{red}{1} & 0 & 1\\
+0 & \color{red}{1} & 2\\
+0 & 0 & 0 \\
+\end{bmatrix}
+\end{aligned}
+$$
+위에서 마지막 행렬의 비봇(빨간 숫자 1)을 포함한 열은 첫 번째 열과 두 번째 열이고 세 번째 열은 첫 번째 열과 두 번째 열의  선형조합으로 나타낼 수 있음을 보여주고 있다. 피봇을 포함하지 않는 세번 째 열의 숫자가 각각 1 과 2라는 것은 세 번째 벡터 $\pmb v_3=(1)\pmb v_1 + (2) \pmb v_2$ 로 나타날 수 있다는 것을 보여준다. 
+
+이제 다음과 같이 주어진 3개의 3-차원 벡터들은 일차독립이다. 즉 3개 벡터의 선형 조합이 0이 될 수 있도록 만드는 스칼라는 모두 0인 경우 밖에 없다.
+
+$$
+\pmb v_1 =
+\begin{bmatrix}
+1\\
+2\\
+3
+\end{bmatrix},
+\quad
+\pmb v_2 =
+\begin{bmatrix}
+1\\
+0\\
+1
+\end{bmatrix},
+\quad
+\pmb v_3 =
+\begin{bmatrix}
+3\\
+2\\
+4
+\end{bmatrix}
+$$ {#eq-vactors-lin-indep}
+
+이제 @eq-vactors-lin-indep 의 3개의 벡터를 각 열로 합친 $3 \times 3$-차원 행렬에 행연산을  적용하여 피봇이 1인 행사다리꼴을 만들어보자.
+
+$$
+\begin{aligned}
+& 
+\begin{bmatrix}
+1 & 1 & 3 \\
+2 & 0 & 2 \\
+3 & 1 & 4 \\
+\end{bmatrix}
+\begin{array}{c}
+\\
+(-2)(\text{1st row}) + (\text{2nd row}) \\
+(-3)(\text{1st row}) + (\text{3rd row}) \\
+\end{array} \\
+& \\
+\rightarrow
+& 
+\begin{bmatrix}
+1 & 1 & 3 \\
+0 & -2 & -4 \\
+0 & -2 & -5  \\
+\end{bmatrix}
+\begin{array}{c}
+\\
+\\
+(-1)(\text{2nd row}) + (\text{3rd row}) \\
+\end{array} \\
+& \\
+\rightarrow
+& 
+\begin{bmatrix}
+1 & 1 & 3 \\
+0 & -2 & -4 \\
+0 & 0 & -1  \\
+\end{bmatrix}
+\begin{array}{c}
+\\
+(-1/2)(\text{2nd row})  \\
+(-1)(\text{3rd row})
+\end{array} \\
+& \\
+\rightarrow
+& 
+\begin{bmatrix}
+1 & 1 & 3\\
+0 & 1 & 2\\
+0 & 0 & 1 \\
+\end{bmatrix}
+\begin{array}{c}
+(-1)(\text{2nd row}) + (\text{1st row})  \\
+(-2)(\text{3rd row}) + (\text{2nd row})
+\\
+\\
+\end{array} \\
+& \\
+\rightarrow
+& 
+\begin{bmatrix}
+1 & 0 & 1\\
+0 & 1 & 0\\
+0 & 0 & 1 \\
+\end{bmatrix}
+\begin{array}{c}
+(-1)(\text{3rd row}) + (\text{1st row})  \\
+\\
+\\
+\end{array} \\
+& \\
+\rightarrow
+& 
+\begin{bmatrix}
+\color{red}{1} & 0 & 0\\
+0 & \color{red}{1} & 0\\
+0 & 0 & \color{red}{1} \\
+\end{bmatrix}
+\end{aligned}
+$$
+@eq-vactors-lin-indep 의 3개의 벡터로 구성된 행렬에 가우스 소거법을 적용하면 위와 같이 모든 열이 피봇을 포함한 열로 나타난다. 따라서 3개의 벡터는 서로 일차독립이다.
+
+
+이제 다음과 같이 주어진 4개의 3-차원 벡터들은 일차종속이다. 
+
+$$
+\pmb v_1 =
+\begin{bmatrix}
+1\\
+2\\
+3
+\end{bmatrix},
+\quad
+\pmb v_2 =
+\begin{bmatrix}
+1\\
+0\\
+1
+\end{bmatrix},
+\quad
+\pmb v_3 =
+\begin{bmatrix}
+3\\
+2\\
+4
+\end{bmatrix}
+\quad
+\pmb v_4 =
+\begin{bmatrix}
+0\\
+0\\
+1
+\end{bmatrix}
+$$ {#eq-vactors-lin-dep-4}
+
+@eq-vactors-lin-dep-4 에 나타난 4개의 벡터가 일차종속임을 어떻게 알 수 있을까? 앞에서와 마찬가지로 @eq-vactors-lin-dep-4 에 있는 4개의 벡터들이 열로 구성된 $3 \times 4$-행렬에 가우스소거법을 적용해보자.
+
+$$
+\begin{aligned}
+& 
+\begin{bmatrix}
+ \pmb v_1 & \pmb v_2 & \pmb v_3 & \pmb v_4
+\end{bmatrix}
+\\
+=
+& 
+\begin{bmatrix}
+1 & 1 & 3 & 0\\
+2 & 0 & 2 & 0\\
+3 & 1 & 4 & 1\\
+\end{bmatrix}
+\begin{array}{c}
+\\
+(-2)(\text{1st row}) + (\text{2nd row}) \\
+(-3)(\text{1st row}) + (\text{3rd row}) \\
+\end{array} \\
+& \\
+\rightarrow
+& 
+\begin{bmatrix}
+1 & 1 & 3 & 0\\
+0 & -2 & -4 & 0\\
+0 & -2 & -5 & 1 \\
+\end{bmatrix}
+\begin{array}{c}
+\\
+\\
+(-1)(\text{2nd row}) + (\text{3rd row}) \\
+\end{array} \\
+& \\
+\rightarrow
+& 
+\begin{bmatrix}
+1 & 1 & 3 & 0\\
+0 & -2 & -4 & 0\\
+0 & 0 & -1 & 1 \\
+\end{bmatrix}
+\begin{array}{c}
+(1/2)(\text{2nd row}) + (\text{1st row}) \\
+\\
+\\
+\end{array} \\
+& \\
+\rightarrow
+& 
+\begin{bmatrix}
+1 & 0 & 1 & 0\\
+0 & -2 & -4 & 0\\
+0 & 0 & -1 & 1 \\
+\end{bmatrix}
+\begin{array}{c}
+\\
+(-1/2)(\text{2nd row}) \\
+\\
+\end{array} \\
+& \\
+\rightarrow
+& 
+\begin{bmatrix}
+1 & 0 & 1 & 0\\
+0 & 1 & 2 & 0\\
+0 & 0 & -1 & 1 \\
+\end{bmatrix}
+\end{aligned}
+$$
+
+위와 같이 가우스소거법을 적용하여 얻은 행렬에서 피봇을 포함한 열은 1,2,4, 번쨰 열이고 포함하지 않은 열은  3번째 열임을 알 수 있다. 여기서 주어진 벡터들로 행렬을 구성할 때 기약행사다리꼴의 형태가 벡터들을 배열하는 순서에 따라 달라지는 것을 알 수 있다. 즉, $3 \times 4$-행렬을 구성할 때 순서를 바꾸어 다음과 같이 $[\pmb v_1 , \pmb v_2 , \pmb v_4, \pmb v_3]$ 로 배열하면 다음과 같은 기약행사다리꼴의 형태가 얻어진다.
+
+$$
+\begin{bmatrix}
+ \pmb v_1 & \pmb v_2 & \pmb v_4 & \pmb v_3
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 & 1 & 0 & 3\\
+2 & 0 & 0 & 2\\
+3 & 1 & 1 & 4\\
+\end{bmatrix}
+\rightarrow_{\text{가우스소거법}} \rightarrow
+\begin{bmatrix}
+\color{red}{1} & 0 & 0 & 1 \\
+0 & \color{red}{1} & 0 & 2 \\
+0 & 0 &  \color{red}{1} & -1  
+\end{bmatrix}
+$$
+위와 같이 피봇이 1인 기약행사다리꼴에서  @eq-vactors-lin-dep-4 의 벡터 $\pmb v_3$가 나머지 3개의 벡터의 선형조합으로 표현될 수 있다는 의미이다. 따라서 @eq-vactors-lin-dep-4 의 벡터는 일차종속이며
+기약행사다리꼴의 마지막 열에 나타나 숫자 $(1,2,-1)$은 $\pmb v_3$ 가 다음과 같이 다른 벡터의 일차결합으로 나타난는 것을 보여준다.
+
+$$ \pmb v_3 = \begin{bmatrix}
+3\\
+2\\
+4
+\end{bmatrix}
+= (1)\pmb v_1 +  (2)\pmb v_2 +  (-1)\pmb v_4 
+= (1)
+\begin{bmatrix}
+1\\
+2\\
+3
+\end{bmatrix}
++
+(2)
+\begin{bmatrix}
+1\\
+0\\
+1
+\end{bmatrix}
++
+(-1)\begin{bmatrix}
+0\\
+0\\
+1
+\end{bmatrix}
+$$
+
+@eq-vactors-lin-dep-4 와 같이 3차원 벡터가 4개인 경우 벡터의 값에 관계없이 일차종속으로 나타난다.
+이러한 사실은 $\RR^n$의 $n+1$ 개의 벡터는 항상 일차종속이라는 정리(슬라이드 6페이지의 정리 참조)의 결과이다. 즉, $\RR^n$에서 $n$개보다 더 많은 벡터들은 항상 일차종속이다.
+
+
+## 생성집합과 기저
+
+
+::: {#def-generating-set}
+
+## 생성집합과 기저
+
+벡터공간 $V$ 의 벡터 $\pmb v_1,\pmb v_n, \dots, \pmb v_m$ 의 일차결합을 모두 모은 집합
+
+$$ W = span\{\pmb v_1,\pmb v_2, \dots, \pmb v_m \} = \{r_1\pmb v_1 + r_2 \pmb v_2 + \cdots+ r_m \pmb v_m:
+r_1,r_2,\dots,r_m \in \RR \}$$
+
+을 벡터 $\pmb v_1,\pmb v_n, \dots, \pmb v_m$ 의 생성(span)이라고 하며 $W$ 의 생성집합(generating set, spanning set) 이라고 한다.
+
+또한 어떤 벡터공간(혹은 부분공간)의 **생성집합에 속한 벡터들이 일차독립일 때** 이 생성집합을 기저 (basis)라고 한다
+
+$\blacksquare$
+
+:::
+
+
+
+
+## 중요한 내용과 정의
+
+- $\RR^n$ 의 모든 기저는 $n$개의 원소를 갖는다.
+- 임의의 벡터공간 $V$에 대해서 $V$의 부분집합 $B = \{\pmb b_1,\dots,\pmb b_n\}$ 가 $V$의 한 기저라고 하면 다음을 보일 수 있다.
+  + $V$ 의 모든 벡터들은 $\pmb b_1,\dots,\pmb b_n$ 의 일차결합으로 나타낼 수 있으며 유일하다.
+  + $V$ 의 부분집합이 $n$ 개보다 많은 벡터를 포함하면 이 부분집합의 벡터들은 일차종속이다.
+  + $V$ 의또다른기저 $C=\{\pmb c_1,\dots,\pmb c_m \}$ 가있다면$m=n$ 이다.
+
+- 벡터공간 $V$의 차원(dimension) 은 기저의 개수로 정의되며 $dim(V)$로 표시한다.
+
