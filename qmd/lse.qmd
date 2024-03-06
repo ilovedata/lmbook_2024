@@ -6,7 +6,7 @@ source(here::here("common", "_common.R"))
 source(here::here("common", "_preprocess.R"))
 ```
 
-## 예제
+## 예제-단순 회귀모형
 
 ::: {#exm-lse-simple-1}
 
@@ -655,6 +655,39 @@ $$
 \pmb X^t \pmb y - \pmb X^t  \pmb X \pmb \beta = \pmb 0 \quad \rightarrow \quad
 \hat{\pmb \beta}  = (\pmb X^t  \pmb X)^{-1} \pmb X^t  \pmb y 
 $$
+
+
+
+## 예제-중회귀모형
+
+::: {#exm-lse-multiple-1}
+
+### 중고차 가격자료 
+
+강의 부교재의 `usedcars` 자료를 이용하여 중회귀모형을 적합해보자. 자료를 구성하는 변수는 다음과 같다.
+
+
+- `price` : 자동차 가격
+- `yesr` :연식 
+- `mileage` : 주행거리
+- `cc` : 엔진 크기
+- `automatic` : 자동 변속기 여부
+
+
+```{r}
+usedcars %>% head(n=10) 
+```
+
+자동차의 가격을 반응변수로 한고 나머지 변수를 설명변수로 설정한 중회귀 모형에 대한 모수의 추정 결과는 다음과 같다.
+
+```{r}
+usedcars_lm <- lm(price ~ year + mileage + cc + automatic, data=usedcars)
+summary(usedcars_lm)
+```
+
+:::
+
+
 ## 최소제곱 추정량의 분포
 
 회귀식을 추정하기 위한 회귀계수 추정값인 $\hat {\pmb \beta}$의 분포를 알아보기
@@ -855,7 +888,7 @@ $$
    & = 
   \begin{bmatrix}
       {\pmb X}^t  \pmb X /\tau &  - {\pmb X}^t ( \pmb y- \pmb X  \pmb \beta)/\tau^2   \\
-    - {\pmb X}^t ( \pmb y- \pmb X  \pmb \beta)/\tau^2  &  - \frac{n}{2\tau^2} +\frac { ( \pmb y- \pmb X \pmb  \beta)^t ( \pmb y- \pmb X  \pmb \beta) }{\tau^3} 
+    - ( \pmb y- \pmb X  \pmb \beta)^t {\pmb X} /\tau^2  &  - \frac{n}{2\tau^2} +\frac { ( \pmb y- \pmb X \pmb  \beta)^t ( \pmb y- \pmb X  \pmb \beta) }{\tau^3} 
   \end{bmatrix}
 \end{align}
 $$
@@ -887,18 +920,18 @@ $$ \hat { \pmb \theta}  \sim  N( \pmb \theta ,  I_n^{-1}( \pmb \theta)) $$
 
 $$  I_n( \pmb \theta) = E[ J( \pmb \theta;  y)] =  
 \begin{bmatrix}
-      {\pmb X}^t \pmb X /\tau & 0   \\
-    0  &   \frac{n}{2\tau^2} 
+      {\pmb X}^t \pmb X /\tau & \pmb 0   \\
+    \pmb 0^t  &   \frac{n}{2\tau^2} 
   \end{bmatrix}
 $$ 그리고 $$  I_n^{-1}( \pmb \theta) = 
 \begin{bmatrix}
-     \tau( {\pmb X}^t  \pmb X)^{-1}  & 0   \\
-    0  &   \frac{2\tau^2}{n} 
+     \tau( {\pmb X}^t  \pmb X)^{-1}  & \pmb 0   \\
+    \pmb 0^t  &   \frac{2\tau^2}{n} 
   \end{bmatrix}
   = 
 \begin{bmatrix}
-     \sigma^2( {\pmb X}^t  \pmb X)^{-1}  & 0   \\
-    0  &   \frac{2\sigma^4}{n} 
+     \sigma^2( {\pmb X}^t  \pmb X)^{-1}  & \pmb 0   \\
+    \pmb 0^t  &   \frac{2\sigma^4}{n} 
   \end{bmatrix}
 $$
 

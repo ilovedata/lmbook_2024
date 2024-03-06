@@ -35,4 +35,8 @@ library(showtext)
 font_add_google("Nanum Pen Script", "gl")
 showtext_auto()
 
+#강의 부교재 자료를 포함한 패키지 설치
+install.packages("remotes")
+remotes::install_github("regbook/regbook")
+library(regbook)
 ```

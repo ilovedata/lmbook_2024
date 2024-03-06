@@ -17,4 +17,5 @@ library(showtext)
 font_add_google("Nanum Pen Script", "gl")
 showtext_auto()
 
+library(regbook)
 
