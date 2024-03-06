@@ -51,7 +51,9 @@ format:
               hatmat:'{\\pmb X ({\\pmb X}^t {\\pmb X} )^{-1} {\\pmb X}^t}',
               bold: ['\\boldsymbol{#1}',1] ,     // this macro has one parameter
               pardiff: ['\\frac{\\partial#2}{\\partial#1}', 2, 'x'], // this macro has an optional parameter that defaults to 'x'
-              pardifftwo: ['\\frac{\\partial#1}{\\partial#2}', 2]
+              pardifftwo: ['\\frac{\\partial#1}{\\partial#2}', 2],
+              pardiffd: ['\\frac{\\partial#1}{\\partial#2^t \\partial#2}', 2],
+              pardiffdd: ['\\frac{\\partial#1}{\\partial#3 \\partial#2}', 3]
             },
             environments: {
             braced: ["\\left\\{", "\\right\\}"]
@@ -59,24 +61,24 @@ format:
            }
           };
           </script>
-
-  pdf:
-    documentclass: scrbook
-    classoption: oneside
-    papersize: A4
-    lang: ko
-    language: custom.yml
-    fontsize: 11pt
-    lof: false
-    lot: false
-    code-overflow: wrap
-    latex-auto-install: true
-    latex-tinytex: true
-    pdf-engine: xelatex
-    crossref:
-      fig-prefix: 그림   # (default is "Figure")
-      tbl-prefix: 표    # (default is "Table")
-      eq-prefix: 식     # (default is "Equation")
-      ref-hyperlink: true # (default is true)
-    include-in-header: latex/preamble.tex
+#
+# pdf:
+  #   documentclass: scrbook
+  #   classoption: oneside
+  #   papersize: A4
+  #   lang: ko
+  #   language: custom.yml
+  #   fontsize: 11pt
+  #   lof: false
+  #   lot: false
+  #   code-overflow: wrap
+  #   latex-auto-install: true
+  #   latex-tinytex: true
+  #   pdf-engine: xelatex
+  #   crossref:
+  #     fig-prefix: 그림   # (default is "Figure")
+  #     tbl-prefix: 표    # (default is "Table")
+  #     eq-prefix: 식     # (default is "Equation")
+  #     ref-hyperlink: true # (default is true)
+  #   include-in-header: latex/preamble.tex
 

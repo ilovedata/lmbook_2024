@@ -840,12 +840,17 @@ s( \pmb \theta;  \pmb y) & =  \pardifftwo{}{ \pmb \theta}\ell_n( \pmb \theta;  \
   \begin{bmatrix}
      \pmb X^t ( \pmb y- \pmb X  \pmb \beta)/\tau \\
     -\frac{n}{2\tau} +\frac { ( \pmb y- \pmb X  \pmb \beta)^t ( \pmb y- \pmb X  \pmb \beta) }{2\tau^2} 
-  \end{bmatrix} \\
- J_n( \pmb \theta;  \pmb y) & =  -\pardifftwo{}{ \pmb \theta}{ {\pmb \theta}^t}\ell_n( \pmb \theta;\pmb y ) \\
-  & = 
+  \end{bmatrix} 
+\end{align}
+$$
+
+$$
+\begin{align}
+ J_n( \pmb \theta;  \pmb y) & =  -\pardiffdd{}{ \pmb \theta}{ {\pmb \theta}} \ell_n( \pmb \theta;\pmb y ) \\
+   & = 
   - \begin{bmatrix}
-    \pardifftwo{}{\pmb \beta}{ {\pmb \beta}^t}\ell_n( \pmb \theta;\pmb y ) & \pardifftwo{}{ \pmb \beta}{\tau^t}\ell_n( \pmb \theta;\pmb y )  \\
-    \pardifftwo{}{\tau}{ {\pmb \beta}^t}\ell_n( \pmb \theta;\pmb y )  & \pardifftwo{}{\tau}{\tau}\ell_n( \pmb \theta; \pmb y ) 
+    \pardiffdd{}{\pmb \beta}{ {\pmb \beta}}\ell_n( \pmb \theta;\pmb y ) & \pardiffdd{}{ \pmb \beta}{\tau} \ell_n( \pmb \theta;\pmb y )  \\
+    \pardiffdd{}{\tau}{ {\pmb \beta}} \ell_n( \pmb \theta;\pmb y )  & \pardiffdd{}{\tau}{\tau}\ell_n( \pmb \theta; \pmb y ) 
   \end{bmatrix} \\
    & = 
   \begin{bmatrix}
