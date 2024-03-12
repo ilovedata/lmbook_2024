@@ -1,0 +1,57 @@
+---
+title: "temporary"
+---
+
+# 임시 저장 화일
+
+## 직교하난 독립변수에 대한 회귀계수 추정수
+
+$$
+\begin{aligned}
+\hat {\pmb  \beta}_2 & = ({\tilde {\pmb  X}}_2^t \tilde {\pmb  X}_2)^{-1} {\tilde {\pmb  X}_2}^t \pmb  y \\
+   & =   [ {\pmb  X}_2^t  (\pmb  I -\pmb  H_1  )  (\pmb  I -\pmb  H_1  )   \pmb  X_2]^{-1}  {\pmb  X}_2^t (\pmb  I -\pmb  H_1  ) \pmb  y \\
+   & =    [ {\pmb  X}_2^t  (\pmb  I -\pmb  H_1  )  (\pmb  I -\pmb  H_1  )   \pmb  X_2]^{-1}  {\pmb  X}_2^t (\pmb  I -\pmb  H_1  ) (\pmb  I -\pmb  H_1  ) \pmb  y \\
+    & = ({\tilde {\pmb  X}_2}^t \tilde {\pmb  X}_2)^{-1} {\tilde {\pmb  X}_2}^t  [(\pmb  I -\pmb  H_1  ) \pmb  y] \\
+    & = ({\tilde {\pmb  X}_2}^t \tilde {\pmb  X}_2)^{-1} {\tilde {\pmb  X}_2}^t  \pmb  r_1
+\end{aligned}
+$$ {#eq-lmtest-gamma}
+
+$$
+\begin{aligned}
+\hat {\pmb  \beta}_1 & = \hat {\tilde {\pmb  \beta}}_1  - ({\pmb  X}_1^t \pmb  X_1)^{-1} {\pmb  X}_1^t   \pmb  X_2 \hat {\pmb  \beta}_2 \\
+ & = \hat {{\pmb  \beta}}_{1*}  - ({\pmb  X}_1^t \pmb  X_1)^{-1} {\pmb  X}_1^t   \pmb  X_2 \hat {\pmb  \beta}_2 \\
+& = ({\pmb  X}_1^t \pmb  X_1)^{-1} {\pmb  X}_1^t \pmb  y - ({\pmb  X_1}^t \pmb  X_1)^{-1} {\pmb  X}_1^t   \pmb  X_2 \hat {\pmb  \beta}_2 \\
+& = ({\pmb  X_1}^t \pmb  X_1)^{-1} {\pmb  X_1}^t [\pmb  y -  \pmb  X_2 \hat {\pmb  \beta}_2  ]
+\end{aligned}
+$$ {#eq-lmtest-beta}
+
+
+
+설명변수가 추가되기 전과 후의 오차 제곱합 관계는 다음과 같다.
+
+
+$$ 
+SSE(X, W) = SSE(X)  - \hat {\pmb  \gamma}^t \tilde{ \pmb  W}^t \tilde{ \pmb  W} \hat {\pmb  \gamma}
+$$  {#eq-lmtest-diff-sse}
+
+즉 새로운 설명변수들을 추가한 경우 오차제곱합이  감소하는 양이 $\hat {\pmb  \gamma}^t \tilde{ \pmb  W}^t \tilde{ \pmb  W} \hat {\pmb  \gamma}$ 이며 이는 회귀제곱합에 추가되어 설명력이 늘어난다.  
+
+
+$$ SSR(X, W) = SSR(X)  + \hat {\pmb  \gamma}^t \tilde{ \pmb  W}^t \tilde{ \pmb  W} \hat {\pmb  \gamma}$$
+
+위에서 주어진 검정 통계량 $F_0$의 분자에 나타난 두 모형(Full and Reduced)에 대한 잔차 제곱합의 차이는 앞의 식 @eq-lmtest-diff-sse 를 이용하여 직접 계산할 수도 있다.
+만약 계획행렬 $\pmb  X$ 를 $\pmb  X =[\pmb  X_1, \pmb  X_2 ]$ 로 나눈다면 
+
+$$
+\begin{aligned}
+SSE(R) - SSE(F) & = SSE(X_1) - SSE(X_1, X_2) \\
+& = \hat {\pmb  \gamma}^t \tilde{ \pmb  X}_2^t \tilde{ \pmb  X}_2 \hat {\pmb  \gamma}
+\end{aligned}
+$$
+
+위의 식에서 
+$$ 
+{\tilde {\pmb  X}}_2 = [\pmb  I - \pmb  H( \pmb  {X}_1)] \pmb  X_2,  \quad\hat {\pmb  \gamma} =  ({\tilde {\pmb  X}}_2^t \tilde {\pmb  X}_2)^{-1} {\tilde {\pmb  X}}_2^t  [(\pmb  I -\pmb  H(\pmb  {X}_1)  ) \pmb  y]
+$$
+
+

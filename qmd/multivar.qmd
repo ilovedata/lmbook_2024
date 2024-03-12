@@ -13,7 +13,7 @@ $$ Y = aX+b$$
 그 기대값(평균)과 분산은 다음과 같이 계산된다.
 
 $$
-\begin{align}
+\begin{aligned}
 E(Y) &= E(aX+b) \\
 &= \int (ax+b) f(x) dx \\
 &= a \int x f(x) dx + b \\
@@ -24,7 +24,7 @@ V(Y) &= Var(aX+b) \\
 &= E[a(X-\mu)]^2 \\
 &= a^2 E(X-\mu)^2\\
 &= a^2 \sigma^2
-\end{align}
+\end{aligned}
 $$
 
 ## 확률벡터와 분포 
@@ -97,7 +97,7 @@ $\pmb b =(b_1 b_2 \dots b_p)^t$는 $p \times 1$ 실수 벡터이다.
 확률벡터 $\pmb Y$의 기대값(평균벡터)과 공분산은 다음과 같이 계산된다.
 
 $$
-\begin{align}
+\begin{aligned}
 E(\pmb Y ) &= E(\pmb A \pmb X+ \pmb b) \\
 &= \pmb A E(\pmb X)+ \pmb b \\
 &= \pmb A \pmb \mu+ \pmb b \\
@@ -107,7 +107,7 @@ V(\pmb Y) &= Var(\pmb A \pmb X+ \pmb b) \\
 &= E[\pmb A (\pmb X - \pmb \mu)] [\pmb A (\pmb X - \pmb \mu)]^t \\
 &= \pmb A E [(\pmb X - \pmb \mu) (\pmb X - \pmb \mu)^t] \pmb A^t \\
 &= \pmb A \pmb \Sigma \pmb A^t
-\end{align}
+\end{aligned}
 $$
 
 만약 표본 $\pmb X_i, \pmb X_2, \dots, \pmb X_n$ 이 독립적으로 평균이 $\pmb \mu$ 이고 공분산이  $\pmb \Sigma$
@@ -228,7 +228,7 @@ $$
 
 이변량 정규분포를 따른다면 확률밀도함수 $f(\pmb x)$에서 $\exp$함수의 인자는 다음과 같이 주어진다.
 $$
-\begin{align}
+\begin{aligned}
 &(\pmb x-\pmb \mu) \pmb \Sigma^{-1}(\pmb x-\pmb \mu)^t
 = \\
 &-\frac{1}{2 (1-\rho^2)} 
@@ -238,7 +238,7 @@ $$
   -2 \rho \left ( \frac{(x_1-\mu_1)}{\sqrt{\sigma_{11}}} \right )
   \left ( \frac{(x_2-\mu_2)}{\sqrt{\sigma_{22}}} \right )
   \right ]
-\end{align}
+\end{aligned}
 $$
 
 그리고 $p=2$인 경우 확률밀도함수의 상수부분은 다음과 같이 주어진다.

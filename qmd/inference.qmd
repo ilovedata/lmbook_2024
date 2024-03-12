@@ -1,0 +1,316 @@
+---
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+# 선형회귀에서의 추론 {#sec-inference}
+
+## 제곱합의 분포
+
+앞 장의 중회귀 모형 @eq-multireg2 에서 관측값 벡터 $\pmb y$가 다변량
+정규분포 $N(\pmb X \pmb \beta, \sigma^2 \pmb I)$를 따를 때 회귀계수의
+추정량 $\hat {\pmb \beta}=(\pmb X^t \pmb X)^{-1} \pmb X^t \pmb y$ 은
+다음과 같은 분포를 따르는 것을 보였다.
+
+$$ \hat {\pmb \beta} \sim N(\pmb \beta, \sigma^2 (\pmb X^t  \pmb X)^{-1}) $$
+
+반응변수의 추정값을 구하는 식에서 다음과 같은 모자행렬(hat matrix)
+$\pmb H = \pmb X (\pmb X^t \pmb X)^{-1} \pmb X^t$ 을 정의하자. 여기서
+중요한 점은 모자행렬은 대칭인 멱등행렬 ($\pmb H \pmb H =\pmb H$)이며
+이는 모자행렬이 사영행렬임을 의미한다.
+
+$$
+\hat {\pmb y} = \pmb X \hat {\pmb \beta} = \pmb X (\pmb X^t \pmb X)^{-1} \pmb X^t \pmb y = \pmb H \pmb y
+$$ {#eq-hatmatrix}
+
+### 잔차제곱합의 분포
+
+이제 제곱합들의 분포를 알아보기로 하자. 먼저 잔차제곱합 $SSE$를 이차
+형식으로 표시해보자.
+
+$$
+\begin{aligned}
+SSE & = \sum_{i=1}^n (y_i - \hat y_i) \\
+   & = (\pmb y - \pmb X \hat {\pmb \beta})^t (\pmb y - \pmb X \hat {\pmb \beta}) \\
+   & = (\pmb y - \pmb H \pmb y)^t (\pmb y - \pmb H \pmb y) \\
+   & = \pmb y^t (\pmb I - \pmb H)^t (\pmb I - \pmb H) \pmb y \\
+   & = \pmb y^t (\pmb I - \pmb H) (\pmb I - \pmb H) \pmb y \\
+   & = \pmb y^t (\pmb I - \pmb H) \pmb y \\
+\end{aligned}
+$$
+
+위의 식에서 $\pmb I - \pmb H$는 멱등행렬이고 다음이 성립한다.
+
+$$
+(\pmb I - \pmb H) \pmb X = \pmb X - \pmb X (\pmb X^t \pmb X)^{-1} \pmb X^t \pmb X = \pmb 0
+$$
+
+따라서
+
+$$
+\pmb \mu^t (\pmb I - \pmb H)  \pmb \mu = \pmb \beta^t \pmb X^t (\pmb I - \pmb H) \pmb X \beta =0
+$$
+
+이므로 비중심 모수는 0이다.
+
+또한
+
+$$
+\begin{aligned}
+r(\pmb I - \pmb H) & = tr(\pmb I - \pmb H) \\
+& = tr(\pmb I_n) - tr \left [ \pmb X (\pmb X^t \pmb X)^{-1} \pmb X^t \right ] \\
+& = n-tr \left [ (\pmb X^t \pmb X)^{-1} \pmb X^t \pmb X \right ]
+\\
+&= n-tr (\pmb I_p ) \\
+& = n-p
+\end{aligned}
+$$
+
+이므로 부록의 정리에 의하여 $SSE$는 다음과 같이 중심 카이제곱 분포를
+따른다.
+
+$$
+\frac{SSE}{\sigma^2} \sim \chi^2(n-p)
+$$ {#eq-distsse}
+
+### 회귀제곱합의 분포
+
+다음으로 회귀제곱합 $SSR$의 분포를 유도해보자.
+
+$$
+\begin{aligned}
+SSR & = \sum_{i=1}^n (\hat y_i - \bar y) \\
+   & = (\pmb X \hat {\pmb \beta} - \bar y \pmb 1 )^t (\pmb X \hat {\pmb \beta} - \bar y \pmb 1 ) \\
+   & = \left ( \pmb X \hat {\pmb \beta} -  \pmb 1 (\pmb 1^t \pmb y)/n \right )^t   \left ( \pmb X \hat {\pmb \beta} -  \pmb 1 (\pmb 1^t \pmb y)/n \right )\\
+   & = \left ( \pmb H \pmb y-  \tfrac{1}{n} \pmb 1 \pmb 1^t \pmb y \right )^t   \left ( \pmb H \pmb y-  \tfrac{1}{n} \pmb 1 \pmb 1^t \pmb y \right ) \\
+    & =  \pmb y^t \left ( \pmb H  -  \tfrac{1}{n} \pmb J \right )^t   \left ( \pmb H  -  \tfrac{1}{n} \pmb J \right ) \pmb y \\
+    & = \pmb y^t \left ( \pmb H  -  \tfrac{1}{n} \pmb J \right )   \left ( \pmb H  -  \tfrac{1}{n} \pmb J \right ) \pmb y \\
+     & = \pmb y^t  \left ( \pmb H  -  \tfrac{1}{n} \pmb J \right ) \pmb y \\
+\end{aligned}
+$$
+
+위의 유도식에서 다음 두 가지 성질을 이용하였다. 첫 번째 성질은
+모자행렬이 사영행렬이며 모자행렬이 투영하는 공간은 일벡터 $\pmb 1$을
+포함한 공간이다. 이는 계획 행렬 $\pmb X$의 첫 번째 열이 절편에 대한
+값으로 모두 1인 것 때문이다. 따라서
+
+$$
+\begin{aligned} 
+ \pmb H \pmb J & =  \pmb H  \pmb 1 \pmb 1^t \\
+   & =  [ \pmb H  \pmb 1 ]  \pmb 1^t \\
+  & = \left [  \pmb X (\pmb X^t \pmb X)^{-1} \pmb X^t  \pmb 1 \right ] \pmb 1^t \\
+  & =  \pmb 1 \pmb 1^t \\
+  & = \pmb J  
+\end{aligned}
+$$
+
+두 번째로 다음과 같이 $\pmb J \pmb J = n \pmb J$이므로
+$\tfrac{1}{n} \pmb J$는 멱등행렬이다.
+
+$$
+\begin{aligned} 
+   \pmb J \pmb J & =   \pmb 1 \pmb 1^t   \pmb 1 \pmb 1^t \\
+     & =  \pmb 1   [ \pmb 1^t  \pmb 1 ]  \pmb 1^t \\
+    & = \pmb 1   [ n ]  \pmb 1^t \\
+    & =  n \pmb 1 \pmb 1^t \\
+    & =  n \pmb J  
+\end{aligned}
+$$
+
+::: callout-note
+참고로 평균모형 @eq-meanmodel 에서 $\pmb X = \pmb 1$으므로 이 경우
+모자행렬이 다음과 같다.
+
+$$ H_0 = \pmb 1 ({\pmb 1}^t \pmb 1)^{-1} {\pmb 1}^t = \tfrac{1}{n} \pmb J $$
+:::
+
+다음으로 비중심 모수를 유도하자.
+
+$$
+\begin{aligned} 
+\pmb \mu^t \left ( \pmb H  -  \tfrac{1}{n} \pmb J \right )  \pmb \mu 
+  & =  \pmb \beta^t  \pmb X^t \left ( \pmb H  -  \tfrac{1}{n} \pmb J \right ) \pmb X \pmb \beta  \\
+  & =  \pmb \beta^t  \left ( \pmb X^t \pmb H \pmb X -  \tfrac{1}{n} \pmb X^t  \pmb J \pmb X \right )  \pmb \beta  \\
+ & =  \pmb \beta^t  \left ( \pmb X^t \pmb X -  \tfrac{1}{n} \pmb X^t  \pmb J \pmb X \right )  \pmb \beta  \\
+ & =  \pmb \beta^t \pmb X^t  \left ( \pmb I -  \tfrac{1}{n}  \pmb J \right )  \pmb X \pmb \beta  \\
+ & \equiv \delta(\pmb \beta)
+\end{aligned}
+$$
+
+또한
+
+$$
+\begin{aligned}
+r\left ( \pmb H  -  \tfrac{1}{n} \pmb J \right )  
+      & = tr(\pmb H) - tr \left [ \tfrac{1}{n} \pmb J \right ]  \\
+      & = p -\tfrac{1}{n} tr (\pmb 1 \pmb 1^t) \\
+      & = p -\tfrac{1}{n} tr ( \pmb 1^t \pmb 1) \\
+      &=  p -\tfrac{1}{n} n \\
+      & = p-1 \\
+      & = p-1 
+\end{aligned}
+$$
+
+위의 결과를 종합하면 회귀제곱합 $SSR$은 다음과 같은 분포를 따른다.
+
+$$
+\frac{SSR}{\sigma^2} \sim \chi^2(p-1, \lambda^2), 
+$$ {#eq-distssr}
+
+위에서 비중심 모수는 다음과 같다.
+
+$$
+  \lambda^2 = \tfrac{1}{\sigma^2} \delta(\pmb \beta) = 
+\tfrac{1}{\sigma^2} \pmb \beta^t \pmb X^t  \left ( \pmb I -  \tfrac{1}{n}  \pmb J \right )  \pmb X \pmb \beta 
+$$ {#eq-noncentral}
+
+### 잔차제곱합과 회귀제곱합의 독립
+
+잔차제곱합과 회귀제곱합에서 나타난 이차형식의 두 멱등행렬의 곱은
+$\pmb 0$이다.
+
+$$
+\begin{aligned}
+(\pmb I - \pmb H) \left ( \pmb H  -  \tfrac{1}{n} \pmb J \right )  
+ & = \pmb H -  \tfrac{1}{n} \pmb J  - \pmb H \pmb H  + \tfrac{1}{n} \pmb H \pmb J \\
+  & = \pmb H -  \tfrac{1}{n} \pmb J  -  \pmb H  + \tfrac{1}{n}  \pmb J \\
+  & = \pmb 0
+\end{aligned}
+$$
+
+따라서 부록의 정리에 의하여 잔차제곱합($SSE$)과 회귀제곱합($SSR$)은 서로
+독립이다.
+
+### 총제곱합의 분포
+
+총제곱합 $SST$의 분포는 위의 결과들을 이용하면 쉽게 구할 수 있다.
+
+$$
+SST = \sum_{i=1}^n (y_i - \bar y)^2 = \pmb y^t  \left ( \pmb I -  \tfrac{1}{n}  \pmb J \right ) \pmb y
+$$
+
+위의 결과를 종합하면 회귀제곱합 $SST$은 다음과 같은 분포를 따른다.
+
+$$
+\frac{SST}{\sigma^2} \sim \chi^2(n-1, \lambda^2), 
+$$ {#eq-distsst}
+
+위에서 비중심 모수 $\lambda^2$은 식 @eq-noncentral 과 같다.
+
+## 모분산의 추정
+
+최소제곱법을 통해서 회귀분석을 실시하였을때 우리는 적합된 회귀선이
+얼마나 실제 관측값들을 잘 설명하고 있는지를 파악하는 것이 모형의
+유용성을 판단하는데 중요한 작업이다. 즉, 적합된 회귀선이 관측값을 예측할
+때의 변동성을 측정하는 것이 중요하다. 그 변동의 정도를 나타내는 것이
+모분산 $\sigma^2$의 추정이다.
+
+식 @eq-distsse 에 나타난 잔차제곱합의 분포를 이용하면 다음과 같은 결과를
+얻는다.
+
+$$ E \left [ \frac{SSE}{\sigma^2} \right ] = n-p $$
+
+위의 방정식에 적률법(Method of Moments)를 적용하면 모분산 $\sigma^2$에
+대한 불편추정량을 얻을 수 있다. 평균 잔차 제곱합(mean residual sum of
+square; $S^2$ 또는 MSE)를 다음과 같이 정의하자.
+
+$$ 
+MSE = \frac{SSE}{n-p} = \frac{\sum r^2_i}{n-p}  = \frac{\sum(y_i-\hat y_i)^2}{n-p} \equiv s^2
+$$ {#eq-rss}
+
+$S^2=MSE$은 모분산의 불편 추정량이다.
+
+$$ E(s^2) = E(MSE) =\sigma^2 $$
+
+모분산의 추정량이 작을수록 관측값 $y$의 변동 중 회귀식이 설명할 수
+변동이 크다는 것을 나타낸다. 관측값들이 회귀식으로부터 멀리 떨어져
+있으면 $MSE$ 는 커진다.
+
+회귀계수들의 공분산을 추정하는 경우에도 $s^2$이 사용된다.
+
+$$ \hat V ( \hat {\pmb \beta }) = \hat \sigma^2 (\pmb X^t \pmb X)^{-1} = s^2(\pmb X^t \pmb X)^{-1} $$
+
+## 최소제곱 추정량의 성질
+
+최소제곱 추정량의 분포에 대한 성질은 다음과 같다.
+
+
+-   $\hat {\pmb \beta} \sim N(\pmb \beta, \sigma^2 (\pmb X^t \pmb X)^{-1} )$
+
+-   $\hat {\pmb \beta}$와 $SSE$는 독립이다.
+
+-   잔차제곱합($SSE$)과 회귀제곱합($SSR$)은 서로 독립이다.
+
+-   $SSE/\sigma^2$는 자유도가 $n-p$인 카이제곱 분포를 따른다.
+
+-   $(\hat {\pmb \beta} -\pmb \beta)^t (\pmb X^t \pmb X) (\hat {\pmb \beta} -\pmb \beta) /\sigma^2$
+    는 자유도가 $p$인 카이제곱분포를 따른다.
+
+## 모형의 적합도 검정과 분산분석
+
+회귀식을 적합하고 가장 먼저 고려해야할 사항은 적합된 회귀식이 유의한
+의미를 가지는지 알아보는 것이다. 회귀식이 가지고 있는 의미는 설명변수의
+변화에 따라서 반응변수가 변한다는 것이다. 따라서 회귀 모형이 유의하다는
+것은 최소한 하나 이상의 설명변수가 반응변수의 변화를 예측하는데 의미가
+있다는 것을 뜻한다. 모든 회귀계수의 값이 0이면 반응변수를 예측하는데
+모든 설명변수가 필요가 없다는 것을 의미한다. 이러한 무의미한 모형은
+앞장에서 나온 평균모형 @eq-meanmodel 이다.
+
+이제 제시된 회귀식이 유의한 지에 대한 검정은 다음과 같은 두 가설 중
+하나를 선택하는 것이다.
+
+$$
+H_0: \text{mean model} \quad vs. \quad H_1: \text{ not } H_0
+$$
+
+위의 가설을 바꾸어 쓰면 선형 회귀모형의 유의성 또는 적합도을 검정하는
+가설이 된다.
+
+$$
+H_0: \beta_1 = \beta_2 = \cdots = \beta_{p-1} =0 \quad vs. \quad H_1: \text{ At least one of } \beta_i \text{ is not equal to } 0
+$$ {#eq-anovahypo}
+
+위의 가설 @eq-anovahypo 를 검정하는 방법이 분산분석표를 이용한
+F-검정이다.
+
+가설 @eq-anovahypo 에서 귀무가설 $H_0$가 참인 경우는
+
+$$ 
+\pmb X \pmb \beta = [ \pmb 1 ~ \pmb x_1 ~ \dots ~ \pmb x_{p-1} ]
+\begin{bmatrix}
+\beta_0 \\
+0 \\
+\vdots \\
+0
+\end{bmatrix}
+=\beta_0 \pmb 1
+$$
+
+이 성립하여 식 @eq-noncentral 에 나타난 비중심 모수가 0이 된다.
+
+$$  \lambda^2 = \tfrac{1}{\sigma^2} \pmb \beta^t \pmb X^t  \left ( \pmb I -  \tfrac{1}{n}  \pmb J \right )  \pmb X \pmb \beta = \tfrac{\beta_0^2}{\sigma^2}  \pmb 1^t \left ( \pmb I -  \tfrac{1}{n}  \pmb J \right )  \pmb 1 =  \pmb 0
+$$
+
+따라서 귀무가설에서는 회귀제곱합이 자유도가 $p-1$인 중신ㅁ 카이제곱
+분포를 따르게 되고 잔차제곱합과 독립이므로 다음의 통계량 $F_0$가
+자유도가 $p-1$가ㅗ $n-p$를 가지는 F-분포를 따른다.
+
+$$
+F_0 = \frac{ SSR/(p-1)}{SSE/(n-p)} = \frac{MSR}{MSE} \sim F(p-1, n-p) \quad \text{ under } H_0
+$$ {#eq-fstat}
+
+따라서 위의 검정 통계량의 p-값이 유의수준보다 크면 적합성 검정에 대한
+가설 @eq-anovahypo 의 귀무가설을 기각한다. 귀무가설의 기각은 회귀모형의
+계수 중 적어도 하나는 0이 아니므로 회귀 모형이 유의하다는 의미이다.
+
+위에서 안급한 F-검정을 위한 통계량들은 다음과 같은 분산분석(Analysis of
+Variance; ANOVA) 표를 사용하면 쉽게 계산할 수 있다.
+
+| 요인 | 제곱합 | 자유도 | 평균제곱합 | F-통계량               | p-값       |
+|------|--------|--------|------------|------------------------|------------|
+| 회귀 | $SSR$  | $p-1$  | $MSR$      | $F_0 =\frac{MSR}{MSE}$ | $P(F>F_0)$ |
+| 오차 | $SSE$  | $n-p$  | $MSE$      |                        |            |
+| 전체 | $SST$  | $n-1$  |            |                        |            |
+
+: 적합도 검정을 위한 분산분석표

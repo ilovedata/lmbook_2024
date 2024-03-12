@@ -1,0 +1,304 @@
+---
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+# 이차형식과 제곱합의 분포  {#sec-quadratic}
+
+이 장에서는 선형 회귀모형의 추론과 검정에 자주 사용되는 제곱합의 분포와 관련이 있는 
+이차형식의 분포의 성질을 살펴본다.
+
+## 이차형식
+
+$n$-차원 벡터 ${\pmb  x}^t=[x_1,x_2,\dots,x_n]$과 대칭행렬 $\pmb  A$에 대하여
+이차형식(quadratic form)은 다음과 같이 정의된다.
+
+$$
+Q_A(\pmb  x) = \pmb  x^t \pmb  A \pmb  x =\sum_{i=1}^n \sum_{j=1}^n a_{ij} x_i x_j 
+$$ {#eq-quadratic-form}
+
+
+이차형식의 정의에서 반드시 행렬 $\pmb  A$를 대칭행렬로 정의하지 않아도
+되지만 임의의 행렬에 대하여 이차형식의 값이 동일한 대칭행렬이 존재하기
+때문에 정의에서 이차형식으로 국한하는 것이 일반적이다.
+
+::: {#def-positive-def}
+
+## 양정치 행렬
+
+이차형식 $Q_A(\pmb  x) = \pmb  x^t \pmb  A \pmb  x$가 영벡터가 아닌 모든 벡터
+$\pmb  x$에 대하여 0 보다 크면, 즉
+
+$$ \pmb  x^t \pmb  A \pmb  x  >0  \quad \text{ for all } \quad \pmb x \in \RR^n$$
+
+$\pmb  A$를 양정치(positive definite)라고 부른다.
+
+만약 이차형식 $Q_A(\pmb  x) = \pmb  x^t \pmb  A \pmb  x$가 영벡터가 아닌 모든
+벡터 $\pmb  x$에 대하여 0 보다 크거나 같다면
+
+$$ \pmb  x^t \pmb  A \pmb  x  \ge 0 \quad \text{ for all } \quad \pmb x \in \RR^n$$
+
+$\pmb  A$를 양반정치(positive semi-definite)라고 부른다.
+
+$\blacksquare$
+
+:::
+
+정칙행렬 $\pmb  B$에 대하여 다음과 같은 선형변환을 고려하자.
+
+$$   \pmb  x = \pmb  B \pmb  y \quad \text{ or } \quad \pmb  y = \pmb  {B}^{-1} \pmb  x $$
+
+벡터 $\pmb  x$로 정의된 이차형식은 벡터 $\pmb  y$의 형태로 다음과 같이
+변환할 수 있다.
+
+$$ 
+Q(\pmb  x) = \pmb  x^t \pmb  A \pmb  x = \pmb  y^t \pmb  B^t \pmb  A \pmb  B \pmb  y =Q^*(\pmb  y) 
+$$
+
+이차형식의 성질은 정칙 선형변환에서 유지된다. 즉 행렬 $\pmb  A$가
+양(반)정치 행렬이고 행렬 $\pmb  B$가 정칙행렬이면 행렬
+$\pmb  B^t \pmb  A \pmb  B$도 양(반)정치 행렬이다.
+
+
+## 대칭행렬의 대각화
+
+$n$차원 대칭행렬 $\pmb  A$ 에 대하여 직교행렬 $\pmb  P$가 존재하여 다음과
+같은 분해가 가능하다.
+
+$$
+ \pmb  P^t \pmb  A \pmb  P = \pmb  \Lambda = diag(\lambda_1, \lambda_2, \dots, \lambda_n) 
+$$ {#eq-symmdecomp1}
+
+@eq-symmdecomp1 의 분해에서 $\lambda_i$는 행렬 $\pmb  A$의
+고유치이며 행렬 $\pmb  P$의 $i$ 번째 열은 대응하는 고유벡터 $\pmb  p_i$ 로
+구성되어 있다.
+
+$$ 
+\pmb  P = [ \pmb  p_1~~ \pmb  p_2 ~~ \dots ~~ \pmb  p_n ] 
+$$ 
+이제 위의 분해를 증명해 보자. 고유치 $\lambda_i$ 와 대응하는 고유벡터 $\pmb  p_i$의 정의에
+따라서 다음과 같은 $n$개의 식을 얻을 수 있고
+
+$$ \pmb  A \pmb  p_i = \lambda_i \pmb  p_i , \quad i=1,2,3\dots, n $$
+
+위의 식을을 합쳐서 표기하면 다음과 같은 식을 얻으며 이는 @eq-symmdecomp1 를 의미한다.
+
+$$ \pmb  A \pmb  P = \pmb  P \pmb  \Lambda $$
+
+@eq-symmdecomp1 를 다시 쓰면 다음과 같은 스펙트럴 분해(spectral decomposition)를 얻는다.
+
+$$
+\pmb  A  = \pmb  P \pmb  \Lambda \pmb  P^t  = \sum_{i=1}^n \lambda_i \pmb  p_i \pmb  {p}_i^t 
+$$  {#eq-spectral}
+
+참고로 대각합과 행렬식에 대한 고유치위 관계를 나타내는 다음의 유용한 두 식을 반드시 기억하자.
+
+$$ tr(\pmb  A) = \sum_i \lambda_i ,\quad |\pmb  A| = \prod_i \lambda_i $$
+
+대칭행렬의 분해 @eq-symmdecomp1 를 이용하면 다음과 같은 이차형식의
+분해를 얻을 수 있다.
+
+$$
+Q(\pmb  x) = \pmb  x^t \pmb  A \pmb  x = \pmb  x^t \pmb  P \pmb  \Lambda \pmb  P^t \pmb  x = \pmb  y^t \pmb  \Lambda \pmb  y= \sum_{i=1}^n \lambda_i y_i^2 
+$$ {#eq-quaddecomp}
+
+위의 식에서  
+
+$$ \pmb  y = \pmb  P^t \pmb  x $$
+
+이차형식의 분해식 @eq-quaddecomp 를 보면 행렬 $\pmb  A$의 모든
+고유치가 0보다 크면 양정치 임을 알 수 있다. 또한 모든 고유치가 0보다
+크거나 같으면 양반정치 임을 알 수 있다.
+
+또한 $rank(\pmb  A) = rank(\pmb  \Lambda)$이며 이는 0이 아닌 고유치의 개수가
+행렬 $\pmb  A$의 계수(rank)임을 알 수 있다.
+
+## 멱등행렬
+
+$n$-차원 행렬 $\pmb  A$ 가 다음과 같은 성질을 가지면 멱등행렬(idenpotent
+matrix)라고 부른다.
+
+$$ \pmb  A^2 = \pmb  A \pmb  A = \pmb  A $$
+
+멱등행렬은 다음과 같은 성질을 가지고 있다.
+
+-   멱등행렬의 고유치는 0 또는 1이다.
+-   멱등행렬은 대각합이 계수와 같다.
+
+$$ tr(\pmb  A) =rank(\pmb  A) $$
+
+-   멱등행렬은 양반정치 행렬이다.
+-   $\pmb  A$ 멱등행렬이면 $\pmb  I - \pmb  A$도 멱등행렬이다.
+
+특별히 대칭인 멱등행렬을 **사영행렬**(또는 투영행렬, projection
+matrix)라고 부른다.
+
+최소제곱법에서 @eq-projection-mat 에서 나타난 행렬 $\pmb  H = \pmb  X (\pmb  X^t \pmb  X)^{-1} \pmb  X^t$는 멱등행렬이며 따라서 사영행렬이다.
+
+
+## 이차형식의 분포
+
+### 카이제곱 분포 
+
+만약 확률변수 $x$ 이 표준 정규분포 $N(0,1)$ 을 따른다면 $y=x^2$ 은 자유도가 1인 카이제곱 분포 $\chi^2_1$를 따른다.
+더 나아가 $n$ 개의 확률변수 $x_1,x_2,\dots,x_n$ 이 서로 독립이고 표준 정규분포 $N(0,1)$ 을 따른다면
+제곱합 $v=x_1^2 +x_2^2 +\cdots + x_n^2$은 자유도가 n인 카이제곱 분포 $\chi^2_n$를 따른다.
+
+이렇게 카이제곱 분포는 표준 정규분포를 따르는 서로 독립인 확률변수들의 제곱값에 대한 분포이다.
+
+### 비중심 카이제곱 분포 
+
+만약 확률변수 $x$가 $N(\mu, 1)$을 따른다면 $v=x^2$은 자유도가 1인 비중심 카이제곱 분포, $\chi^2_1(\lambda^2)$ 를 따른다. 여기서 비중심 카이제곱 분포의 자유도는 1이고 비중심모수   $\lambda^2 = \mu^2$으로 주어진다.
+
+이제 $n$개의 서로 독립인 확률 변수 $x_1,x_2,\cdots,x_n$이 각각  $N(\mu_i, 1)$을 따른다면 $v=x_1^2+\dots+x_n^2$은 자유도가 $n$이고 비중심 모수가 $\lambda^2 = \sum_{i=1}^n \mu_i^2$인 비중심 카이제곱 분포, $\chi^2_n(\lambda^2)$ 를 따른다.  
+
+참고로 확률변수 $x$가 $N(0, 1)$을 따른다면 $v=x^2$은 중심 카이제곱 분포, $\chi^2_1$ 를 따르며 이때는 비중심모수가 $\lambda^2=0$이다. 즉, 비중심모수가 0인 비중심 카이제곱 분포(non-central chi square distribution)를 중심 카이제곱 분포(central chi square distribution)라고 한다. 또한 중심 카이제곱 분포는 중심을 빼고 카이제곱 분포라고 부른다. 
+
+
+### 이차형식의 분포 
+
+$n$개의 서로 독립인 확률 변수 $x_1,x_2,\cdots,x_n$이 각각  $N(\mu_i, \sigma^2)$를 따른다면 
+$n$-차원의 확률벡터 $\pmb x$는 다음과 같은 다변량 정규분포를 따른다고 할 수 있다.
+
+$$ \pmb x \sim N(\pmb \mu, \sigma^2 \pmb I) $$
+
+위에서 $\pmb \mu^t =(\mu_1, \mu_2, \dots, \mu_n)$
+
+이제 이차형식의 분포에 대하여 논의하자.
+
+::: {#thm-quaddist}
+
+#### 이차형식의 분포
+
+$n$-차원의 확률벡터 $\pmb x$가 $N(\pmb \mu, \sigma^2 \pmb I)$를 따른다면 이차형식 $Q=\pmb x^t \pmb A \pmb x$의 분포는 다음과 같다.
+
+$$
+V = \frac{Q}{\sigma^2} = \frac {\pmb x^t \pmb A \pmb x}{\sigma^2} ~~ \equiv_d ~~ \sum_{i=1}^n \lambda_i \frac{u^2_i}{\sigma^2}
+$$ {#eq-quaddist1}
+
+
+위의 식에서 $x \equiv_d y$ 는 확률변수 $x$와 $y$가 동일한 분포를 가진다는 것을 의미한다. 
+
+@eq-quaddist1 에서   행렬 $\pmb A$의 스펙트럴 분해는 $\pmb A = \pmb P \pmb \Lambda \pmb P^t$이며   $\lambda_i$는 행렬 $\pmb A$의 고유치, 즉 행렬 $\pmb \Lambda$의 대각원소이다. 또한 확률변수 $u_i$들은 서로 독립이며 정규분포 $N(\eta_i, \sigma^2)$를 따른다. 여기서 $\eta_1, \eta_2,\dots, \eta_n$는 다음과 같이 정의된다.
+
+
+$$ 
+\pmb \eta =
+\begin{bmatrix}
+\eta_1 \\
+\eta_2 \\
+\vdots \\
+\eta_n 
+\end{bmatrix} = \pmb P^t \pmb \mu
+$$
+
+
+즉, @eq-quaddist1 에서 $u_1^2/\sigma^2, u_2^2/\sigma^2, \dots, u_n^2/\sigma^2$는 서로 독립이며 각각 자유도가 1 이고 비중심 모수가 $\eta_1^2/\sigma^2, \eta_2^2/\sigma^2, \dots,  \eta_n^2/\sigma^2$인 비중심 카이제곱-분포를 따른다.
+
+$\blacksquare$
+
+:::
+
+
+@thm-quaddist 의 @eq-quaddist1 에서 나타난 이차형식의 분포는 비중심 카이제곱 분포를 따르는 서로 독립인 확률 변수들의 가중 평균과 같다는 것이다. 
+
+이는 이차형식의 분포가 비중심 카이제곱 분포를 따른다는 것이 아님을 주의해야 한다. 그러면 어느 경우에 이차형식의 분포가 비중심 카이제곱 분포를 따르는가 생각해 보자. 
+
+가장 쉽게 생각할 수 있는 경우가 @eq-quaddist1 에서  $\lambda_i$ 들의 값들이 0 또는 1인 경우이다. 이러한 경우는 행렬  
+$\pmb A$ 가 멱등행렬인 경우이다. 실제로 다음 정리는 이차형식의 분포가 비중심 카이제곱 분포를 따르는 필요충분 조건이 행렬  
+$\pmb A$ 가 멱등행렬이라는 것을 말해준다.
+
+::: {#cor-quaddist2}
+
+$n$-차원의 확률벡터 $\pmb x$가 $N(\pmb \mu, \sigma^2 \pmb I)$를 따른다면 이차형식 $Q=\pmb x^t \pmb A \pmb x$의 분포가 자유도가 $r$ 이며 다음과 같은 비중심 모수 $\lambda^2$을 가지는 비중심 카이제곱 분포를 따르는 필요충분 조건은 $\pmb A$가 멱등행렬이고 $rank(\pmb A)=r$ 인 경우이다.
+
+$$
+\lambda^2 = \frac{\pmb \mu^t \pmb  A \pmb  \mu}{\sigma^2}
+$$
+
+더 나아가  $\pmb A \pmb \mu = \pmb 0$ 이면  이차형식의 분포는 자유도가 $r$인 (중심)카이제곱 분포를 따른다.
+
+$\blacksquare$
+
+:::
+
+
+
+
+### 이차형식의 독립
+
+두 개의 이차형식이 독립일 조건은 다음 정리와 같다.
+
+::: {#thm-quaddist-indep}
+
+#### 이차형식의 독립
+
+$n$-차원의 확률벡터 $\pmb {x}$ 가 $N\left(\pmb {\mu}, \sigma^2 \pmb {I}\right)$ 를 따른다고 하자. 두 이차형식 $Q_1=\pmb {x}^t \pmb {A} \pmb {x}$ 과 $Q_2=\pmb {x}^t \pmb {B} \pmb {x}$ 가 서로 독립일 필요충분 조건은 $\pmb {A B}=\pmb {0}$ 이다.
+
+$\blacksquare$
+
+:::
+
+
+
+### 이차형식의 차이
+
+만약 3 개의 이차형식 $Q, Q_1, Q_2$ 가 있어서 다음과 같은 관계가 있다고 하자.
+
+$$
+Q=\pmb {x}^t \pmb {A} \pmb {x}=Q_1+Q_2=\pmb {x}^t \pmb {A}_1 \pmb {x}+\pmb {x}^t \pmb {A}_2 \pmb {x}
+$$
+
+이러한 경우 두 이차형식 $Q$ 과 $Q_1$ 이 각각 카이제곱 분포를 따를 때 $Q_2=Q-Q_1$ 이 카이제곱 분포를 따르는 조건이 중요하다. 다음 정리는 그 조건을 행렬 $\pmb {A}_2$ 가 양반정치인 경우라는 것을 말해준다.
+
+
+::: {#thm-quaddist-sum}
+
+#### 이차형식의 차이
+
+ $n$-차원의 확률벡터 $\pmb {x}$ 가 $N\left(\pmb {\mu}, \sigma^2 \pmb {I}\right)$ 를 따른다고 하자. 세 개의 이차형식 $Q=\pmb {x}^t \pmb {A} \pmb {x}, Q_1=\pmb {x}^t \pmb {A}_1 \pmb {x}$, $Q_2=\pmb {x}^t \pmb {A}_2 \pmb {x}$ 가 있다고 하고 $Q=Q_1+Q_2$ 인 관계를 가진다고 가정하자.
+
+만약 $Q / \sigma^2$ 이 $\chi_r^2\left(\lambda^2\right)$ 을 따르고 $Q_1 / \sigma^2$ 이 $\chi_{r_1}^2\left(\lambda_1^2\right)$ 을 따르며 행렬 $\pmb {A}_2$ 가 양반정치 행렬이면 다음을 만족한다.
+두 이차형식 $Q_1$ 과 $Q_2$ 는 서로 독립이다. 또한 이차형식 $Q_2$ 는 자유도가 $r_2=r-r_1$ 이고 비중심 모수가 $\lambda_2^2=\lambda^2-\lambda_1^2$ 인 비중심 카이제곱분포를 따른다.
+
+$\blacksquare$
+
+:::
+
+
+## 코크란의 정리
+
+선형모형에서 자주 등장하는 제곱합들의 분해, 즉 이차형식의 분해를 생각할 때 각 제곱합들의 분포를 아는 것이 매우 중요하다. 다음에 제시된 코크란의 정리(Cochran's Theorem)는 총 제곱합을 분해했을 때 각 제곱합의 분포가 카이제곱 분포를 따를 조건을 말해준다.
+
+
+
+::: {#thm-cochran}
+
+### COCHRAN'S THEOREM
+
+$n$-차원의 확률벡터 $\pmb {x}$ 가 $N\left(\pmb {\mu}, \sigma^2 \pmb {I}\right)$ 를 따른다고 하자. $k$ 개의 이차형식 $Q_j=\pmb {x}^t \pmb {A}_j \pmb {x}, j=1,2, \ldots, k$ 를 생각하고 다음과 같은 관계를 가진다고 하자.
+
+$$
+\pmb {x}^t \pmb {x}=\sum_{i=1}^n x_i^2=\sum_{j=1}^k Q_j
+$$
+
+즉, $\sum_{j=1}^k \pmb {A}_j=\pmb {I}$ 이다. 또한 $r_j=\operatorname{rank}\left(\pmb {A}_j\right)$ 이고 $\lambda_j^2=\pmb {\mu}^t \pmb {A}_j \pmb {\mu}$ 라고 하자.
+
+$k$ 개의 이차형식 $Q_1, Q_2, \ldots, Q_k$ 들이 모두 독립이고 각 이차형식 $Q_j / \sigma^2$ 가 비중심 카이제곱 분포 $\chi_{r_j}^2\left(\lambda_j^2\right)$ 를 따를 필요충분 조건은 다음과 같다.
+
+$$
+r_1+r_2+\cdots+r_k=n
+$$
+$\blacksquare$
+
+:::
+
+
+이제 제곱합의 분포들에 대하여 지금까지 학습한 내용을 정리해보자. 만약 $n$-차원의 확률벡터 $\pmb {x}$ 가 $N\left(\pmb {\mu}, \sigma^2 \pmb {I}\right)$ 를 따른다고 하고 위의 코크란의 정리와 같이 제곱합의 분해를 고려하자. 다음에 제시된 모든 문장은 서로 동치(equivalent)이다.
+
+1. 이차형식 $Q_1, Q_2, \ldots, Q_k$ 들이 모두 독립이다.
+2. 모든 $j=1,2, \ldots, k$ 에 대하여 이차형식 $Q_j / \sigma^2$ 가 비중심 카이제곱 분포 $\chi_{r_j}^2\left(\lambda_j^2\right)$ 를 따른다.
+3. $\pmb {A}_1, \pmb {A}_2, \ldots, \pmb {A}_k$ 가 모두 멱등행렬이다.
+4. 모든 $j \neq k$ 에 대하여 $\pmb {A}_j \pmb {A}_k=\pmb {0}$ 이다.
+5. $r_1+r_2+\cdots+r_k=n$

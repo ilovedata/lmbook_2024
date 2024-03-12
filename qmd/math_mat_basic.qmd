@@ -1,4 +1,10 @@
-# 행렬의 기초
+---
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+# 행렬의 기초 {#sec-matrix-basic}
 
 이 장에서는 회귀분석의 이론 전개에 필요한 행렬 이론과 선형 대수의 기초에
 대하여 알아볼 것이다.
@@ -17,7 +23,7 @@ a_2 \\
 \vdots \\
 a_p 
 \end{bmatrix}
-$$
+$$ {#eq-vector-def}
 
 차원이 $n \times p$ 인 행렬 $\pmb A$ 는 다음과 같이 $n$개의 행과 $p$ 개의
 열에 원소 $a_{ij}$를 다음과 같이 배치한 형태를 가진다.
@@ -68,11 +74,13 @@ $$
 $n \times p$ 인 행렬 $\pmb A$ 와 $p$-차원 벡터(vector) $\pmb b$는 다음과
 같이 두 개의 서로 다른 형태로 나타낼 수 있다.
 
+### 행과 열의 내적
+
 먼저 행렬과 벡터의 곱셈은 행렬 $\pmb A$ 의 행벡터와 벡터 $\pmb b$ 의
 내적(inner product)로 나타낼 수 있다.
 
 $$
-\begin{align}
+\begin{aligned}
 {\pmb A} {\pmb b} & = 
 \begin{bmatrix}
 a_{11} & a_{12} & \dots & a_{1p} \\
@@ -126,7 +134,7 @@ a_{i1} & a_{i2} & \dots & a_{ip}
 \vdots \\
  <\pmb r_n, \pmb b>
 \end{bmatrix}
-\end{align}
+\end{aligned}
 $$
 
 
@@ -135,11 +143,13 @@ $$
 
 $$ < \pmb a, \pmb b> = {\pmb a}^t {\pmb b} = \sum_{i=1}^p a_i b_i $$
 
+### 열벡터의 선형조합
+
 이제 행렬과 벡터의 곱셈을 행렬을 구성하는 열벡터들의 선형조합(linear
 combination)으로 나타낼 수 있다.
 
 $$
-\begin{align}
+\begin{aligned}
 {\pmb A} {\pmb b} & = 
 \begin{bmatrix}
 a_{11} & a_{12} & \dots & a_{1p} \\
@@ -198,12 +208,34 @@ a_{np}
 \end{bmatrix}  \\
 & =
 b_1 {\pmb c}_1 + b_2 {\pmb c}_2 + \cdots + b_p {\pmb c}_p \\
-\end{align}
+\end{aligned}
 $$
 
 ##  행렬의 전치
 
-$\pmb A^t$는 행렬의 전치(transpose)를 나타낸다.
+$\pmb A^t$는 행렬의 전치(transpose)를 나타낸다. 행렬의 전치는 원소의 행과 열을 바꾸어 만든 행렬이다.
+
+$$
+{\pmb A}  = 
+\begin{bmatrix}
+a_{11} & a_{12} & \dots & a_{1p} \\
+a_{21} & a_{22} & \dots & a_{2p} \\
+\vdots & \vdots &    & \dots \\
+a_{n1} & a_{n2} & \dots & a_{np} 
+\end{bmatrix}
+= \{ a_{ij} \}_{ n \times p}
+\quad
+\rightarrow
+\quad
+{\pmb A}^t  =
+\begin{bmatrix}
+a_{11} & a_{21} & \dots & a_{n1} \\
+a_{12} & a_{22} & \dots & a_{n2} \\
+\vdots & \vdots &    & \dots \\
+a_{1p} & a_{2p} & \dots & a_{np}
+\end{bmatrix}
+= \{ a_{ji} \}_{ p \times n}
+$$
 
 ## 행렬의 곱셈
 
@@ -403,7 +435,7 @@ $$ \pmb e_i =
 \end{bmatrix}
 $$
 
-즉 $n$-차원 항등행렬 $\pmb I$는 n개의 단위벡터들을 모아놓은 것이다.
+즉 $n$-차원 항등행렬 $\pmb I$는 n개의 단위벡터들을 모아놓은 것이다. 단위행렬은 대각원소가 1이고 나머지는 0인 정방행렬이다.
 
 $$  \pmb I = [ \pmb e_1 ~~ \pmb e_2 ~~ \dots ~~ \pmb e_n ] $$
 
@@ -411,14 +443,9 @@ $$  \pmb I = [ \pmb e_1 ~~ \pmb e_2 ~~ \dots ~~ \pmb e_n ] $$
 ## 대각합
 
 $\pmb A = \{ a_{ij} \}$를 $n \times n$ 정방행렬(square matrix)인 경우,
-행렬의 대각합(trace)을 $tr(\pmb A)$로 표시한다.
+행렬의 대각 원소(diagonal element)들의 합(trace)을 $tr(\pmb A)$로 표시한다.
 
 $$ tr(\pmb A) = \sum_{i=1}^n a_{ii} $$
-
-행렬의 곱셈은 일반적으로 교환법칙이 성립하지 않지만 대각합의 연산은
-교환법칙이 성립한다.
-
-$$  tr(\pmb A \pmb B)  = tr( \pmb B \pmb A) $$
 
 두 행렬의 덧셈(뺄셈)에 대한 대각합에 대한 성질들은 다음과 같다.
 
@@ -426,9 +453,55 @@ $$ tr( {\pmb A} \pm {\pmb B}) = tr({\pmb A}) \pm tr({\pmb B}) $$
 
 
 
+::: {.callout-caution}
+
+행렬의 곱셈은 일반적으로 교환법칙이 성립하지 않지만 대각합의 연산은
+교환법칙이 성립한다.
+
+$$  tr(\pmb A \pmb B)  = tr( \pmb B \pmb A) $$
+:::
+
+대각합은 교환법칙이 성립히기 떄문에 다음과 같은 성질이 성립한다.
+
+$$
+\operatorname{tr}(\pmb {A} \pmb {K} \pmb {L})=\operatorname{tr}(\pmb {K} \pmb {L} \pmb {A})
+$$
+
+벡터의 연산에서도 대각합의 교환법칙이 성립되어 다음과 같은 유용한 식이 성립한다.
+
+$$
+\operatorname{tr}\left(\pmb {x} \pmb {y}^t \right)=\operatorname{tr}\left(\pmb {y}^t  \pmb {x}\right)=\pmb {y}^t  \pmb {x} \in \mathbb{R} .
+$$
+
+대각합의 교환법칙때문에 어떤 행렬의 앞에 특정 행렬을 곱하고, 뒤에 역행렬을 곱해도 대각합은 변하지 않는다. 
+
+$$
+\operatorname{tr}\left(\pmb {S}^{-1} \pmb {A} \pmb {S}\right) = \operatorname{tr}\left(\pmb {A} \pmb {S} \pmb {S}^{-1}\right)=\operatorname{tr}(\pmb {A})
+$$
+
+
+
+대각합에 대한 그 밖의 성질들은 다음과 같다.
+
+- $\operatorname{tr}(\alpha \pmb {A})=\alpha \operatorname{tr}(\pmb {A}), \alpha \in \mathbb{R}$ for $\pmb {A} \in \mathbb{R}^{n \times n}$
+
+- $\operatorname{tr}\left(\pmb {I}_n\right)=n$
+
+
+
+
 ## 행렬식
 
 $\pmb A$의 행렬식(determinant)을 $det(\pmb A)=|\pmb A|$로 표기한다.
+
+이차원 행렬 $\pmb A$ 의 행렬식은 다음과 같이 계산한다.
+
+$$
+\operatorname{det}( \pmb {A})=\left|\begin{array}{ll}
+a_{11} & a_{12} \\
+a_{21} & a_{22}
+\end{array}\right|=a_{11} a_{22}-a_{12} a_{21} .
+$$
 
 만약 행렬 $\pmb A$가 대각행렬(diagonal matrix)이면 $|\pmb A|$는 행렬의
 대각원소의 곱이다 ($| \pmb A| =\prod a_{ii}$).
@@ -456,3 +529,30 @@ $$
 행렬 $\pmb A$의 행렬식은 다음과 같이 주어진다.
 
 $$ |{\pmb A}| = |{\pmb A}_{11}| |{\pmb A}_{22} | $$
+
+
+## 직교행렬
+
+만약 정방행렬 $\pmb P$가 다음과 같은 조건을 만족하면 직교행렬(orthogonal
+matrix)라고 부른다.
+
+$$  \pmb P \pmb P^t = \pmb P^t \pmb P = \pmb I $$
+
+직교행렬의 정의에서 주의할 점은 $\pmb P \pmb P^t = \pmb I $ 와 $\pmb P^t \pmb P = \pmb I$ 이 모두 성립하해야 한다는 점이다. 
+
+행렬 $\pmb P$ 의 역행렬은 $\pmb P^t$ 이다. 
+
+$$ \pmb P^{-1} = \pmb P^t$$ 
+
+만약 $\pmb P$가 직교행렬이면 다음과 같은 성질을 가진다.
+
+-   $| \pmb P | = \pm 1$ , 왜냐하면
+    $$  | \pmb P \pmb P^t | = | \pmb P | |\pmb P^t |  = | \pmb P|^2 = |\pmb I| =1 $$
+
+-   임의의 정방행렬 $\pmb A$에 대하여 다음이 성립한다.
+    $$ tr(\pmb P \pmb A \pmb P^t) = tr(\pmb A \pmb P^t \pmb P) = tr(\pmb A) $$
+
+
+
+
+

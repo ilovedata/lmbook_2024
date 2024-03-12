@@ -123,7 +123,7 @@ $$ {#eq-rsq}
 
 위의 오차제곱합 $S(\beta_0 , \beta_1)$ 을 최소화하는 $\beta_0$와 $\beta_1$의 값을 구하는 방법은 오차제곱합이 $\beta_0$와 $\beta_1$의 미분 가능한 2차 함수이고 아래로 볼록한 함수(convex function)임을 이용한다.
 
-```{r fig.height=6, fig.width=6, message=FALSE, warning=FALSE}
+```{r fig.height=6, fig.width=6, message=FALSE, warning=FALSE, eval=FALSE}
 gridnum <- 60
 sizing <- 5
 extrascale <- 10
@@ -148,6 +148,11 @@ persp3D(b0, b1, SSE, theta =10, phi = 20, expand = 1)
 ```
 
 
+```{r lse-1, echo=FALSE, fig.cap='오차제곱합의 함수 형태', out.width='80%'}
+knitr::include_graphics("../myimages/lse-1.png")
+```
+
+
 위의 그림을 보면 볼록한 모양이 너무 평평하여 오차제곱합이 최소가 되는 $\beta_0$와 $\beta_1$의 위치가 명확하지 않다.
 
 이제 모든 변수들을 표준화하고 표준화된 변수들에 단순회귀모형에 대한  오차제곱합을 $\beta_0$와 $\beta_1$의 함수로서 그림을 그리면 아래와 같다.
@@ -161,7 +166,7 @@ $$ {#eq-linreg02-std}
 
 $$ v_i  = \frac{y_i -\bar y}{s_y}, \quad w_i = \frac{x_i -\bar x}{s_x} $$
 
-```{r fig.height=6, fig.width=6, message=FALSE, warning=FALSE}
+```{r fig.height=6, fig.width=6, message=FALSE, warning=FALSE, eval=FALSE}
 # 변수들을 표준화!
 std_cars <- as.data.frame(scale(cars))
 gridnum <- 60
@@ -183,6 +188,11 @@ persp3D(b0, b1, SSE, theta =40, phi = 15, expand = 1)
 #fig <- plot_ly(z = ~SSE)
 #fig <- fig %>% add_surface()
 #fig
+```
+
+
+```{r lse-2, echo=FALSE, fig.cap='표준화 시 오차제곱합의 함수 형태', out.width='80%'}
+knitr::include_graphics("../myimages/lse-2.png")
 ```
 
 위위 같이 변수들을 표준화하면 오차제곱합 함수의 볼록한 정도가 덜 평평하게 
@@ -220,12 +230,13 @@ $$
 
 위의 방정식을 풀어서 구한 회귀계수의 추정치를 $\hat \beta_0$, $\hat \beta_1$ 이라고 하면 다음과 같이 주어진다.
 
-```{=tex}
-\begin{align*}
+$$
+\begin{aligned}
  \hat \beta_0 &= \bar y - \hat \beta_1 \bar x  \\ 
   \hat \beta_1 &=  \frac{ \sum_i (x_i - \bar x)(y_i - \bar y)}{\sum_i (x_i - \bar x)^2} 
-\end{align*}
-```
+\end{aligned}
+$$
+
 최소제곱법에서 얻어진 회귀계수의 추정량 $\hat \beta_0$과 $\hat \beta_1$ 을 이용한 반응변수 $y_i$ 에 대한 예측값 $\hat y_i$는 다음과 같이 정의되고
 
 $$ \hat y_i = \hat E(y_i|x_i) = \hat \beta_0 + \hat \beta_1 x_i $$
@@ -374,25 +385,25 @@ ggplot(cars, aes(x=speed, y=dist)) +
 먼저 평균 모형은 예측에 사용할 변수가 없는 경우로서 이때의 잔차는  각 관측값에 대한 예측값이 관측값의 평균이다 . 이러한 경우 잔차는 관측값 자체가 가지고 있는 변동으로 생각할 수 있다. 이러한 평균모형에서의 잔차 또는 관측값이 가지고 있는 변동을 총제곱합(Total Sum of Squares ; $SST$)이다 
 
 $$
-\begin{align}
+\begin{aligned}
 \sum_{i=1}^n r^2_{0i} & = \sum_{i=1}^n (y_i -\bar y)^2 \\
   & =  \text{ Residual Sum of Squares from mean model }  \\
    & = \text{ Variation of response variables} \\
    & = \text{ Total Sum of Squares } \\
    & = SST
-\end{align}
+\end{aligned}
 $$
 
 이제 설명변수가 있는 회귀모형에서 예측치 $\hat y_i=\hat \beta_0 + \hat \beta_1 x_i$를 고려하면 
 이 경우의 잔차들의 제곱합은 회귀식의 잔차제곱합(Residual Sum of Squares; $SSE$)이라고 부르며  아래와 같이 정의한다.  
 
 $$
-\begin{align}
+\begin{aligned}
 \sum_{i=1}^n r_i^2 & = \sum_{i=1}^n (y_i -\hat \beta_0 - \hat \beta_1 x_i) \\
   & = \text{Residual Sum of Squares from linear regression model } \\
   & = \text{ Residual Sum of Squares } \\
   & = SSE 
-\end{align}
+\end{aligned}
 $$
 
 만약 회귀식에서 고려한 설명변수가 반응변수를 예측하는데 매우 적합하다면 회귀모형에서 구한 잔차들의 제곱합이 평균모형에서 구한 잔차들의 제곱합보다 작을 것이다. 이러한 차이를 비교하려면 두 제곱합 $SST$ 와 $SSE$의 관계를 이해하는 것이 중요하다. 
@@ -414,12 +425,12 @@ $$  (y_i - \bar y) = (y_i - \hat y_i) + (\hat y_i - \bar y) $$
 이제 총제곱합은 다음과 같이 분해할 수 있다.
 
 $$
-\begin{align}
+\begin{aligned}
  \sum^n_{i=1}(y_i - \bar y)^2 &=  \sum^n_{i=1}[(y_i-\hat y_i)+(\hat y_i - \bar y)]^2 \\
  &= \sum^n_{i=1}(y_i-\hat y_i)^2+\sum^n_{i=1}(\hat y_i - \bar y)^2
         + 2\sum^n_{i=1}(y_i-\hat y_i)(\hat y_i-\bar y)  \\
  &= \sum^n_{i=1}(y_i-\hat y_i)^2+\sum^n_{i=1}(\hat y_i - \bar y)^2 + 0 \quad \text{(why?)}
-\end{align}
+\end{aligned}
 $$
 
 따라서 다음과 같은 제곱합의 분해를 얻게 된다.
@@ -574,13 +585,13 @@ $\hat {\pmb \beta}$는 잔차의 제곱합 @eq-rsq2 을 최소로 하는
 최소제곱 추정량이다. 잔차의 제곱합을 $S( \pmb \beta)$이라고 하면
 
 $$
-\begin{align} 
+\begin{aligned} 
 S( \pmb \beta ) & =  ( \pmb y -  \pmb X \pmb \beta)^t( \pmb y -  \pmb X \pmb \beta ) \notag \\
   & = \pmb y^t \pmb y - \pmb y^t \pmb X \pmb \beta - \pmb \beta^t \pmb X^t \pmb y
     + \pmb \beta^t \pmb X^t \pmb X \pmb \beta \notag \\
   & = \pmb y^t \pmb y -2  \pmb \beta^t \pmb X^t \pmb y
     + \pmb \beta^t \pmb X^t \pmb X \pmb \beta 
-\end{align}
+\end{aligned}
 $$ {#eq-rsq3}   
 
 여기서 $S( \pmb \beta)$를 최소로 하는 회귀계수벡터의 값을 구하기 위하여
@@ -590,13 +601,13 @@ $S( \pmb \beta)$를 회귀계수벡터 $\pmb \beta$로 미분한후 $\pmb 0$ 으
 벡터미분을 이용하면
 
 $$
-\begin{align}
+\begin{aligned}
  \pardifftwo{ S( {\pmb \beta})}{\pmb \beta} & = 
  \pardifftwo{}{\pmb \beta} (\pmb y^t \pmb y -2  \pmb \beta^t \pmb X^t \pmb y
     + \pmb \beta^t \pmb X^t \pmb X \pmb \beta) \\
  & = \pmb 0 -2 \pmb X^t \pmb y + 2 \pmb X^t \pmb X \pmb \beta \\
  & =\pmb 0
-\end{align}
+\end{aligned}
 $$
 
 
@@ -698,25 +709,25 @@ $$ \hat {\pmb \beta}  = (\pmb X^t\pmb X)^{-1}\pmb X' \pmb y \equiv  \pmb M \pmb 
 $\hat {\pmb \beta}$의 기대값은 
 
 $$
-\begin{align}
+\begin{aligned}
  E( \hat {\pmb \beta}  ) &= E( \pmb M \pmb y) = E(( \pmb X^t \pmb X)^{-1} \pmb X' \pmb y) \\
  &= ( \pmb X^t \pmb X)^{-1} \pmb X'E( \pmb y) \\
  &= ( \pmb X^t \pmb X)^{-1} \pmb X^t \pmb X \pmb \beta \\
   &= \pmb \beta
-\end{align}
+\end{aligned}
 $$
 
 따라서 최소제곱 추정량 $\hat {\pmb \beta}$는 $\pmb \beta$의 불편추정량이다. 최소제곱
 추정량 $\hat {\pmb \beta}$의 공분산 행렬을 전개해보면 
 
 $$
-\begin{align}
+\begin{aligned}
  Var( \hat {\pmb \beta} ) &= Var(( \pmb X^t \pmb X)^{-1} \pmb X^t \pmb y) \\
 &= ( \pmb X^t \pmb X)^{-1} \pmb X^t ~ Var( \pmb y) ~ \pmb X ( \pmb X^t \pmb X)^{-1} \\
 &=( \pmb X^t \pmb X)^{-1} \pmb X^t[\sigma^2  \pmb I_n] \pmb X( \pmb X^t \pmb X)^{-1} \\
 &= \sigma^2( \pmb X^t \pmb X)^{-1} \pmb X^t \pmb X( \pmb X^t \pmb X)^{-1} \\
 &= \sigma^2( \pmb X^t \pmb X)^{-1} \\
-\end{align}
+\end{aligned}
 $$
 
 위에서 최소제곱 추정량의 평균과 공분산을 구할 때에는 정규성 가정이
@@ -763,13 +774,13 @@ $\pmb A= \pmb L- \pmb M$ 이다. 임의의 선형 추정량 $\pmb \beta^*$가 �
 추정량일 조건을 구해보자 
 
 $$
-\begin{align}
+\begin{aligned}
  E( \pmb \beta^*) & = E[( \pmb M+ \pmb A) \pmb y] \\
             & = ( \pmb M+ \pmb A)E( \pmb y) \\
             & = ( \pmb M+ \pmb A)X \pmb \beta \\
             & = ( \pmb X^t  \pmb X)^{-1} \pmb X^t  \pmb X  \pmb \beta +  \pmb A  \pmb X  \pmb \beta \\
             & =  \pmb \beta+AX \pmb \beta\\
-\end{align}
+\end{aligned}
 $$
 
 
@@ -783,24 +794,24 @@ $\pmb A$중에서 $Var( \pmb \beta^*)$을 최소로하는 행렬 $\pmb A$를 구
 한다. $\pmb \beta^*$의 공분산 행렬은 $AX=0$이므로 
 
 $$
-\begin{align}
+\begin{aligned}
  V( \pmb \beta^*) & = ( \pmb M+ \pmb A)V( \pmb y)( \pmb M+ \pmb A)^t\\
             & = ( \pmb M+ \pmb A)\sigma^2 I_n( \pmb M+ \pmb A)^t\\
             & = \sigma^2 ( \pmb M \pmb M^t+ \pmb A \pmb M^t+ \pmb M  \pmb A^t+ \pmb A  \pmb A^t)\\
             & = \sigma^2 [ ( \pmb X^t  \pmb X)^{-1}  \pmb X^t  \pmb X( \pmb X^t \pmb X)^{-1} + \pmb A  \pmb X ( \pmb X^t  \pmb X)^{-1}+( \pmb X^t  \pmb X)^{-1} \pmb X^t  \pmb A^t+  \pmb A  \pmb A^t ]\\
             & = \sigma^2[( \pmb X^t  \pmb X)^{-1} +  \pmb A  \pmb A^t ]  \\
             & = V( \hat {\pmb \beta} ) + \sigma^2 \pmb A \pmb A^t\\
-\end{align}
+\end{aligned}
 $$
 
 이제 임의의 벡터 $\pmb c$에 대하여
 
 $$
-\begin{align}
+\begin{aligned}
  V( \pmb c^t \pmb \beta^*)  & = \pmb c^t V (\pmb \beta^*) \pmb c \\
    & =  \pmb c^t V( \hat {\pmb \beta} ) \pmb c + \sigma^2 \pmb c^t \pmb A \pmb A^t \pmb c \\
     & =  V( \pmb c^t  \hat {\pmb \beta} ) + \sigma^2 \pmb c^t \pmb A \pmb A^t \pmb c 
-\end{align}
+\end{aligned}
 $$
 
 다음이 성립하므로
@@ -839,12 +850,12 @@ $$ {#eq-normallm}
 선형모형 @eq-normallm 에 대한 가능도 함수는 다음과 같이 주어진다.
 
 $$
-\begin{align}
+\begin{aligned}
  L_n( \pmb \theta ;  \pmb y) & = L( \pmb \beta,\sigma^2|  \pmb y) \\
    & = \prod^n_{i=1} f(y_i)\\
    & = \prod^n_{i=1}(2 \pi \sigma^2)^{-\frac{1}{2}} \exp \left [-\frac{1}{2\sigma^2} (y_i- {\pmb x}_i^t \pmb \beta)^2 \right ] \\
    & = (2\pi\sigma^2)^{-\frac{n}{2}} \exp \left [ -\frac{1}{2\sigma^2}( \pmb y- \pmb  X  \pmb \beta)^t( \pmb y- \pmb X  \pmb \beta) \right ]
-\end{align}
+\end{aligned}
 $$
 
 
@@ -852,10 +863,10 @@ $$
 다음과 같다.
 
 $$
-\begin{align}
+\begin{aligned}
 \ell_n( \pmb \theta; \pmb y) & = -\frac{n}{2} \log (2 \pi)-\frac{n}{2} \log \sigma^2 -\frac { ( \pmb y- \pmb X  \pmb \beta)^t (\pmb  y- \pmb X  \pmb \beta) }{2\sigma^2} \\ 
    &= -\frac{n}{2} \log (2 \pi)-\frac{n}{2} \log \tau -\frac { ( \pmb y- \pmb X  \pmb \beta)^t ( \pmb y- \pmb X  \pmb \beta) }{2\tau}  
-\end{align}
+\end{aligned}
 $$
 
 
@@ -863,7 +874,7 @@ $$
 대한 관측 피셔정보 $J_n( \pmb \theta; \pmb y)$ 은 다음과 같이 주어진다.
 
 $$
-\begin{align}
+\begin{aligned}
 s( \pmb \theta;  \pmb y) & =  \pardifftwo{}{ \pmb \theta}\ell_n( \pmb \theta;  \pmb y ) \\
   & =  \begin{bmatrix}
     \pardifftwo{}{ \pmb  \beta}\ell_n( \pmb \theta;  \pmb y ) \\
@@ -874,11 +885,11 @@ s( \pmb \theta;  \pmb y) & =  \pardifftwo{}{ \pmb \theta}\ell_n( \pmb \theta;  \
      \pmb X^t ( \pmb y- \pmb X  \pmb \beta)/\tau \\
     -\frac{n}{2\tau} +\frac { ( \pmb y- \pmb X  \pmb \beta)^t ( \pmb y- \pmb X  \pmb \beta) }{2\tau^2} 
   \end{bmatrix} 
-\end{align}
+\end{aligned}
 $$
 
 $$
-\begin{align}
+\begin{aligned}
  J_n( \pmb \theta;  \pmb y) & =  -\pardiffdd{}{ \pmb \theta}{ {\pmb \theta}} \ell_n( \pmb \theta;\pmb y ) \\
    & = 
   - \begin{bmatrix}
@@ -890,7 +901,7 @@ $$
       {\pmb X}^t  \pmb X /\tau &  - {\pmb X}^t ( \pmb y- \pmb X  \pmb \beta)/\tau^2   \\
     - ( \pmb y- \pmb X  \pmb \beta)^t {\pmb X} /\tau^2  &  - \frac{n}{2\tau^2} +\frac { ( \pmb y- \pmb X \pmb  \beta)^t ( \pmb y- \pmb X  \pmb \beta) }{\tau^3} 
   \end{bmatrix}
-\end{align}
+\end{aligned}
 $$
 
 이제 중회귀모형에서 회귀계수 $\pmb \beta$에 대한 최대가능도 추정량은 스코어함수로 부터
@@ -942,12 +953,12 @@ $$
 $SSE(\hat { \beta})$의 함수로 나타난다. 
 
 $$
-\begin{align}
+\begin{aligned}
  L_n(\hat { \pmb \theta} ) & = L_n(\hat { \pmb \beta} ,\hat \sigma^2 ) \notag \\
  &=  (2\pi\hat \sigma^2)^{-\frac{n}{2}} \exp \left [-\frac{1}{2 \hat \sigma^2}( \pmb y- \pmb X \hat { \pmb \beta})^t( \pmb y- \pmb X \hat { \pmb \beta} ) \right ] \notag  \\
 & = (2\pi\hat \sigma^2)^{-\frac{n}{2}} \exp \left [-\frac{n}{2} \right ]  \notag  \\
 & = \left (2\pi \frac{SSE(\hat { \pmb \beta})}{n} \right )^{-\frac{n}{2}} \exp \left [-\frac{n}{2} \right ] 
-\end{align} 
+\end{aligned} 
 $$ {#eq-likefull}
 또한 가능도함수의 값은 다음과 같다. 
 
@@ -975,7 +986,7 @@ $$
 두 개의 모수 $\beta_0$와 $\tau$에 대하여 미분하여 가능도 방정식을 구하면 다음과 같다.
 
 $$
-\begin{align}
+\begin{aligned}
 s( \pmb \theta;  \pmb y) & =  \pardifftwo{}{ \pmb \theta}\ell_n( \pmb \theta;  \pmb y ) \\
   & =  \begin{bmatrix}
     \pardifftwo{}{ \beta_0}\ell_n( \pmb \theta;  \pmb y ) \\
@@ -987,7 +998,7 @@ s( \pmb \theta;  \pmb y) & =  \pardifftwo{}{ \pmb \theta}\ell_n( \pmb \theta;  \
     -\frac{n}{2\tau} +\frac { ( \pmb y- \beta_0 \pmb 1))^t ( \pmb y- \beta_0 \pmb 1) }{2\tau^2} 
   \end{bmatrix} \\
   & = \pmb 0
-\end{align}
+\end{aligned}
 $$
 
 위의 방정식을 풀면 다음과 같은 최대가능도 추정량을 구할 수 있다.
