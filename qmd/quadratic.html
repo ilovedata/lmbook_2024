@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>통계적 예측모형 - 부록 F — 이차형식과 제곱합의 분포</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../qmd/multivar.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script>
+<script type="text/javascript">
+ window.MathJax = {
+  tex: {
+    macros: {
+    RR: '{\\mathbb R}',                    // a simple string replacement
+    hatmat:'{\\pmb X ({\\pmb X}^t {\\pmb X} )^{-1} {\\pmb X}^t}',
+    bold: ['\\boldsymbol{#1}',1] ,     // this macro has one parameter
+    pardiff: ['\\frac{\\partial#2}{\\partial#1}', 2, 'x'], // this macro has an optional parameter that defaults to 'x'
+    pardifftwo: ['\\frac{\\partial#1}{\\partial#2}', 2],
+    pardiffd: ['\\frac{\\partial#1}{\\partial#2^t \\partial#2}', 2],
+    pardiffdd: ['\\frac{\\partial#1}{\\partial#3 \\partial#2}', 3],
+    norm: ['\\lVert#1\\rVert',1]
+  },
+  environments: {
+  braced: ["\\left\\{", "\\right\\}"]
+  }
+ }
+};
+</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/quadratic.html"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">이차형식과 제곱합의 분포</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">통계적 예측모형</a> 
+        <div class="sidebar-tools-main">
+    <a href="../통계적-예측모형.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="검색"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/lse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">선형 회귀모형의 소개</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">선형회귀에서의 추론</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/inference2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">모형의 비교</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_mat_basic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">행렬의 기초</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_vector_space.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">벡터공간</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_eigen_value.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">고유값과 고유벡터</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_vec_cal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">벡터 미분</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/multivar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">다변량 확률변수의 성질</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/quadratic.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">이차형식과 제곱합의 분포</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul class="collapse">
+  <li><a href="#이차형식" id="toc-이차형식" class="nav-link active" data-scroll-target="#이차형식"><span class="header-section-number">F.1</span> 이차형식</a></li>
+  <li><a href="#대칭행렬의-대각화" id="toc-대칭행렬의-대각화" class="nav-link" data-scroll-target="#대칭행렬의-대각화"><span class="header-section-number">F.2</span> 대칭행렬의 대각화</a></li>
+  <li><a href="#멱등행렬" id="toc-멱등행렬" class="nav-link" data-scroll-target="#멱등행렬"><span class="header-section-number">F.3</span> 멱등행렬</a></li>
+  <li><a href="#이차형식의-분포" id="toc-이차형식의-분포" class="nav-link" data-scroll-target="#이차형식의-분포"><span class="header-section-number">F.4</span> 이차형식의 분포</a></li>
+  <li><a href="#코크란의-정리" id="toc-코크란의-정리" class="nav-link" data-scroll-target="#코크란의-정리"><span class="header-section-number">F.5</span> 코크란의 정리</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/quadratic.html"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">이차형식과 제곱합의 분포</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-quadratic" class="quarto-section-identifier">부록 F — 이차형식과 제곱합의 분포</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>이 장에서는 선형 회귀모형의 추론과 검정에 자주 사용되는 제곱합의 분포와 관련이 있는 이차형식의 분포의 성질을 살펴본다.</p>
+<section id="이차형식" class="level2" data-number="F.1">
+<h2 data-number="F.1" class="anchored" data-anchor-id="이차형식"><span class="header-section-number">F.1</span> 이차형식</h2>
+<p><span class="math inline">\(n\)</span>-차원 벡터 <span class="math inline">\({\pmb  x}^t=[x_1,x_2,\dots,x_n]\)</span>과 대칭행렬 <span class="math inline">\(\pmb  A\)</span>에 대하여 이차형식(quadratic form)은 다음과 같이 정의된다.</p>
+<p><span id="eq-quadratic-form"><span class="math display">\[
+Q_A(\pmb  x) = \pmb  x^t \pmb  A \pmb  x =\sum_{i=1}^n \sum_{j=1}^n a_{ij} x_i x_j
+\tag{F.1}\]</span></span></p>
+<p>이차형식의 정의에서 반드시 행렬 <span class="math inline">\(\pmb  A\)</span>를 대칭행렬로 정의하지 않아도 되지만 임의의 행렬에 대하여 이차형식의 값이 동일한 대칭행렬이 존재하기 때문에 정의에서 이차형식으로 국한하는 것이 일반적이다.</p>
+<div id="def-positive-def" class="theorem definition">
+<p><span class="theorem-title"><strong>정의 F.1 (양정치 행렬)</strong></span> 이차형식 <span class="math inline">\(Q_A(\pmb  x) = \pmb  x^t \pmb  A \pmb  x\)</span>가 영벡터가 아닌 모든 벡터 <span class="math inline">\(\pmb  x\)</span>에 대하여 0 보다 크면, 즉</p>
+<p><span class="math display">\[ \pmb  x^t \pmb  A \pmb  x  &gt;0  \quad \text{ for all } \quad \pmb x \in \RR^n\]</span></p>
+<p><span class="math inline">\(\pmb  A\)</span>를 양정치(positive definite)라고 부른다.</p>
+<p>만약 이차형식 <span class="math inline">\(Q_A(\pmb  x) = \pmb  x^t \pmb  A \pmb  x\)</span>가 영벡터가 아닌 모든 벡터 <span class="math inline">\(\pmb  x\)</span>에 대하여 0 보다 크거나 같다면</p>
+<p><span class="math display">\[ \pmb  x^t \pmb  A \pmb  x  \ge 0 \quad \text{ for all } \quad \pmb x \in \RR^n\]</span></p>
+<p><span class="math inline">\(\pmb  A\)</span>를 양반정치(positive semi-definite)라고 부른다.</p>
+<p><span class="math inline">\(\blacksquare\)</span></p>
+</div>
+<p>정칙행렬 <span class="math inline">\(\pmb  B\)</span>에 대하여 다음과 같은 선형변환을 고려하자.</p>
+<p><span class="math display">\[   \pmb  x = \pmb  B \pmb  y \quad \text{ or } \quad \pmb  y = \pmb  {B}^{-1} \pmb  x \]</span></p>
+<p>벡터 <span class="math inline">\(\pmb  x\)</span>로 정의된 이차형식은 벡터 <span class="math inline">\(\pmb  y\)</span>의 형태로 다음과 같이 변환할 수 있다.</p>
+<p><span class="math display">\[
+Q(\pmb  x) = \pmb  x^t \pmb  A \pmb  x = \pmb  y^t \pmb  B^t \pmb  A \pmb  B \pmb  y =Q^*(\pmb  y)
+\]</span></p>
+<p>이차형식의 성질은 정칙 선형변환에서 유지된다. 즉 행렬 <span class="math inline">\(\pmb  A\)</span>가 양(반)정치 행렬이고 행렬 <span class="math inline">\(\pmb  B\)</span>가 정칙행렬이면 행렬 <span class="math inline">\(\pmb  B^t \pmb  A \pmb  B\)</span>도 양(반)정치 행렬이다.</p>
+</section>
+<section id="대칭행렬의-대각화" class="level2" data-number="F.2">
+<h2 data-number="F.2" class="anchored" data-anchor-id="대칭행렬의-대각화"><span class="header-section-number">F.2</span> 대칭행렬의 대각화</h2>
+<p><span class="math inline">\(n\)</span>차원 대칭행렬 <span class="math inline">\(\pmb  A\)</span> 에 대하여 직교행렬 <span class="math inline">\(\pmb  P\)</span>가 존재하여 다음과 같은 분해가 가능하다.</p>
+<p><span id="eq-symmdecomp1"><span class="math display">\[
+\pmb  P^t \pmb  A \pmb  P = \pmb  \Lambda = diag(\lambda_1, \lambda_2, \dots, \lambda_n)
+\tag{F.2}\]</span></span></p>
+<p><a href="#eq-symmdecomp1" class="quarto-xref">식&nbsp;<span>F.2</span></a> 의 분해에서 <span class="math inline">\(\lambda_i\)</span>는 행렬 <span class="math inline">\(\pmb  A\)</span>의 고유치이며 행렬 <span class="math inline">\(\pmb  P\)</span>의 <span class="math inline">\(i\)</span> 번째 열은 대응하는 고유벡터 <span class="math inline">\(\pmb  p_i\)</span> 로 구성되어 있다.</p>
+<p><span class="math display">\[
+\pmb  P = [ \pmb  p_1~~ \pmb  p_2 ~~ \dots ~~ \pmb  p_n ]
+\]</span> 이제 위의 분해를 증명해 보자. 고유치 <span class="math inline">\(\lambda_i\)</span> 와 대응하는 고유벡터 <span class="math inline">\(\pmb  p_i\)</span>의 정의에 따라서 다음과 같은 <span class="math inline">\(n\)</span>개의 식을 얻을 수 있고</p>
+<p><span class="math display">\[ \pmb  A \pmb  p_i = \lambda_i \pmb  p_i , \quad i=1,2,3\dots, n \]</span></p>
+<p>위의 식을을 합쳐서 표기하면 다음과 같은 식을 얻으며 이는 <a href="#eq-symmdecomp1" class="quarto-xref">식&nbsp;<span>F.2</span></a> 를 의미한다.</p>
+<p><span class="math display">\[ \pmb  A \pmb  P = \pmb  P \pmb  \Lambda \]</span></p>
+<p><a href="#eq-symmdecomp1" class="quarto-xref">식&nbsp;<span>F.2</span></a> 를 다시 쓰면 다음과 같은 스펙트럴 분해(spectral decomposition)를 얻는다.</p>
+<p><span id="eq-spectral"><span class="math display">\[
+\pmb  A  = \pmb  P \pmb  \Lambda \pmb  P^t  = \sum_{i=1}^n \lambda_i \pmb  p_i \pmb  {p}_i^t
+\tag{F.3}\]</span></span></p>
+<p>참고로 대각합과 행렬식에 대한 고유치위 관계를 나타내는 다음의 유용한 두 식을 반드시 기억하자.</p>
+<p><span class="math display">\[ tr(\pmb  A) = \sum_i \lambda_i ,\quad |\pmb  A| = \prod_i \lambda_i \]</span></p>
+<p>대칭행렬의 분해 <a href="#eq-symmdecomp1" class="quarto-xref">식&nbsp;<span>F.2</span></a> 를 이용하면 다음과 같은 이차형식의 분해를 얻을 수 있다.</p>
+<p><span id="eq-quaddecomp"><span class="math display">\[
+Q(\pmb  x) = \pmb  x^t \pmb  A \pmb  x = \pmb  x^t \pmb  P \pmb  \Lambda \pmb  P^t \pmb  x = \pmb  y^t \pmb  \Lambda \pmb  y= \sum_{i=1}^n \lambda_i y_i^2
+\tag{F.4}\]</span></span></p>
+<p>위의 식에서</p>
+<p><span class="math display">\[ \pmb  y = \pmb  P^t \pmb  x \]</span></p>
+<p>이차형식의 분해식 <a href="#eq-quaddecomp" class="quarto-xref">식&nbsp;<span>F.4</span></a> 를 보면 행렬 <span class="math inline">\(\pmb  A\)</span>의 모든 고유치가 0보다 크면 양정치 임을 알 수 있다. 또한 모든 고유치가 0보다 크거나 같으면 양반정치 임을 알 수 있다.</p>
+<p>또한 <span class="math inline">\(rank(\pmb  A) = rank(\pmb  \Lambda)\)</span>이며 이는 0이 아닌 고유치의 개수가 행렬 <span class="math inline">\(\pmb  A\)</span>의 계수(rank)임을 알 수 있다.</p>
+</section>
+<section id="멱등행렬" class="level2" data-number="F.3">
+<h2 data-number="F.3" class="anchored" data-anchor-id="멱등행렬"><span class="header-section-number">F.3</span> 멱등행렬</h2>
+<p><span class="math inline">\(n\)</span>-차원 행렬 <span class="math inline">\(\pmb  A\)</span> 가 다음과 같은 성질을 가지면 멱등행렬(idenpotent matrix)라고 부른다.</p>
+<p><span class="math display">\[ \pmb  A^2 = \pmb  A \pmb  A = \pmb  A \]</span></p>
+<p>멱등행렬은 다음과 같은 성질을 가지고 있다.</p>
+<ul>
+<li>멱등행렬의 고유치는 0 또는 1이다.</li>
+<li>멱등행렬은 대각합이 계수와 같다.</li>
+</ul>
+<p><span class="math display">\[ tr(\pmb  A) =rank(\pmb  A) \]</span></p>
+<ul>
+<li>멱등행렬은 양반정치 행렬이다.</li>
+<li><span class="math inline">\(\pmb  A\)</span> 멱등행렬이면 <span class="math inline">\(\pmb  I - \pmb  A\)</span>도 멱등행렬이다.</li>
+</ul>
+<p>특별히 대칭인 멱등행렬을 <strong>사영행렬</strong>(또는 투영행렬, projection matrix)라고 부른다.</p>
+<p>최소제곱법에서 <a href="math_vector_space.html#eq-projection-mat" class="quarto-xref">식&nbsp;<span>B.11</span></a> 에서 나타난 행렬 <span class="math inline">\(\pmb  H = \pmb  X (\pmb  X^t \pmb  X)^{-1} \pmb  X^t\)</span>는 멱등행렬이며 따라서 사영행렬이다.</p>
+</section>
+<section id="이차형식의-분포" class="level2" data-number="F.4">
+<h2 data-number="F.4" class="anchored" data-anchor-id="이차형식의-분포"><span class="header-section-number">F.4</span> 이차형식의 분포</h2>
+<section id="카이제곱-분포" class="level3" data-number="F.4.1">
+<h3 data-number="F.4.1" class="anchored" data-anchor-id="카이제곱-분포"><span class="header-section-number">F.4.1</span> 카이제곱 분포</h3>
+<p>만약 확률변수 <span class="math inline">\(x\)</span> 이 표준 정규분포 <span class="math inline">\(N(0,1)\)</span> 을 따른다면 <span class="math inline">\(y=x^2\)</span> 은 자유도가 1인 카이제곱 분포 <span class="math inline">\(\chi^2_1\)</span>를 따른다. 더 나아가 <span class="math inline">\(n\)</span> 개의 확률변수 <span class="math inline">\(x_1,x_2,\dots,x_n\)</span> 이 서로 독립이고 표준 정규분포 <span class="math inline">\(N(0,1)\)</span> 을 따른다면 제곱합 <span class="math inline">\(v=x_1^2 +x_2^2 +\cdots + x_n^2\)</span>은 자유도가 n인 카이제곱 분포 <span class="math inline">\(\chi^2_n\)</span>를 따른다.</p>
+<p>이렇게 카이제곱 분포는 표준 정규분포를 따르는 서로 독립인 확률변수들의 제곱값에 대한 분포이다.</p>
+</section>
+<section id="비중심-카이제곱-분포" class="level3" data-number="F.4.2">
+<h3 data-number="F.4.2" class="anchored" data-anchor-id="비중심-카이제곱-분포"><span class="header-section-number">F.4.2</span> 비중심 카이제곱 분포</h3>
+<p>만약 확률변수 <span class="math inline">\(x\)</span>가 <span class="math inline">\(N(\mu, 1)\)</span>을 따른다면 <span class="math inline">\(v=x^2\)</span>은 자유도가 1인 비중심 카이제곱 분포, <span class="math inline">\(\chi^2_1(\lambda^2)\)</span> 를 따른다. 여기서 비중심 카이제곱 분포의 자유도는 1이고 비중심모수 <span class="math inline">\(\lambda^2 = \mu^2\)</span>으로 주어진다.</p>
+<p>이제 <span class="math inline">\(n\)</span>개의 서로 독립인 확률 변수 <span class="math inline">\(x_1,x_2,\cdots,x_n\)</span>이 각각 <span class="math inline">\(N(\mu_i, 1)\)</span>을 따른다면 <span class="math inline">\(v=x_1^2+\dots+x_n^2\)</span>은 자유도가 <span class="math inline">\(n\)</span>이고 비중심 모수가 <span class="math inline">\(\lambda^2 = \sum_{i=1}^n \mu_i^2\)</span>인 비중심 카이제곱 분포, <span class="math inline">\(\chi^2_n(\lambda^2)\)</span> 를 따른다.</p>
+<p>참고로 확률변수 <span class="math inline">\(x\)</span>가 <span class="math inline">\(N(0, 1)\)</span>을 따른다면 <span class="math inline">\(v=x^2\)</span>은 중심 카이제곱 분포, <span class="math inline">\(\chi^2_1\)</span> 를 따르며 이때는 비중심모수가 <span class="math inline">\(\lambda^2=0\)</span>이다. 즉, 비중심모수가 0인 비중심 카이제곱 분포(non-central chi square distribution)를 중심 카이제곱 분포(central chi square distribution)라고 한다. 또한 중심 카이제곱 분포는 중심을 빼고 카이제곱 분포라고 부른다.</p>
+</section>
+<section id="이차형식의-분포-1" class="level3" data-number="F.4.3">
+<h3 data-number="F.4.3" class="anchored" data-anchor-id="이차형식의-분포-1"><span class="header-section-number">F.4.3</span> 이차형식의 분포</h3>
+<p><span class="math inline">\(n\)</span>개의 서로 독립인 확률 변수 <span class="math inline">\(x_1,x_2,\cdots,x_n\)</span>이 각각 <span class="math inline">\(N(\mu_i, \sigma^2)\)</span>를 따른다면 <span class="math inline">\(n\)</span>-차원의 확률벡터 <span class="math inline">\(\pmb x\)</span>는 다음과 같은 다변량 정규분포를 따른다고 할 수 있다.</p>
+<p><span class="math display">\[ \pmb x \sim N(\pmb \mu, \sigma^2 \pmb I) \]</span></p>
+<p>위에서 <span class="math inline">\(\pmb \mu^t =(\mu_1, \mu_2, \dots, \mu_n)\)</span></p>
+<p>이제 이차형식의 분포에 대하여 논의하자.</p>
+<div id="thm-quaddist" class="theorem">
+<p><span class="theorem-title"><strong>정리 F.1 (이차형식의 분포)</strong></span> <span class="math inline">\(n\)</span>-차원의 확률벡터 <span class="math inline">\(\pmb x\)</span>가 <span class="math inline">\(N(\pmb \mu, \sigma^2 \pmb I)\)</span>를 따른다면 이차형식 <span class="math inline">\(Q=\pmb x^t \pmb A \pmb x\)</span>의 분포는 다음과 같다.</p>
+<p><span id="eq-quaddist1"><span class="math display">\[
+V = \frac{Q}{\sigma^2} = \frac {\pmb x^t \pmb A \pmb x}{\sigma^2} ~~ \equiv_d ~~ \sum_{i=1}^n \lambda_i \frac{u^2_i}{\sigma^2}
+\tag{F.5}\]</span></span></p>
+<p>위의 식에서 <span class="math inline">\(x \equiv_d y\)</span> 는 확률변수 <span class="math inline">\(x\)</span>와 <span class="math inline">\(y\)</span>가 동일한 분포를 가진다는 것을 의미한다.</p>
+<p><a href="#eq-quaddist1" class="quarto-xref">식&nbsp;<span>F.5</span></a> 에서 행렬 <span class="math inline">\(\pmb A\)</span>의 스펙트럴 분해는 <span class="math inline">\(\pmb A = \pmb P \pmb \Lambda \pmb P^t\)</span>이며 <span class="math inline">\(\lambda_i\)</span>는 행렬 <span class="math inline">\(\pmb A\)</span>의 고유치, 즉 행렬 <span class="math inline">\(\pmb \Lambda\)</span>의 대각원소이다. 또한 확률변수 <span class="math inline">\(u_i\)</span>들은 서로 독립이며 정규분포 <span class="math inline">\(N(\eta_i, \sigma^2)\)</span>를 따른다. 여기서 <span class="math inline">\(\eta_1, \eta_2,\dots, \eta_n\)</span>는 다음과 같이 정의된다.</p>
+<p><span class="math display">\[
+\pmb \eta =
+\begin{bmatrix}
+\eta_1 \\
+\eta_2 \\
+\vdots \\
+\eta_n
+\end{bmatrix} = \pmb P^t \pmb \mu
+\]</span></p>
+<p>즉, <a href="#eq-quaddist1" class="quarto-xref">식&nbsp;<span>F.5</span></a> 에서 <span class="math inline">\(u_1^2/\sigma^2, u_2^2/\sigma^2, \dots, u_n^2/\sigma^2\)</span>는 서로 독립이며 각각 자유도가 1 이고 비중심 모수가 <span class="math inline">\(\eta_1^2/\sigma^2, \eta_2^2/\sigma^2, \dots,  \eta_n^2/\sigma^2\)</span>인 비중심 카이제곱-분포를 따른다.</p>
+<p><span class="math inline">\(\blacksquare\)</span></p>
+</div>
+<p><a href="#thm-quaddist" class="quarto-xref">정리&nbsp;<span>F.1</span></a> 의 <a href="#eq-quaddist1" class="quarto-xref">식&nbsp;<span>F.5</span></a> 에서 나타난 이차형식의 분포는 비중심 카이제곱 분포를 따르는 서로 독립인 확률 변수들의 가중 평균과 같다는 것이다.</p>
+<p>이는 이차형식의 분포가 비중심 카이제곱 분포를 따른다는 것이 아님을 주의해야 한다. 그러면 어느 경우에 이차형식의 분포가 비중심 카이제곱 분포를 따르는가 생각해 보자.</p>
+<p>가장 쉽게 생각할 수 있는 경우가 <a href="#eq-quaddist1" class="quarto-xref">식&nbsp;<span>F.5</span></a> 에서 <span class="math inline">\(\lambda_i\)</span> 들의 값들이 0 또는 1인 경우이다. 이러한 경우는 행렬<br>
+<span class="math inline">\(\pmb A\)</span> 가 멱등행렬인 경우이다. 실제로 다음 정리는 이차형식의 분포가 비중심 카이제곱 분포를 따르는 필요충분 조건이 행렬<br>
+<span class="math inline">\(\pmb A\)</span> 가 멱등행렬이라는 것을 말해준다.</p>
+<div id="cor-quaddist2" class="theorem corollary">
+<p><span class="theorem-title"><strong>따름정리 F.1</strong></span> <span class="math inline">\(n\)</span>-차원의 확률벡터 <span class="math inline">\(\pmb x\)</span>가 <span class="math inline">\(N(\pmb \mu, \sigma^2 \pmb I)\)</span>를 따른다면 이차형식 <span class="math inline">\(Q=\pmb x^t \pmb A \pmb x\)</span>의 분포가 자유도가 <span class="math inline">\(r\)</span> 이며 다음과 같은 비중심 모수 <span class="math inline">\(\lambda^2\)</span>을 가지는 비중심 카이제곱 분포를 따르는 필요충분 조건은 <span class="math inline">\(\pmb A\)</span>가 멱등행렬이고 <span class="math inline">\(rank(\pmb A)=r\)</span> 인 경우이다.</p>
+<p><span class="math display">\[
+\lambda^2 = \frac{\pmb \mu^t \pmb  A \pmb  \mu}{\sigma^2}
+\]</span></p>
+<p>더 나아가 <span class="math inline">\(\pmb A \pmb \mu = \pmb 0\)</span> 이면 이차형식의 분포는 자유도가 <span class="math inline">\(r\)</span>인 (중심)카이제곱 분포를 따른다.</p>
+<p><span class="math inline">\(\blacksquare\)</span></p>
+</div>
+</section>
+<section id="이차형식의-독립" class="level3" data-number="F.4.4">
+<h3 data-number="F.4.4" class="anchored" data-anchor-id="이차형식의-독립"><span class="header-section-number">F.4.4</span> 이차형식의 독립</h3>
+<p>두 개의 이차형식이 독립일 조건은 다음 정리와 같다.</p>
+<div id="thm-quaddist-indep" class="theorem">
+<p><span class="theorem-title"><strong>정리 F.2 (이차형식의 독립)</strong></span> <span class="math inline">\(n\)</span>-차원의 확률벡터 <span class="math inline">\(\pmb {x}\)</span> 가 <span class="math inline">\(N\left(\pmb {\mu}, \sigma^2 \pmb {I}\right)\)</span> 를 따른다고 하자. 두 이차형식 <span class="math inline">\(Q_1=\pmb {x}^t \pmb {A} \pmb {x}\)</span> 과 <span class="math inline">\(Q_2=\pmb {x}^t \pmb {B} \pmb {x}\)</span> 가 서로 독립일 필요충분 조건은 <span class="math inline">\(\pmb {A B}=\pmb {0}\)</span> 이다.</p>
+<p><span class="math inline">\(\blacksquare\)</span></p>
+</div>
+</section>
+<section id="이차형식의-차이" class="level3" data-number="F.4.5">
+<h3 data-number="F.4.5" class="anchored" data-anchor-id="이차형식의-차이"><span class="header-section-number">F.4.5</span> 이차형식의 차이</h3>
+<p>만약 3 개의 이차형식 <span class="math inline">\(Q, Q_1, Q_2\)</span> 가 있어서 다음과 같은 관계가 있다고 하자.</p>
+<p><span class="math display">\[
+Q=\pmb {x}^t \pmb {A} \pmb {x}=Q_1+Q_2=\pmb {x}^t \pmb {A}_1 \pmb {x}+\pmb {x}^t \pmb {A}_2 \pmb {x}
+\]</span></p>
+<p>이러한 경우 두 이차형식 <span class="math inline">\(Q\)</span> 과 <span class="math inline">\(Q_1\)</span> 이 각각 카이제곱 분포를 따를 때 <span class="math inline">\(Q_2=Q-Q_1\)</span> 이 카이제곱 분포를 따르는 조건이 중요하다. 다음 정리는 그 조건을 행렬 <span class="math inline">\(\pmb {A}_2\)</span> 가 양반정치인 경우라는 것을 말해준다.</p>
+<div id="thm-quaddist-sum" class="theorem">
+<p><span class="theorem-title"><strong>정리 F.3 (이차형식의 차이)</strong></span> <span class="math inline">\(n\)</span>-차원의 확률벡터 <span class="math inline">\(\pmb {x}\)</span> 가 <span class="math inline">\(N\left(\pmb {\mu}, \sigma^2 \pmb {I}\right)\)</span> 를 따른다고 하자. 세 개의 이차형식 <span class="math inline">\(Q=\pmb {x}^t \pmb {A} \pmb {x}, Q_1=\pmb {x}^t \pmb {A}_1 \pmb {x}\)</span>, <span class="math inline">\(Q_2=\pmb {x}^t \pmb {A}_2 \pmb {x}\)</span> 가 있다고 하고 <span class="math inline">\(Q=Q_1+Q_2\)</span> 인 관계를 가진다고 가정하자.</p>
+<p>만약 <span class="math inline">\(Q / \sigma^2\)</span> 이 <span class="math inline">\(\chi_r^2\left(\lambda^2\right)\)</span> 을 따르고 <span class="math inline">\(Q_1 / \sigma^2\)</span> 이 <span class="math inline">\(\chi_{r_1}^2\left(\lambda_1^2\right)\)</span> 을 따르며 행렬 <span class="math inline">\(\pmb {A}_2\)</span> 가 양반정치 행렬이면 다음을 만족한다. 두 이차형식 <span class="math inline">\(Q_1\)</span> 과 <span class="math inline">\(Q_2\)</span> 는 서로 독립이다. 또한 이차형식 <span class="math inline">\(Q_2\)</span> 는 자유도가 <span class="math inline">\(r_2=r-r_1\)</span> 이고 비중심 모수가 <span class="math inline">\(\lambda_2^2=\lambda^2-\lambda_1^2\)</span> 인 비중심 카이제곱분포를 따른다.</p>
+<p><span class="math inline">\(\blacksquare\)</span></p>
+</div>
+</section>
+</section>
+<section id="코크란의-정리" class="level2" data-number="F.5">
+<h2 data-number="F.5" class="anchored" data-anchor-id="코크란의-정리"><span class="header-section-number">F.5</span> 코크란의 정리</h2>
+<p>선형모형에서 자주 등장하는 제곱합들의 분해, 즉 이차형식의 분해를 생각할 때 각 제곱합들의 분포를 아는 것이 매우 중요하다. 다음에 제시된 코크란의 정리(Cochran’s Theorem)는 총 제곱합을 분해했을 때 각 제곱합의 분포가 카이제곱 분포를 따를 조건을 말해준다.</p>
+<div id="thm-cochran" class="theorem">
+<p><span class="theorem-title"><strong>정리 F.4 (COCHRAN’S THEOREM)</strong></span> <span class="math inline">\(n\)</span>-차원의 확률벡터 <span class="math inline">\(\pmb {x}\)</span> 가 <span class="math inline">\(N\left(\pmb {\mu}, \sigma^2 \pmb {I}\right)\)</span> 를 따른다고 하자. <span class="math inline">\(k\)</span> 개의 이차형식 <span class="math inline">\(Q_j=\pmb {x}^t \pmb {A}_j \pmb {x}, j=1,2, \ldots, k\)</span> 를 생각하고 다음과 같은 관계를 가진다고 하자.</p>
+<p><span class="math display">\[
+\pmb {x}^t \pmb {x}=\sum_{i=1}^n x_i^2=\sum_{j=1}^k Q_j
+\]</span></p>
+<p>즉, <span class="math inline">\(\sum_{j=1}^k \pmb {A}_j=\pmb {I}\)</span> 이다. 또한 <span class="math inline">\(r_j=\operatorname{rank}\left(\pmb {A}_j\right)\)</span> 이고 <span class="math inline">\(\lambda_j^2=\pmb {\mu}^t \pmb {A}_j \pmb {\mu}\)</span> 라고 하자.</p>
+<p><span class="math inline">\(k\)</span> 개의 이차형식 <span class="math inline">\(Q_1, Q_2, \ldots, Q_k\)</span> 들이 모두 독립이고 각 이차형식 <span class="math inline">\(Q_j / \sigma^2\)</span> 가 비중심 카이제곱 분포 <span class="math inline">\(\chi_{r_j}^2\left(\lambda_j^2\right)\)</span> 를 따를 필요충분 조건은 다음과 같다.</p>
+<p><span class="math display">\[
+r_1+r_2+\cdots+r_k=n
+\]</span> <span class="math inline">\(\blacksquare\)</span></p>
+</div>
+<p>이제 제곱합의 분포들에 대하여 지금까지 학습한 내용을 정리해보자. 만약 <span class="math inline">\(n\)</span>-차원의 확률벡터 <span class="math inline">\(\pmb {x}\)</span> 가 <span class="math inline">\(N\left(\pmb {\mu}, \sigma^2 \pmb {I}\right)\)</span> 를 따른다고 하고 위의 코크란의 정리와 같이 제곱합의 분해를 고려하자. 다음에 제시된 모든 문장은 서로 동치(equivalent)이다.</p>
+<ol type="1">
+<li>이차형식 <span class="math inline">\(Q_1, Q_2, \ldots, Q_k\)</span> 들이 모두 독립이다.</li>
+<li>모든 <span class="math inline">\(j=1,2, \ldots, k\)</span> 에 대하여 이차형식 <span class="math inline">\(Q_j / \sigma^2\)</span> 가 비중심 카이제곱 분포 <span class="math inline">\(\chi_{r_j}^2\left(\lambda_j^2\right)\)</span> 를 따른다.</li>
+<li><span class="math inline">\(\pmb {A}_1, \pmb {A}_2, \ldots, \pmb {A}_k\)</span> 가 모두 멱등행렬이다.</li>
+<li>모든 <span class="math inline">\(j \neq k\)</span> 에 대하여 <span class="math inline">\(\pmb {A}_j \pmb {A}_k=\pmb {0}\)</span> 이다.</li>
+<li><span class="math inline">\(r_1+r_2+\cdots+r_k=n\)</span></li>
+</ol>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "복사완료!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "복사완료!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../qmd/multivar.html" class="pagination-link" aria-label="다변량 확률변수의 성질">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">다변량 확률변수의 성질</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>통계적 예측모형 - 부록 E — 다변량 확률변수의 성질</title>
+<title>통계적 예측모형 - 2&nbsp; 선형회귀에서의 추론</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -30,8 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../qmd/quadratic.html" rel="next">
-<link href="../qmd/math_vec_cal.html" rel="prev">
+<link href="../qmd/inference2.html" rel="next">
+<link href="../qmd/lse.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -129,7 +129,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/multivar.html"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">다변량 확률변수의 성질</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/inference.html"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">선형회귀에서의 추론</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -171,7 +171,7 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../qmd/inference.html" class="sidebar-item-text sidebar-link">
+  <a href="../qmd/inference.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">선형회귀에서의 추론</span></span></a>
   </div>
 </li>
@@ -222,7 +222,7 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="../qmd/multivar.html" class="sidebar-item-text sidebar-link active">
+  <a href="../qmd/multivar.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">다변량 확률변수의 성질</span></span></a>
   </div>
 </li>
@@ -244,20 +244,19 @@ window.Quarto = {
     <h2 id="toc-title">목차</h2>
    
   <ul class="collapse">
-  <li><a href="#일변량분포" id="toc-일변량분포" class="nav-link active" data-scroll-target="#일변량분포"><span class="header-section-number">E.1</span> 일변량분포</a></li>
-  <li><a href="#확률벡터와-분포" id="toc-확률벡터와-분포" class="nav-link" data-scroll-target="#확률벡터와-분포"><span class="header-section-number">E.2</span> 확률벡터와 분포</a></li>
-  <li><a href="#다변량-정규분포" id="toc-다변량-정규분포" class="nav-link" data-scroll-target="#다변량-정규분포"><span class="header-section-number">E.3</span> 다변량 정규분포</a></li>
-  <li><a href="#표준정규분포로의-변환" id="toc-표준정규분포로의-변환" class="nav-link" data-scroll-target="#표준정규분포로의-변환"><span class="header-section-number">E.4</span> 표준정규분포로의 변환</a></li>
-  <li><a href="#예제" id="toc-예제" class="nav-link" data-scroll-target="#예제"><span class="header-section-number">E.5</span> 예제</a></li>
+  <li><a href="#제곱합의-분포" id="toc-제곱합의-분포" class="nav-link active" data-scroll-target="#제곱합의-분포"><span class="header-section-number">2.1</span> 제곱합의 분포</a></li>
+  <li><a href="#모분산의-추정" id="toc-모분산의-추정" class="nav-link" data-scroll-target="#모분산의-추정"><span class="header-section-number">2.2</span> 모분산의 추정</a></li>
+  <li><a href="#최소제곱-추정량의-성질" id="toc-최소제곱-추정량의-성질" class="nav-link" data-scroll-target="#최소제곱-추정량의-성질"><span class="header-section-number">2.3</span> 최소제곱 추정량의 성질</a></li>
+  <li><a href="#모형의-적합도-검정과-분산분석" id="toc-모형의-적합도-검정과-분산분석" class="nav-link" data-scroll-target="#모형의-적합도-검정과-분산분석"><span class="header-section-number">2.4</span> 모형의 적합도 검정과 분산분석</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/multivar.html"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">다변량 확률변수의 성질</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title"><span id="sec-mulivar" class="quarto-section-identifier">부록 E — 다변량 확률변수의 성질</span></h1>
+<h1 class="title"><span id="sec-inference" class="quarto-section-identifier"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">선형회귀에서의 추론</span></span></h1>
 </div>
 
 
@@ -274,293 +273,264 @@ window.Quarto = {
 </header>
 
 
-<section id="일변량분포" class="level2" data-number="E.1">
-<h2 data-number="E.1" class="anchored" data-anchor-id="일변량분포"><span class="header-section-number">E.1</span> 일변량분포</h2>
-<p>일변량 확률변수 <span class="math inline">\(X\)</span>가 확률밀도함수 <span class="math inline">\(f(x)\)</span>를 가지는 분포를 따를때 기대값과 분산은 다음과 같이 정의된다.</p>
-<p><span class="math display">\[ E(X) = \int x f(x)  dx = \mu, \quad V(X) = E[ X-E(X)]^2=\int (x-\mu)^2 f(x) dx =\sigma^2 \]</span></p>
-<p>새로운 확률변수 <span class="math inline">\(Y\)</span>가 확률변수 <span class="math inline">\(X\)</span>의 선형변환으로 표시된다면 (<span class="math inline">\(a\)</span>와 <span class="math inline">\(b\)</span>는 실수)</p>
-<p><span class="math display">\[ Y = aX+b\]</span></p>
-<p>그 기대값(평균)과 분산은 다음과 같이 계산된다.</p>
+<section id="제곱합의-분포" class="level2" data-number="2.1">
+<h2 data-number="2.1" class="anchored" data-anchor-id="제곱합의-분포"><span class="header-section-number">2.1</span> 제곱합의 분포</h2>
+<p>앞 장의 중회귀 모형 <a href="lse.html#eq-multireg2" class="quarto-xref">식&nbsp;<span>1.10</span></a> 에서 관측값 벡터 <span class="math inline">\(\pmb y\)</span>가 다변량 정규분포 <span class="math inline">\(N(\pmb X \pmb \beta, \sigma^2 \pmb I)\)</span>를 따를 때 회귀계수의 추정량 <span class="math inline">\(\hat {\pmb \beta}=(\pmb X^t \pmb X)^{-1} \pmb X^t \pmb y\)</span> 은 다음과 같은 분포를 따르는 것을 보였다.</p>
+<p><span class="math display">\[ \hat {\pmb \beta} \sim N(\pmb \beta, \sigma^2 (\pmb X^t  \pmb X)^{-1}) \]</span></p>
+<p>반응변수의 추정값을 구하는 식에서 다음과 같은 모자행렬(hat matrix) <span class="math inline">\(\pmb H = \pmb X (\pmb X^t \pmb X)^{-1} \pmb X^t\)</span> 을 정의하자. 여기서 중요한 점은 모자행렬은 대칭인 멱등행렬 (<span class="math inline">\(\pmb H \pmb H =\pmb H\)</span>)이며 이는 모자행렬이 사영행렬임을 의미한다.</p>
+<p><span id="eq-hatmatrix"><span class="math display">\[
+\hat {\pmb y} = \pmb X \hat {\pmb \beta} = \pmb X (\pmb X^t \pmb X)^{-1} \pmb X^t \pmb y = \pmb H \pmb y
+\tag{2.1}\]</span></span></p>
+<section id="잔차제곱합의-분포" class="level3" data-number="2.1.1">
+<h3 data-number="2.1.1" class="anchored" data-anchor-id="잔차제곱합의-분포"><span class="header-section-number">2.1.1</span> 잔차제곱합의 분포</h3>
+<p>이제 제곱합들의 분포를 알아보기로 하자. 먼저 잔차제곱합 <span class="math inline">\(SSE\)</span>를 이차 형식으로 표시해보자.</p>
 <p><span class="math display">\[
 \begin{aligned}
-E(Y) &amp;= E(aX+b) \\
-&amp;= \int (ax+b) f(x) dx \\
-&amp;= a \int x f(x) dx + b \\
-&amp;= a E(X) + b\\
-&amp;= a \mu + b \\
-V(Y) &amp;= Var(aX+b) \\
-&amp;= E[aX+b -E(aX+b)]^2 \\
-&amp;= E[a(X-\mu)]^2 \\
-&amp;= a^2 E(X-\mu)^2\\
-&amp;= a^2 \sigma^2
+SSE &amp; = \sum_{i=1}^n (y_i - \hat y_i) \\
+   &amp; = (\pmb y - \pmb X \hat {\pmb \beta})^t (\pmb y - \pmb X \hat {\pmb \beta}) \\
+   &amp; = (\pmb y - \pmb H \pmb y)^t (\pmb y - \pmb H \pmb y) \\
+   &amp; = \pmb y^t (\pmb I - \pmb H)^t (\pmb I - \pmb H) \pmb y \\
+   &amp; = \pmb y^t (\pmb I - \pmb H) (\pmb I - \pmb H) \pmb y \\
+   &amp; = \pmb y^t (\pmb I - \pmb H) \pmb y \\
 \end{aligned}
 \]</span></p>
-</section>
-<section id="확률벡터와-분포" class="level2" data-number="E.2">
-<h2 data-number="E.2" class="anchored" data-anchor-id="확률벡터와-분포"><span class="header-section-number">E.2</span> 확률벡터와 분포</h2>
-<p>확률벡터 <span class="math inline">\(\pmb X\)</span>가 <span class="math inline">\(p\)</span> 차원의 다변량분포를 따른다고 하고 결합확률밀도함수 <span class="math inline">\(f(\pmb x) =f(x_1,x_2,\dots,x_p)\)</span>를 를 가진다고 하자.</p>
+<p>위의 식에서 <span class="math inline">\(\pmb I - \pmb H\)</span>는 멱등행렬이고 다음이 성립한다.</p>
 <p><span class="math display">\[
-\pmb X =
-  \begin{bmatrix}
-X_1 \\
-X_2 \\
-X_3 \\
-..  \\
-X_p
-\end{bmatrix}
+(\pmb I - \pmb H) \pmb X = \pmb X - \pmb X (\pmb X^t \pmb X)^{-1} \pmb X^t \pmb X = \pmb 0
 \]</span></p>
-<p>다변량 확률벡터의 기대값(평균벡터)과 공분산(행렬)은 다음과 같이 계산된다.</p>
+<p>따라서</p>
 <p><span class="math display">\[
-\pmb E(\pmb X) =
-  \begin{bmatrix}
-E(X_1) \\
-E(X_2) \\
-E(X_3) \\
-..  \\
-E(X_p)
-\end{bmatrix}
-=
-  \begin{bmatrix}
-\mu_1 \\
-\mu_2 \\
-..  \\
-\mu_p
-\end{bmatrix}
-=\pmb \mu
+\pmb \mu^t (\pmb I - \pmb H)  \pmb \mu = \pmb \beta^t \pmb X^t (\pmb I - \pmb H) \pmb X \beta =0
 \]</span></p>
-<p><span class="math display">\[
-V(\pmb X) =Cov(\pmb X) = E (\pmb X-\pmb \mu) (\pmb X-\pmb \mu)^t
-=
-  \begin{bmatrix}
-\sigma_{11} &amp; \sigma_{12} &amp; \dots &amp; \sigma_{1p} \\
-\sigma_{12} &amp; \sigma_{22} &amp; \dots &amp; \sigma_{2p} \\
-&amp; \dots &amp; \dots &amp; \\
-\sigma_{1p} &amp; \sigma_{2p} &amp; \dots &amp; \sigma_{pp} \\
-\end{bmatrix}
-= \pmb \Sigma
-\]</span></p>
-<p>여기서 <span class="math inline">\(\sigma_{ii}=V(X_i)\)</span>, <span class="math inline">\(\sigma_{ij} = Cov(X_i, X_j)=Cov(X_j, X_i)\)</span>이다. 따라서 공분산 행렬 <span class="math inline">\(\pmb \Sigma\)</span>는 대칭행렬(symmetric matrix)이다. 다음 공식은 유용한 공식이다.</p>
-<p><span class="math display">\[ \pmb \Sigma = E (\pmb X-\pmb \mu) (\pmb X-\pmb \mu)^t  = E(\pmb X \pmb X^t)-\pmb \mu \pmb \mu^t \]</span></p>
-<p>두 확률변수의 상관계수 <span class="math inline">\(\rho_{ij}\)</span>는 다음과 같이 정의된다.</p>
-<p><span class="math display">\[ \rho_{ij} = \frac{Cov(X_i, X_j)}{ \sqrt{V(X_i) V(X_j)}} = \frac{\sigma_{ij}}{\sqrt{\sigma_{ii}
-  \sigma_{jj}}} \]</span></p>
-<p>새로운 확률벡터 <span class="math inline">\(\pmb Y\)</span>가 확률벡터 <span class="math inline">\(\pmb X\)</span> 의 선형변환라고 하자.</p>
-<p><span class="math display">\[ \pmb Y = \pmb A  \pmb X + \pmb b \]</span></p>
-<p>단 여기서 <span class="math inline">\(\pmb A = \{ a_{ij} \}\)</span>는 <span class="math inline">\(p \times p\)</span> 실수 행렬이고 <span class="math inline">\(\pmb b =(b_1 b_2 \dots b_p)^t\)</span>는 <span class="math inline">\(p \times 1\)</span> 실수 벡터이다.</p>
-<p>확률벡터 <span class="math inline">\(\pmb Y\)</span>의 기대값(평균벡터)과 공분산은 다음과 같이 계산된다.</p>
+<p>이므로 비중심 모수는 0이다.</p>
+<p>또한</p>
 <p><span class="math display">\[
 \begin{aligned}
-E(\pmb Y ) &amp;= E(\pmb A \pmb X+ \pmb b) \\
-&amp;= \pmb A E(\pmb X)+ \pmb b \\
-&amp;= \pmb A \pmb \mu+ \pmb b \\
-V(\pmb Y) &amp;= Var(\pmb A \pmb X+ \pmb b) \\
-&amp;= E[\pmb A \pmb X+ \pmb b -E(\pmb A \pmb X+ \pmb b)] [\pmb A \pmb X+ \pmb b -E(\pmb A \pmb X+ \pmb b)]^t \\
-&amp;= E[\pmb A \pmb X -  \pmb A \pmb \mu] [\pmb A \pmb X -  \pmb A \pmb \mu]^t \\
-&amp;= E[\pmb A (\pmb X - \pmb \mu)] [\pmb A (\pmb X - \pmb \mu)]^t \\
-&amp;= \pmb A E [(\pmb X - \pmb \mu) (\pmb X - \pmb \mu)^t] \pmb A^t \\
-&amp;= \pmb A \pmb \Sigma \pmb A^t
+r(\pmb I - \pmb H) &amp; = tr(\pmb I - \pmb H) \\
+&amp; = tr(\pmb I_n) - tr \left [ \pmb X (\pmb X^t \pmb X)^{-1} \pmb X^t \right ] \\
+&amp; = n-tr \left [ (\pmb X^t \pmb X)^{-1} \pmb X^t \pmb X \right ]
+\\
+&amp;= n-tr (\pmb I_p ) \\
+&amp; = n-p
 \end{aligned}
 \]</span></p>
-<p>만약 표본 <span class="math inline">\(\pmb X_i, \pmb X_2, \dots, \pmb X_n\)</span> 이 독립적으로 평균이 <span class="math inline">\(\pmb \mu\)</span> 이고 공분산이 <span class="math inline">\(\pmb \Sigma\)</span> 인 분포에서 추출되었다면 표본의 평균벡터 <span class="math inline">\(\bar {\pmb  X}\)</span> 는 평균이 <span class="math inline">\(\pmb \mu\)</span> 이고 공분산이 <span class="math inline">\(\frac{1}{n}\pmb \Sigma\)</span> 인 분포를 따른다.</p>
-<p><span class="math display">\[
-\bar {\pmb X} =
-  \begin{bmatrix}
-\sum_{i=1}^n X_{i1} / n  \\
-\sum_{i=1}^n X_{i2} / n \\
-\sum_{i=1}^n X_{i3} / n \\
-..  \\
-\sum_{i=1}^n X_{ip} / n
-\end{bmatrix}
-\]</span></p>
-<p>여기서 <span class="math inline">\(X_{ij}\)</span> 는 <span class="math inline">\(i\)</span>번째 표본벡터 <span class="math inline">\(\pmb X_i =(X_{i1} X_{i2} \dots X_{ip})^t\)</span>의 <span class="math inline">\(j\)</span>번째 확률변수이다.</p>
+<p>이므로 부록의 정리에 의하여 <span class="math inline">\(SSE\)</span>는 다음과 같이 중심 카이제곱 분포를 따른다.</p>
+<p><span id="eq-distsse"><span class="math display">\[
+\frac{SSE}{\sigma^2} \sim \chi^2(n-p)
+\tag{2.2}\]</span></span></p>
 </section>
-<section id="다변량-정규분포" class="level2" data-number="E.3">
-<h2 data-number="E.3" class="anchored" data-anchor-id="다변량-정규분포"><span class="header-section-number">E.3</span> 다변량 정규분포</h2>
-<p>일변량 확률변수 <span class="math inline">\(X\)</span>가 평균이 <span class="math inline">\(\mu\)</span> 이고 분산이 <span class="math inline">\(\sigma^2\)</span>인 정규분포를 따른다면 다음과 같이 나타내고 <span class="math display">\[ X \sim N(\mu, \sigma^2 ) \]</span> 확률밀도함수 <span class="math inline">\(f(x)\)</span> 는 다음과 갇이 주어진다.</p>
-<p><span class="math display">\[ f(x) = (2 \pi \sigma^2)^{-1/2} \exp \left ( - \frac{(x-\mu)^2}{2} \right ) \]</span></p>
-<p><span class="math inline">\(p\)</span>-차원 확률벡터 <span class="math inline">\(\pmb X\)</span>가 평균이 <span class="math inline">\(\pmb \mu\)</span> 이고 공분산이 <span class="math inline">\(\pmb \Sigma\)</span>인 다변량 정규분포를 따른다면 다음과 같이 나타내고 <span class="math display">\[ \pmb X \sim N_p(\pmb \mu, \pmb \Sigma ) \]</span> 확률밀도함수 <span class="math inline">\(f(\pmb x)\)</span> 는 다음과 갇이 주어진다.</p>
-<p><span class="math display">\[ f(\pmb x) = (2 \pi)^{-p/2} | \pmb \Sigma|^{-1/2}
-   \exp \left ( - \frac{(\pmb x-\pmb \mu) \pmb \Sigma^{-1}(\pmb x-\pmb \mu)^t}{2} \right ) \]</span></p>
-<p>다변량 정규분포 <span class="math inline">\(N(\pmb \mu, \pmb \Sigma)\)</span>를 따르는 확률벡터 <span class="math inline">\(\pmb X\)</span>를 다음과 같이 두 부분으로 나누면</p>
+<section id="회귀제곱합의-분포" class="level3" data-number="2.1.2">
+<h3 data-number="2.1.2" class="anchored" data-anchor-id="회귀제곱합의-분포"><span class="header-section-number">2.1.2</span> 회귀제곱합의 분포</h3>
+<p>다음으로 회귀제곱합 <span class="math inline">\(SSR\)</span>의 분포를 유도해보자.</p>
 <p><span class="math display">\[
-  \pmb X =
-    \begin{bmatrix}
-  \pmb X_1 \\
-  \pmb X_2
-  \end{bmatrix}, \quad
-  \pmb X_1 =
-    \begin{bmatrix}
-  \pmb X_{11} \\
-  \pmb X_{12} \\
-  \pmb \vdots \\
-  \pmb X_{1p}
-  \end{bmatrix}, \quad
-  \pmb X_2=
-    \begin{bmatrix}
-  \pmb X_{21} \\
-  \pmb X_{22} \\
-  \pmb \vdots \\
-  \pmb X_{2q}
-  \end{bmatrix}
-  \]</span></p>
-<p>각각 다변량 정규분포를 따르고 다음과 같이 나타낼 수 있다.</p>
-<p><span class="math display">\[
-  \begin{bmatrix}
-  E(\pmb X_1) \\
-  E(\pmb X_2)
-  \end{bmatrix}
-  =
-    \begin{bmatrix}
-  \pmb \mu_1 \\
-  \pmb \mu_2
-  \end{bmatrix}
-  , \quad
-  \begin{bmatrix}
-  V(\pmb X_1) &amp; Cov(\pmb X_1, X_2) \\
-  Cov(\pmb X_2 X_1) &amp; V(\pmb X_2)
-  \end{bmatrix}
-  =
-    \begin{bmatrix}
-  \pmb \Sigma_{11} &amp; \pmb \Sigma_{12} \\
-  \pmb \Sigma^t_{12} &amp; \pmb \Sigma_{22}
-  \end{bmatrix}
-  \]</span></p>
-<p><span class="math display">\[  \pmb X =
-    \begin{bmatrix}
-  \pmb X_1 \\
-  \pmb X_2
-  \end{bmatrix}
-  \sim
-  N_{p+q} \left (
-    \begin{bmatrix}
-    \pmb \mu_1 \\
-    \pmb \mu_2
-    \end{bmatrix}
-    ,\begin{bmatrix}
-    \pmb \Sigma_{11} &amp; \Sigma_{12} \\
-    \pmb \Sigma^t_{12} &amp; \Sigma_{22}
-    \end{bmatrix}
-    \right )
-  \]</span></p>
-<p>확률벡터 <span class="math inline">\(\pmb X_2 = \pmb x_2\)</span>가 주어진 경우 <span class="math inline">\(\pmb X_1\)</span>의 조건부 분포는 <span class="math inline">\(p\)</span>-차원 다변량 정규분포를 따르고 평균과 공분산은 다음과 같다.</p>
-<p><span class="math display">\[
-  E(\pmb X_1 | \pmb X_2 = \pmb x_2 ) = \pmb \mu_1 + \pmb \Sigma_{12} \pmb \Sigma^{-1}_{22} (\pmb \mu_2 - \pmb x_2), \quad
-  V(\pmb X_1 | \pmb X_2 = \pmb x_2 )  = \pmb \Sigma_{11} -\pmb \Sigma_{12} \pmb \Sigma^{-1}_{22} \pmb \Sigma^t_{12}
-  \]</span></p>
-<p>예를 들어 <span class="math inline">\(2\)</span>-차원 확률벡터 <span class="math inline">\(\pmb X=(X_1, X_2)^t\)</span>가 평균이 <span class="math inline">\(\pmb \mu=(\mu_1,\mu_2)^t\)</span> 이고 공분산 <span class="math inline">\(\pmb \Sigma\)</span>가 다음과 같이 주어진</p>
-<p><span class="math display">\[
-\pmb \Sigma =
-  \begin{bmatrix}
-\sigma_{11} &amp; \sigma_{12} \\
-\sigma_{12} &amp; \sigma_{22}
-\end{bmatrix}
-\]</span></p>
-<p>이변량 정규분포를 따른다면 확률밀도함수 <span class="math inline">\(f(\pmb x)\)</span>에서 <span class="math inline">\(\exp\)</span>함수의 인자는 다음과 같이 주어진다. <span class="math display">\[
 \begin{aligned}
-&amp;(\pmb x-\pmb \mu) \pmb \Sigma^{-1}(\pmb x-\pmb \mu)^t
-= \\
-&amp;-\frac{1}{2 (1-\rho^2)}
-\left [
-  \left ( \frac{(x_1-\mu_1)^2}{\sigma_{11}} \right )
-  +\left ( \frac{(x_2-\mu_2)^2}{\sigma_{22}} \right )
-  -2 \rho \left ( \frac{(x_1-\mu_1)}{\sqrt{\sigma_{11}}} \right )
-  \left ( \frac{(x_2-\mu_2)}{\sqrt{\sigma_{22}}} \right )
-  \right ]
+SSR &amp; = \sum_{i=1}^n (\hat y_i - \bar y) \\
+   &amp; = (\pmb X \hat {\pmb \beta} - \bar y \pmb 1 )^t (\pmb X \hat {\pmb \beta} - \bar y \pmb 1 ) \\
+   &amp; = \left ( \pmb X \hat {\pmb \beta} -  \pmb 1 (\pmb 1^t \pmb y)/n \right )^t   \left ( \pmb X \hat {\pmb \beta} -  \pmb 1 (\pmb 1^t \pmb y)/n \right )\\
+   &amp; = \left ( \pmb H \pmb y-  \tfrac{1}{n} \pmb 1 \pmb 1^t \pmb y \right )^t   \left ( \pmb H \pmb y-  \tfrac{1}{n} \pmb 1 \pmb 1^t \pmb y \right ) \\
+    &amp; =  \pmb y^t \left ( \pmb H  -  \tfrac{1}{n} \pmb J \right )^t   \left ( \pmb H  -  \tfrac{1}{n} \pmb J \right ) \pmb y \\
+    &amp; = \pmb y^t \left ( \pmb H  -  \tfrac{1}{n} \pmb J \right )   \left ( \pmb H  -  \tfrac{1}{n} \pmb J \right ) \pmb y \\
+     &amp; = \pmb y^t  \left ( \pmb H  -  \tfrac{1}{n} \pmb J \right ) \pmb y \\
 \end{aligned}
 \]</span></p>
-<p>그리고 <span class="math inline">\(p=2\)</span>인 경우 확률밀도함수의 상수부분은 다음과 같이 주어진다.</p>
-<p><span class="math display">\[ (2 \pi)^{-p/2} | \pmb \Sigma|^{-1/2} = \frac{1}{ 2 \pi \sqrt{\sigma_{11} \sigma_{22} (1-\rho^2)}} \]</span></p>
-<p>여기서 <span class="math inline">\(\rho = \sigma_{12} / \sqrt{\sigma_{11} \sigma_{22}}\)</span></p>
-<p>만약 <span class="math inline">\(X_2 = x_2\)</span>가 주어졌을 때 <span class="math inline">\(X_1\)</span>의 조건부 분포는 정규분포이고 평균과 분산은 다음과 같이 주어진다.</p>
+<p>위의 유도식에서 다음 두 가지 성질을 이용하였다. 첫 번째 성질은 모자행렬이 사영행렬이며 모자행렬이 투영하는 공간은 일벡터 <span class="math inline">\(\pmb 1\)</span>을 포함한 공간이다. 이는 계획 행렬 <span class="math inline">\(\pmb X\)</span>의 첫 번째 열이 절편에 대한 값으로 모두 1인 것 때문이다. 따라서</p>
 <p><span class="math display">\[
-  E( X_1 |  X_2 =  x_2 ) =  \mu_1 +  \frac{\sigma_{12}}{\sigma_{22}} ( \mu_2 -  x_2)  = \mu_1 +  \rho \frac{\sqrt{\sigma_{11}}}{\sqrt{\sigma_{22}}} ( \mu_2 -  x_2) \]</span></p>
-<p><span class="math display">\[
-  V( X_1 |  X_2 =  x_2 )  =  \sigma_{11} - \frac{\sigma^2_{12}}{\sigma_{22}}  = \sigma_{11}(1-\rho^2)
+\begin{aligned}
+\pmb H \pmb J &amp; =  \pmb H  \pmb 1 \pmb 1^t \\
+   &amp; =  [ \pmb H  \pmb 1 ]  \pmb 1^t \\
+  &amp; = \left [  \pmb X (\pmb X^t \pmb X)^{-1} \pmb X^t  \pmb 1 \right ] \pmb 1^t \\
+  &amp; =  \pmb 1 \pmb 1^t \\
+  &amp; = \pmb J  
+\end{aligned}
 \]</span></p>
-<p>다변량 정규분포에서 공분산이 0인 두 확률 변수는 독립이다. <span class="math display">\[ \sigma_{ij} = 0 \leftrightarrow X_i \text{ and } X_j \text{ are independent} \]</span></p>
-</section>
-<section id="표준정규분포로의-변환" class="level2" data-number="E.4">
-<h2 data-number="E.4" class="anchored" data-anchor-id="표준정규분포로의-변환"><span class="header-section-number">E.4</span> 표준정규분포로의 변환</h2>
-<p>일변량 확률변수 <span class="math inline">\(X\)</span>가 평균이 <span class="math inline">\(\mu\)</span> 이고 분산이 <span class="math inline">\(\sigma^2\)</span>인 경우 다음과 같은 선형변환을 고려하면.</p>
-<p><span class="math display">\[ Z = \frac{X - \mu}{\sigma} = (\sigma^2)^{-1/2} (X-\mu) \]</span> 확률변수 <span class="math inline">\(Z\)</span> 는 평균이 <span class="math inline">\(0\)</span> 이고 분산이 <span class="math inline">\(1\)</span>인 분포를 따른다.</p>
-<p><span class="math inline">\(p\)</span>차원 확률벡터 <span class="math inline">\(\pmb X\)</span> 가 평균이 <span class="math inline">\(\pmb \mu\)</span> 이고 공분산이 <span class="math inline">\(\pmb \Sigma\)</span>인 분포를 가진다고 가정하자. 공분산 행렬 <span class="math inline">\(\pmb \Sigma\)</span>는 양정치 행렬(positive definite matrix)이며 다음과 같은 행렬의 분해가 가능하다.</p>
-<p><span class="math display">\[ \Sigma = \pmb C \pmb C^t \]</span></p>
-<p>여기서 <span class="math inline">\(\pmb C\)</span> 는 정칙행렬이며 역행렬 <span class="math inline">\(\pmb C^{-1}\)</span>가 존재한다. 위와 같은 행렬의 분해는 스펙트럴 분해(spectral decomposition)을 이용하여 구할 수 있다. 공분산 행렬 <span class="math inline">\(\pmb \Sigma\)</span>는 양정치 행렬이므로 고유치(eigen value) <span class="math inline">\((\lambda_1, \lambda_2,\dots, \lambda_p)\)</span>가 모두 양수이고 정규직교 고유벡터(orthonormal eigen vector)의 행렬 <span class="math inline">\(\pmb P\)</span>을 이용하여 다음과 같은 분해가 가능하다.</p>
-<p><span class="math display">\[ \Sigma = \pmb P \pmb \Lambda \pmb P^t = \pmb P \pmb \Lambda^{1/2} \Lambda^{1/2} \pmb P^t \]</span></p>
-<p>여기서 <span class="math inline">\(\pmb \Lambda\)</span>는 고유치 <span class="math inline">\((\lambda_1, \lambda_2,\dots, \lambda_p)\)</span>를 대각원소로 가지는 대각행렬이며 <span class="math inline">\(\pmb \Lambda^{1/2}\)</span>는 고유치의 제곱근을 대각원소로 가지는 대각행렬이다. 따라서 <span class="math inline">\(\pmb C = \pmb P \pmb \Lambda^{1/2}\)</span>로 하면 위와 같은 행렬의 분해가 가능하다. 정규직교 고유벡터(orthonormal eigen vector)의 행렬 <span class="math inline">\(\pmb P\)</span>는 직교행렬이므로</p>
-<p><span class="math display">\[ \pmb C^{-1} =  (\pmb P \pmb \Lambda^{1/2})^{-1} = \pmb \Lambda^{-1/2} \pmb P^t \]</span></p>
-<p><span class="math inline">\(p\)</span>차원 확률벡터 <span class="math inline">\(\pmb X\)</span>의 다음과 같은 선형변환을 고려하면. <span class="math display">\[ \pmb Z = \pmb C^{-1} ( \pmb X- \pmb \mu) = \pmb \Lambda^{-1/2} \pmb P^t ( \pmb X- \pmb \mu)  \]</span> 확률벡터 <span class="math inline">\(\pmb Z\)</span> 는 평균이 <span class="math inline">\(\pmb 0\)</span> 이고 공분산이 <span class="math inline">\(\pmb I\)</span>인 분포를 따른다 (why?).</p>
-<p>확률벡터 <span class="math inline">\(\pmb X\)</span>가 정규분포를 따른다면 선형변환한 확률벡터 <span class="math inline">\(\pmb Z\)</span>도 정규분포를 따른다.</p>
-</section>
-<section id="예제" class="level2" data-number="E.5">
-<h2 data-number="E.5" class="anchored" data-anchor-id="예제"><span class="header-section-number">E.5</span> 예제</h2>
-<p>예를 들어 이변량확률벡터 <span class="math inline">\(\pmb X\)</span>가 다음과 같은 평균벡터와 공분산을 가진 정규분포를 따른다고 하자</p>
+<p>두 번째로 다음과 같이 <span class="math inline">\(\pmb J \pmb J = n \pmb J\)</span>이므로 <span class="math inline">\(\tfrac{1}{n} \pmb J\)</span>는 멱등행렬이다.</p>
 <p><span class="math display">\[
-\pmb \mu =
-  \begin{bmatrix}
-1\\
-2
-\end{bmatrix}
-\quad
-\pmb \Sigma =
-  \begin{bmatrix}
-2 &amp; 1\\
-1 &amp; 2
-\end{bmatrix}
+\begin{aligned}
+   \pmb J \pmb J &amp; =   \pmb 1 \pmb 1^t   \pmb 1 \pmb 1^t \\
+     &amp; =  \pmb 1   [ \pmb 1^t  \pmb 1 ]  \pmb 1^t \\
+    &amp; = \pmb 1   [ n ]  \pmb 1^t \\
+    &amp; =  n \pmb 1 \pmb 1^t \\
+    &amp; =  n \pmb J  
+\end{aligned}
 \]</span></p>
-<p>공분산행렬 <span class="math inline">\(\pmb \sigma\)</span>의 고유치는 <span class="math inline">\(|\pmb \sigma -\lambda \pmb I|=0\)</span>의 방정식을 풀어 구할 수 있다.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+노트
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>참고로 평균모형 <a href="lse.html#eq-meanmodel" class="quarto-xref">식&nbsp;<span>1.7</span></a> 에서 <span class="math inline">\(\pmb X = \pmb 1\)</span>으므로 이 경우 모자행렬이 다음과 같다.</p>
+<p><span class="math display">\[ H_0 = \pmb 1 ({\pmb 1}^t \pmb 1)^{-1} {\pmb 1}^t = \tfrac{1}{n} \pmb J \]</span></p>
+</div>
+</div>
+<p>다음으로 비중심 모수를 유도하자.</p>
 <p><span class="math display">\[
-|\pmb \sigma -\lambda \pmb I|  =
-  \begin{bmatrix}
-2-\lambda &amp; 1\\
-1 &amp; 2-\lambda
-\end{bmatrix}
-= \lambda^2 -4 \lambda +3=0
-\]</span></p>
-<p>방정식을 풀면 고유치는 <span class="math inline">\((\lambda_1, \lambda_2) = (3,1)\)</span>이다. 각 고유치에 대한 고유벡터 <span class="math inline">\(\pmb p=(p_1, p_2)^t\)</span>는 <span class="math inline">\(\pmb \Sigma \pmb p = \lambda \pmb p\)</span> 으로 구할 수 있다. 각 고유치에 대하여 방정식을 구하면 다음 두 개의 방정식을 얻을 수 있다.</p>
-<p><span class="math display">\[
-p_1 - p_2 = 1 \text{ and } p_1 + p_2 = 0
-\]</span></p>
-<p>정규직교 벡터의 조건을 만족 시키기 위해서 <span class="math inline">\(p^2_1 + p^2_2=1\)</span>의 조건을 적용하면 다음과 같은 정규직교 고유행렬을 얻을 수 있다.</p>
-<p><span class="math display">\[
-\pmb P =
-  \begin{bmatrix}
-\frac{1}{\sqrt{2}} &amp; -\frac{1}{\sqrt{2}}\\
-\frac{1}{\sqrt{2}} &amp; \frac{1}{\sqrt{2}}
-\end{bmatrix}
+\begin{aligned}
+\pmb \mu^t \left ( \pmb H  -  \tfrac{1}{n} \pmb J \right )  \pmb \mu
+  &amp; =  \pmb \beta^t  \pmb X^t \left ( \pmb H  -  \tfrac{1}{n} \pmb J \right ) \pmb X \pmb \beta  \\
+  &amp; =  \pmb \beta^t  \left ( \pmb X^t \pmb H \pmb X -  \tfrac{1}{n} \pmb X^t  \pmb J \pmb X \right )  \pmb \beta  \\
+&amp; =  \pmb \beta^t  \left ( \pmb X^t \pmb X -  \tfrac{1}{n} \pmb X^t  \pmb J \pmb X \right )  \pmb \beta  \\
+&amp; =  \pmb \beta^t \pmb X^t  \left ( \pmb I -  \tfrac{1}{n}  \pmb J \right )  \pmb X \pmb \beta  \\
+&amp; \equiv \delta(\pmb \beta)
+\end{aligned}
 \]</span></p>
 <p>또한</p>
 <p><span class="math display">\[
-\pmb \Lambda =
-  \begin{bmatrix}
-3 &amp; 0\\
-0 &amp; 1
-\end{bmatrix}
-\quad
-\pmb \Lambda^{1/2} =
-  \begin{bmatrix}
-\sqrt{3} &amp; 0\\
-0 &amp; 1
-\end{bmatrix}
+\begin{aligned}
+r\left ( \pmb H  -  \tfrac{1}{n} \pmb J \right )  
+      &amp; = tr(\pmb H) - tr \left [ \tfrac{1}{n} \pmb J \right ]  \\
+      &amp; = p -\tfrac{1}{n} tr (\pmb 1 \pmb 1^t) \\
+      &amp; = p -\tfrac{1}{n} tr ( \pmb 1^t \pmb 1) \\
+      &amp;=  p -\tfrac{1}{n} n \\
+      &amp; = p-1 \\
+      &amp; = p-1
+\end{aligned}
 \]</span></p>
-<p>따라서 <span class="math inline">\(C^{-1} =  \Lambda^{-1/2} \pmb P^t\)</span> 이며</p>
+<p>위의 결과를 종합하면 회귀제곱합 <span class="math inline">\(SSR\)</span>은 다음과 같은 분포를 따른다.</p>
+<p><span id="eq-distssr"><span class="math display">\[
+\frac{SSR}{\sigma^2} \sim \chi^2(p-1, \lambda^2),
+\tag{2.3}\]</span></span></p>
+<p>위에서 비중심 모수는 다음과 같다.</p>
+<p><span id="eq-noncentral"><span class="math display">\[
+  \lambda^2 = \tfrac{1}{\sigma^2} \delta(\pmb \beta) =
+\tfrac{1}{\sigma^2} \pmb \beta^t \pmb X^t  \left ( \pmb I -  \tfrac{1}{n}  \pmb J \right )  \pmb X \pmb \beta
+\tag{2.4}\]</span></span></p>
+</section>
+<section id="잔차제곱합과-회귀제곱합의-독립" class="level3" data-number="2.1.3">
+<h3 data-number="2.1.3" class="anchored" data-anchor-id="잔차제곱합과-회귀제곱합의-독립"><span class="header-section-number">2.1.3</span> 잔차제곱합과 회귀제곱합의 독립</h3>
+<p>잔차제곱합과 회귀제곱합에서 나타난 이차형식의 두 멱등행렬의 곱은 <span class="math inline">\(\pmb 0\)</span>이다.</p>
 <p><span class="math display">\[
-\pmb C^{-1} =
-  \pmb \Lambda^{-1/2} \pmb P^t =
-  \begin{bmatrix}
-\frac{1}{\sqrt{3}} &amp; 0\\
-0 &amp; 1
-\end{bmatrix}
-\begin{bmatrix}
-\frac{1}{\sqrt{2}} &amp; \frac{1}{\sqrt{2}}\\
--\frac{1}{\sqrt{2}} &amp; \frac{1}{\sqrt{2}}
-\end{bmatrix}
-=
-  \begin{bmatrix}
-\frac{1}{\sqrt{6}} &amp; \frac{1}{\sqrt{6}}\\
--\frac{1}{\sqrt{2}} &amp; \frac{1}{\sqrt{2}}
-\end{bmatrix}
+\begin{aligned}
+(\pmb I - \pmb H) \left ( \pmb H  -  \tfrac{1}{n} \pmb J \right )  
+&amp; = \pmb H -  \tfrac{1}{n} \pmb J  - \pmb H \pmb H  + \tfrac{1}{n} \pmb H \pmb J \\
+  &amp; = \pmb H -  \tfrac{1}{n} \pmb J  -  \pmb H  + \tfrac{1}{n}  \pmb J \\
+  &amp; = \pmb 0
+\end{aligned}
 \]</span></p>
+<p>따라서 부록의 정리에 의하여 잔차제곱합(<span class="math inline">\(SSE\)</span>)과 회귀제곱합(<span class="math inline">\(SSR\)</span>)은 서로 독립이다.</p>
+</section>
+<section id="총제곱합의-분포" class="level3" data-number="2.1.4">
+<h3 data-number="2.1.4" class="anchored" data-anchor-id="총제곱합의-분포"><span class="header-section-number">2.1.4</span> 총제곱합의 분포</h3>
+<p>총제곱합 <span class="math inline">\(SST\)</span>의 분포는 위의 결과들을 이용하면 쉽게 구할 수 있다.</p>
+<p><span class="math display">\[
+SST = \sum_{i=1}^n (y_i - \bar y)^2 = \pmb y^t  \left ( \pmb I -  \tfrac{1}{n}  \pmb J \right ) \pmb y
+\]</span></p>
+<p>위의 결과를 종합하면 회귀제곱합 <span class="math inline">\(SST\)</span>은 다음과 같은 분포를 따른다.</p>
+<p><span id="eq-distsst"><span class="math display">\[
+\frac{SST}{\sigma^2} \sim \chi^2(n-1, \lambda^2),
+\tag{2.5}\]</span></span></p>
+<p>위에서 비중심 모수 <span class="math inline">\(\lambda^2\)</span>은 식 <a href="#eq-noncentral" class="quarto-xref">식&nbsp;<span>2.4</span></a> 과 같다.</p>
+</section>
+</section>
+<section id="모분산의-추정" class="level2" data-number="2.2">
+<h2 data-number="2.2" class="anchored" data-anchor-id="모분산의-추정"><span class="header-section-number">2.2</span> 모분산의 추정</h2>
+<p>최소제곱법을 통해서 회귀분석을 실시하였을때 우리는 적합된 회귀선이 얼마나 실제 관측값들을 잘 설명하고 있는지를 파악하는 것이 모형의 유용성을 판단하는데 중요한 작업이다. 즉, 적합된 회귀선이 관측값을 예측할 때의 변동성을 측정하는 것이 중요하다. 그 변동의 정도를 나타내는 것이 모분산 <span class="math inline">\(\sigma^2\)</span>의 추정이다.</p>
+<p>식 <a href="#eq-distsse" class="quarto-xref">식&nbsp;<span>2.2</span></a> 에 나타난 잔차제곱합의 분포를 이용하면 다음과 같은 결과를 얻는다.</p>
+<p><span class="math display">\[ E \left [ \frac{SSE}{\sigma^2} \right ] = n-p \]</span></p>
+<p>위의 방정식에 적률법(Method of Moments)를 적용하면 모분산 <span class="math inline">\(\sigma^2\)</span>에 대한 불편추정량을 얻을 수 있다. 평균 잔차 제곱합(mean residual sum of square; <span class="math inline">\(S^2\)</span> 또는 MSE)를 다음과 같이 정의하자.</p>
+<p><span id="eq-rss"><span class="math display">\[
+MSE = \frac{SSE}{n-p} = \frac{\sum r^2_i}{n-p}  = \frac{\sum(y_i-\hat y_i)^2}{n-p} \equiv s^2
+\tag{2.6}\]</span></span></p>
+<p><span class="math inline">\(S^2=MSE\)</span>은 모분산의 불편 추정량이다.</p>
+<p><span class="math display">\[ E(s^2) = E(MSE) =\sigma^2 \]</span></p>
+<p>모분산의 추정량이 작을수록 관측값 <span class="math inline">\(y\)</span>의 변동 중 회귀식이 설명할 수 변동이 크다는 것을 나타낸다. 관측값들이 회귀식으로부터 멀리 떨어져 있으면 <span class="math inline">\(MSE\)</span> 는 커진다.</p>
+<p>회귀계수들의 공분산을 추정하는 경우에도 <span class="math inline">\(s^2\)</span>이 사용된다.</p>
+<p><span class="math display">\[ \hat V ( \hat {\pmb \beta }) = \hat \sigma^2 (\pmb X^t \pmb X)^{-1} = s^2(\pmb X^t \pmb X)^{-1} \]</span></p>
+</section>
+<section id="최소제곱-추정량의-성질" class="level2" data-number="2.3">
+<h2 data-number="2.3" class="anchored" data-anchor-id="최소제곱-추정량의-성질"><span class="header-section-number">2.3</span> 최소제곱 추정량의 성질</h2>
+<p>최소제곱 추정량의 분포에 대한 성질은 다음과 같다.</p>
+<ul>
+<li><p><span class="math inline">\(\hat {\pmb \beta} \sim N(\pmb \beta, \sigma^2 (\pmb X^t \pmb X)^{-1} )\)</span></p></li>
+<li><p><span class="math inline">\(\hat {\pmb \beta}\)</span>와 <span class="math inline">\(SSE\)</span>는 독립이다.</p></li>
+<li><p>잔차제곱합(<span class="math inline">\(SSE\)</span>)과 회귀제곱합(<span class="math inline">\(SSR\)</span>)은 서로 독립이다.</p></li>
+<li><p><span class="math inline">\(SSE/\sigma^2\)</span>는 자유도가 <span class="math inline">\(n-p\)</span>인 카이제곱 분포를 따른다.</p></li>
+<li><p><span class="math inline">\((\hat {\pmb \beta} -\pmb \beta)^t (\pmb X^t \pmb X) (\hat {\pmb \beta} -\pmb \beta) /\sigma^2\)</span> 는 자유도가 <span class="math inline">\(p\)</span>인 카이제곱분포를 따른다.</p></li>
+</ul>
+</section>
+<section id="모형의-적합도-검정과-분산분석" class="level2" data-number="2.4">
+<h2 data-number="2.4" class="anchored" data-anchor-id="모형의-적합도-검정과-분산분석"><span class="header-section-number">2.4</span> 모형의 적합도 검정과 분산분석</h2>
+<p>회귀식을 적합하고 가장 먼저 고려해야할 사항은 적합된 회귀식이 유의한 의미를 가지는지 알아보는 것이다. 회귀식이 가지고 있는 의미는 설명변수의 변화에 따라서 반응변수가 변한다는 것이다. 따라서 회귀 모형이 유의하다는 것은 최소한 하나 이상의 설명변수가 반응변수의 변화를 예측하는데 의미가 있다는 것을 뜻한다. 모든 회귀계수의 값이 0이면 반응변수를 예측하는데 모든 설명변수가 필요가 없다는 것을 의미한다. 이러한 무의미한 모형은 앞장에서 나온 평균모형 <a href="lse.html#eq-meanmodel" class="quarto-xref">식&nbsp;<span>1.7</span></a> 이다.</p>
+<p>이제 제시된 회귀식이 유의한 지에 대한 검정은 다음과 같은 두 가설 중 하나를 선택하는 것이다.</p>
+<p><span class="math display">\[
+H_0: \text{mean model} \quad vs. \quad H_1: \text{ not } H_0
+\]</span></p>
+<p>위의 가설을 바꾸어 쓰면 선형 회귀모형의 유의성 또는 적합도을 검정하는 가설이 된다.</p>
+<p><span id="eq-anovahypo"><span class="math display">\[
+H_0: \beta_1 = \beta_2 = \cdots = \beta_{p-1} =0 \quad vs. \quad H_1: \text{ At least one of } \beta_i \text{ is not equal to } 0
+\tag{2.7}\]</span></span></p>
+<p>위의 가설 <a href="#eq-anovahypo" class="quarto-xref">식&nbsp;<span>2.7</span></a> 를 검정하는 방법이 분산분석표를 이용한 F-검정이다.</p>
+<p>가설 <a href="#eq-anovahypo" class="quarto-xref">식&nbsp;<span>2.7</span></a> 에서 귀무가설 <span class="math inline">\(H_0\)</span>가 참인 경우는</p>
+<p><span class="math display">\[
+\pmb X \pmb \beta = [ \pmb 1 ~ \pmb x_1 ~ \dots ~ \pmb x_{p-1} ]
+\begin{bmatrix}
+\beta_0 \\
+0 \\
+\vdots \\
+0
+\end{bmatrix}
+=\beta_0 \pmb 1
+\]</span></p>
+<p>이 성립하여 식 <a href="#eq-noncentral" class="quarto-xref">식&nbsp;<span>2.4</span></a> 에 나타난 비중심 모수가 0이 된다.</p>
+<p><span class="math display">\[  \lambda^2 = \tfrac{1}{\sigma^2} \pmb \beta^t \pmb X^t  \left ( \pmb I -  \tfrac{1}{n}  \pmb J \right )  \pmb X \pmb \beta = \tfrac{\beta_0^2}{\sigma^2}  \pmb 1^t \left ( \pmb I -  \tfrac{1}{n}  \pmb J \right )  \pmb 1 =  \pmb 0
+\]</span></p>
+<p>따라서 귀무가설에서는 회귀제곱합이 자유도가 <span class="math inline">\(p-1\)</span>인 중신ㅁ 카이제곱 분포를 따르게 되고 잔차제곱합과 독립이므로 다음의 통계량 <span class="math inline">\(F_0\)</span>가 자유도가 <span class="math inline">\(p-1\)</span>가ㅗ <span class="math inline">\(n-p\)</span>를 가지는 F-분포를 따른다.</p>
+<p><span id="eq-fstat"><span class="math display">\[
+F_0 = \frac{ SSR/(p-1)}{SSE/(n-p)} = \frac{MSR}{MSE} \sim F(p-1, n-p) \quad \text{ under } H_0
+\tag{2.8}\]</span></span></p>
+<p>따라서 위의 검정 통계량의 p-값이 유의수준보다 크면 적합성 검정에 대한 가설 <a href="#eq-anovahypo" class="quarto-xref">식&nbsp;<span>2.7</span></a> 의 귀무가설을 기각한다. 귀무가설의 기각은 회귀모형의 계수 중 적어도 하나는 0이 아니므로 회귀 모형이 유의하다는 의미이다.</p>
+<p>위에서 안급한 F-검정을 위한 통계량들은 다음과 같은 분산분석(Analysis of Variance; ANOVA) 표를 사용하면 쉽게 계산할 수 있다.</p>
+<table class="table">
+<caption>적합도 검정을 위한 분산분석표</caption>
+<colgroup>
+<col style="width: 8%">
+<col style="width: 11%">
+<col style="width: 11%">
+<col style="width: 17%">
+<col style="width: 34%">
+<col style="width: 17%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>요인</th>
+<th>제곱합</th>
+<th>자유도</th>
+<th>평균제곱합</th>
+<th>F-통계량</th>
+<th>p-값</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>회귀</td>
+<td><span class="math inline">\(SSR\)</span></td>
+<td><span class="math inline">\(p-1\)</span></td>
+<td><span class="math inline">\(MSR\)</span></td>
+<td><span class="math inline">\(F_0 =\frac{MSR}{MSE}\)</span></td>
+<td><span class="math inline">\(P(F&gt;F_0)\)</span></td>
+</tr>
+<tr class="even">
+<td>오차</td>
+<td><span class="math inline">\(SSE\)</span></td>
+<td><span class="math inline">\(n-p\)</span></td>
+<td><span class="math inline">\(MSE\)</span></td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>전체</td>
+<td><span class="math inline">\(SST\)</span></td>
+<td><span class="math inline">\(n-1\)</span></td>
+<td></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
 
 
 </section>
@@ -955,13 +925,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../qmd/math_vec_cal.html" class="pagination-link" aria-label="벡터 미분">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">벡터 미분</span></span>
+      <a href="../qmd/lse.html" class="pagination-link" aria-label="선형 회귀모형의 소개">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">선형 회귀모형의 소개</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../qmd/quadratic.html" class="pagination-link" aria-label="이차형식과 제곱합의 분포">
-        <span class="nav-page-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">이차형식과 제곱합의 분포</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../qmd/inference2.html" class="pagination-link" aria-label="모형의 비교">
+        <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">모형의 비교</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
