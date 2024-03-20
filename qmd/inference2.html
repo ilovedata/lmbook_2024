@@ -64,7 +64,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../references.html" rel="next">
+<link href="../qmd/modeleval2.html" rel="next">
 <link href="../qmd/inference.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -213,6 +213,12 @@ window.Quarto = {
   <div class="sidebar-item-container"> 
   <a href="../qmd/inference2.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">모형의 비교</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/modeleval2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">모형의 진단</span></span></a>
   </div>
 </li>
         <li class="sidebar-item">
@@ -571,7 +577,7 @@ Cov( \hat {\pmb  \beta}_1 ) &amp; 0 &amp; 0 &amp; \cdots &amp; 0 \\
 <p>이제 변환된 모형 <a href="#eq-lmtest-model12" class="quarto-xref">식&nbsp;<span>3.6</span></a> 에서 두 계획행렬 <span class="math inline">\(\pmb  X_1\)</span>과 <span class="math inline">\(\tilde{\pmb  X}_2\)</span>가 서로 직교하는 것을 알 수 있다.</p>
 <p><span class="math display">\[  {\pmb  X_1}^t \tilde{\pmb  X}_2 =  {\pmb  X}_1^t (\pmb  I -\pmb  H_1  ) \pmb  X_2=  {\pmb  X}_1^t (\pmb  I -{\pmb  X}_1 ({\pmb  X}_1^t {\pmb  X}_1)^{-1} {\pmb  X}_1^t ) \pmb  X_2= \pmb  0 \]</span></p>
 <p>이제 확대된 모형 <a href="#eq-lmtest-model12" class="quarto-xref">식&nbsp;<span>3.6</span></a> 의 두 계획행렬 <span class="math inline">\(\pmb  X_1\)</span>과 <span class="math inline">\(\tilde{\pmb  X}_2\)</span>가 서로 직교하므로 앞에서 나온 직교하는 계획행렬에 대한 회귀계수에 대한 결과를 이용하면 다음과 같이 회귀계수 추정량을 얻을 수 있다.</p>
-<p>이제 모형 <a href="#eq-lmtest-model12" class="quarto-xref">식&nbsp;<span>3.6</span></a> 의 회귀계수 <span class="math inline">\(\pmb  \beta_1\)</span> 과 <span class="math inline">\(\tilde {\pmb  \beta_2}\)</span>의 추정량을 구해보면 다음과 같다.</p>
+<p>이제 모형 <a href="#eq-lmtest-model12" class="quarto-xref">식&nbsp;<span>3.6</span></a> 의 회귀계수 <span class="math inline">\(\tilde {\pmb  \beta_1}\)</span> 과 <span class="math inline">\(\pmb  \beta_2\)</span>의 추정량을 구해보면 다음과 같다.</p>
 <p><span id="eq-lmtest-gamma"><span class="math display">\[
 \hat {\tilde{\pmb  \beta_1}} =  ({\pmb  X}_1^t \pmb  X_1)^{-1} {\pmb  X}_1^t \pmb  y, \quad \hat {\pmb  \beta}_2 = ({\tilde {\pmb  X}}_2^t \tilde {\pmb  X}_2)^{-1} {\tilde {\pmb  X}_2}^t \pmb  y
 \tag{3.8}\]</span></span></p>
@@ -594,7 +600,8 @@ Cov( \hat {\pmb  \beta}_1 ) &amp; 0 &amp; 0 &amp; \cdots &amp; 0 \\
 <p><span id="eq-lmtest-beta"><span class="math display">\[
 \begin{aligned}
 \hat {\pmb  \beta}_1 &amp; = \hat {\tilde {\pmb  \beta}}_1  - ({\pmb  X}_1^t \pmb  X_1)^{-1} {\pmb  X}_1^t   \pmb  X_2 \hat {\pmb  \beta}_2 \\
-&amp; = \hat {{\pmb  \beta}}_{1*}  - ({\pmb  X}_1^t \pmb  X_1)^{-1} {\pmb  X}_1^t   \pmb  X_2 \hat {\pmb  \beta}_2
+&amp; = \hat {{\pmb  \beta}}_{1*}  - ({\pmb  X}_1^t \pmb  X_1)^{-1} {\pmb  X}_1^t   \pmb  X_2 \hat {\pmb  \beta}_2 \\
+&amp; =({\pmb  X}_1^t \pmb  X_1)^{-1} {\pmb  X}_1^t (\pmb  y - \pmb  X_2 \hat {\pmb  \beta}_2)
 \end{aligned}
 \tag{3.9}\]</span></span></p>
 <p><a href="#eq-lmtest-beta" class="quarto-xref">식&nbsp;<span>3.9</span></a> 에 주어진 회귀계수 <span class="math inline">\({\pmb  \beta}_1\)</span> 의 추정량은 새로운 변수를 추기하기 전의 모형에서 구한 추정량 <span class="math inline">\(\hat {{\pmb  \beta}}_{1*}\)</span> 을 새로운 변수를 추가한 후의 모형에서 추가된 변수에 대한 회귀계수의 추정량 <span class="math inline">\(\hat {\pmb  \beta}_2\)</span> 으로 보정힌 형태이다.</p>
@@ -753,7 +760,7 @@ x2           4.16172306</code></pre>
 <p>또한 <a href="#eq-lmtest-addone" class="quarto-xref">식&nbsp;<span>3.12</span></a> 과 같이 새로운 변수 <span class="math inline">\(x_p\)</span> 가 추가되면 새로운 변수가 추가된 후에는 회귀계수 추정량이 다음과 같아 보정된다.</p>
 <p><span class="math display">\[
 \begin{aligned}
-\hat {\pmb  \beta}_p &amp; =({\pmb  X}_1^t \pmb  X_1)^{-1} {\pmb  X_1}^t [\pmb  y -  \pmb  X_2 \hat {\pmb  \beta}_2  ] \\
+\hat {\pmb  \beta}_1 &amp; =({\pmb  X}_1^t \pmb  X_1)^{-1} {\pmb  X_1}^t [\pmb  y -  \pmb  X_2 \hat {\pmb  \beta}_2  ] \\
   &amp; = ({\pmb  X_1}^t \pmb  X_1)^{-1} {\pmb  X_1}^t \pmb  y -  ({\pmb  X_1}^t \pmb  X)_1^{-1} {\pmb  X}_1^t \pmb  x_p \frac{ \tilde {\pmb  x}_p^t \tilde {\pmb  y} }{ \tilde {\pmb  x}_p^t \tilde {\pmb  x}_p }  \\
   &amp; = ({\pmb  X}_1^t \pmb  X)_1^{-1} {\pmb  X}_1^t \pmb  y -  ({\pmb  X}_1^t \pmb  X)_1^{-1} {\pmb  X}_1^t [\pmb  x_p (\tilde {\pmb  x}_p^t \tilde {\pmb  x}_p )^{-1} \tilde {\pmb  x}_p^t ] \tilde {\pmb  y} \\
   &amp; = \hat {\pmb \beta}_{1*} -  ({\pmb  X}_1^t \pmb  X)_1^{-1} {\pmb  X}_1^t [\pmb  x_p (\tilde {\pmb  x}_p^t \tilde {\pmb  x}_p )^{-1} \tilde {\pmb  x}_p^t ] \tilde {\pmb  y}
@@ -1239,8 +1246,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../references.html" class="pagination-link" aria-label="References">
-        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../qmd/modeleval2.html" class="pagination-link" aria-label="모형의 진단">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">모형의 진단</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
