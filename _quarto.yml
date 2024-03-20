@@ -15,6 +15,7 @@ book:
     - qmd/lse.qmd
     - qmd/inference.qmd
     - qmd/inference2.qmd
+    - qmd/modeleval2.qmd
     - references.qmd
   
   appendices:
