@@ -16,6 +16,7 @@ book:
     - qmd/inference.qmd
     - qmd/inference2.qmd
     - qmd/modeleval2.qmd
+    - qmd/residual.qmd
     - references.qmd
   
   appendices:
@@ -25,6 +26,8 @@ book:
     - qmd/math_vec_cal.qmd
     - qmd/multivar.qmd
     - qmd/quadratic.qmd
+    - qmd/practice-01.qmd
+    - qmd/practice-02.qmd
 
 bibliography: references.bib
 

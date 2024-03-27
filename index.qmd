@@ -26,6 +26,7 @@ library(kableExtra)
 
 library(agricolae)
 library(emmeans)
+library(car)
 
 library(plotly)
 library(plot3D)
