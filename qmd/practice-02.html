@@ -1,0 +1,1374 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>통계적 예측모형 - 부록 H — 중회귀 모형 진단</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../qmd/practice-01.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script>
+<script type="text/javascript">
+ window.MathJax = {
+  tex: {
+    macros: {
+    RR: '{\\mathbb R}',                    // a simple string replacement
+    hatmat:'{\\pmb X ({\\pmb X}^t {\\pmb X} )^{-1} {\\pmb X}^t}',
+    bold: ['\\boldsymbol{#1}',1] ,     // this macro has one parameter
+    pardiff: ['\\frac{\\partial#2}{\\partial#1}', 2, 'x'], // this macro has an optional parameter that defaults to 'x'
+    pardifftwo: ['\\frac{\\partial#1}{\\partial#2}', 2],
+    pardiffd: ['\\frac{\\partial#1}{\\partial#2^t \\partial#2}', 2],
+    pardiffdd: ['\\frac{\\partial#1}{\\partial#3 \\partial#2}', 3],
+    norm: ['\\lVert#1\\rVert',1]
+  },
+  environments: {
+  braced: ["\\left\\{", "\\right\\}"]
+  }
+ }
+};
+</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/practice-02.html"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">중회귀 모형 진단</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">통계적 예측모형</a> 
+        <div class="sidebar-tools-main">
+    <a href="../통계적-예측모형.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="검색"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/lse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">선형 회귀모형의 소개</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">선형회귀에서의 추론</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/inference2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">모형의 비교</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/modeleval2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">모형의 진단</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/residual.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">관측값에 대한 진단</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_mat_basic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">행렬의 기초</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_vector_space.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">벡터공간</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_eigen_value.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">고유값과 고유벡터</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_vec_cal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">벡터 미분</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/multivar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">다변량 확률변수의 성질</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/quadratic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">이차형식과 제곱합의 분포</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/practice-01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">중회귀 모형 적합</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/practice-02.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">중회귀 모형 진단</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul class="collapse">
+  <li><a href="#변수변환" id="toc-변수변환" class="nav-link active" data-scroll-target="#변수변환"><span class="header-section-number">H.1</span> 변수변환</a></li>
+  <li><a href="#box-cox-변환" id="toc-box-cox-변환" class="nav-link" data-scroll-target="#box-cox-변환"><span class="header-section-number">H.2</span> Box-Cox 변환</a></li>
+  <li><a href="#다중공선성" id="toc-다중공선성" class="nav-link" data-scroll-target="#다중공선성"><span class="header-section-number">H.3</span> 다중공선성</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/practice-02.html"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">중회귀 모형 진단</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-multiple-02-diag" class="quarto-section-identifier">부록 H — 중회귀 모형 진단</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="변수변환" class="level2" data-number="H.1">
+<h2 data-number="H.1" class="anchored" data-anchor-id="변수변환"><span class="header-section-number">H.1</span> 변수변환</h2>
+<section id="예제-4.8" class="level3" data-number="H.1.1">
+<h3 data-number="H.1.1" class="anchored" data-anchor-id="예제-4.8"><span class="header-section-number">H.1.1</span> 예제 4.8</h3>
+<p>여기서 이용한 자료 <code>bug</code> 는 살충제의 독성실험에서 살충제에 노출된 벌레들의 생존개체수를 시간대별로 관측한 것이다.</p>
+<ul>
+<li><code>y</code> :생존벌레의 수</li>
+<li><code>time</code> :시간(분)</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(y<span class="sc">~</span>time, regbook<span class="sc">::</span>bug)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice-02_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>이제 로그변화을 고려해 보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>bug2 <span class="ot">&lt;-</span>regbook<span class="sc">::</span>bug</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>bug2<span class="sc">$</span>logy <span class="ot">&lt;-</span> <span class="fu">log</span>(bug2<span class="sc">$</span>y)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(logy<span class="sc">~</span>time, bug2)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice-02_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>변환된 자료에 대한 회귀분석을 수행해 보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>fitlog <span class="ot">&lt;-</span> <span class="fu">lm</span>(logy<span class="sc">~</span>time, bug2)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(logy<span class="sc">~</span>time, bug2)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a><span class="fu">abline</span>(fitlog)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice-02_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="box-cox-변환" class="level2" data-number="H.2">
+<h2 data-number="H.2" class="anchored" data-anchor-id="box-cox-변환"><span class="header-section-number">H.2</span> Box-Cox 변환</h2>
+<p>Box-Cox 변환은 다음과 같이 수행한다. 패키지 <code>MASS</code> 의 함수 <code>boxcox</code> 를 이용한다.</p>
+<section id="예제-4.10" class="level3" data-number="H.2.1">
+<h3 data-number="H.2.1" class="anchored" data-anchor-id="예제-4.10"><span class="header-section-number">H.2.1</span> 예제 4.10</h3>
+<ul>
+<li><code>foot</code>:발길이(mm), 양말을 벗은 상태로 측정하였고 오른쪽 발만 측정하였다.</li>
+<li><code>forearm</code>: 팔안쪽길이(mm), 손목부터 팔꿈치가 접히는 부분까지의 길이이다. 오른쪽 팔만 측정하였다.</li>
+</ul>
+<p>변환이 필요없는 경우에 대한 예제이다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot histogram of foot by ggplot2</span></span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>aflength <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>foot)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth=</span><span class="dv">15</span>, <span class="at">fill=</span><span class="st">"skyblue"</span>, <span class="at">color=</span><span class="st">"black"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice-02_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(foot <span class="sc">~</span> forearm, <span class="at">data=</span>aflength)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice-02_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ex411 <span class="ot">&lt;-</span> <span class="fu">boxcox</span>(<span class="fu">lm</span>(foot <span class="sc">~</span> forearm, <span class="at">data=</span>aflength))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice-02_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="예제-4.11" class="level3" data-number="H.2.2">
+<h3 data-number="H.2.2" class="anchored" data-anchor-id="예제-4.11"><span class="header-section-number">H.2.2</span> 예제 4.11</h3>
+<p>예제 4.11 자료 <code>wool</code> 는 Box &amp; Cox의 1964년 논문에서 사용한 예제로, 양모의 강력을 알아보기 위해 <span class="math inline">\(3^3\)</span> 요인실험을 수행한 결과이다.</p>
+<ul>
+<li><code>cycle</code> :반응변수. 시편이 끊어질 때까지의 측정 횟수.</li>
+<li><code>length</code> :시편의 길이</li>
+<li><code>load</code> : 시편에 가한 하중</li>
+<li><code>amplitude</code> :하중을 가한 폭</li>
+</ul>
+<p>반응변수 <code>cycle</code> 의 히스토그램능 보면 오른쪽으로 매우 치우친 분포로서 정규분포와 매우 다른 모양을 보인다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot histogram of foot by ggplot2</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>wool <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>cycle)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth=</span><span class="dv">200</span>, <span class="at">fill=</span><span class="st">"skyblue"</span>, <span class="at">color=</span><span class="st">"black"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice-02_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>잔차 분석의 결과를 보면 잔차에</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>woolfm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(cycle<span class="sc">~</span>length <span class="sc">+</span> amplitude <span class="sc">+</span> load, <span class="at">data=</span>wool)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(woolfm1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = cycle ~ length + amplitude + load, data = wool)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-644.5 -279.1 -150.2  199.5 1268.0 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 4521.370   1621.721   2.788 0.010454 *  
+length        13.200      2.301   5.736 7.66e-06 ***
+amplitude   -535.833    115.057  -4.657 0.000109 ***
+load         -62.167     23.011  -2.702 0.012734 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 488.1 on 23 degrees of freedom
+Multiple R-squared:  0.7291,    Adjusted R-squared:  0.6937 
+F-statistic: 20.63 on 3 and 23 DF,  p-value: 1.028e-06</code></pre>
+</div>
+</div>
+<p>이제 Box-Cox 변환을 적용해 보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxcox</span>(woolfm1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice-02_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>위의 결과에서 <span class="math inline">\(\lambda = 0\)</span>이 가장 좋은 변환으로 나타났다. 이는 로그 변환이 가장 적절하다는 의미이다. 이제 이 변환을 적용해 보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>wool<span class="sc">$</span>logcycle <span class="ot">&lt;-</span> <span class="fu">log</span>(wool<span class="sc">$</span>cycle)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>woolfm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(logcycle<span class="sc">~</span>length <span class="sc">+</span> amplitude <span class="sc">+</span> load, <span class="at">data=</span>wool)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(woolfm2)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = logcycle ~ length + amplitude + load, data = wool)
+
+Residuals:
+     Min       1Q   Median       3Q      Max 
+-0.43592 -0.11250  0.00802  0.11635  0.26790 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 10.551813   0.616683  17.111 1.41e-14 ***
+length       0.016648   0.000875  19.025 1.43e-15 ***
+amplitude   -0.630866   0.043752 -14.419 5.22e-13 ***
+load        -0.078524   0.008750  -8.974 5.66e-09 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 0.1856 on 23 degrees of freedom
+Multiple R-squared:  0.9658,    Adjusted R-squared:  0.9614 
+F-statistic: 216.8 on 3 and 23 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(woolfm2)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice-02_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice-02_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice-02_files/figure-html/unnamed-chunk-11-3.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice-02_files/figure-html/unnamed-chunk-11-4.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="다중공선성" class="level2" data-number="H.3">
+<h2 data-number="H.3" class="anchored" data-anchor-id="다중공선성"><span class="header-section-number">H.3</span> 다중공선성</h2>
+<section id="고유값과-고유벡터에-대한-이론" class="level3" data-number="H.3.1">
+<h3 data-number="H.3.1" class="anchored" data-anchor-id="고유값과-고유벡터에-대한-이론"><span class="header-section-number">H.3.1</span> 고유값과 고유벡터에 대한 이론</h3>
+<p>선형모형 <span class="math inline">\(E(\pmb y | \pmb X) = \pmb X \pmb \beta\)</span> 에서 계획행렬 <span class="math inline">\(\pmb X\)</span>의 열들이 선형독립이 아닌 경우 다중공선성이 발생한다. 다중공선성은 계획행렬 <span class="math inline">\(\pmb X\)</span>의 열들이 선형종속인 경우에 발생한다.</p>
+<p>대칭행렬 <span class="math inline">\(\pmb X^t \pmb  X\)</span>의 고유값 <span class="math inline">\(\lambda_i\)</span>와 그에 대응하는 고유벡터 <span class="math inline">\(\pmb  p_i\)</span>는 다음을 만족하는 실수와 벡터이다.</p>
+<p><span class="math display">\[ (\pmb X^t \pmb  X ) \pmb  p_i = \lambda_i \pmb  p_i \]</span></p>
+<p>고유값 <span class="math inline">\(\lambda_i\)</span>을 구하는 방법은 다음의 방정식을 만족하는 해를 구하는 것이다.</p>
+<p><span class="math display">\[ det \left ( \pmb X^t \pmb  X - \lambda_i \pmb I \right ) = 0\]</span></p>
+<p>여기서 <span class="math inline">\(det(\pmb A)\)</span>는 행렬 <span class="math inline">\(\pmb A\)</span>의 행렬식을 의미한다.</p>
+<p><span class="math inline">\(\lambda_1 \ge \lambda_2 \ge \dots \ge \lambda_{p}\)</span>를 <span class="math inline">\(\pmb X^t \pmb X\)</span>의 고유값이라고 하자. <span class="math inline">\(\pmb X^t \pmb X\)</span>의 각 고유값에 대한 정규직교 고유벡터(orthonormal eigenvector)를 <span class="math inline">\(\pmb  p_1, \pmb  p_2,\dots,\pmb  p_{p}\)</span>라고 하자, 즉</p>
+<p><span class="math display">\[ \pmb  p_i^t \pmb  p_i = 1 , \quad \pmb  p_i^t \pmb  p_j = 0 \quad (i \ne j) \]</span></p>
+<p>더 나아가 행렬 <span class="math inline">\(\pmb P\)</span>를 고유벡터를 모아놓은 행렬로 정의하자.</p>
+<p><span class="math display">\[ \pmb P=[\pmb p_1 ~ \pmb p_2 ~\dots ~ \pmb p_{p} ] \]</span></p>
+<p>이때 <span class="math inline">\(p \times p\)</span> - 차원의 행렬 <span class="math inline">\(\pmb P\)</span>는 직교행렬이다.</p>
+<p><span class="math display">\[ \pmb P^t \pmb P =\pmb P  \pmb P^t =\pmb I \]</span></p>
+<p>이제 다음과 같이 <span class="math inline">\(\pmb X^t \pmb X\)</span>를 나타낼 수 있다.</p>
+<p><span class="math display">\[ \pmb P^t (\pmb X^t \pmb X) \pmb P = \text{diag}(\lambda_1 , \lambda_2 , \dots , \lambda_{p}) = \pmb \Lambda \]</span></p>
+<p>또한</p>
+<p><span class="math display">\[ \pmb P^t (\pmb X^t \pmb X)^{-1} \pmb P = \text{diag} \left (\frac{1}{\lambda_1} , \frac{1}{\lambda_2} , \dots , \frac{1}{\lambda_{p}} \right ) = \pmb \Lambda^{-1} \]</span></p>
+<p>위의 식에서 알 수 있듯이 <span class="math inline">\(1/\lambda_i\)</span>는 <span class="math inline">\((\pmb X^t \pmb X)^{-1}\)</span>의 고유값이다.</p>
+<p>행렬 <span class="math inline">\(\pmb P\)</span>가 직교행렬이기 때문에 다음과 같은 표현도 가능하다.</p>
+<p><span class="math display">\[ (\pmb X^t \pmb X) =  \pmb P \pmb \Lambda \pmb P^t,
+\quad (\pmb X^t \pmb X)^{-1} =  \pmb P \pmb \Lambda^{-1} \pmb P^t  \]</span></p>
+<p>고유벡터와 고유값의 정의에 의하여 고유값 <span class="math inline">\(\lambda_k\)</span>이 매우 0에 가까우면 다음이 성립하고</p>
+<p><span class="math display">\[ \pmb p_k^t (\pmb X^t \pmb X) \pmb p_k = (\pmb X \pmb p_k)^t ( \pmb X \pmb p_k) \approx 0   \]</span> 위의 식은 다음과 같이 행렬 <span class="math inline">\(\pmb X\)</span>의 열들간에 선형관계 $ X p_k = $ 이 있다는 것을 의미한다.</p>
+<p><span class="math display">\[  p_{1k} \pmb x_1 +  p_{2k} \pmb x_2 + \dots  p_{p,k} \pmb x_p \approx 0 \]</span></p>
+<p>위에서 <span class="math inline">\(\pmb p_k\)</span>와 <span class="math inline">\(\pmb X\)</span>는 다음과 같이 표시한다.</p>
+<p><span class="math display">\[ \pmb X=[\pmb x_1~ \pmb x_2~ \dots~\pmb x_{p}], \quad
+\pmb p_k =
+\begin{bmatrix}
+p_{1k} \\  
+p_{2k} \\
+\vdots \\
+p_{p,k}
+\end{bmatrix}\]</span></p>
+<p>또한 회귀계수 벡터 <span class="math inline">\(\hat \beta\)</span>의 공분산 행렬이 다음과 같이 주어지므로</p>
+<p><span id="eq-eq1"><span class="math display">\[
+Cov(\hat {\pmb \beta}) = \sigma^2 (\pmb X^t \pmb X)^{-1} = \sigma^2  \pmb P \pmb \Lambda^{-1} \pmb P^t
+\tag{H.1}\]</span></span></p>
+<p>다음과 같은 식이 성립한다.</p>
+<p><span id="eq-eq2"><span class="math display">\[
+var(\hat \beta_k) / \sigma^2 = \frac{p^2_{k1}}{\lambda_1} + \frac{p^2_{k2}}{\lambda_2} + \dots \frac{p^2_{k, p}}{\lambda_{p}}
+\tag{H.2}\]</span></span></p>
+</section>
+<section id="고유값과-고유벡터에-대한-예제-두-개의-독립변수" class="level3" data-number="H.3.2">
+<h3 data-number="H.3.2" class="anchored" data-anchor-id="고유값과-고유벡터에-대한-예제-두-개의-독립변수"><span class="header-section-number">H.3.2</span> 고유값과 고유벡터에 대한 예제: 두 개의 독립변수</h3>
+<p>이제 다음과 두 개의 독립변수가 있는 회귀 모형을 고려해 보자.</p>
+<p><span class="math display">\[ y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + e_i, i=1,2,\cdots,n \]</span></p>
+<p>절편을 제외한 두 개의 표준화된 독립변수들로 이루어진 행렬을 <span class="math inline">\(\pmb X\)</span>로 표시하자.</p>
+<p><span class="math display">\[  \pmb X = [ \pmb x_1 ~ \pmb x_2 ]   \]</span></p>
+<p>위에서 디자인 행렬 <span class="math inline">\(\pmb X\)</span>는 원래 독립변수의 디자인 행렬 <span class="math inline">\(X\)</span>의 열들을 표준화한 변수로 구성된 것이다..</p>
+<p><span class="math display">\[ \sum_{i=1}^n x_{i1} =0, \quad \sum_{i=1}^n x_{i2} =0, \quad \sum_{i=1}^n x_{i1}^2 =1, \quad \sum_{i=1}^n x_{i2}^2 =1, \quad \sum_{i=1}^n x_{i1} x_{i2} =\rho \]</span></p>
+<p>이제 <span class="math inline">\(\pmb X^t \pmb X\)</span>는 두 독립변수의 상관계수 행렬임을 알 수 있다.</p>
+<p><span class="math display">\[  \pmb X^t \pmb X =
+\begin{bmatrix}
+1  &amp;  \rho \\
+\rho &amp; 1
+\end{bmatrix}
+=\pmb R, \quad
+0 &lt; \rho &lt; 1
+\]</span></p>
+<p>여기서 두 독립변수 <span class="math inline">\(x_1\)</span>과 <span class="math inline">\(x_2\)</span>의 상관계수 <span class="math inline">\(\rho\)</span>는 0보다 크다고 가정하자.</p>
+<p>이제 <span class="math inline">\(\pmb X^t \pmb X\)</span>의 고유값(<span class="math inline">\(\lambda_i\)</span>)과 고유벡터(<span class="math inline">\(\pmb p_i\)</span>)는 다음과 같은 방정식을 만족하는 수 <span class="math inline">\(\lambda_i\)</span>와 벡터 <span class="math inline">\(\pmb p_i\)</span> 이다.</p>
+<p><span class="math display">\[ (\pmb X^t \pmb X) \pmb p_i = \lambda_i \pmb p_i, \quad \pmb p_i^t \pmb p_i=1  \]</span></p>
+<p>일단 먼저 고유값을 구하는 방법은 <span class="math inline">\(det(\pmb X^t \pmb X - \lambda_i \pmb I ) =0\)</span>을 만족하는 값을 찾는 것이다. 여기서 <span class="math inline">\(det(\pmb A)\)</span>는 <span class="math inline">\(\pmb A\)</span>의 행렬식을 의미한다.</p>
+<p><span class="math display">\[
+det(\pmb X^t \pmb X - \lambda_i \pmb I ) = det \left (
+\begin{bmatrix}
+1-\lambda_i  &amp;  \rho \\
+\rho &amp; 1-\lambda_i
+\end{bmatrix}
+\right ) =0
+\]</span> 위의 방정식은 다음과 같이 요약할 수 있고</p>
+<p><span class="math display">\[ \lambda_i^2 -2 \lambda_i + (1-\rho^2) =0 \]</span></p>
+<p>해는 다음과 같이 주어진다.</p>
+<p><span class="math display">\[ \lambda_1 = 1+ \rho, \quad \lambda_2 = 1 -\rho \quad (\lambda_1 \ge \lambda_2) \]</span></p>
+<p>이제 각 고유값에 대한 고유벡터를 구해보자. 각 고유값 <span class="math inline">\(\lambda_i\)</span>에 대한 고유벡터를 <span class="math inline">\(\pmb p_i\)</span> 라고 하면</p>
+<p><span class="math display">\[
+\pmb p_1 =
+\begin{bmatrix}
+p_{11} \\
+p_{21}
+\end{bmatrix},
+~ p^2_{11}+p^2_{21}=1
+\quad \quad
+\pmb p_2 =
+\begin{bmatrix}
+p_{12} \\
+p_{22}
+\end{bmatrix},~
+p^2_{12}+p^2_{11}=1
+\]</span></p>
+<p>다음과 같은 방정식을 만족해야 한다.</p>
+<p><span class="math display">\[ (\pmb X^t \pmb X) \pmb p_1 = \lambda_1 \pmb p_1 , \quad  (\pmb X^t \pmb X) \pmb p_2 = \lambda_2 \pmb p_2 \]</span></p>
+<p>즉,</p>
+<p><span class="math display">\[
+\begin{bmatrix}
+1  &amp;  \rho \\
+\rho &amp; 1
+\end{bmatrix}
+\begin{bmatrix}
+p_{11} \\
+p_{21}
+\end{bmatrix}
+=
+(1+ \rho)
+\begin{bmatrix}
+p_{11} \\
+p_{21}
+\end{bmatrix}
+, \quad
+\begin{bmatrix}
+1  &amp;  \rho \\
+\rho &amp; 1
+\end{bmatrix}
+\begin{bmatrix}
+p_{12} \\
+p_{22}
+\end{bmatrix}
+=
+(1- \rho)
+\begin{bmatrix}
+p_{12} \\
+p_{22}
+\end{bmatrix}
+\]</span></p>
+<p>위의 두 방정식은 정리하면 다음과 더 단순한 방정식을 얻는다.</p>
+<p><span class="math display">\[  p_{11} -  p_{21} = 0, \quad  p_{12}+ p_{22}=0 \]</span></p>
+<p>이제 위의 식을 만족하고 길이가 1인 두 벡터를 찾으면 다음과 같은 두 개의 직교하고 길이가 1인 고유벡터 <span class="math inline">\(\pmb p_1\)</span>과 <span class="math inline">\(\pmb p_2\)</span>를 찾을 수 있다.</p>
+<p><span class="math display">\[
+\pmb p_1 =
+\begin{bmatrix}
+p_{11} \\
+p_{21}
+\end{bmatrix}
+=
+\begin{bmatrix}
+1/\sqrt{2} \\
+1/\sqrt{2}
+\end{bmatrix},
+\quad \quad
+\pmb p_2 =
+\begin{bmatrix}
+p_{12} \\
+p_{22}
+\end{bmatrix}
+=
+\begin{bmatrix}
+1/\sqrt{2} \\
+-1/\sqrt{2}
+\end{bmatrix}
+\]</span></p>
+<p>따라서 앞 절의 이론에서 나온 고유벡터로 구성된 행렬 <span class="math inline">\(\pmb P\)</span>와 고유값을 대각원소로 하는 행렬 <span class="math inline">\(\pmb \Lambda\)</span>는 다음과 같다.</p>
+<p><span class="math display">\[
+\pmb P = [\pmb p_1~ \pmb p_2]
+= \begin{bmatrix}
+p_{11} &amp;  p_{12}\\
+p_{21} &amp;  p_{22}
+\end{bmatrix}
+=
+\begin{bmatrix}
+1/\sqrt{2} &amp;  1/\sqrt{2}\\
+1/\sqrt{2} &amp;  -1/\sqrt{2}
+\end{bmatrix},
+\quad \quad
+\pmb \Lambda =
+\begin{bmatrix}
+\lambda_1 &amp; 0 \\
+0 &amp; \lambda_2
+\end{bmatrix}
+=
+\begin{bmatrix}
+1+\rho &amp; 0 \\
+0 &amp; 1-\rho
+\end{bmatrix}
+\]</span></p>
+<p>이제 다음이 성립함을 확인할 수 있다.</p>
+<p><span class="math display">\[ \pmb P^t (\pmb X^t \pmb X) \pmb P =  \pmb \Lambda, \quad (\pmb X^t \pmb X)^{-1} =  \pmb P \pmb \Lambda^{-1} \pmb P^t   \]</span></p>
+<p>즉,</p>
+<span class="math display">\[\begin{align*}
+\pmb P^t (\pmb X^t \pmb X) \pmb P
+&amp; =  
+\begin{bmatrix}
+1/\sqrt{2} &amp;  1/\sqrt{2}\\
+1/\sqrt{2} &amp;  -1/\sqrt{2}
+\end{bmatrix}
+\begin{bmatrix}
+1 &amp; \rho \\
+\rho &amp; 1
+\end{bmatrix}
+\begin{bmatrix}
+1/\sqrt{2} &amp;  1/\sqrt{2}\\
+1/\sqrt{2} &amp;  -1/\sqrt{2}
+\end{bmatrix} \\
+&amp; =
+\begin{bmatrix}
+1+\rho &amp; 0 \\
+0 &amp; 1-\rho
+\end{bmatrix} \\
+&amp;=
+\pmb \Lambda
+\end{align*}\]</span>
+<p>또한 다음도 성립함을 확인할 수 있다.</p>
+<p><span class="math display">\[  (\pmb X^t \pmb X)^{-1} =  \pmb P \pmb \Lambda^{-1} \pmb P^t   \]</span></p>
+<p>즉,</p>
+<p><span class="math display">\[
+\begin{aligned}
+(\pmb X^t \pmb X)^{-1} &amp; =  \pmb P \pmb \Lambda^{-1} \pmb P^t \\   
+&amp;  =
+\begin{bmatrix}
+p_{11} &amp;  p_{12}\\
+p_{21} &amp;  p_{22}
+\end{bmatrix}
+\begin{bmatrix}
+\frac{1}{\lambda_1} &amp; 0 \\
+0 &amp; \frac{1}{\lambda_2}
+\end{bmatrix}
+\begin{bmatrix}
+p_{11} &amp;  p_{21}\\
+p_{12} &amp;  p_{22}
+\end{bmatrix} \\
+&amp;=
+\begin{bmatrix}
+1/\sqrt{2} &amp;  1/\sqrt{2}\\
+1/\sqrt{2} &amp;  -1/\sqrt{2}
+\end{bmatrix}
+\begin{bmatrix}
+\frac{1}{1+\rho} &amp; 0 \\
+0 &amp; \frac{1}{1-\rho}
+\end{bmatrix}
+\begin{bmatrix}
+1/\sqrt{2} &amp;  1/\sqrt{2}\\
+1/\sqrt{2} &amp;  -1/\sqrt{2}
+\end{bmatrix} \\
+&amp;=
+\begin{bmatrix}
+p_{11}^2 \frac{1}{\lambda_1} +   p_{12}^2 \frac{1}{\lambda_2} &amp;
+p_{11}  p_{21} \frac{1}{\lambda_1} +  p_{12}  p_{22} \frac{1}{\lambda_2} \\
+p_{11}  p_{21} \frac{1}{\lambda_1} +  p_{12}  p_{22} \frac{1}{\lambda_2}   &amp;
+p_{21}^2 \frac{1}{\lambda_1} +   p_{22}^2 \frac{1}{\lambda_2}
+\end{bmatrix} \\
+&amp;=
+\begin{bmatrix}
+(\frac{1}{\sqrt{2}})^2 \frac{1}{1+\rho} +  (\frac{1}{\sqrt{2}})^2 \frac{1}{1-\rho} &amp;
+(\frac{1}{\sqrt{2}})^2 \frac{1}{1+\rho} + (\frac{1}{\sqrt{2}}) (-\frac{1}{\sqrt{2}}) \frac{1}{1-\rho} \\
+(\frac{1}{\sqrt{2}})^2 \frac{1}{1+\rho} + (\frac{1}{\sqrt{2}}) (-\frac{1}{\sqrt{2}}) \frac{1}{1-\rho}  &amp;
+(\frac{1}{\sqrt{2}})^2 \frac{1}{1+\rho} +  (-\frac{1}{\sqrt{2}})^2 \frac{1}{1-\rho}
+\end{bmatrix} \\
+&amp; =
+\frac{1}{1-\rho^2}
+\begin{bmatrix}
+1  &amp; -\rho \\
+-\rho &amp; 1
+\end{bmatrix}
+\end{aligned}
+\]</span></p>
+<p>앞 절에서 나온 회귀계수 추정량의 분산 공식 <a href="#eq-eq1" class="quarto-xref">식&nbsp;<span>H.1</span></a> 과 <a href="#eq-eq2" class="quarto-xref">식&nbsp;<span>H.2</span></a> 를 적용하면 다음과 같은 식을 얻을 수 있다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+Var(\hat \beta_k)/\sigma^2
+&amp; = \frac{p^2_{k1}}{\lambda_1} + \frac{p^2_{k2}}{\lambda_2} \\
+&amp; = \frac{1}{2} \left ( \frac{1}{1+\rho} + \frac{1}{1-\rho} \right ) \\
+&amp; = \frac{1}{1-\rho^2}
+\end{aligned}
+\]</span></p>
+<p>위의 분산 공식에서 제일 작은 두 번째 고유값 <span class="math inline">\(\lambda_2 = 1- \rho\)</span>가 0에 가까우면 분산이 매우 커지는 것을 알 수 있다. 이 고유값은 상관계수 <span class="math inline">\(\rho\)</span>가 1에 가까울 수록 0에 가까워 진다.</p>
+</section>
+<section id="예제-4.13" class="level3" data-number="H.3.3">
+<h3 data-number="H.3.3" class="anchored" data-anchor-id="예제-4.13"><span class="header-section-number">H.3.3</span> 예제 4.13</h3>
+<p>중고차 예제에서 가상의 변수를 만들어 적합할 때 완벽한 선형관계가 존재하면 적합 시 변수를 제거하는 것을 알 수 있다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>usedcars2 <span class="ot">&lt;-</span> usedcars <span class="sc">%&gt;%</span>  <span class="fu">mutate</span>(<span class="at">ccmile =</span> cc <span class="sc">+</span> mileage)</span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>fitcoll1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(price <span class="sc">~</span> year <span class="sc">+</span> mileage <span class="sc">+</span> cc <span class="sc">+</span> automatic <span class="sc">+</span> ccmile, usedcars2)</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fitcoll1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = price ~ year + mileage + cc + automatic + ccmile, 
+    data = usedcars2)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-177.35  -63.91   -0.99   70.34  212.69 
+
+Coefficients: (1 not defined because of singularities)
+              Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  5.253e+02  3.998e+02   1.314 0.200823    
+year        -5.800e+00  9.283e-01  -6.247 1.55e-06 ***
+mileage     -2.263e-03  7.211e-04  -3.138 0.004324 ** 
+cc           3.888e-01  2.022e-01   1.923 0.065958 .  
+automatic    1.653e+02  3.986e+01   4.147 0.000339 ***
+ccmile              NA         NA      NA       NA    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 101.1 on 25 degrees of freedom
+Multiple R-squared:  0.9045,    Adjusted R-squared:  0.8892 
+F-statistic: 59.21 on 4 and 25 DF,  p-value: 2.184e-12</code></pre>
+</div>
+</div>
+</section>
+<section id="예제-4.14" class="level3" data-number="H.3.4">
+<h3 data-number="H.3.4" class="anchored" data-anchor-id="예제-4.14"><span class="header-section-number">H.3.4</span> 예제 4.14</h3>
+<p>모형을 적합해 보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>hald.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span> ., <span class="at">data=</span>hald)</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(hald.lm)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ ., data = hald)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.1750 -1.6709  0.2508  1.3783  3.9254 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)  
+(Intercept)  62.4054    70.0710   0.891   0.3991  
+x1            1.5511     0.7448   2.083   0.0708 .
+x2            0.5102     0.7238   0.705   0.5009  
+x3            0.1019     0.7547   0.135   0.8959  
+x4           -0.1441     0.7091  -0.203   0.8441  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.446 on 8 degrees of freedom
+Multiple R-squared:  0.9824,    Adjusted R-squared:  0.9736 
+F-statistic: 111.5 on 4 and 8 DF,  p-value: 4.756e-07</code></pre>
+</div>
+</div>
+<p>상관계수 행렬의 고유값을 계산해 보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="fu">cor</span>(hald[<span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>])</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>R</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>           x1         x2         x3         x4
+x1  1.0000000  0.2285795 -0.8241338 -0.2454451
+x2  0.2285795  1.0000000 -0.1392424 -0.9729550
+x3 -0.8241338 -0.1392424  1.0000000  0.0295370
+x4 -0.2454451 -0.9729550  0.0295370  1.0000000</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">solve</span>(R)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         x1        x2        x3       x4
+x1 38.49621  94.11969  41.88410  99.7858
+x2 94.11969 254.42317 105.09139 267.5394
+x3 41.88410 105.09139  46.86839 111.1451
+x4 99.78580 267.53942 111.14509 282.5129</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(<span class="fu">solve</span>(R))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       x1        x2        x3        x4 
+ 38.49621 254.42317  46.86839 282.51286 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>eigenval <span class="ot">&lt;-</span> <span class="fu">eigen</span>(R)<span class="sc">$</span>values</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>eigenval</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.235704035 1.576066070 0.186606149 0.001623746</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">max</span>(eigenval)<span class="sc">/</span>eigenval)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1]  1.000000  1.191022  3.461339 37.106342</code></pre>
+</div>
+</div>
+<p>VIF를 구해보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">vif</span>(hald.lm)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       x1        x2        x3        x4 
+ 38.49621 254.42317  46.86839 282.51286 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(regbook<span class="sc">::</span><span class="fu">vif</span>(hald.lm))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+VIF:
+    x1     x2     x3     x4 
+ 38.50 254.42  46.87 282.51 
+
+Variance Proportion:
+  Eigenvalues Cond.Index          x1           x2          x3           x4
+1 2.235704035   1.000000 0.002632084 0.0005589686 0.001481988 0.0004753347
+2 1.576066070   1.191022 0.004269804 0.0004272931 0.004954638 0.0004572915
+3 0.186606149   3.461339 0.063519491 0.0020822791 0.046495910 0.0007243995
+4 0.001623746  37.106342 0.929578621 0.9969314592 0.947067464 0.9983429744</code></pre>
+</div>
+</div>
+<p><span class="math inline">\(x_2\)</span>를 제외하고 분석해 보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>hald.lm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span> x1 <span class="sc">+</span> x3 <span class="sc">+</span> x4, <span class="at">data=</span>hald)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(hald.lm2)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ x1 + x3 + x4, data = hald)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.9323 -1.8090  0.4806  1.1398  3.7771 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 111.68441    4.56248  24.479 1.52e-09 ***
+x1            1.05185    0.22368   4.702  0.00112 ** 
+x3           -0.41004    0.19923  -2.058  0.06969 .  
+x4           -0.64280    0.04454 -14.431 1.58e-07 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.377 on 9 degrees of freedom
+Multiple R-squared:  0.9813,    Adjusted R-squared:  0.975 
+F-statistic: 157.3 on 3 and 9 DF,  p-value: 4.312e-08</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(regbook<span class="sc">::</span><span class="fu">vif</span>(hald.lm2))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+VIF:
+   x1    x3    x4 
+3.678 3.460 1.181 
+
+Variance Proportion:
+  Eigenvalues Cond.Index           x1         x3         x4
+1   1.8683737   1.000000 0.0720157120 0.07053018 0.02229687
+2   0.9838532   1.378056 0.0002285765 0.02382939 0.79011946
+3   0.1477731   3.555775 0.9277557115 0.90564042 0.18758367</code></pre>
+</div>
+</div>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "복사완료!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "복사완료!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../qmd/practice-01.html" class="pagination-link" aria-label="중회귀 모형 적합">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">중회귀 모형 적합</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

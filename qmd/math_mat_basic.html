@@ -189,6 +189,12 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../qmd/residual.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">관측값에 대한 진단</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
@@ -238,6 +244,18 @@ window.Quarto = {
  <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">이차형식과 제곱합의 분포</span></span></a>
   </div>
 </li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/practice-01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">중회귀 모형 적합</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/practice-02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">중회귀 모형 진단</span></span></a>
+  </div>
+</li>
       </ul>
   </li>
     </ul>
@@ -260,6 +278,7 @@ window.Quarto = {
   <li><a href="#대각합" id="toc-대각합" class="nav-link" data-scroll-target="#대각합"><span class="header-section-number">A.8</span> 대각합</a></li>
   <li><a href="#행렬식" id="toc-행렬식" class="nav-link" data-scroll-target="#행렬식"><span class="header-section-number">A.9</span> 행렬식</a></li>
   <li><a href="#직교행렬" id="toc-직교행렬" class="nav-link" data-scroll-target="#직교행렬"><span class="header-section-number">A.10</span> 직교행렬</a></li>
+  <li><a href="#우드베리-공식" id="toc-우드베리-공식" class="nav-link" data-scroll-target="#우드베리-공식"><span class="header-section-number">A.11</span> 우드베리 공식</a></li>
   </ul>
 </nav>
     </div>
@@ -746,6 +765,20 @@ a_{21} &amp; a_{22}
 <li><p><span class="math inline">\(| \pmb P | = \pm 1\)</span> , 왜냐하면 <span class="math display">\[  | \pmb P \pmb P^t | = | \pmb P | |\pmb P^t |  = | \pmb P|^2 = |\pmb I| =1 \]</span></p></li>
 <li><p>임의의 정방행렬 <span class="math inline">\(\pmb A\)</span>에 대하여 다음이 성립한다. <span class="math display">\[ tr(\pmb P \pmb A \pmb P^t) = tr(\pmb A \pmb P^t \pmb P) = tr(\pmb A) \]</span></p></li>
 </ul>
+</section>
+<section id="우드베리-공식" class="level2" data-number="A.11">
+<h2 data-number="A.11" class="anchored" data-anchor-id="우드베리-공식"><span class="header-section-number">A.11</span> 우드베리 공식</h2>
+<p>다음은 우드베리공식(Woodbury formula) 과 파생된 유용한 공식들이다.</p>
+<p><span class="math display">\[
+(\pmb A+\pmb U\pmb C\pmb V)^{-1} = \pmb A^{-1}-\pmb A^{-1} \pmb U (\pmb C^{-1} + \pmb V \pmb A^{-1}\pmb U)^{-1} \pmb V \pmb A^{-1}
+\]</span></p>
+<p><span class="math display">\[
+(\pmb I+\pmb U \pmb C\pmb V)^{-1} = \pmb I - \pmb U (\pmb C^{-1} + \pmb V \pmb U)^{-1} \pmb V
+\]</span></p>
+<p><span id="eq-woodbury"><span class="math display">\[ (\pmb A+\pmb u\pmb v^t)^{-1} = \pmb A^{-1} - \frac{ \pmb A^{-1} \pmb u\pmb v^t \pmb A^{-1}}{1+\pmb v^t \pmb A^{-1}\pmb u}  \tag{A.3}\]</span></span></p>
+<p><span class="math display">\[
+(a \pmb I_n + b \pmb 1_n \pmb 1_n^t)^{-1} = \frac{1}{a} \left [ \pmb I_n - \frac{b}{a+nb} \pmb 1 \pmb 1^t \right ]
+\]</span></p>
 
 
 </section>
