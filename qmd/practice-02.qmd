@@ -1,4 +1,4 @@
-# 중회귀 모형 진단 {#sec-multiple-02-diag}
+# R-실습: 중회귀 모형 진단 {#sec-multiple-02-diag}
 
 
 

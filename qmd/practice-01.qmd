@@ -1,4 +1,4 @@
-# 중회귀 모형 적합 {#sec-multiple-01}
+# R-실습: 중회귀 모형 적합 {#sec-multiple-01}
 
 
 
