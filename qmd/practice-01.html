@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>통계적 예측모형 - 부록 G — R-실습: 중회귀 모형 적합</title>
+<title>통계적 예측모형 - 부록 H — R-실습: 중회귀 모형 적합</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -65,7 +65,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
 <link href="../qmd/practice-02.html" rel="next">
-<link href="../qmd/quadratic.html" rel="prev">
+<link href="../qmd/aic.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -163,7 +163,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/practice-01.html"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/practice-01.html"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -229,6 +229,12 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../qmd/modelselection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">모형의 선택</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
@@ -280,14 +286,20 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../qmd/aic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">모형선택의 정보 기준</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../qmd/practice-01.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-02.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></span></a>
   </div>
 </li>
       </ul>
@@ -302,20 +314,20 @@ window.Quarto = {
     <h2 id="toc-title">목차</h2>
    
   <ul class="collapse">
-  <li><a href="#예제-3.3-자료" id="toc-예제-3.3-자료" class="nav-link active" data-scroll-target="#예제-3.3-자료"><span class="header-section-number">G.1</span> 예제 3.3 자료</a></li>
-  <li><a href="#중회귀-모형의-적합" id="toc-중회귀-모형의-적합" class="nav-link" data-scroll-target="#중회귀-모형의-적합"><span class="header-section-number">G.2</span> 중회귀 모형의 적합</a></li>
-  <li><a href="#잔차-분석" id="toc-잔차-분석" class="nav-link" data-scroll-target="#잔차-분석"><span class="header-section-number">G.3</span> 잔차 분석</a></li>
-  <li><a href="#부분-f-검정" id="toc-부분-f-검정" class="nav-link" data-scroll-target="#부분-f-검정"><span class="header-section-number">G.4</span> 부분 F 검정</a></li>
-  <li><a href="#선형-가설에-대한-검정" id="toc-선형-가설에-대한-검정" class="nav-link" data-scroll-target="#선형-가설에-대한-검정"><span class="header-section-number">G.5</span> 선형 가설에 대한 검정</a></li>
+  <li><a href="#예제-3.3-자료" id="toc-예제-3.3-자료" class="nav-link active" data-scroll-target="#예제-3.3-자료"><span class="header-section-number">H.1</span> 예제 3.3 자료</a></li>
+  <li><a href="#중회귀-모형의-적합" id="toc-중회귀-모형의-적합" class="nav-link" data-scroll-target="#중회귀-모형의-적합"><span class="header-section-number">H.2</span> 중회귀 모형의 적합</a></li>
+  <li><a href="#잔차-분석" id="toc-잔차-분석" class="nav-link" data-scroll-target="#잔차-분석"><span class="header-section-number">H.3</span> 잔차 분석</a></li>
+  <li><a href="#부분-f-검정" id="toc-부분-f-검정" class="nav-link" data-scroll-target="#부분-f-검정"><span class="header-section-number">H.4</span> 부분 F 검정</a></li>
+  <li><a href="#선형-가설에-대한-검정" id="toc-선형-가설에-대한-검정" class="nav-link" data-scroll-target="#선형-가설에-대한-검정"><span class="header-section-number">H.5</span> 선형 가설에 대한 검정</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/practice-01.html"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/practice-01.html"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-multiple-01" class="quarto-section-identifier">부록 G — R-실습: 중회귀 모형 적합</span></h1>
+<h1 class="title"><span id="sec-multiple-01" class="quarto-section-identifier">부록 H — R-실습: 중회귀 모형 적합</span></h1>
 </div>
 
 
@@ -332,8 +344,8 @@ window.Quarto = {
 </header>
 
 
-<section id="예제-3.3-자료" class="level2" data-number="G.1">
-<h2 data-number="G.1" class="anchored" data-anchor-id="예제-3.3-자료"><span class="header-section-number">G.1</span> 예제 3.3 자료</h2>
+<section id="예제-3.3-자료" class="level2" data-number="H.1">
+<h2 data-number="H.1" class="anchored" data-anchor-id="예제-3.3-자료"><span class="header-section-number">H.1</span> 예제 3.3 자료</h2>
 <p>예제 3.3에 나온 중고차 가격자료를 이용한 R 실습입니다.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(usedcars)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -347,8 +359,8 @@ window.Quarto = {
 6  1120   58   39106 1998         1</code></pre>
 </div>
 </div>
-<section id="산점도-행렬" class="level3" data-number="G.1.1">
-<h3 data-number="G.1.1" class="anchored" data-anchor-id="산점도-행렬"><span class="header-section-number">G.1.1</span> 산점도 행렬</h3>
+<section id="산점도-행렬" class="level3" data-number="H.1.1">
+<h3 data-number="H.1.1" class="anchored" data-anchor-id="산점도-행렬"><span class="header-section-number">H.1.1</span> 산점도 행렬</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(usedcars)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -361,8 +373,8 @@ window.Quarto = {
 </div>
 </section>
 </section>
-<section id="중회귀-모형의-적합" class="level2" data-number="G.2">
-<h2 data-number="G.2" class="anchored" data-anchor-id="중회귀-모형의-적합"><span class="header-section-number">G.2</span> 중회귀 모형의 적합</h2>
+<section id="중회귀-모형의-적합" class="level2" data-number="H.2">
+<h2 data-number="H.2" class="anchored" data-anchor-id="중회귀-모형의-적합"><span class="header-section-number">H.2</span> 중회귀 모형의 적합</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fit0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(price <span class="sc">~</span> year <span class="sc">+</span> mileage <span class="sc">+</span> cc <span class="sc">+</span> automatic, usedcars)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -471,8 +483,8 @@ attr(,"assign")
  - attr(*, "class")= chr "lm"</code></pre>
 </div>
 </div>
-<section id="회귀계수의-추정과-결정계수" class="level3" data-number="G.2.1">
-<h3 data-number="G.2.1" class="anchored" data-anchor-id="회귀계수의-추정과-결정계수"><span class="header-section-number">G.2.1</span> 회귀계수의 추정과 결정계수</h3>
+<section id="회귀계수의-추정과-결정계수" class="level3" data-number="H.2.1">
+<h3 data-number="H.2.1" class="anchored" data-anchor-id="회귀계수의-추정과-결정계수"><span class="header-section-number">H.2.1</span> 회귀계수의 추정과 결정계수</h3>
 <p>함수 <code>summary</code> 는 각 계수의 추정값과 가설 <span class="math inline">\(H_0: \beta_i=0\)</span>에 대한 t-검정 결과를 보여준다. 또한 결정계수 <span class="math inline">\(R^2\)</span>도 구해준다.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -513,8 +525,8 @@ automatic    8.322275e+01  2.474025e+02</code></pre>
 </div>
 </div>
 </section>
-<section id="분산분석" class="level3" data-number="G.2.2">
-<h3 data-number="G.2.2" class="anchored" data-anchor-id="분산분석"><span class="header-section-number">G.2.2</span> 분산분석</h3>
+<section id="분산분석" class="level3" data-number="H.2.2">
+<h3 data-number="H.2.2" class="anchored" data-anchor-id="분산분석"><span class="header-section-number">H.2.2</span> 분산분석</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fit0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -532,8 +544,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </section>
-<section id="예측값" class="level3" data-number="G.2.3">
-<h3 data-number="G.2.3" class="anchored" data-anchor-id="예측값"><span class="header-section-number">G.2.3</span> 예측값</h3>
+<section id="예측값" class="level3" data-number="H.2.3">
+<h3 data-number="H.2.3" class="anchored" data-anchor-id="예측값"><span class="header-section-number">H.2.3</span> 예측값</h3>
 <p>반응변수에 대한 예측값 <span class="math inline">\(\hat {\pmb y} = \pmb X \hat {\pmb \beta}\)</span>는 함수 <code>predict</code>를 이용한다.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(fit0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -572,8 +584,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </section>
 </section>
-<section id="잔차-분석" class="level2" data-number="G.3">
-<h2 data-number="G.3" class="anchored" data-anchor-id="잔차-분석"><span class="header-section-number">G.3</span> 잔차 분석</h2>
+<section id="잔차-분석" class="level2" data-number="H.3">
+<h2 data-number="H.3" class="anchored" data-anchor-id="잔차-분석"><span class="header-section-number">H.3</span> 잔차 분석</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -605,10 +617,10 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </div>
-<section id="제곱합의-종류" class="level3" data-number="G.3.1">
-<h3 data-number="G.3.1" class="anchored" data-anchor-id="제곱합의-종류"><span class="header-section-number">G.3.1</span> 제곱합의 종류</h3>
-<section id="순차제곱합" class="level4" data-number="G.3.1.1">
-<h4 data-number="G.3.1.1" class="anchored" data-anchor-id="순차제곱합"><span class="header-section-number">G.3.1.1</span> 순차제곱합</h4>
+<section id="제곱합의-종류" class="level3" data-number="H.3.1">
+<h3 data-number="H.3.1" class="anchored" data-anchor-id="제곱합의-종류"><span class="header-section-number">H.3.1</span> 제곱합의 종류</h3>
+<section id="순차제곱합" class="level4" data-number="H.3.1.1">
+<h4 data-number="H.3.1.1" class="anchored" data-anchor-id="순차제곱합"><span class="header-section-number">H.3.1.1</span> 순차제곱합</h4>
 <p>순차제곱합은 모형에 들어가는 변수의 순서에 따라서 제곱합이 틀려진다.</p>
 <p>다음의 예를 보면 두 모형이 같은 변수들로 적합되지만 순서가 달라지면 순차제곱합이 다르다.</p>
 <div class="cell">
@@ -697,8 +709,8 @@ F-statistic: 59.21 on 4 and 25 DF,  p-value: 2.184e-12</code></pre>
 </div>
 </div>
 </section>
-<section id="편제곱합" class="level4" data-number="G.3.1.2">
-<h4 data-number="G.3.1.2" class="anchored" data-anchor-id="편제곱합"><span class="header-section-number">G.3.1.2</span> 편제곱합</h4>
+<section id="편제곱합" class="level4" data-number="H.3.1.2">
+<h4 data-number="H.3.1.2" class="anchored" data-anchor-id="편제곱합"><span class="header-section-number">H.3.1.2</span> 편제곱합</h4>
 <p>편제곱합은 다른 변수들로 보정된 제곱합으로 순서에 관계없이 일정하다.패키지 <code>car</code> 에 있는 함수 <code>Anova</code> 를 사용하면 편제곱합을 구할 수 있다.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(fit1, <span class="at">type=</span><span class="st">"III"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -735,8 +747,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </section>
 </section>
 </section>
-<section id="부분-f-검정" class="level2" data-number="G.4">
-<h2 data-number="G.4" class="anchored" data-anchor-id="부분-f-검정"><span class="header-section-number">G.4</span> 부분 F 검정</h2>
+<section id="부분-f-검정" class="level2" data-number="H.4">
+<h2 data-number="H.4" class="anchored" data-anchor-id="부분-f-검정"><span class="header-section-number">H.4</span> 부분 F 검정</h2>
 <p>배기량(cc)에 대항 계수가 0인지 검정해보자.</p>
 <p><span class="math display">\[ H_0: ~ \beta_k =0 \]</span></p>
 <p>하나의 계수에 대한 검정은 분산분석 표의 t-검정으로도 가능하며 결과는 동일하다.</p>
@@ -777,8 +789,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </section>
-<section id="선형-가설에-대한-검정" class="level2" data-number="G.5">
-<h2 data-number="G.5" class="anchored" data-anchor-id="선형-가설에-대한-검정"><span class="header-section-number">G.5</span> 선형 가설에 대한 검정</h2>
+<section id="선형-가설에-대한-검정" class="level2" data-number="H.5">
+<h2 data-number="H.5" class="anchored" data-anchor-id="선형-가설에-대한-검정"><span class="header-section-number">H.5</span> 선형 가설에 대한 검정</h2>
 <p>다음과 같은 선형 가설을 생각자.</p>
 <p><span class="math display">\[ H_0: \pmb L \pmb \beta= \pmb 0\]</span></p>
 <p>교과서 예제 4.4 에서 다음과 같은 가설을 고려한다.</p>
@@ -1231,13 +1243,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../qmd/quadratic.html" class="pagination-link" aria-label="이차형식과 제곱합의 분포">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">이차형식과 제곱합의 분포</span></span>
+      <a href="../qmd/aic.html" class="pagination-link" aria-label="모형선택의 정보 기준">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">모형선택의 정보 기준</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../qmd/practice-02.html" class="pagination-link" aria-label="R-실습: 중회귀 모형 진단">
-        <span class="nav-page-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>
