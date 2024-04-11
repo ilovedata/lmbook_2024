@@ -1,0 +1,2323 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>통계적 예측모형 - 부록 K — R-실습: 모형의 선택</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../qmd/practice-03.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script>
+<script type="text/javascript">
+ window.MathJax = {
+  tex: {
+    macros: {
+    RR: '{\\mathbb R}',                    // a simple string replacement
+    hatmat:'{\\pmb X ({\\pmb X}^t {\\pmb X} )^{-1} {\\pmb X}^t}',
+    bold: ['\\boldsymbol{#1}',1] ,     // this macro has one parameter
+    pardiff: ['\\frac{\\partial#2}{\\partial#1}', 2, 'x'], // this macro has an optional parameter that defaults to 'x'
+    pardifftwo: ['\\frac{\\partial#1}{\\partial#2}', 2],
+    pardiffd: ['\\frac{\\partial#1}{\\partial#2^t \\partial#2}', 2],
+    pardiffdd: ['\\frac{\\partial#1}{\\partial#3 \\partial#2}', 3],
+    norm: ['\\lVert#1\\rVert',1]
+  },
+  environments: {
+  braced: ["\\left\\{", "\\right\\}"]
+  }
+ }
+};
+</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/practice-04.html"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">R-실습: 모형의 선택</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">통계적 예측모형</a> 
+        <div class="sidebar-tools-main">
+    <a href="../통계적-예측모형.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="검색"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/lse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">선형 회귀모형의 소개</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">선형회귀에서의 추론</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/inference2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">모형의 비교</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/modeleval2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">모형의 진단</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/residual.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">관측값에 대한 진단</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/modelselection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">모형의 선택</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_mat_basic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">행렬의 기초</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_vector_space.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">벡터공간</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_eigen_value.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">고유값과 고유벡터</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_vec_cal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">벡터 미분</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/multivar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">다변량 확률변수의 성질</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/quadratic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">이차형식과 제곱합의 분포</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/aic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">모형선택의 정보 기준</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/practice-01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/practice-02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/practice-03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">R-실습: 관측값에 대한 진단</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/practice-04.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">R-실습: 모형의 선택</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul class="collapse">
+  <li><a href="#aic-와-bic-계산" id="toc-aic-와-bic-계산" class="nav-link active" data-scroll-target="#aic-와-bic-계산"><span class="header-section-number">K.1</span> AIC 와 BIC 계산</a></li>
+  <li><a href="#예제-6.1" id="toc-예제-6.1" class="nav-link" data-scroll-target="#예제-6.1"><span class="header-section-number">K.2</span> 예제 6.1</a></li>
+  <li><a href="#변수선택-방법" id="toc-변수선택-방법" class="nav-link" data-scroll-target="#변수선택-방법"><span class="header-section-number">K.3</span> 변수선택 방법</a></li>
+  <li><a href="#연습문제-6.10" id="toc-연습문제-6.10" class="nav-link" data-scroll-target="#연습문제-6.10"><span class="header-section-number">K.4</span> 연습문제 6.10</a></li>
+  <li><a href="#연습문제-6.12" id="toc-연습문제-6.12" class="nav-link" data-scroll-target="#연습문제-6.12"><span class="header-section-number">K.5</span> 연습문제 6.12</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/practice-04.html"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">R-실습: 모형의 선택</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span id="sec-multiple-04-varselection" class="quarto-section-identifier">부록 K — R-실습: 모형의 선택</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="aic-와-bic-계산" class="level2" data-number="K.1">
+<h2 data-number="K.1" class="anchored" data-anchor-id="aic-와-bic-계산"><span class="header-section-number">K.1</span> AIC 와 BIC 계산</h2>
+<p>통계모형을 선택하는 척도로서 가능도함수이론에 근거한 AIC(Akaike information criteria, <a href="modelselection.html#eq-selaic" class="quarto-xref">식&nbsp;<span>6.9</span></a> )와 베이지안 검정이론에 기초한 BIC(bayesian or schwartz information criteria, <a href="modelselection.html#eq-selbic" class="quarto-xref">식&nbsp;<span>6.8</span></a> )가 있으며 정의는 모형의 선택에 대한 절에 나타니 있다.</p>
+<p>AIC 와 BIC 는 함수 <code>AIC</code> 와 <code>BIC</code> 를 이용하면 구할 수 있다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(price <span class="sc">~</span> ., <span class="at">data=</span>houseprice)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>fit1</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = price ~ ., data = houseprice)
+
+Coefficients:
+(Intercept)          tax       ground        floor         year  
+    1.21874      0.05195      0.01159      0.34941     -0.21894  </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">AIC</span>(fit1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 121.5611</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">BIC</span>(fit1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 129.3361</code></pre>
+</div>
+</div>
+<p>위의 AIC 와 BIC 에서 로그 가능도 함수 <span class="math inline">\(\ell(\hat {\pmb \theta})\)</span> 는 함수 <code>logLik</code> 로 구할 수 있다.</p>
+<p>참고로 선형모형에 대한 AIC 와 BIC 는 <a href="modelselection.html#eq-sec-lm-ic" class="quarto-xref">식&nbsp;<span>6.10</span></a> 에 의하여 다음과 같이 계산할 수 있다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+AIC &amp;= n\log(2\pi) + n + n \log  \frac{SSE_p}{n} + 2(p+1) \\
+BIC &amp;= n\log(2\pi) + n + n \log  \frac{SSE_p}{n} + (\log n) (p+1)
+\end{aligned}
+\]</span></p>
+<p>이제 회귀모형을 적합한 결과과 <a href="modelselection.html#eq-sec-lm-ic" class="quarto-xref">식&nbsp;<span>6.10</span></a> 를 이용하여 직접 AIC 와 BIC 를 계산해보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">dim</span>(houseprice)[<span class="dv">1</span>]</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">coef</span>(fit1))</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>sse <span class="ot">&lt;-</span> <span class="fu">deviance</span>(fit1)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(n,p,sse)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 27.00000  5.00000 91.44876</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>aic1 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">2</span><span class="sc">*</span><span class="fu">logLik</span>(fit1) <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>(p<span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>bic1 <span class="ot">&lt;-</span> <span class="sc">-</span><span class="dv">2</span><span class="sc">*</span><span class="fu">logLik</span>(fit1) <span class="sc">+</span> <span class="fu">log</span>(n)<span class="sc">*</span>(p<span class="sc">+</span><span class="dv">1</span>) </span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(aic1, bic1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 121.5611 129.3361</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>aic2 <span class="ot">&lt;-</span> n<span class="sc">*</span><span class="fu">log</span>(<span class="dv">2</span><span class="sc">*</span>pi) <span class="sc">+</span> n <span class="sc">+</span> n<span class="sc">*</span><span class="fu">log</span>(<span class="fu">deviance</span>(fit1)<span class="sc">/</span>n)  <span class="sc">+</span> <span class="dv">2</span><span class="sc">*</span>(p<span class="sc">+</span><span class="dv">1</span>) </span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>bic2 <span class="ot">&lt;-</span> n<span class="sc">*</span><span class="fu">log</span>(<span class="dv">2</span><span class="sc">*</span>pi) <span class="sc">+</span> n <span class="sc">+</span> n<span class="sc">*</span><span class="fu">log</span>(<span class="fu">deviance</span>(fit1)<span class="sc">/</span>n)  <span class="sc">+</span> <span class="fu">log</span>(n)<span class="sc">*</span>(p<span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">c</span>(aic2, bic2)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 121.5611 129.3361</code></pre>
+</div>
+</div>
+</section>
+<section id="예제-6.1" class="level2" data-number="K.2">
+<h2 data-number="K.2" class="anchored" data-anchor-id="예제-6.1"><span class="header-section-number">K.2</span> 예제 6.1</h2>
+<section id="변수선택의-통계량" class="level3" data-number="K.2.1">
+<h3 data-number="K.2.1" class="anchored" data-anchor-id="변수선택의-통계량"><span class="header-section-number">K.2.1</span> 변수선택의 통계량</h3>
+<p>패키지 <code>leaps</code> 에 수록된 <code>regsubsets()</code> 함수를 이용하면 가능한 모든 모형에 대한 중요한 선택 기준들이 게산된다.</p>
+<ul>
+<li><code>rss</code>: 잔차 제곱합</li>
+<li><code>rsq</code>: <span class="math inline">\(R^2\)</span></li>
+<li><code>adjr2</code> : 수정된 <span class="math inline">\(R^2\)</span></li>
+<li><code>cp</code> : 맬로우의 <span class="math inline">\(C_p\)</span></li>
+<li><code>bic</code> : BIC</li>
+</ul>
+<p>교재 예제에 나타난 자료 <code>houseprice</code>는 독립변수의 수가 4개이므로 가능한 회귀식의 개수가 <span class="math inline">\(2^4=16\)</span>개이므로 이러한 방법을 적용할 수 있다. 하지만 독립변수의 수가 10개만 되면 가능한 회귀식의 수가 1024개나 되고 20개가 모형의 수가 100만개가 넘으므로 이들 모두에 대한 통계량을 계산하는 것은 실제로 쉽지않다.</p>
+<p>이제 예제 자료 <code>houseprice</code>에 대하여 <code>regsubsets</code>함수를 사용하여 가능한 회귀식을 모두 적합하고 각 식에 대한 모형선택의 기준값을 계산해보자. <code>regsubsets</code>함수에서 <code>nbest=6</code>는 독립변수의 수가 같은 모형들 중에서 가장 좋은 6개의 모형만을 보여주라는 명령문이다.</p>
+<p>모든 가능한 회귀식에 대한 통계량은 <code>summaryf</code>함수를 통하여 볼 수 있다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>houseprice.rgs <span class="ot">&lt;-</span> <span class="fu">regsubsets</span>(price <span class="sc">~</span> . , <span class="at">data=</span>houseprice, <span class="at">nbest=</span><span class="dv">6</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summaryf</span>(houseprice.rgs)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         tax ground floor year        rss        rsq      adjr2         cp
+1  ( 1 )                *       182.66315 0.86271916 0.85722792  20.943616
+1  ( 2 )   *                    215.97764 0.83768158 0.83118885  28.958146
+1  ( 3 )          *             628.61671 0.52756188 0.50866435 128.227503
+1  ( 4 )                     * 1202.47186 0.09627993 0.06013112 266.280912
+2  ( 1 )   *            *        95.19550 0.92845564 0.92249361   1.901360
+2  ( 2 )                *    *  153.80917 0.88440442 0.87477146  16.002160
+2  ( 3 )          *     *       168.58785 0.87329747 0.86273892  19.557496
+2  ( 4 )   *      *             191.93607 0.85575007 0.84372925  25.174420
+2  ( 5 )   *                 *  214.64151 0.83868576 0.82524290  30.636710
+2  ( 6 )          *          *  626.80968 0.52891996 0.48966329 129.792782
+3  ( 1 )   *            *    *   92.31936 0.93061720 0.92156727   3.209442
+3  ( 2 )   *      *     *        93.26197 0.92990878 0.92076645   3.436208
+3  ( 3 )          *     *    *  150.10029 0.88719183 0.87247773  17.109908
+3  ( 4 )   *      *          *  187.51305 0.85907420 0.84069258  26.110366
+4  ( 1 )   *      *     *    *   91.44876 0.93127151 0.91877542   5.000000
+                bic
+1  ( 1 ) -47.022941
+1  ( 2 ) -42.499601
+1  ( 3 ) -13.654236
+1  ( 4 )   3.858312
+2  ( 1 ) -61.323304
+2  ( 2 ) -48.369244
+2  ( 3 ) -45.892146
+2  ( 4 ) -42.390102
+2  ( 5 ) -39.371316
+2  ( 6 ) -10.436125
+3  ( 1 ) -58.855794
+3  ( 2 ) -58.581513
+3  ( 3 ) -45.732450
+3  ( 4 ) -39.723741
+4  ( 1 ) -55.815783</code></pre>
+</div>
+</div>
+<p>위의 결과를 보면 두 개의 변수 <code>tax</code>와 <code>floor</code>가 포함된 회귀식이 다음과 같은 통계량으로 가장 좋은 모형으로 나타난다.</p>
+<ul>
+<li><code>rss</code>: 잔차제곱합(residual sum of square), <span class="math inline">\(SSE = 95.20\)</span></li>
+<li><code>rsq</code>: 결정계수(<span class="math inline">\(R^2_p\)</span>), <span class="math inline">\(R^2=0.92846\)</span></li>
+<li><code>adjr2</code>: 수정된 결정계수(<span class="math inline">\(R^2_{ap}\)</span>), <span class="math inline">\(R^2_a=0.92249\)</span></li>
+<li><code>cp</code>: 맬로우즈 <span class="math inline">\(C_p\)</span>, <span class="math inline">\(C_p = 1.901\)</span></li>
+<li><code>bic</code>: BIC(Bayesian Information Criteria), <span class="math inline">\(BIC= -61.323\)</span></li>
+</ul>
+<p>패키지 <code>olsrr</code>에 있는 함수 <code>ols_step_all_possible()</code>을 이용하면 가능한 모든 회귀모형에 대한 통계량을 구하고 여러 가지 통계량에 대한 그림을 <code>plot()</code> 함수를 이용하여 쉽게 그릴 수 있다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(price <span class="sc">~</span> ., <span class="at">data=</span>houseprice)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>houseprice.rgs2 <span class="ot">&lt;-</span> <span class="fu">ols_step_all_possible</span>(fit1)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>houseprice.rgs2 </span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Index N            Predictors   R-Square Adj. R-Square Mallow's Cp
+3      1 1                 floor 0.86271916    0.85722792  0.83399320
+1      2 1                   tax 0.83768158    0.83118885  0.76244434
+2      3 1                ground 0.52756188    0.50866435  0.36958913
+4      4 1                  year 0.09627993    0.06013112 -0.07517657
+6      5 2             tax floor 0.92845564    0.92249361  0.89147659
+10     6 2            floor year 0.88440442    0.87477146  0.84393314
+8      7 2          ground floor 0.87329747    0.86273892  0.82431609
+5      8 2            tax ground 0.85575007    0.84372925  0.73078316
+7      9 2              tax year 0.83868576    0.82524290  0.74339806
+9     10 2           ground year 0.52891996    0.48966329  0.31506912
+13    11 3        tax floor year 0.93061720    0.92156727  0.88456609
+11    12 3      tax ground floor 0.92990878    0.92076645  0.88037155
+14    13 3     ground floor year 0.88719183    0.87247773  0.82472001
+12    14 3       tax ground year 0.85907420    0.84069258  0.71427919
+15    15 4 tax ground floor year 0.93127151    0.91877542  0.87187470</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>houseprice.rgs2<span class="sc">$</span>result <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(mindex, n, predictors, rsquare, adjr, cp, aic, sbc) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">arrange</span>(sbc)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   mindex n            predictors    rsquare       adjr         cp      aic
+1       5 2             tax floor 0.92845564 0.92249361   1.901360 118.6453
+2      11 3        tax floor year 0.93061720 0.92156727   3.209442 119.8169
+3      12 3      tax ground floor 0.92990878 0.92076645   3.436208 120.0912
+4      15 4 tax ground floor year 0.93127151 0.91877542   5.000000 121.5611
+5       6 2            floor year 0.88440442 0.87477146  16.002160 131.5993
+6       1 1                 floor 0.86271916 0.85722792  20.943616 134.2415
+7       7 2          ground floor 0.87329747 0.86273892  19.557496 134.0764
+8      13 3     ground floor year 0.88719183 0.87247773  17.109908 132.9403
+9       2 1                   tax 0.83768158 0.83118885  28.958146 138.7648
+10      8 2            tax ground 0.85575007 0.84372925  25.174420 137.5785
+11     14 3       tax ground year 0.85907420 0.84069258  26.110366 138.9490
+12      9 2              tax year 0.83868576 0.82524290  30.636710 140.5973
+13      3 1                ground 0.52756188 0.50866435 128.227503 167.6102
+14     10 2           ground year 0.52891996 0.48966329 129.792782 169.5324
+15      4 1                  year 0.09627993 0.06013112 266.280912 185.1227
+        sbc
+1  123.8286
+2  126.2961
+3  126.5704
+4  129.3361
+5  136.7827
+6  138.1290
+7  139.2598
+8  139.4195
+9  142.6523
+10 142.7618
+11 145.4282
+12 145.7806
+13 171.4977
+14 174.7158
+15 189.0102</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(houseprice.rgs2)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice-04_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice-04_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>PRESS 잔차는 함수 <code>press()</code> 로 구할 수 있다.</p>
+<p><span class="math display">\[ \text{PRESS}_p = \sum_{i=1}^n ( y_i - \hat y_{i(i)})^2 \]</span></p>
+<p>또한 교과서 264 페이지에 나온 교차확인(cross validation)에 의거한 <span class="math inline">\(R^2_{pred}\)</span> 은 다음과 같이 계산되며 <code>press()</code> 함수에 의해 주어진다.</p>
+<p><span class="math display">\[ R^2_{pred} = 1 - \frac{ \text{PRESS}_p}{\text{SST}} \]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">press</span>(houseprice.rgs)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         tax ground floor year     PRESS pred.r.squared
+1  ( 1 )                *       220.8853      0.8339932
+1  ( 2 )   *                    316.0868      0.7624443
+1  ( 3 )          *             838.8121      0.3695891
+1  ( 4 )                     * 1430.6084      0.0000000
+2  ( 1 )   *            *       144.3991      0.8914766
+2  ( 2 )                *    *  207.6594      0.8439331
+2  ( 3 )          *     *       233.7615      0.8243161
+2  ( 4 )   *      *             358.2145      0.7307832
+2  ( 5 )   *                 *  341.4294      0.7433981
+2  ( 6 )          *          *  911.3553      0.3150691
+3  ( 1 )   *            *    *  153.5941      0.8845661
+3  ( 2 )   *      *     *       159.1752      0.8803716
+3  ( 3 )          *     *    *  233.2240      0.8247200
+3  ( 4 )   *      *          *  380.1744      0.7142792
+4  ( 1 )   *      *     *    *  170.4810      0.8718747</code></pre>
+</div>
+</div>
+</section>
+<section id="이상치를-제거한-경우" class="level3" data-number="K.2.2">
+<h3 data-number="K.2.2" class="anchored" data-anchor-id="이상치를-제거한-경우"><span class="header-section-number">K.2.2</span> 이상치를 제거한 경우</h3>
+<p>교과서에서 분석하였듯이 9,10,27 번째 자료가 이상점 또는 영향점일 가능성이 높으므로 이를 제거하고 모형의 선택 기준을 다시 계산해 보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>housepriceEX <span class="ot">&lt;-</span> houseprice[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">9</span>,<span class="dv">10</span>,<span class="dv">27</span>),]</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>housepriceEX.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(price <span class="sc">~</span> . , <span class="at">data=</span>housepriceEX)</span>
+<span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(housepriceEX.lm)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = price ~ ., data = housepriceEX)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-2.4130 -1.0459 -0.2558  0.8593  2.8197 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)   
+(Intercept)  6.32538    2.14531   2.948  0.00825 **
+tax          0.06589    0.01874   3.516  0.00231 **
+ground       0.00974    0.02168   0.449  0.65835   
+floor        0.08578    0.09057   0.947  0.35547   
+year        -0.11142    0.26781  -0.416  0.68205   
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.543 on 19 degrees of freedom
+Multiple R-squared:  0.7819,    Adjusted R-squared:  0.7359 
+F-statistic: 17.02 on 4 and 19 DF,  p-value: 4.404e-06</code></pre>
+</div>
+</div>
+<p>이상치를 제거하면 <code>tax</code> 만 포함된 모형이 최적모형으로 나타난다. 이상치와 영항점이 모형의 선택에도 영향을 주는 점에 꼭 유의하자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>housepriceEX.rgs <span class="ot">&lt;-</span> <span class="fu">regsubsets</span>(price <span class="sc">~</span> . , <span class="at">data=</span>housepriceEX, <span class="at">nbest=</span><span class="dv">6</span>)</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summaryf</span>(housepriceEX.rgs)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         tax ground floor year       rss       rsq     adjr2         cp
+1  ( 1 )   *                    48.17790 0.7675502 0.7569843  0.2458362
+1  ( 2 )                *      102.73566 0.5043188 0.4817878 23.1726808
+1  ( 3 )          *            125.87070 0.3926964 0.3650917 32.8947363
+1  ( 4 )                     * 174.34503 0.1588164 0.1205808 53.2651405
+2  ( 1 )   *            *       46.18667 0.7771576 0.7559345  1.4090560
+2  ( 2 )   *      *             47.39011 0.7713512 0.7495751  1.9147822
+2  ( 3 )   *                 *  48.11577 0.7678500 0.7457405  2.2197243
+2  ( 4 )                *    *  83.74651 0.5959380 0.5574559 17.1928590
+2  ( 5 )          *     *       85.27968 0.5885408 0.5493542 17.8371405
+2  ( 6 )          *          * 116.96847 0.4356480 0.3819002 31.1537464
+3  ( 1 )   *      *     *       45.62514 0.7798669 0.7468469  3.1730851
+3  ( 2 )   *            *    *  45.69348 0.7795371 0.7464677  3.2018056
+3  ( 3 )   *      *          *  47.34784 0.7715551 0.7372884  3.8970174
+3  ( 4 )          *     *    *  74.63053 0.6399210 0.5859092 15.3620431
+4  ( 1 )   *      *     *    *  45.21326 0.7818541 0.7359287  5.0000000
+                bic
+1  ( 1 ) -28.661838
+1  ( 2 ) -10.487628
+1  ( 3 )  -5.613326
+1  ( 4 )   2.205420
+2  ( 1 ) -26.496810
+2  ( 2 ) -25.879469
+2  ( 3 ) -25.514758
+2  ( 4 ) -12.214327
+2  ( 5 ) -11.778929
+2  ( 6 )  -4.195690
+3  ( 1 ) -23.612331
+3  ( 2 ) -23.576407
+3  ( 3 ) -22.722834
+3  ( 4 ) -11.802150
+4  ( 1 ) -20.651921</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a>housepriceEX.rgs2 <span class="ot">&lt;-</span> <span class="fu">ols_step_all_possible</span>(<span class="fu">lm</span>(price <span class="sc">~</span> ., <span class="at">data=</span>housepriceEX))</span>
+<span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a>housepriceEX.rgs2<span class="sc">$</span>result <span class="sc">%&gt;%</span> <span class="fu">as.data.frame</span>() <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(mindex, n, predictors, rsquare, adjr, cp, aic, sbc) <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">arrange</span>(sbc)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   mindex n            predictors   rsquare      adjr         cp       aic
+1       1 1                   tax 0.7675502 0.7569843  0.2458362  90.83337
+2       5 2             tax floor 0.7771576 0.7559345  1.4090560  91.82034
+3       6 2            tax ground 0.7713512 0.7495751  1.9147822  92.43768
+4       7 2              tax year 0.7678500 0.7457405  2.2197243  92.80240
+5      11 3      tax ground floor 0.7798669 0.7468469  3.1730851  93.52677
+6      12 3        tax floor year 0.7795371 0.7464677  3.2018056  93.56269
+7      13 3       tax ground year 0.7715551 0.7372884  3.8970174  94.41627
+8      15 4 tax ground floor year 0.7818541 0.7359287  5.0000000  95.30913
+9       8 2            floor year 0.5959380 0.5574559 17.1928590 106.10283
+10     14 3     ground floor year 0.6399210 0.5859092 15.3620431 105.33695
+11      9 2          ground floor 0.5885408 0.5493542 17.8371405 106.53823
+12      2 1                 floor 0.5043188 0.4817878 23.1726808 109.00758
+13      3 1                ground 0.3926964 0.3650917 32.8947363 113.88188
+14     10 2           ground year 0.4356480 0.3819002 31.1537464 114.12146
+15      4 1                  year 0.1588164 0.1205808 53.2651405 121.70063
+         sbc
+1   94.36753
+2   96.53256
+3   97.14990
+4   97.51461
+5   99.41704
+6   99.45296
+7  100.30654
+8  102.37745
+9  110.81504
+10 111.22722
+11 111.25044
+12 112.54174
+13 117.41604
+14 118.83368
+15 125.23479</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">press</span>(housepriceEX.rgs)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>         tax ground floor year     PRESS pred.r.squared
+1  ( 1 )   *                    56.10399     0.72930829
+1  ( 2 )                *      117.36430     0.43373824
+1  ( 3 )          *            157.83378     0.23848023
+1  ( 4 )                     * 202.40162     0.02344834
+2  ( 1 )   *            *       57.66354     0.72178375
+2  ( 2 )   *      *             64.24819     0.69001399
+2  ( 3 )   *                 *  63.42708     0.69397570
+2  ( 4 )                *    * 108.09369     0.47846724
+2  ( 5 )          *     *      114.27185     0.44865875
+2  ( 6 )          *          * 160.37982     0.22619605
+3  ( 1 )   *      *     *       68.98320     0.66716837
+3  ( 2 )   *            *    *  65.44694     0.68423019
+3  ( 3 )   *      *          *  72.26745     0.65132247
+3  ( 4 )          *     *    * 109.76504     0.47040332
+4  ( 1 )   *      *     *    *  79.24660     0.61764930</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="변수선택-방법" class="level2" data-number="K.3">
+<h2 data-number="K.3" class="anchored" data-anchor-id="변수선택-방법"><span class="header-section-number">K.3</span> 변수선택 방법</h2>
+<p>회귀식에서 변수를을 선택할 때 가장 큰 모형을 적합시키면 각 변수에 대한 중요도를 각 회귀계수에 대한 가설 검정 <span class="math inline">\(H_o: \beta_i=0\)</span>에 대한 t-통계량을 보고 판단할 수 있다.</p>
+<p>다시 모든 자료를 고려한 <code>houseprice</code>에 대하여 가장 큰 모형을 적합시킨 후 각 변수에 대한 t-검정을 실시해보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = price ~ ., data = houseprice)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.4891 -1.3574  0.1337  1.0686  3.4938 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  1.21874    2.04661   0.595  0.55759    
+tax          0.05195    0.01383   3.756  0.00109 ** 
+ground       0.01159    0.02534   0.458  0.65169    
+floor        0.34941    0.07268   4.807 8.41e-05 ***
+year        -0.21894    0.33149  -0.660  0.51582    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.039 on 22 degrees of freedom
+Multiple R-squared:  0.9313,    Adjusted R-squared:  0.9188 
+F-statistic: 74.53 on 4 and 22 DF,  p-value: 1.817e-12</code></pre>
+</div>
+</div>
+<p>위는 4개의 독립변수를 포함한 가장 큰 모형에 대하여 각 계수의 유의성 검정에 대한 결과이다. 변수 <code>floor</code>가 가장 유의한 변수이고 다음으로 <code>tax</code>가 유의함을 알 수 있다. 또한 2개의 변수 <code>year</code>와 <code>ground</code>는 유의하지 않음을 알 수 있다.</p>
+<p>이렇게 독립변수들은 반응변수를 설명하는 정도가 다르므로 모든 가능한 회귀식을 적합하여 모형을 선택하는 것보다 변수의 중요도를 고려하여 변수들을 유의한 정도에 따라 차례로 모형에 포함시키거나 제거하는 절차가 더 효율적이다. 이렇게 가장 단순한 모형(평균모형)에서 시작하여 설명력이 높은 변수들을 순차적으로 포함시키거나(forward selection; 전진선택) 가장 큰 모형(full model)에서 시작하여 설명력이 낮은 변수들을 차례로 제거하는 방법(backward elimination; 후방제거)을 단계별 회귀(stepwise regression)이라고 한다.</p>
+<p>단계별 회귀는 다음과 같은 세 가지 방법이 있다.</p>
+<ul>
+<li>전진선택 (forward selection)</li>
+<li>후방제거 (backward elimination)</li>
+<li>단계별 선택 (stepwise selection)</li>
+</ul>
+<p>단계별 선택은 전진선택과 후방제거를 결합한 형태로서 새로운 변수가 추가되는 경우마다(전진선택) 제거할 변수를 있는지 판단하여 유의하지 않다면 제거하는(후방제거) 방법이다.</p>
+<section id="단계별-선택의-적용" class="level3" data-number="K.3.1">
+<h3 data-number="K.3.1" class="anchored" data-anchor-id="단계별-선택의-적용"><span class="header-section-number">K.3.1</span> 단계별 선택의 적용</h3>
+<p>단계별 선택에서 전진선택과 후방제거는 <code>add1()</code>와 <code>drop1()</code>함수를 사용한다.</p>
+<ol type="1">
+<li>평균모형</li>
+</ol>
+<p><span class="math display">\[ y=\beta_0 + \epsilon \]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>model0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(price<span class="sc">~</span><span class="dv">1</span>, houseprice)</span>
+<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = price ~ 1, data = houseprice)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-6.300 -4.275 -0.800  1.125 23.200 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   19.250      1.377   13.98 1.32e-13 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 7.154 on 26 degrees of freedom</code></pre>
+</div>
+</div>
+<ol start="2" type="1">
+<li>첫번째 변수의 추가</li>
+</ol>
+<p>이제 가장 설명력있는 변수를 추가하는데 다음과 같은 2개의 모형을 비교하는 부분 F 검정을 이용하여 가장 유의한 변수를 추가한다.</p>
+<p><span class="math display">\[ H_0: y=\beta_0 + \epsilon \quad \text{vs} \quad H_1: y=\beta_0 + \beta_1 x_i + \epsilon \]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">add1</span>(model0, <span class="at">scope=</span><span class="sc">~</span>tax<span class="sc">+</span> ground<span class="sc">+</span> floor<span class="sc">+</span> year, <span class="at">test=</span><span class="st">"F"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Single term additions
+
+Model:
+price ~ 1
+       Df Sum of Sq     RSS     AIC  F value    Pr(&gt;F)    
+&lt;none&gt;              1330.58 107.233                       
+tax     1   1114.60  215.98  60.142 129.0183 2.310e-11 ***
+ground  1    701.96  628.62  88.987  27.9170 1.792e-05 ***
+floor   1   1147.92  182.66  55.619 157.1084 2.807e-12 ***
+year    1    128.11 1202.47 106.500   2.6634    0.1152    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>위의 결과에서 가장 유의한 변수가 <code>floor</code>이므로 회귀식에 추가한다. 변수를 추가하는 경우는 고려하는 변수를 포함한 모형과 포함하지 않는 모형이 가장 유의한 차이를 보이는 변수를 선택한다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> <span class="fu">update</span>(model0, . <span class="sc">~</span> . <span class="sc">+</span> floor)</span>
+<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = price ~ floor, data = houseprice)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-4.6682 -2.1916 -0.1459  2.0517  4.9644 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  1.25296    1.52716    0.82     0.42    
+floor        0.59511    0.04748   12.53 2.81e-12 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.703 on 25 degrees of freedom
+Multiple R-squared:  0.8627,    Adjusted R-squared:  0.8572 
+F-statistic: 157.1 on 1 and 25 DF,  p-value: 2.807e-12</code></pre>
+</div>
+</div>
+<p>위에서 <code>update()</code> 함수는 앞에서 적합한 모형 <code>model0</code>에 변수 <code>floor</code>를 추가한다.</p>
+<ol start="3" type="1">
+<li>두 번째 변수의 추가</li>
+</ol>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">add1</span>(model1, <span class="at">scope=</span><span class="sc">~</span>tax<span class="sc">+</span> ground<span class="sc">+</span> floor<span class="sc">+</span> year, <span class="at">test=</span><span class="st">"F"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Single term additions
+
+Model:
+price ~ floor
+       Df Sum of Sq     RSS    AIC F value    Pr(&gt;F)    
+&lt;none&gt;              182.663 55.619                      
+tax     1    87.468  95.195 40.023 22.0517 8.997e-05 ***
+ground  1    14.075 168.588 55.454  2.0037   0.16976    
+year    1    28.854 153.809 52.977  4.5023   0.04437 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> <span class="fu">update</span>(model1, . <span class="sc">~</span> . <span class="sc">+</span> tax)</span>
+<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(model2)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = price ~ floor + tax, data = houseprice)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-3.009 -1.658  0.048  1.220  3.548 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  0.39497    1.13994   0.346    0.732    
+floor        0.34835    0.06313   5.518 1.13e-05 ***
+tax          0.05742    0.01223   4.696 9.00e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 1.992 on 24 degrees of freedom
+Multiple R-squared:  0.9285,    Adjusted R-squared:  0.9225 
+F-statistic: 155.7 on 2 and 24 DF,  p-value: 1.798e-14</code></pre>
+</div>
+</div>
+<p>위의 결과로부터 변수 <code>tax</code>가 가장 유의한 변수임을 알 수 있고 이를 모형에 추가한다.</p>
+<ol start="4" type="1">
+<li>변수의 제거</li>
+</ol>
+<p>이제 독립변수가 두 개가(<code>floor</code>와 <code>tax</code>) 모형에 포함되었고 가장 최근에 포함된 변수 <code>tax</code>를 제외한 나머지 변수를 제거할 수 있는지 감정한다. 후방제거하는 경우는 제거할 변수가 포함된 모형과 포함하지 않는 모형의 설명력에 유의한 차이가 없어야 한다. 즉 F-검정이 유의하니 않으면 제거한다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="fu">drop1</span>(model2, <span class="at">test=</span><span class="st">"F"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Single term deletions
+
+Model:
+price ~ floor + tax
+       Df Sum of Sq     RSS    AIC F value    Pr(&gt;F)    
+&lt;none&gt;               95.195 40.023                      
+floor   1   120.782 215.978 60.142  30.451 1.126e-05 ***
+tax     1    87.468 182.663 55.619  22.052 8.997e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>위의 함수 <code>drop1()</code>의 결과에서 모든 변수에 대한 F-통계량이 유의하므로 변수를 제거하지 않는다.</p>
+<ol start="5" type="1">
+<li>세 번째 변수의 추가</li>
+</ol>
+<p>독립변수가 두 개가(<code>floor</code>와 <code>tax</code>) 모형에 새로운 변수를 추가하는 검정을 실시해 보자</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">add1</span>(model2, <span class="at">scope=</span><span class="sc">~</span>tax<span class="sc">+</span> ground<span class="sc">+</span> floor<span class="sc">+</span> year, <span class="at">test=</span><span class="st">"F"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Single term additions
+
+Model:
+price ~ floor + tax
+       Df Sum of Sq    RSS    AIC F value Pr(&gt;F)
+&lt;none&gt;              95.195 40.023               
+ground  1    1.9335 93.262 41.469  0.4768 0.4968
+year    1    2.8761 92.319 41.194  0.7165 0.4060</code></pre>
+</div>
+</div>
+<p>위의 결과에서 유의한 변수가 없으므로 더 이상 변수를 추가하지 않는다.</p>
+<ol start="6" type="1">
+<li>최종 모형</li>
+</ol>
+<p>더 이상 추가할 변수와 제거할 변수가 없으면 단계별 선택을 중단한다. 따라서 단계별 선택법에 의한 최종 모형은 <code>floor</code>와 <code>tax</code>, 두 개의 독립변수를 포함하는 모형이다.</p>
+<p>이러한 단계별 회귀의 결과는 모든 가능한 회귀에 의한 방법과 모형이 일치한다. 독립변수의 수가 많는 경우 이러한 단계별 회귀 방법은 유용하게 사용된다.</p>
+</section>
+<section id="함수-step" class="level3" data-number="K.3.2">
+<h3 data-number="K.3.2" class="anchored" data-anchor-id="함수-step"><span class="header-section-number">K.3.2</span> 함수 <code>step()</code></h3>
+<p>위에서 논의한 세 종류의 변수선택법은 함수 <code>step()</code>을 이용하여 한 번에 결과를 얻을 수 있다.</p>
+<p>::: {.callout-caution}</p>
+<p>주의할 점은 함수 <code>step()</code>은 변수의 선택 기준이 F-검정이 아니 AIC 를 이용한다는 점이다.</p>
+<ul>
+<li>전진 선택</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb46"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" aria-hidden="true" tabindex="-1"></a>model0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(price<span class="sc">~</span><span class="dv">1</span>, houseprice)</span>
+<span id="cb46-2"><a href="#cb46-2" aria-hidden="true" tabindex="-1"></a><span class="fu">step</span>(model0,  <span class="at">scope=</span><span class="sc">~</span>tax<span class="sc">+</span> ground<span class="sc">+</span> floor<span class="sc">+</span> year, <span class="at">direction=</span><span class="st">"forward"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Start:  AIC=107.23
+price ~ 1
+
+         Df Sum of Sq     RSS     AIC
++ floor   1   1147.92  182.66  55.619
++ tax     1   1114.60  215.98  60.142
++ ground  1    701.96  628.62  88.987
++ year    1    128.11 1202.47 106.500
+&lt;none&gt;                1330.58 107.233
+
+Step:  AIC=55.62
+price ~ floor
+
+         Df Sum of Sq     RSS    AIC
++ tax     1    87.468  95.195 40.023
++ year    1    28.854 153.809 52.977
++ ground  1    14.075 168.588 55.454
+&lt;none&gt;                182.663 55.619
+
+Step:  AIC=40.02
+price ~ floor + tax
+
+         Df Sum of Sq    RSS    AIC
+&lt;none&gt;                95.195 40.023
++ year    1    2.8761 92.319 41.194
++ ground  1    1.9335 93.262 41.469</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = price ~ floor + tax, data = houseprice)
+
+Coefficients:
+(Intercept)        floor          tax  
+    0.39497      0.34835      0.05742  </code></pre>
+</div>
+</div>
+<ul>
+<li>후방 제거</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a>fit <span class="ot">&lt;-</span> <span class="fu">lm</span>(price<span class="sc">~</span>tax<span class="sc">+</span> ground<span class="sc">+</span> floor<span class="sc">+</span> year, houseprice)</span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="fu">step</span>(fit, <span class="at">direction=</span><span class="st">"backward"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Start:  AIC=42.94
+price ~ tax + ground + floor + year
+
+         Df Sum of Sq     RSS    AIC
+- ground  1     0.871  92.319 41.194
+- year    1     1.813  93.262 41.469
+&lt;none&gt;                 91.449 42.938
+- tax     1    58.652 150.100 54.318
+- floor   1    96.064 187.513 60.326
+
+Step:  AIC=41.19
+price ~ tax + floor + year
+
+        Df Sum of Sq     RSS    AIC
+- year   1     2.876  95.195 40.023
+&lt;none&gt;                92.319 41.194
+- tax    1    61.490 153.809 52.977
+- floor  1   122.322 214.642 61.975
+
+Step:  AIC=40.02
+price ~ tax + floor
+
+        Df Sum of Sq     RSS    AIC
+&lt;none&gt;                95.195 40.023
+- tax    1    87.468 182.663 55.619
+- floor  1   120.782 215.978 60.142</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = price ~ tax + floor, data = houseprice)
+
+Coefficients:
+(Intercept)          tax        floor  
+    0.39497      0.05742      0.34835  </code></pre>
+</div>
+</div>
+<ul>
+<li>단계별 선택</li>
+</ul>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb52"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" aria-hidden="true" tabindex="-1"></a>model0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(price<span class="sc">~</span><span class="dv">1</span>, houseprice)</span>
+<span id="cb52-2"><a href="#cb52-2" aria-hidden="true" tabindex="-1"></a><span class="fu">step</span>(model0,  <span class="at">scope=</span><span class="sc">~</span>tax<span class="sc">+</span> ground<span class="sc">+</span> floor<span class="sc">+</span> year, <span class="at">direction=</span><span class="st">"both"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Start:  AIC=107.23
+price ~ 1
+
+         Df Sum of Sq     RSS     AIC
++ floor   1   1147.92  182.66  55.619
++ tax     1   1114.60  215.98  60.142
++ ground  1    701.96  628.62  88.987
++ year    1    128.11 1202.47 106.500
+&lt;none&gt;                1330.58 107.233
+
+Step:  AIC=55.62
+price ~ floor
+
+         Df Sum of Sq     RSS     AIC
++ tax     1     87.47   95.20  40.023
++ year    1     28.85  153.81  52.977
++ ground  1     14.08  168.59  55.454
+&lt;none&gt;                 182.66  55.619
+- floor   1   1147.92 1330.58 107.233
+
+Step:  AIC=40.02
+price ~ floor + tax
+
+         Df Sum of Sq     RSS    AIC
+&lt;none&gt;                 95.195 40.023
++ year    1     2.876  92.319 41.194
++ ground  1     1.934  93.262 41.469
+- tax     1    87.468 182.663 55.619
+- floor   1   120.782 215.978 60.142</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = price ~ floor + tax, data = houseprice)
+
+Coefficients:
+(Intercept)        floor          tax  
+    0.39497      0.34835      0.05742  </code></pre>
+</div>
+</div>
+</section>
+<section id="패키지-olsrr-의-이용" class="level3" data-number="K.3.3">
+<h3 data-number="K.3.3" class="anchored" data-anchor-id="패키지-olsrr-의-이용"><span class="header-section-number">K.3.3</span> 패키지 <code>olsrr</code> 의 이용</h3>
+<p>패키지 <code>olsrr</code> 의 함수 <code>ols_step_both_p()</code> 이용하여 F-검정을 이용한 단계별 선택을 할 수 있다.</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+볌수선택법에서의 유의수준
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>함수 <code>ols_step_both_p()</code> 이용하여 F-검정에서는 유의수준을 지정해주지 않으면 유의 수준을 0.3 으로 사용한다.</p>
+<p>참고로 SAS 의 모형 선택에서 자동적으로 사용되는 유의수준은 전진선택에서는 0.5, 후방제거에서는 0.1 이다.</p>
+<pre><code>ols_step_forward_p(model, penter = 0.3,
+  progress = FALSE, details = FALSE, ...)
+ols_step_backward_p(model, prem = 0.3,
+  progress = FALSE, details = FALSE, ...)
+
+Forward Selection (FORWARD)
+
+The p-values for these F statistics are compared to the SLENTRY= value that is specified in the MODEL statement (or to 0.50 if the SLENTRY= option is omitted). 
+
+Backward Elimination (BACKWARD)
+
+F statistics significant at the SLSTAY= level specified in the MODEL statement (or at the 0.10 level if the SLSTAY= option is omitted). </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb56"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" aria-hidden="true" tabindex="-1"></a>res <span class="ot">&lt;-</span> <span class="fu">ols_step_both_p</span>(fit1, <span class="at">details =</span> <span class="cn">TRUE</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Stepwise Selection Method 
+-------------------------
+
+Candidate Terms: 
+
+1. tax 
+2. ground 
+3. floor 
+4. year 
+
+
+Step   =&gt; 0 
+Model  =&gt; price ~ 1 
+R2     =&gt; 0 
+
+Initiating stepwise selection... 
+
+Step      =&gt; 1 
+Selected  =&gt; floor 
+Model     =&gt; price ~ floor 
+R2        =&gt; 0.863 
+
+Step      =&gt; 2 
+Selected  =&gt; tax 
+Model     =&gt; price ~ floor + tax 
+R2        =&gt; 0.928 
+
+
+No more variables to be added or removed.</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb58"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" aria-hidden="true" tabindex="-1"></a>res</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+                             Stepwise Summary                              
+-------------------------------------------------------------------------
+Step    Variable        AIC        SBC       SBIC        R2       Adj. R2 
+-------------------------------------------------------------------------
+ 0      Base Model    185.856    188.448    105.725    0.00000    0.00000 
+ 1      floor (+)     134.241    138.129     55.779    0.86272    0.85723 
+ 2      tax (+)       118.645    123.829     43.032    0.92846    0.92249 
+-------------------------------------------------------------------------
+
+Final Model Output 
+------------------
+
+                         Model Summary                          
+---------------------------------------------------------------
+R                       0.964       RMSE                 1.878 
+R-Squared               0.928       MSE                  3.966 
+Adj. R-Squared          0.922       Coef. Var           10.346 
+Pred R-Squared          0.891       AIC                118.645 
+MAE                     1.572       SBC                123.829 
+---------------------------------------------------------------
+ RMSE: Root Mean Square Error 
+ MSE: Mean Square Error 
+ MAE: Mean Absolute Error 
+ AIC: Akaike Information Criteria 
+ SBC: Schwarz Bayesian Criteria 
+
+                                ANOVA                                 
+---------------------------------------------------------------------
+                Sum of                                               
+               Squares        DF    Mean Square       F         Sig. 
+---------------------------------------------------------------------
+Regression    1235.385         2        617.692    155.728    0.0000 
+Residual        95.195        24          3.966                      
+Total         1330.580        26                                     
+---------------------------------------------------------------------
+
+                                 Parameter Estimates                                  
+-------------------------------------------------------------------------------------
+      model     Beta    Std. Error    Std. Beta      t       Sig      lower    upper 
+-------------------------------------------------------------------------------------
+(Intercept)    0.395         1.140                 0.346    0.732    -1.958    2.748 
+      floor    0.348         0.063        0.544    5.518    0.000     0.218    0.479 
+        tax    0.057         0.012        0.463    4.696    0.000     0.032    0.083 
+-------------------------------------------------------------------------------------</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb60"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb60-1"><a href="#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(res)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice-04_files/figure-html/unnamed-chunk-23-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>함수 <code>ols_step_both_aic()</code> 는 함수 <code>step()</code> 과 동일하게 AIC 를 이용하여 변수선택을 한다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ols_step_forward_aic</span>(fit1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+                             Stepwise Summary                              
+-------------------------------------------------------------------------
+Step    Variable        AIC        SBC       SBIC        R2       Adj. R2 
+-------------------------------------------------------------------------
+ 0      Base Model    185.856    188.448    105.725    0.00000    0.00000 
+ 1      floor         134.241    138.129     55.779    0.86272    0.85723 
+ 2      tax           118.645    123.829     43.032    0.92846    0.92249 
+-------------------------------------------------------------------------
+
+Final Model Output 
+------------------
+
+                         Model Summary                          
+---------------------------------------------------------------
+R                       0.964       RMSE                 1.878 
+R-Squared               0.928       MSE                  3.966 
+Adj. R-Squared          0.922       Coef. Var           10.346 
+Pred R-Squared          0.891       AIC                118.645 
+MAE                     1.572       SBC                123.829 
+---------------------------------------------------------------
+ RMSE: Root Mean Square Error 
+ MSE: Mean Square Error 
+ MAE: Mean Absolute Error 
+ AIC: Akaike Information Criteria 
+ SBC: Schwarz Bayesian Criteria 
+
+                                ANOVA                                 
+---------------------------------------------------------------------
+                Sum of                                               
+               Squares        DF    Mean Square       F         Sig. 
+---------------------------------------------------------------------
+Regression    1235.385         2        617.692    155.728    0.0000 
+Residual        95.195        24          3.966                      
+Total         1330.580        26                                     
+---------------------------------------------------------------------
+
+                                 Parameter Estimates                                  
+-------------------------------------------------------------------------------------
+      model     Beta    Std. Error    Std. Beta      t       Sig      lower    upper 
+-------------------------------------------------------------------------------------
+(Intercept)    0.395         1.140                 0.346    0.732    -1.958    2.748 
+      floor    0.348         0.063        0.544    5.518    0.000     0.218    0.479 
+        tax    0.057         0.012        0.463    4.696    0.000     0.032    0.083 
+-------------------------------------------------------------------------------------</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="연습문제-6.10" class="level2" data-number="K.4">
+<h2 data-number="K.4" class="anchored" data-anchor-id="연습문제-6.10"><span class="header-section-number">K.4</span> 연습문제 6.10</h2>
+<p>자료 <code>cars93</code>은 1993년 미국에서 판매된 93가지 종류의 저동차에 대한 자료이다. 변수 <code>MPG.highway</code>를 반응변수로 하고 <code>EngineSize</code>, <code>Weight</code>, <code>Price</code>, <code>Width</code>, <code>Length</code>, <code>Horsepower</code>, <code>Wheelbae</code> 7개의 변수를 고려하여 가장 적합한 모형을 선택해보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a>dat93 <span class="ot">&lt;-</span> Cars93[<span class="fu">c</span>(<span class="st">"MPG.highway"</span>,<span class="st">"EngineSize"</span>, <span class="st">"Weight"</span>, <span class="st">"Price"</span>, <span class="st">"Width"</span>, <span class="st">"Length"</span>, <span class="st">"Horsepower"</span>, <span class="st">"Wheelbase"</span>)]</span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dat93)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  MPG.highway EngineSize Weight Price Width Length Horsepower Wheelbase
+1          31        1.8   2705  15.9    68    177        140       102
+2          25        3.2   3560  33.9    71    195        200       115
+3          26        2.8   3375  29.1    67    180        172       102
+4          26        2.8   3405  37.7    70    193        172       106
+5          30        3.5   3640  30.0    69    186        208       109
+6          31        2.2   2880  15.7    69    189        110       105</code></pre>
+</div>
+</div>
+<section id="완전모형" class="level3" data-number="K.4.1">
+<h3 data-number="K.4.1" class="anchored" data-anchor-id="완전모형"><span class="header-section-number">K.4.1</span> 완전모형</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a>carfit <span class="ot">&lt;-</span> <span class="fu">lm</span>(MPG.highway<span class="sc">~</span> . , <span class="at">data=</span>dat93)</span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(carfit)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = MPG.highway ~ ., data = dat93)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-6.3952 -1.9678 -0.1942  1.4516 10.1313 
+
+Coefficients:
+             Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 21.119770  12.809426   1.649   0.1029    
+EngineSize   0.483792   0.698257   0.693   0.4903    
+Weight      -0.012833   0.001726  -7.434 7.69e-11 ***
+Price       -0.047157   0.059498  -0.793   0.4302    
+Width        0.079770   0.228192   0.350   0.7275    
+Length       0.058766   0.043322   1.356   0.1785    
+Horsepower   0.013296   0.013443   0.989   0.3254    
+Wheelbase    0.277231   0.118027   2.349   0.0212 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.95 on 85 degrees of freedom
+Multiple R-squared:  0.7172,    Adjusted R-squared:  0.694 
+F-statistic:  30.8 on 7 and 85 DF,  p-value: &lt; 2.2e-16</code></pre>
+</div>
+</div>
+</section>
+<section id="모든-가능한-회귀" class="level3" data-number="K.4.2">
+<h3 data-number="K.4.2" class="anchored" data-anchor-id="모든-가능한-회귀"><span class="header-section-number">K.4.2</span> 모든 가능한 회귀</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a>carfit.rgs2 <span class="ot">&lt;-</span> <span class="fu">ols_step_all_possible</span>(carfit)</span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>carfit.rgs2<span class="sc">$</span>result <span class="sc">%&gt;%</span> dplyr<span class="sc">::</span><span class="fu">select</span>(mindex, n, predictors, rsquare, adjr, cp, aic, sbc) <span class="sc">%&gt;%</span> </span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a>    dplyr<span class="sc">::</span><span class="fu">arrange</span>(sbc) <span class="sc">%&gt;%</span></span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>    <span class="fu">head</span>(<span class="dv">10</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   mindex n                         predictors   rsquare      adjr       cp
+1       8 2                      Weight Length 0.6921969 0.6853568 5.527269
+2       9 2                   Weight Wheelbase 0.6920227 0.6851788 5.579611
+3      29 3            Weight Length Wheelbase 0.7065024 0.6966092 3.226956
+4      30 3        EngineSize Weight Wheelbase 0.7045887 0.6946310 3.802229
+5      31 3             Weight Width Wheelbase 0.7039881 0.6940102 3.982755
+6      64 4 EngineSize Weight Length Wheelbase 0.7120588 0.6989706 3.556655
+7      32 3                Weight Width Length 0.6974384 0.6872397 5.951620
+8      65 4      Weight Width Length Wheelbase 0.7113915 0.6982729 3.757264
+9      33 3        Weight Horsepower Wheelbase 0.6965448 0.6863160 6.220248
+10     34 3           EngineSize Weight Length 0.6950183 0.6847380 6.679132
+        aic      sbc
+1  472.6393 482.7697
+2  472.6919 482.8223
+3  470.2133 482.8763
+4  470.8178 483.4808
+5  471.0066 483.6696
+6  470.4358 485.6314
+7  473.0419 485.7049
+8  470.6511 485.8467
+9  473.3162 485.9792
+10 473.7829 486.4459</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(carfit.rgs2)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice-04_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice-04_files/figure-html/unnamed-chunk-28-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="전진선택법" class="level3" data-number="K.4.3">
+<h3 data-number="K.4.3" class="anchored" data-anchor-id="전진선택법"><span class="header-section-number">K.4.3</span> 전진선택법</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb70"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb70-1"><a href="#cb70-1" aria-hidden="true" tabindex="-1"></a>model0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(MPG.highway<span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>dat93)</span>
+<span id="cb70-2"><a href="#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="fu">step</span>(model0,  <span class="at">scope=</span><span class="sc">~</span>EngineSize<span class="sc">+</span> Weight<span class="sc">+</span> Price<span class="sc">+</span> Width<span class="sc">+</span> Length<span class="sc">+</span> Horsepower<span class="sc">+</span> Wheelbase, <span class="at">direction=</span><span class="st">"forward"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Start:  AIC=312.3
+MPG.highway ~ 1
+
+             Df Sum of Sq     RSS    AIC
++ Weight      1   1718.70  896.62 214.74
++ Width       1   1072.43 1542.88 265.22
++ EngineSize  1   1027.48 1587.83 267.89
++ Horsepower  1   1002.23 1613.08 269.36
++ Wheelbase   1    990.41 1624.90 270.04
++ Price       1    822.16 1793.16 279.20
++ Length      1    770.83 1844.48 281.82
+&lt;none&gt;                    2615.31 312.30
+
+Step:  AIC=214.74
+MPG.highway ~ Weight
+
+             Df Sum of Sq    RSS    AIC
++ Length      1    91.615 805.00 206.72
++ Wheelbase   1    91.160 805.46 206.77
++ Width       1    53.010 843.61 211.07
++ EngineSize  1    31.068 865.55 213.46
+&lt;none&gt;                    896.62 214.74
++ Price       1     5.845 890.77 216.13
++ Horsepower  1     2.334 894.28 216.50
+
+Step:  AIC=206.72
+MPG.highway ~ Weight + Length
+
+             Df Sum of Sq    RSS    AIC
++ Wheelbase   1    37.413 767.59 204.29
+&lt;none&gt;                    805.00 206.72
++ Width       1    13.708 791.29 207.12
++ EngineSize  1     7.379 797.62 207.86
++ Price       1     4.135 800.87 208.24
++ Horsepower  1     0.207 804.79 208.69
+
+Step:  AIC=204.29
+MPG.highway ~ Weight + Length + Wheelbase
+
+             Df Sum of Sq    RSS    AIC
+&lt;none&gt;                    767.59 204.29
++ EngineSize  1   14.5319 753.06 204.51
++ Width       1   12.7865 754.80 204.73
++ Horsepower  1    7.7950 759.79 205.34
++ Price       1    1.0351 766.55 206.16</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = MPG.highway ~ Weight + Length + Wheelbase, data = dat93)
+
+Coefficients:
+(Intercept)       Weight       Length    Wheelbase  
+   26.31687     -0.01107      0.08170      0.21005  </code></pre>
+</div>
+</div>
+</section>
+<section id="후방제거" class="level3" data-number="K.4.4">
+<h3 data-number="K.4.4" class="anchored" data-anchor-id="후방제거"><span class="header-section-number">K.4.4</span> 후방제거</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="fu">step</span>(carfit, <span class="at">direction=</span><span class="st">"backward"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Start:  AIC=208.83
+MPG.highway ~ EngineSize + Weight + Price + Width + Length + 
+    Horsepower + Wheelbase
+
+             Df Sum of Sq     RSS    AIC
+- Width       1      1.06  740.58 206.96
+- EngineSize  1      4.18  743.69 207.35
+- Price       1      5.47  744.98 207.51
+- Horsepower  1      8.51  748.02 207.89
+- Length      1     16.01  755.52 208.82
+&lt;none&gt;                     739.51 208.82
+- Wheelbase   1     48.00  787.51 212.67
+- Weight      1    480.82 1220.33 253.41
+
+Step:  AIC=206.96
+MPG.highway ~ EngineSize + Weight + Price + Length + Horsepower + 
+    Wheelbase
+
+             Df Sum of Sq     RSS    AIC
+- EngineSize  1      7.73  748.31 205.93
+- Price       1      9.67  750.25 206.17
+- Horsepower  1     10.29  750.87 206.24
+&lt;none&gt;                     740.58 206.96
+- Length      1     19.54  760.12 207.38
+- Wheelbase   1     51.04  791.62 211.16
+- Weight      1    514.25 1254.83 254.00
+
+Step:  AIC=205.93
+MPG.highway ~ Weight + Price + Length + Horsepower + Wheelbase
+
+             Df Sum of Sq     RSS    AIC
+- Price       1     11.48  759.79 205.34
+&lt;none&gt;                     748.31 205.93
+- Horsepower  1     18.24  766.55 206.16
+- Length      1     32.26  780.57 207.85
+- Wheelbase   1     51.62  799.93 210.13
+- Weight      1    516.55 1264.86 252.74
+
+Step:  AIC=205.34
+MPG.highway ~ Weight + Length + Horsepower + Wheelbase
+
+             Df Sum of Sq     RSS    AIC
+- Horsepower  1      7.79  767.59 204.29
+&lt;none&gt;                     759.79 205.34
+- Length      1     33.84  793.63 207.39
+- Wheelbase   1     45.00  804.79 208.69
+- Weight      1    508.94 1268.73 251.03
+
+Step:  AIC=204.29
+MPG.highway ~ Weight + Length + Wheelbase
+
+            Df Sum of Sq     RSS    AIC
+&lt;none&gt;                    767.59 204.29
+- Wheelbase  1     37.41  805.00 206.72
+- Length     1     37.87  805.46 206.77
+- Weight     1    846.75 1614.34 271.43</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = MPG.highway ~ Weight + Length + Wheelbase, data = dat93)
+
+Coefficients:
+(Intercept)       Weight       Length    Wheelbase  
+   26.31687     -0.01107      0.08170      0.21005  </code></pre>
+</div>
+</div>
+</section>
+<section id="단계별-선택" class="level3" data-number="K.4.5">
+<h3 data-number="K.4.5" class="anchored" data-anchor-id="단계별-선택"><span class="header-section-number">K.4.5</span> 단계별 선택</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb76"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb76-1"><a href="#cb76-1" aria-hidden="true" tabindex="-1"></a>model0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(MPG.highway<span class="sc">~</span><span class="dv">1</span>, <span class="at">data=</span>dat93)</span>
+<span id="cb76-2"><a href="#cb76-2" aria-hidden="true" tabindex="-1"></a><span class="fu">step</span>(model0,  <span class="at">scope=</span><span class="sc">~</span>EngineSize<span class="sc">+</span> Weight<span class="sc">+</span> Price<span class="sc">+</span> Width<span class="sc">+</span> Length<span class="sc">+</span> Horsepower<span class="sc">+</span> Wheelbase, <span class="at">direction=</span><span class="st">"both"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Start:  AIC=312.3
+MPG.highway ~ 1
+
+             Df Sum of Sq     RSS    AIC
++ Weight      1   1718.70  896.62 214.74
++ Width       1   1072.43 1542.88 265.22
++ EngineSize  1   1027.48 1587.83 267.89
++ Horsepower  1   1002.23 1613.08 269.36
++ Wheelbase   1    990.41 1624.90 270.04
++ Price       1    822.16 1793.16 279.20
++ Length      1    770.83 1844.48 281.82
+&lt;none&gt;                    2615.31 312.30
+
+Step:  AIC=214.74
+MPG.highway ~ Weight
+
+             Df Sum of Sq     RSS    AIC
++ Length      1     91.62  805.00 206.72
++ Wheelbase   1     91.16  805.46 206.77
++ Width       1     53.01  843.61 211.07
++ EngineSize  1     31.07  865.55 213.46
+&lt;none&gt;                     896.62 214.74
++ Price       1      5.85  890.77 216.13
++ Horsepower  1      2.33  894.28 216.50
+- Weight      1   1718.70 2615.31 312.30
+
+Step:  AIC=206.72
+MPG.highway ~ Weight + Length
+
+             Df Sum of Sq     RSS    AIC
++ Wheelbase   1     37.41  767.59 204.29
+&lt;none&gt;                     805.00 206.72
++ Width       1     13.71  791.29 207.12
++ EngineSize  1      7.38  797.62 207.86
++ Price       1      4.14  800.87 208.24
++ Horsepower  1      0.21  804.79 208.69
+- Length      1     91.62  896.62 214.74
+- Weight      1   1039.48 1844.48 281.82
+
+Step:  AIC=204.29
+MPG.highway ~ Weight + Length + Wheelbase
+
+             Df Sum of Sq     RSS    AIC
+&lt;none&gt;                     767.59 204.29
++ EngineSize  1     14.53  753.06 204.51
++ Width       1     12.79  754.80 204.73
++ Horsepower  1      7.79  759.79 205.34
++ Price       1      1.04  766.55 206.16
+- Wheelbase   1     37.41  805.00 206.72
+- Length      1     37.87  805.46 206.77
+- Weight      1    846.75 1614.34 271.43</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = MPG.highway ~ Weight + Length + Wheelbase, data = dat93)
+
+Coefficients:
+(Intercept)       Weight       Length    Wheelbase  
+   26.31687     -0.01107      0.08170      0.21005  </code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ols_step_forward_aic</span>(carfit, <span class="at">details =</span> <span class="cn">TRUE</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Forward Selection Method 
+------------------------
+
+Candidate Terms: 
+
+1. EngineSize 
+2. Weight 
+3. Price 
+4. Width 
+5. Length 
+6. Horsepower 
+7. Wheelbase 
+
+
+Step     =&gt; 0 
+Model    =&gt; MPG.highway ~ 1 
+AIC      =&gt; 578.2207 
+
+Initiating stepwise selection... 
+
+                      Table: Adding New Variables                       
+-----------------------------------------------------------------------
+Predictor     DF      AIC        SBC       SBIC        R2       Adj. R2 
+-----------------------------------------------------------------------
+Weight         1    480.663    488.261    216.331    0.65717    0.65340 
+Width          1    531.141    538.739    264.864    0.41006    0.40358 
+EngineSize     1    533.812    541.410    267.447    0.39287    0.38620 
+Horsepower     1    535.280    542.878    268.867    0.38322    0.37644 
+Wheelbase      1    535.959    543.556    269.524    0.37870    0.37187 
+Price          1    545.122    552.720    278.402    0.31436    0.30683 
+Length         1    547.746    555.344    280.948    0.29474    0.28699 
+-----------------------------------------------------------------------
+
+Step     =&gt; 1 
+Added    =&gt; Weight 
+Model    =&gt; MPG.highway ~ Weight 
+AIC      =&gt; 480.6632 
+
+                      Table: Adding New Variables                       
+-----------------------------------------------------------------------
+Predictor     DF      AIC        SBC       SBIC        R2       Adj. R2 
+-----------------------------------------------------------------------
+Length         1    472.639    482.770    208.747    0.69220    0.68536 
+Wheelbase      1    472.692    482.822    208.797    0.69202    0.68518 
+Width          1    476.996    487.126    212.824    0.67744    0.67027 
+EngineSize     1    479.384    489.514    215.061    0.66905    0.66169 
+Price          1    482.055    492.185    217.566    0.65940    0.65183 
+Horsepower     1    482.421    492.551    217.909    0.65806    0.65046 
+-----------------------------------------------------------------------
+
+Step     =&gt; 2 
+Added    =&gt; Length 
+Model    =&gt; MPG.highway ~ Weight + Length 
+AIC      =&gt; 472.6393 
+
+                      Table: Adding New Variables                       
+-----------------------------------------------------------------------
+Predictor     DF      AIC        SBC       SBIC        R2       Adj. R2 
+-----------------------------------------------------------------------
+Wheelbase      1    470.213    482.876    206.718    0.70650    0.69661 
+Width          1    473.042    485.705    209.299    0.69744    0.68724 
+EngineSize     1    473.783    486.446    209.975    0.69502    0.68474 
+Price          1    474.160    486.823    210.320    0.69378    0.68346 
+Horsepower     1    474.615    487.278    210.736    0.69228    0.68190 
+-----------------------------------------------------------------------
+
+Step     =&gt; 3 
+Added    =&gt; Wheelbase 
+Model    =&gt; MPG.highway ~ Weight + Length + Wheelbase 
+AIC      =&gt; 470.2133 
+
+                      Table: Adding New Variables                       
+-----------------------------------------------------------------------
+Predictor     DF      AIC        SBC       SBIC        R2       Adj. R2 
+-----------------------------------------------------------------------
+EngineSize     1    470.436    485.631    207.247    0.71206    0.69897 
+Width          1    470.651    485.847    207.438    0.71139    0.69827 
+Horsepower     1    471.264    486.460    207.982    0.70948    0.69628 
+Price          1    472.088    487.283    208.714    0.70690    0.69358 
+-----------------------------------------------------------------------
+
+
+No more variables to be added.
+
+Variables Selected: 
+
+=&gt; Weight 
+=&gt; Length 
+=&gt; Wheelbase </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+                             Stepwise Summary                              
+-------------------------------------------------------------------------
+Step    Variable        AIC        SBC       SBIC        R2       Adj. R2 
+-------------------------------------------------------------------------
+ 0      Base Model    578.221    583.286    311.963    0.00000    0.00000 
+ 1      Weight        480.663    488.261    216.331    0.65717    0.65340 
+ 2      Length        472.639    482.770    208.747    0.69220    0.68536 
+ 3      Wheelbase     470.213    482.876    206.718    0.70650    0.69661 
+-------------------------------------------------------------------------
+
+Final Model Output 
+------------------
+
+                         Model Summary                          
+---------------------------------------------------------------
+R                       0.841       RMSE                 2.873 
+R-Squared               0.707       MSE                  8.625 
+Adj. R-Squared          0.697       Coef. Var           10.097 
+Pred R-Squared          0.665       AIC                470.213 
+MAE                     2.139       SBC                482.876 
+---------------------------------------------------------------
+ RMSE: Root Mean Square Error 
+ MSE: Mean Square Error 
+ MAE: Mean Absolute Error 
+ AIC: Akaike Information Criteria 
+ SBC: Schwarz Bayesian Criteria 
+
+                               ANOVA                                 
+--------------------------------------------------------------------
+                Sum of                                              
+               Squares        DF    Mean Square      F         Sig. 
+--------------------------------------------------------------------
+Regression    1847.724         3        615.908    71.413    0.0000 
+Residual       767.588        89          8.625                     
+Total         2615.312        92                                    
+--------------------------------------------------------------------
+
+                                  Parameter Estimates                                    
+----------------------------------------------------------------------------------------
+      model      Beta    Std. Error    Std. Beta      t        Sig      lower     upper 
+----------------------------------------------------------------------------------------
+(Intercept)    26.317         7.088                  3.713    0.000    12.233    40.401 
+     Weight    -0.011         0.001       -1.225    -9.909    0.000    -0.013    -0.009 
+     Length     0.082         0.039        0.224     2.095    0.039     0.004     0.159 
+  Wheelbase     0.210         0.101        0.269     2.083    0.040     0.010     0.410 
+----------------------------------------------------------------------------------------</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb82"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb82-1"><a href="#cb82-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ols_step_forward_p</span>(carfit, <span class="at">details =</span> <span class="cn">TRUE</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Forward Selection Method 
+------------------------
+
+Candidate Terms: 
+
+1. EngineSize 
+2. Weight 
+3. Price 
+4. Width 
+5. Length 
+6. Horsepower 
+7. Wheelbase 
+
+
+Step   =&gt; 0 
+Model  =&gt; MPG.highway ~ 1 
+R2     =&gt; 0 
+
+Initiating stepwise selection... 
+
+                    Selection Metrics Table                      
+----------------------------------------------------------------
+Predictor     Pr(&gt;|t|)    R-Squared    Adj. R-Squared      AIC   
+----------------------------------------------------------------
+Weight         0.00000        0.657             0.653    480.663 
+Width          0.00000        0.410             0.404    531.141 
+EngineSize     0.00000        0.393             0.386    533.812 
+Horsepower     0.00000        0.383             0.376    535.280 
+Wheelbase      0.00000        0.379             0.372    535.959 
+Price          0.00000        0.314             0.307    545.122 
+Length         0.00000        0.295             0.287    547.746 
+----------------------------------------------------------------
+
+Step      =&gt; 1 
+Selected  =&gt; Weight 
+Model     =&gt; MPG.highway ~ Weight 
+R2        =&gt; 0.657 
+
+                    Selection Metrics Table                      
+----------------------------------------------------------------
+Predictor     Pr(&gt;|t|)    R-Squared    Adj. R-Squared      AIC   
+----------------------------------------------------------------
+Length         0.00190        0.692             0.685    472.639 
+Wheelbase      0.00195        0.692             0.685    472.692 
+Width          0.01952        0.677             0.670    476.996 
+EngineSize     0.07563        0.669             0.662    479.384 
+Price          0.44422        0.659             0.652    482.055 
+Horsepower     0.62912        0.658             0.650    482.421 
+----------------------------------------------------------------
+
+Step      =&gt; 2 
+Selected  =&gt; Length 
+Model     =&gt; MPG.highway ~ Weight + Length 
+R2        =&gt; 0.692 
+
+                    Selection Metrics Table                      
+----------------------------------------------------------------
+Predictor     Pr(&gt;|t|)    R-Squared    Adj. R-Squared      AIC   
+----------------------------------------------------------------
+Wheelbase      0.04014        0.707             0.697    470.213 
+Width          0.21761        0.697             0.687    473.042 
+EngineSize     0.36665        0.695             0.685    473.783 
+Price          0.49960        0.694             0.683    474.160 
+Horsepower     0.88015        0.692             0.682    474.615 
+----------------------------------------------------------------
+
+Step      =&gt; 3 
+Selected  =&gt; Wheelbase 
+Model     =&gt; MPG.highway ~ Weight + Length + Wheelbase 
+R2        =&gt; 0.707 
+
+                    Selection Metrics Table                      
+----------------------------------------------------------------
+Predictor     Pr(&gt;|t|)    R-Squared    Adj. R-Squared      AIC   
+----------------------------------------------------------------
+EngineSize     0.19593        0.712             0.699    470.436 
+Width          0.22536        0.711             0.698    470.651 
+Horsepower     0.34463        0.709             0.696    471.264 
+Price          0.73113        0.707             0.694    472.088 
+----------------------------------------------------------------
+
+Step      =&gt; 4 
+Selected  =&gt; EngineSize 
+Model     =&gt; MPG.highway ~ Weight + Length + Wheelbase + EngineSize 
+R2        =&gt; 0.712 
+
+                    Selection Metrics Table                      
+----------------------------------------------------------------
+Predictor     Pr(&gt;|t|)    R-Squared    Adj. R-Squared      AIC   
+----------------------------------------------------------------
+Width          0.46764        0.714             0.697    471.869 
+Horsepower     0.56977        0.713             0.697    472.088 
+Price          0.61570        0.713             0.696    472.165 
+----------------------------------------------------------------
+
+
+No more variables to be added.
+
+Variables Selected: 
+
+=&gt; Weight 
+=&gt; Length 
+=&gt; Wheelbase 
+=&gt; EngineSize </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+                             Stepwise Summary                              
+-------------------------------------------------------------------------
+Step    Variable        AIC        SBC       SBIC        R2       Adj. R2 
+-------------------------------------------------------------------------
+ 0      Base Model    578.221    583.286    311.963    0.00000    0.00000 
+ 1      Weight        480.663    488.261    216.331    0.65717    0.65340 
+ 2      Length        472.639    482.770    208.747    0.69220    0.68536 
+ 3      Wheelbase     470.213    482.876    206.718    0.70650    0.69661 
+ 4      EngineSize    470.436    485.631    207.247    0.71206    0.69897 
+-------------------------------------------------------------------------
+
+Final Model Output 
+------------------
+
+                         Model Summary                          
+---------------------------------------------------------------
+R                       0.844       RMSE                 2.846 
+R-Squared               0.712       MSE                  8.557 
+Adj. R-Squared          0.699       Coef. Var           10.057 
+Pred R-Squared          0.664       AIC                470.436 
+MAE                     2.081       SBC                485.631 
+---------------------------------------------------------------
+ RMSE: Root Mean Square Error 
+ MSE: Mean Square Error 
+ MAE: Mean Absolute Error 
+ AIC: Akaike Information Criteria 
+ SBC: Schwarz Bayesian Criteria 
+
+                               ANOVA                                 
+--------------------------------------------------------------------
+                Sum of                                              
+               Squares        DF    Mean Square      F         Sig. 
+--------------------------------------------------------------------
+Regression    1862.256         4        465.564    54.404    0.0000 
+Residual       753.056        88          8.557                     
+Total         2615.312        92                                    
+--------------------------------------------------------------------
+
+                                  Parameter Estimates                                    
+----------------------------------------------------------------------------------------
+      model      Beta    Std. Error    Std. Beta      t        Sig      lower     upper 
+----------------------------------------------------------------------------------------
+(Intercept)    28.439         7.246                  3.925    0.000    14.040    42.839 
+     Weight    -0.012         0.001       -1.334    -8.960    0.000    -0.015    -0.009 
+     Length     0.063         0.041        0.172     1.511    0.134    -0.020     0.145 
+  Wheelbase     0.233         0.102        0.298     2.282    0.025     0.030     0.435 
+ EngineSize     0.766         0.587        0.149     1.303    0.196    -0.402     1.933 
+----------------------------------------------------------------------------------------</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="연습문제-6.12" class="level2" data-number="K.5">
+<h2 data-number="K.5" class="anchored" data-anchor-id="연습문제-6.12"><span class="header-section-number">K.5</span> 연습문제 6.12</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb85"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb85-1"><a href="#cb85-1" aria-hidden="true" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">13111</span>)</span>
+<span id="cb85-2"><a href="#cb85-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-3"><a href="#cb85-3" aria-hidden="true" tabindex="-1"></a>Nsim <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb85-4"><a href="#cb85-4" aria-hidden="true" tabindex="-1"></a>num_of_ind_var <span class="ot">&lt;-</span> <span class="dv">50</span></span>
+<span id="cb85-5"><a href="#cb85-5" aria-hidden="true" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="dv">100</span></span>
+<span id="cb85-6"><a href="#cb85-6" aria-hidden="true" tabindex="-1"></a>N <span class="ot">&lt;-</span> (num_of_ind_var<span class="sc">+</span><span class="dv">1</span>)<span class="sc">*</span>n</span>
+<span id="cb85-7"><a href="#cb85-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-8"><a href="#cb85-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-9"><a href="#cb85-9" aria-hidden="true" tabindex="-1"></a>randata <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(N), <span class="at">ncol=</span>num_of_ind_var<span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb85-10"><a href="#cb85-10" aria-hidden="true" tabindex="-1"></a>randata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(randata)</span>
+<span id="cb85-11"><a href="#cb85-11" aria-hidden="true" tabindex="-1"></a>indvarname <span class="ot">&lt;-</span> <span class="fu">names</span>(randata)[<span class="dv">1</span><span class="sc">:</span><span class="dv">50</span>]</span>
+<span id="cb85-12"><a href="#cb85-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-13"><a href="#cb85-13" aria-hidden="true" tabindex="-1"></a>variables.set <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb85-14"><a href="#cb85-14" aria-hidden="true" tabindex="-1"></a>r2.set <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb85-15"><a href="#cb85-15" aria-hidden="true" tabindex="-1"></a>r2adj.set <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb85-16"><a href="#cb85-16" aria-hidden="true" tabindex="-1"></a>p <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb85-17"><a href="#cb85-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-18"><a href="#cb85-18" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span><span class="sc">:</span>Nsim) {</span>
+<span id="cb85-19"><a href="#cb85-19" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb85-20"><a href="#cb85-20" aria-hidden="true" tabindex="-1"></a>  randata <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">rnorm</span>(N), <span class="at">ncol=</span>num_of_ind_var<span class="sc">+</span><span class="dv">1</span>)</span>
+<span id="cb85-21"><a href="#cb85-21" aria-hidden="true" tabindex="-1"></a>  randata <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(randata)</span>
+<span id="cb85-22"><a href="#cb85-22" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb85-23"><a href="#cb85-23" aria-hidden="true" tabindex="-1"></a>  <span class="co"># === 함수 step(..direction="backward")는   AIC 를 이용</span></span>
+<span id="cb85-24"><a href="#cb85-24" aria-hidden="true" tabindex="-1"></a>  fit.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(X51 <span class="sc">~</span> ., <span class="at">data=</span>randata)</span>
+<span id="cb85-25"><a href="#cb85-25" aria-hidden="true" tabindex="-1"></a>  res <span class="ot">&lt;-</span> <span class="fu">step</span>(fit.lm, <span class="at">direction=</span><span class="st">"backward"</span>, <span class="at">trace=</span><span class="dv">0</span>)</span>
+<span id="cb85-26"><a href="#cb85-26" aria-hidden="true" tabindex="-1"></a>  variable.entered <span class="ot">&lt;-</span> <span class="fu">as.character</span>(<span class="fu">attr</span>(res<span class="sc">$</span>terms, <span class="st">"variables"</span>))[<span class="sc">-</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>)]</span>
+<span id="cb85-27"><a href="#cb85-27" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb85-28"><a href="#cb85-28" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ==== 함수 step(...direction = "forward"..) 은 AIC 를 이용</span></span>
+<span id="cb85-29"><a href="#cb85-29" aria-hidden="true" tabindex="-1"></a>  <span class="co"># fit.null &lt;- lm(X51 ~ 1, data=randata)</span></span>
+<span id="cb85-30"><a href="#cb85-30" aria-hidden="true" tabindex="-1"></a>  <span class="co"># res &lt;- step(fit.null, scope~ X1 + X2 + X3 + X4 + X5 + X6 + X7 + X8 + X9 + X10 + X11 + X12 + </span></span>
+<span id="cb85-31"><a href="#cb85-31" aria-hidden="true" tabindex="-1"></a>  <span class="co">#  X13 + X14 + X15 + X16 + X17 + X18 + X19 + X20 + X21 + X22 + </span></span>
+<span id="cb85-32"><a href="#cb85-32" aria-hidden="true" tabindex="-1"></a>  <span class="co">#  X23 + X24 + X25 + X26 + X27 + X28 + X29 + X30 + X31 + X32 + </span></span>
+<span id="cb85-33"><a href="#cb85-33" aria-hidden="true" tabindex="-1"></a>  <span class="co">#  X33 + X34 + X35 + X36 + X37 + X38 + X39 + X40 + X41 + X42 + </span></span>
+<span id="cb85-34"><a href="#cb85-34" aria-hidden="true" tabindex="-1"></a>  <span class="co">#  X43 + X44 + X45 + X46 + X47 + X48 + X49 + X50  , direction = "forward", trace=0)</span></span>
+<span id="cb85-35"><a href="#cb85-35" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ariable.entered &lt;- as.character(attr(res$terms, "variables"))[-c(1,2)]</span></span>
+<span id="cb85-36"><a href="#cb85-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-37"><a href="#cb85-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-38"><a href="#cb85-38" aria-hidden="true" tabindex="-1"></a>  <span class="co"># === 함수 ols_step_backward_p 는 F-검정을 이용</span></span>
+<span id="cb85-39"><a href="#cb85-39" aria-hidden="true" tabindex="-1"></a>  <span class="co"># fit.lm &lt;- lm(X51 ~ ., data=randata)</span></span>
+<span id="cb85-40"><a href="#cb85-40" aria-hidden="true" tabindex="-1"></a>  <span class="co"># aa &lt;- ols_step_backward_p(fit.lm)</span></span>
+<span id="cb85-41"><a href="#cb85-41" aria-hidden="true" tabindex="-1"></a>  <span class="co"># variable.entered &lt;- names(aa$model$coefficients)[-1]</span></span>
+<span id="cb85-42"><a href="#cb85-42" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb85-43"><a href="#cb85-43" aria-hidden="true" tabindex="-1"></a>  <span class="co"># ===  함수 ols_step_forward_p 는 F-검정을 이용 </span></span>
+<span id="cb85-44"><a href="#cb85-44" aria-hidden="true" tabindex="-1"></a>  <span class="co"># fit.lm &lt;- lm(X51 ~ ., data=randata)</span></span>
+<span id="cb85-45"><a href="#cb85-45" aria-hidden="true" tabindex="-1"></a>  <span class="co"># aa &lt;- ols_step_forward_p(fit.lm)</span></span>
+<span id="cb85-46"><a href="#cb85-46" aria-hidden="true" tabindex="-1"></a>  <span class="co"># variable.entered &lt;- names(aa$model$coefficients)[-1]</span></span>
+<span id="cb85-47"><a href="#cb85-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-48"><a href="#cb85-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-49"><a href="#cb85-49" aria-hidden="true" tabindex="-1"></a>  variables.set <span class="ot">&lt;-</span> <span class="fu">c</span>(variables.set, variable.entered )</span>
+<span id="cb85-50"><a href="#cb85-50" aria-hidden="true" tabindex="-1"></a>  p <span class="ot">&lt;-</span> <span class="fu">c</span>(p, <span class="fu">length</span>(variable.entered))</span>
+<span id="cb85-51"><a href="#cb85-51" aria-hidden="true" tabindex="-1"></a>  r2.set  <span class="ot">&lt;-</span> <span class="fu">c</span>( r2.set , <span class="fu">summary</span>(res)<span class="sc">$</span>r.squared)</span>
+<span id="cb85-52"><a href="#cb85-52" aria-hidden="true" tabindex="-1"></a>  r2adj.set  <span class="ot">&lt;-</span> <span class="fu">c</span>( r2adj.set , <span class="fu">summary</span>(res)<span class="sc">$</span>adj.r.squared)</span>
+<span id="cb85-53"><a href="#cb85-53" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb85-54"><a href="#cb85-54" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb85-55"><a href="#cb85-55" aria-hidden="true" tabindex="-1"></a>variables.set <span class="ot">&lt;-</span> <span class="fu">factor</span>(variables.set, <span class="at">levels=</span>indvarname)</span>
+<span id="cb85-56"><a href="#cb85-56" aria-hidden="true" tabindex="-1"></a><span class="fu">table</span>(variables.set)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>variables.set
+ X1  X2  X3  X4  X5  X6  X7  X8  X9 X10 X11 X12 X13 X14 X15 X16 X17 X18 X19 X20 
+  2   3   3   3   2   5   5   1   5   0   3   4   0   4   2   4   3   2   1   2 
+X21 X22 X23 X24 X25 X26 X27 X28 X29 X30 X31 X32 X33 X34 X35 X36 X37 X38 X39 X40 
+  6   3   4   2   4   4   3   1   4   3   2   3   2   1   3   4   2   1   2   5 
+X41 X42 X43 X44 X45 X46 X47 X48 X49 X50 
+  2   2   3   2   2   3   1   2   4   0 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb87"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb87-1"><a href="#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(p)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+    7.0     9.0    14.0    13.4    17.0    20.0 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb89"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb89-1"><a href="#cb89-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(r2.set)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.2228  0.2909  0.3612  0.3570  0.4050  0.5094 </code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb91"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb91-1"><a href="#cb91-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(r2adj.set)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+ 0.1545  0.2094  0.2635  0.2595  0.2938  0.3852 </code></pre>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "복사완료!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "복사완료!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../qmd/practice-03.html" class="pagination-link" aria-label="R-실습: 관측값에 대한 진단">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">R-실습: 관측값에 대한 진단</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
