@@ -1,0 +1,465 @@
+# R-실습: 모형의 선택 {#sec-multiple-04-varselection}
+
+
+
+```{r warning=FALSE, echo=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
+source(here::here("common", "_common.R"))
+source(here::here("common", "_preprocess.R"))
+```
+
+
+## AIC 와 BIC 계산
+
+통계모형을 선택하는 척도로서 가능도함수이론에 근거한 AIC(Akaike information criteria, @eq-selaic )와 베이지안 검정이론에 기초한 BIC(bayesian or schwartz information criteria, @eq-selbic )가 있으며 정의는 모형의 선택에 대한 절에 나타니 있다. 
+
+
+AIC 와 BIC 는 함수 `AIC` 와 `BIC` 를 이용하면 구할 수 있다.
+
+
+```{r}
+fit1 <- lm(price ~ ., data=houseprice)
+fit1
+AIC(fit1)
+BIC(fit1)
+```
+
+위의 AIC 와 BIC 에서 로그 가능도 함수 $\ell(\hat {\pmb \theta})$ 는 함수 `logLik` 로 구할 수 있다. 
+
+
+참고로 선형모형에 대한 AIC 와 BIC 는 @eq-sec-lm-ic 에 의하여  다음과 같이 계산할 수 있다.
+
+
+$$
+\begin{aligned}
+AIC &= n\log(2\pi) + n + n \log  \frac{SSE_p}{n} + 2(p+1) \\
+BIC &= n\log(2\pi) + n + n \log  \frac{SSE_p}{n} + (\log n) (p+1)
+\end{aligned}
+$$
+
+이제 회귀모형을 적합한 결과과 @eq-sec-lm-ic 를 이용하여 직접  AIC 와 BIC 를 계산해보자.
+
+
+```{r}
+n <- dim(houseprice)[1]
+p <- length(coef(fit1))
+sse <- deviance(fit1)
+c(n,p,sse)
+
+aic1 <- -2*logLik(fit1) + 2*(p+1)
+bic1 <- -2*logLik(fit1) + log(n)*(p+1) 
+c(aic1, bic1)
+
+aic2 <- n*log(2*pi) + n + n*log(deviance(fit1)/n)  + 2*(p+1) 
+bic2 <- n*log(2*pi) + n + n*log(deviance(fit1)/n)  + log(n)*(p+1)
+c(aic2, bic2)
+```
+
+
+## 예제 6.1
+
+### 변수선택의 통계량
+
+패키지 `leaps` 에 수록된 `regsubsets()`  함수를 이용하면 가능한 모든 모형에 대한  중요한 선택 기준들이
+게산된다.
+
+- `rss`: 잔차 제곱합
+- `rsq`: $R^2$
+- `adjr2` : 수정된 $R^2$
+- `cp` : 맬로우의 $C_p$
+- `bic` : BIC
+
+교재 예제에 나타난 자료 `houseprice`는 독립변수의 수가 4개이므로  가능한 회귀식의 개수가 $2^4=16$개이므로 이러한 방법을 적용할 수 있다. 하지만 독립변수의 수가 10개만 되면  가능한 회귀식의 수가 1024개나 되고 20개가 모형의 수가 100만개가 넘으므로 이들 모두에 대한 통계량을 계산하는 것은 실제로 쉽지않다.
+
+이제 예제 자료 `houseprice`에 대하여  `regsubsets`함수를 사용하여 가능한 회귀식을 모두 적합하고 각 식에 대한 모형선택의 기준값을 계산해보자. `regsubsets`함수에서 `nbest=6`는 독립변수의 수가 같은 모형들 중에서 가장 좋은 6개의 모형만을 보여주라는 명령문이다.
+
+모든 가능한 회귀식에 대한 통계량은 `summaryf`함수를 통하여 볼 수 있다.
+```{r}
+houseprice.rgs <- regsubsets(price ~ . , data=houseprice, nbest=6)
+summaryf(houseprice.rgs)
+```
+
+위의 결과를 보면 두 개의 변수 `tax`와 `floor`가 포함된 회귀식이 다음과 같은 통계량으로 가장  좋은 모형으로 나타난다.
+
+- `rss`: 잔차제곱합(residual sum of square), $SSE = 95.20$
+- `rsq`: 결정계수($R^2_p$), $R^2=0.92846$
+- `adjr2`: 수정된 결정계수($R^2_{ap}$), $R^2_a=0.92249$
+- `cp`: 맬로우즈 $C_p$, $C_p = 1.901$
+- `bic`: BIC(Bayesian Information Criteria), $BIC= -61.323$
+
+
+패키지 `olsrr`에 있는 함수 `ols_step_all_possible()`을 이용하면 가능한 모든 회귀모형에 대한 
+통계량을 구하고 여러 가지 통계량에 대한 그림을 `plot()` 함수를 이용하여 쉽게 그릴 수 있다.
+
+```{r warning=FALSE}
+fit1 <- lm(price ~ ., data=houseprice)
+houseprice.rgs2 <- ols_step_all_possible(fit1)
+houseprice.rgs2 
+```
+
+```{r}
+houseprice.rgs2$result %>% dplyr::select(mindex, n, predictors, rsquare, adjr, cp, aic, sbc) %>% dplyr::arrange(sbc)
+```
+
+
+```{r}
+plot(houseprice.rgs2)
+```
+
+PRESS 잔차는 함수 `press()` 로 구할 수 있다.
+
+$$ \text{PRESS}_p = \sum_{i=1}^n ( y_i - \hat y_{i(i)})^2 $$ 
+
+
+또한 교과서 264 페이지에 나온 교차확인(cross validation)에 의거한  $R^2_{pred}$ 은 다음과 같이 계산되며 `press()` 함수에 의해 주어진다.
+
+$$ R^2_{pred} = 1 - \frac{ \text{PRESS}_p}{\text{SST}} $$
+```{r}
+press(houseprice.rgs)
+```
+
+###  이상치를 제거한 경우 
+
+교과서에서 분석하였듯이 9,10,27 번째 자료가 이상점 또는 영향점일 가능성이 높으므로 이를 제거하고 모형의 선택 기준을 다시 계산해 보자.
+
+```{r}
+housepriceEX <- houseprice[-c(9,10,27),]
+housepriceEX.lm <- lm(price ~ . , data=housepriceEX)
+summary(housepriceEX.lm)
+```
+
+이상치를 제거하면 `tax` 만 포함된 모형이 최적모형으로 나타난다. 이상치와 영항점이 모형의 선택에도 영향을 주는 점에 꼭 유의하자.
+
+```{r}
+housepriceEX.rgs <- regsubsets(price ~ . , data=housepriceEX, nbest=6)
+summaryf(housepriceEX.rgs)
+```
+
+```{r}
+housepriceEX.rgs2 <- ols_step_all_possible(lm(price ~ ., data=housepriceEX))
+housepriceEX.rgs2$result %>% as.data.frame() %>% dplyr::select(mindex, n, predictors, rsquare, adjr, cp, aic, sbc) %>% dplyr::arrange(sbc)
+```
+
+
+```{r}
+press(housepriceEX.rgs)
+```
+
+
+## 변수선택 방법
+
+회귀식에서 변수를을 선택할 때 가장 큰 모형을 적합시키면 각 변수에 대한 중요도를 각 회귀계수에 대한 
+가설 검정 $H_o: \beta_i=0$에 대한 t-통계량을 보고 판단할 수 있다.
+
+다시 모든 자료를 고려한 `houseprice`에 대하여 가장 큰 모형을 적합시킨 후 각 변수에 대한 t-검정을 실시해보자.
+
+```{r}
+summary(fit1)
+```
+
+위는 4개의 독립변수를 포함한 가장 큰 모형에 대하여 각 계수의 유의성 검정에 대한 결과이다.
+변수 `floor`가 가장 유의한 변수이고 다음으로 `tax`가 유의함을 알 수 있다. 또한 
+2개의 변수 `year`와 `ground`는 유의하지 않음을 알 수 있다.
+
+이렇게 독립변수들은 반응변수를 설명하는 정도가 다르므로 모든 가능한 회귀식을 적합하여 모형을 선택하는 것보다 
+변수의 중요도를 고려하여 변수들을 유의한 정도에 따라 차례로 모형에 포함시키거나 제거하는 절차가 더 효율적이다. 이렇게 가장 단순한 모형(평균모형)에서 시작하여 설명력이 높은 변수들을 순차적으로 포함시키거나(forward selection; 전진선택) 가장 큰 모형(full model)에서 시작하여 설명력이 낮은 변수들을 
+차례로 제거하는 방법(backward elimination; 후방제거)을 단계별 회귀(stepwise regression)이라고 한다.
+
+단계별 회귀는 다음과 같은 세 가지 방법이 있다.
+
+- 전진선택 (forward selection)
+- 후방제거 (backward elimination)
+- 단계별 선택 (stepwise selection)
+
+
+단계별 선택은 전진선택과 후방제거를 결합한 형태로서 새로운 변수가 추가되는 경우마다(전진선택) 제거할 변수를 있는지 판단하여 유의하지 않다면 제거하는(후방제거) 방법이다.
+
+
+### 단계별 선택의 적용
+
+단계별 선택에서 전진선택과 후방제거는 `add1()`와 `drop1()`함수를 사용한다.
+
+
+1. 평균모형 
+
+$$ y=\beta_0 + \epsilon $$
+
+```{r}
+model0 <- lm(price~1, houseprice)
+summary(model0)
+```
+
+2. 첫번째 변수의 추가 
+
+이제 가장 설명력있는 변수를 추가하는데 다음과 같은 2개의 모형을 비교하는 부분 F 검정을 이용하여 가장 유의한 변수를 추가한다.
+
+$$ H_0: y=\beta_0 + \epsilon \quad \text{vs} \quad H_1: y=\beta_0 + \beta_1 x_i + \epsilon $$
+
+
+```{r}
+add1(model0, scope=~tax+ ground+ floor+ year, test="F")
+```
+
+위의 결과에서 가장 유의한 변수가 `floor`이므로 회귀식에 추가한다. 변수를 추가하는 경우는 고려하는 변수를 포함한 모형과 포함하지 않는 모형이  가장 유의한 차이를 보이는 변수를 선택한다.  
+
+
+```{r}
+model1 <- update(model0, . ~ . + floor)
+summary(model1)
+```
+
+위에서 `update()` 함수는  앞에서 적합한 모형 `model0`에 변수 `floor`를 추가한다.
+
+3. 두 번째 변수의 추가
+
+
+```{r}
+add1(model1, scope=~tax+ ground+ floor+ year, test="F")
+model2 <- update(model1, . ~ . + tax)
+summary(model2)
+```
+
+위의 결과로부터 변수 `tax`가 가장 유의한 변수임을 알 수 있고 이를 모형에 추가한다.
+
+4. 변수의 제거 
+
+이제 독립변수가 두 개가(`floor`와 `tax`) 모형에 포함되었고 가장 최근에 포함된 변수 `tax`를 제외한 
+나머지 변수를 제거할 수 있는지 감정한다. 후방제거하는 경우는 제거할 변수가 포함된 모형과 포함하지 않는 모형의 
+설명력에 유의한 차이가 없어야 한다. 즉 F-검정이 유의하니 않으면 제거한다.
+
+
+```{r}
+drop1(model2, test="F")
+```
+
+위의 함수 `drop1()`의 결과에서 모든 변수에 대한 F-통계량이 유의하므로 변수를 제거하지 않는다.
+
+5. 세 번째 변수의 추가
+
+독립변수가 두 개가(`floor`와 `tax`) 모형에 새로운 변수를 추가하는 검정을 실시해 보자  
+
+
+```{r}
+add1(model2, scope=~tax+ ground+ floor+ year, test="F")
+```
+위의 결과에서 유의한 변수가 없으므로 더 이상 변수를 추가하지 않는다. 
+
+6. 최종 모형 
+
+더 이상 추가할 변수와 제거할 변수가 없으면 단계별 선택을 중단한다. 따라서 단계별 선택법에 의한 
+최종 모형은 `floor`와 `tax`, 두 개의 독립변수를 포함하는 모형이다.
+
+이러한 단계별 회귀의 결과는 모든 가능한 회귀에 의한 방법과 모형이 일치한다. 독립변수의 수가 많는 경우 이러한 단계별 회귀 방법은 유용하게 사용된다.
+
+### 함수 `step()`
+
+위에서 논의한 세 종류의 변수선택법은 함수 `step()`을 이용하여 한 번에 결과를 얻을 수 있다.
+
+::: {.callout-caution}
+
+주의할 점은 함수 `step()`은 변수의 선택 기준이 F-검정이 아니 AIC 를 이용한다는 점이다.
+
+- 전진 선택
+
+
+```{r}
+model0 <- lm(price~1, houseprice)
+step(model0,  scope=~tax+ ground+ floor+ year, direction="forward")
+```
+
+- 후방 제거 
+
+```{r}
+fit <- lm(price~tax+ ground+ floor+ year, houseprice)
+step(fit, direction="backward")
+```
+
+- 단계별 선택 
+
+```{r}
+model0 <- lm(price~1, houseprice)
+step(model0,  scope=~tax+ ground+ floor+ year, direction="both")
+```
+
+### 패키지 `olsrr` 의 이용
+
+패키지 `olsrr` 의 함수 `ols_step_both_p()` 이용하여 F-검정을 이용한  단계별 선택을 할 수 있다.
+
+::: {.callout-caution}
+
+#### 볌수선택법에서의 유의수준
+
+함수 `ols_step_both_p()` 이용하여 F-검정에서는 유의수준을 지정해주지 않으면 
+유의 수준을 0.3 으로 사용한다. 
+
+참고로 SAS 의 모형 선택에서 자동적으로 사용되는 유의수준은 전진선택에서는  0.5, 후방제거에서는 0.1 이다.   
+
+
+```
+ols_step_forward_p(model, penter = 0.3,
+  progress = FALSE, details = FALSE, ...)
+ols_step_backward_p(model, prem = 0.3,
+  progress = FALSE, details = FALSE, ...)
+
+Forward Selection (FORWARD)
+
+The p-values for these F statistics are compared to the SLENTRY= value that is specified in the MODEL statement (or to 0.50 if the SLENTRY= option is omitted). 
+
+Backward Elimination (BACKWARD)
+
+F statistics significant at the SLSTAY= level specified in the MODEL statement (or at the 0.10 level if the SLSTAY= option is omitted). 
+```
+
+
+:::
+
+
+
+```{r}
+res <- ols_step_both_p(fit1, details = TRUE)
+res
+plot(res)
+```
+
+함수 `ols_step_both_aic()` 는 함수 `step()` 과 동일하게 AIC 를 이용하여 변수선택을 한다.
+
+```{r}
+ols_step_forward_aic(fit1)
+```
+
+
+
+## 연습문제 6.10
+
+자료 `cars93`은 1993년 미국에서 판매된 93가지 종류의 저동차에 대한 자료이다. 변수 `MPG.highway`를 반응변수로 하고 `EngineSize`, `Weight`, `Price`, `Width`, `Length`, `Horsepower`, `Wheelbae` 7개의 변수를 
+고려하여 가장 적합한 모형을 선택해보자.
+
+
+
+```{r}
+dat93 <- Cars93[c("MPG.highway","EngineSize", "Weight", "Price", "Width", "Length", "Horsepower", "Wheelbase")]
+head(dat93)
+```
+
+
+### 완전모형
+
+```{r}
+carfit <- lm(MPG.highway~ . , data=dat93)
+summary(carfit)
+```
+
+### 모든 가능한 회귀 
+
+```{r}
+carfit.rgs2 <- ols_step_all_possible(carfit)
+carfit.rgs2$result %>% dplyr::select(mindex, n, predictors, rsquare, adjr, cp, aic, sbc) %>% 
+    dplyr::arrange(sbc) %>%
+    head(10)
+```
+
+
+```{r}
+plot(carfit.rgs2)
+```
+
+
+### 전진선택법
+
+```{r}
+model0 <- lm(MPG.highway~1, data=dat93)
+step(model0,  scope=~EngineSize+ Weight+ Price+ Width+ Length+ Horsepower+ Wheelbase, direction="forward")
+```
+
+### 후방제거 
+
+```{r}
+step(carfit, direction="backward")
+```
+
+### 단계별 선택 
+
+```{r}
+model0 <- lm(MPG.highway~1, data=dat93)
+step(model0,  scope=~EngineSize+ Weight+ Price+ Width+ Length+ Horsepower+ Wheelbase, direction="both")
+```
+
+
+```{r}
+ols_step_forward_aic(carfit, details = TRUE)
+```
+
+
+```{r}
+ols_step_forward_p(carfit, details = TRUE)
+```
+
+
+
+
+##  연습문제 6.12
+
+
+```{r}
+set.seed(13111)
+
+Nsim <- 10
+num_of_ind_var <- 50
+n <- 100
+N <- (num_of_ind_var+1)*n
+
+
+randata <- matrix(rnorm(N), ncol=num_of_ind_var+1)
+randata <- data.frame(randata)
+indvarname <- names(randata)[1:50]
+
+variables.set <- NULL
+r2.set <- NULL
+r2adj.set <- NULL
+p <- NULL
+
+for (i in 1:Nsim) {
+  
+  randata <- matrix(rnorm(N), ncol=num_of_ind_var+1)
+  randata <- data.frame(randata)
+  
+  # === 함수 step(..direction="backward")는   AIC 를 이용
+  fit.lm <- lm(X51 ~ ., data=randata)
+  res <- step(fit.lm, direction="backward", trace=0)
+  variable.entered <- as.character(attr(res$terms, "variables"))[-c(1,2)]
+  
+  # ==== 함수 step(...direction = "forward"..) 은 AIC 를 이용
+  # fit.null <- lm(X51 ~ 1, data=randata)
+  # res <- step(fit.null, scope~ X1 + X2 + X3 + X4 + X5 + X6 + X7 + X8 + X9 + X10 + X11 + X12 + 
+  #  X13 + X14 + X15 + X16 + X17 + X18 + X19 + X20 + X21 + X22 + 
+  #  X23 + X24 + X25 + X26 + X27 + X28 + X29 + X30 + X31 + X32 + 
+  #  X33 + X34 + X35 + X36 + X37 + X38 + X39 + X40 + X41 + X42 + 
+  #  X43 + X44 + X45 + X46 + X47 + X48 + X49 + X50  , direction = "forward", trace=0)
+  # ariable.entered <- as.character(attr(res$terms, "variables"))[-c(1,2)]
+
+
+  # === 함수 ols_step_backward_p 는 F-검정을 이용
+  # fit.lm <- lm(X51 ~ ., data=randata)
+  # aa <- ols_step_backward_p(fit.lm)
+  # variable.entered <- names(aa$model$coefficients)[-1]
+  
+  # ===  함수 ols_step_forward_p 는 F-검정을 이용 
+  # fit.lm <- lm(X51 ~ ., data=randata)
+  # aa <- ols_step_forward_p(fit.lm)
+  # variable.entered <- names(aa$model$coefficients)[-1]
+
+
+  variables.set <- c(variables.set, variable.entered )
+  p <- c(p, length(variable.entered))
+  r2.set  <- c( r2.set , summary(res)$r.squared)
+  r2adj.set  <- c( r2adj.set , summary(res)$adj.r.squared)
+}
+
+variables.set <- factor(variables.set, levels=indvarname)
+table(variables.set)
+
+summary(p)
+summary(r2.set)
+summary(r2adj.set)
+```
+

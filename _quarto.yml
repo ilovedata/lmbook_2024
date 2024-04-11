@@ -30,6 +30,8 @@ book:
     - qmd/aic.qmd
     - qmd/practice-01.qmd
     - qmd/practice-02.qmd
+    - qmd/practice-03.qmd
+    - qmd/practice-04.qmd
 
 bibliography: references.bib
 

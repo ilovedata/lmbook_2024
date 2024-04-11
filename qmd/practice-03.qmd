@@ -1,0 +1,250 @@
+# R-실습: 관측값에 대한 진단 {#sec-multiple-03-residual}
+
+
+
+```{r warning=FALSE, echo=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
+source(here::here("common", "_common.R"))
+source(here::here("common", "_preprocess.R"))
+```
+
+
+## 교과서 예제 3.8
+
+
+자료 `usedcars` 에 대한 잔차 분석 (예제 3.8, 예제 5.3) 입니다.
+
+먼저 자료 `usedcars` 에서 주어진 모든 설명변수를 사용하여 중회귀모형을 적합해 봅니다. 
+
+```{r}
+usedcars.lm <- lm(price ~ year + mileage + cc + automatic, usedcars)
+summary(usedcars.lm)
+```
+
+### 잔차그림
+
+`R` 에서는 `plot` 함수를 이용하여 기본적인 잔차그림을 그릴 수 있습니다.
+
+- 그림 `Reidual vs Fitted` 는 
+- 그림 `Normal Q-Q` 는 잔차가 정규분포를 따르는지를 확인하는 그림이다.
+- 그림 `Scale-Location` 은 예측값 $\hat y_i$ 에 대한 표준화된 잔차 $r_i/\sqrt{1-h_{ii}}$ 를 그린 것이다.
+
+
+1. 잔차 대 예측값(Residuals vs Fitted)
+
+  - 이 그래프는 등분산성(homoscedasticity)과 선형성 가정을 확인하는 데 도움이 된다. 
+  - 각 예측값 $\hat y_i$ 에 대한 잔차 $r_i$ 를 그린 것이다. 
+  - 이상적으로는, 잔차들이 수평축(0-라인) 주변에 무작위로 흩어져 있어야 하며, 이는 관계가 선형이고 오류 항의 분산이 일정함을 나타낸다.
+
+2. 정규 Q-Q(Quantile-Quantile)
+
+  - 정규 Q-Q 그래프는 잔차의 정규성을 확인하는 데 사용된다. 
+  - 점들이 제공된 직선을 따라 배치되어야 이상적이며, 이는 잔차가 정규 분포에 가깝다는 것을 나타낸다. 
+  - 주어진 선으로부터의 이탈은 정규성으로부터의 벗어남을 나타낸다.
+
+3. 스케일-위치(Scale-Location) 또는 스프레드-위치(Spread-Location)
+
+  - 잔차 대 예측값 그래프와 유사하게, 스케일-위치 그래프는 잔차의 퍼진 정도를 보여주므로 등분산성을 확인하는 데 사용된다. 
+  - 스케일-위치 그래프(또는 스프레드-위치 그래프)의 y축은 일반적으로 표준화된 잔차 절대값 의 제곱근을 나타낸다.
+  - 잔차 절대값 의 제곱근을 보여주는 것은 잔차의 분산을 안정화하는 데 도움을 주어, 이질적 분산(등분산성이 아닌)의 패턴을 시각적으로 더 쉽게 식별할 수 있게 한다.
+  - 점들이 대략적으로 수평선을 이루고 균등하게 퍼져 있어야 등분산성의 가정이 적합하다고 판단된다. 
+
+4. 잔차 대 지렛값(Residuals vs Leverage)
+
+  - 이 그래프는 회귀선에 영향을 줄 수 있는 영향력 있는 관찰값을 식별하는 데 도움이 된다. 
+  - 높은 지렛값와 큰 잔차를 가진 관찰값(이상치)을 잘 파악할 수 있도록 만들어진 그림이다. 
+  - 이 그래프에서는 다음과 같은 통계량들이 제시되는 것에 유의하자. 
+  
+    + x축: 지렛값(leverage Values, $h_{ii}$)
+    + y축: 표준화된 잔차(Standardized Residuals)
+    + 등고선: Cook's Distance
+    
+```{r}
+plot(usedcars.lm)
+```
+
+### 잔차
+
+다음과 같은 함수를 통하여 다양한 잔차들와 지렛값을 구할 수 있다.
+
+```{r}
+resid_inter <- rstandard(usedcars.lm)  # internally studentized residual - 내표준화 잔차
+resid_exter <- rstudent(usedcars.lm)   # externally studentized residual - 외표준화 잔차
+hatval <- hatvalues(usedcars.lm)       # leverage value - 지렛값
+data.frame(resid_inter , resid_exter, hatval)
+```
+
+
+### 영향점 측도
+
+`influence.measures` 함수를 통하여 영향점을 파악하는 진단값을 구할 수 있다.
+
+가장 중요한 통계량은 다음과 같다.
+
+- `difft` : DFFITS
+- `cook.d` : Cook's distance
+- `hat` : leverage value
+
+```{r}
+# DFBETAS for each model variable, DFFITS, covariance ratios, 
+# Cook's distances and the diagonal elements of the hat matrix
+# Cases which are influential with respect to any of these measures 
+# are marked with an asterisk.
+influence.measures(usedcars.lm)
+```
+
+패키지 `olsrr` 의 함수 `ols_plot_cooksd_bar` 과 `ols_plot_dffits` 를 이용하여 각각 Cook's distance 와 DFFIT 를 시각화할 수 있다.
+
+```{r}
+ols_plot_cooksd_bar(usedcars.lm)
+```
+
+
+```{r}
+ols_plot_dffits(usedcars.lm)
+```
+
+
+
+
+## 교과서 연습문제 5.14
+
+```{r}
+head(MLB1)
+```
+
+
+### 회귀모형 적합 
+
+```{r}
+mlb1.lm <- lm(hit86 ~ hit85, data=MLB1)
+summary(mlb1.lm)
+```
+
+
+
+```{r}
+ggplot(MLB1, aes(x=hit85, y=hit86)) + geom_point() + labs(x = "1985년 타율", y = "1986년 타율") +
+  labs(title="1985년과 1986년 타율의 관계") + 
+  geom_line(aes(y=mlb1.lm$fitted.values), color="blue")
+```
+
+### 잔차그림
+
+다음잔차 그림을 보면 다음과 같은 관측값이 이상점 또는 영향점일 가능성이 크다.
+
+  - 잔차가 큰 관측값 번호: 71, 92, 106
+  - 지렛값이 큰 관측값 번호 : 12
+
+```{r}
+mlb1.lm <- lm(hit86 ~ hit85, data=MLB1)
+plot(mlb1.lm)
+```
+
+### 잔차와 지렛값 분석
+
+아래 잔차와 지렛값을 보면 위에서 그림을 그려서 파악한 것과 일치하는 것을 확인할 수 있다. 
+
+```{r}
+resid_inter <- rstandard(mlb1.lm)  # internal studentized residual
+resid_exter <- rstudent(mlb1.lm)   # external studentized residual
+hatval <- hatvalues(mlb1.lm)       # leverage
+resid_df <- data.frame(resid_inter , resid_exter, hatval)
+resid_df
+```
+
+```{r}
+resid_df %>% dplyr::arrange(desc(abs(resid_inter))) %>% head(10)
+```
+
+```{r}
+resid_df %>% dplyr::arrange(desc(hatval)) %>% head(10)
+```
+
+
+
+### 영향점 측도
+
+아래 COOK 거리와 DFFIT 값을 보면 다음 관측값등이 회귀 적합에 큰 영향을 미치는 것으로 나타난다.
+
+  - 92, 71, 12, 108, 97
+
+
+위에서 잔차와 지렛값만으로 파악한 것과 거의 일치하는 것을 확인할 수 있다.
+
+다만 차이가 나는 점은 다음과 같다.
+
+  - 106 번 관측값이 잔차는 매우 크지만 지렛값이 상대적으로 작아서 COOK 거리와 DFFIT 값이 크게 나타나지 않는다는 것이다.
+  - 97, 108 번 관측값은 잔차는 작지만 지렛값이 크기 때문에 COOK 거리와 DFFIT 값이 크게 나타난다는 것이다. 
+
+92, 71, 12 관측값은 잔차와 지렛값이 모두 크기 때문에 COOK 거리와 DFFIT 값이 크게 나타난다.
+
+  
+```{r}
+influence.measures(mlb1.lm)
+```
+
+```{r}
+data.frame(influence.measures(mlb1.lm)$infmat) %>% arrange(desc(cook.d)) %>% head(10)
+```
+
+
+```{r}
+ols_plot_cooksd_bar(mlb1.lm)
+```     
+
+
+
+```{r}
+ols_plot_dffits(mlb1.lm)
+```
+
+
+### 결론 
+
+위에서 나타난 관측값들을 나타내는 산점도를 다시 그려보자.
+
+```{r}
+influnce_obs <- c(92, 71, 12, 108, 97)
+MLB1$row_number <- seq_len(nrow(MLB1))
+
+ggplot(MLB1, aes(x=hit85, y=hit86)) + geom_point() + labs(x = "1985년 타율", y = "1986년 타율") +
+  labs(title="1985년과 1986년 타율의 관계") + 
+  geom_line(aes(y=mlb1.lm$fitted.values), color="blue") + 
+  geom_point(data = MLB1[influnce_obs, ], aes(x=hit85, y=hit86),
+                    color = "red", size = 3) +
+  geom_text(data = MLB1[influnce_obs, ], aes(x=hit85, y=hit86, label = row_number),
+                   color = "black", vjust = 1.5, hjust = 0.5)
+```
+
+
+
+이제 영향점과 이상점을 제거한 후 회귀모형을 다시 적합해보자. 
+
+
+```{r}
+MLB1_clean <- MLB1 %>% filter(!row_number %in% influnce_obs)
+
+mlb1_clean.lm <- lm(hit86 ~ hit85, data=MLB1_clean)
+summary(mlb1_clean.lm)
+```
+
+영향점과 이상점을 제거하기 전과 후의 회귀선을 그려서 비교해 보자.
+
+- 영향점과 이상점을 제거하기 전의 기울기의 추정치는 `r mlb1.lm$coef[2]` 이다. 
+- 영향점과 이상점을 제거한 후의 기울기의 추정치는 `r mlb1_clean.lm$coef[2]` 이다. 
+
+
+```{r}
+p <- ggplot(MLB1, aes(x=hit85, y=hit86)) + geom_point() + labs(x = "1985년 타율", y = "1986년 타율") +
+  labs(title="1985년과 1986년 타율의 관계") + 
+  geom_line(aes(y=mlb1.lm$fitted.values), color="blue") + 
+  geom_line(data = MLB1_clean, aes(y=mlb1_clean.lm$fitted.values), color="red") +
+  #add label for two regression lines
+  annotate("text", x = 0.25, y = 0.35, label = paste("Original: ", round(mlb1.lm$coef[2], 2)), color = "blue") +
+  annotate("text", x = 0.25, y = 0.34, label = paste("Cleaned: ", round(mlb1_clean.lm$coef[2], 2)), color = "red")
+
+p
+```
+
+

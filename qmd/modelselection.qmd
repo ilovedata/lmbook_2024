@@ -230,7 +230,8 @@ $$
 AIC &= n\log(2\pi) + n + n \log  \frac{SSE_p}{n} + 2(p+1) \\
 BIC &= n\log(2\pi) + n + n \log  \frac{SSE_p}{n} + (\log n) (p+1)
 \end{aligned}
-$$
+$$ {#eq-sec-lm-ic}
+
 
 여기서 $p$는 회귀모형에 포함된 독립변수의 개수이며 오차항의 분산까지 포함하여 모수의 총 개수는 $p+1$ 이다.  
 
