@@ -235,6 +235,12 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../qmd/anova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">분산분석 모형</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
@@ -903,7 +909,7 @@ V( \pmb y| \pmb X) = E[( \pmb y -  \pmb X \pmb \beta)( \pmb y -  \pmb X \pmb \be
 \tag{1.13}\]</span></span></p>
 <section id="방법-1" class="level4" data-number="1.5.1.1">
 <h4 data-number="1.5.1.1" class="anchored" data-anchor-id="방법-1"><span class="header-section-number">1.5.1.1</span> 방법 1</h4>
-<p><span class="math inline">\(\hat {\pmb \beta}\)</span>는 잔차의 제곱합 <a href="#eq-rsq2" class="quarto-xref">식&nbsp;<span>1.13</span></a> 을 최소로 하는 최소제곱 추정량이다. 잔차의 제곱합을 <span class="math inline">\(S( \pmb \beta)\)</span>이라고 하면</p>
+<p><span class="math inline">\(\hat {\pmb \beta}\)</span>는 잔차의 제곱합 <a href="anova.html#eq-rsq2" class="quarto-xref">식&nbsp;<span>7.8</span></a> 을 최소로 하는 최소제곱 추정량이다. 잔차의 제곱합을 <span class="math inline">\(S( \pmb \beta)\)</span>이라고 하면</p>
 <p><span id="eq-rsq3"><span class="math display">\[
 \begin{aligned}
 S( \pmb \beta ) &amp; =  ( \pmb y -  \pmb X \pmb \beta)^t( \pmb y -  \pmb X \pmb \beta ) \notag \\
@@ -941,7 +947,7 @@ S( \pmb \beta ) &amp; =  ( \pmb y -  \pmb X \pmb \beta)^t( \pmb y -  \pmb X \pmb
 </section>
 <section id="방법-2" class="level4" data-number="1.5.1.2">
 <h4 data-number="1.5.1.2" class="anchored" data-anchor-id="방법-2"><span class="header-section-number">1.5.1.2</span> 방법 2</h4>
-<p><a href="#eq-rsq2" class="quarto-xref">식&nbsp;<span>1.13</span></a> 에서 나오는 오차벡터를 정의하고 <span class="math inline">\(\pmb e = (\pmb y - \pmb X \pmb \beta)\)</span> 오차벡터를 모수벡터 <span class="math inline">\(\pmb \beta\)</span>로 미분하면 다음과 같은 결과를 얻는다.</p>
+<p><a href="anova.html#eq-rsq2" class="quarto-xref">식&nbsp;<span>7.8</span></a> 에서 나오는 오차벡터를 정의하고 <span class="math inline">\(\pmb e = (\pmb y - \pmb X \pmb \beta)\)</span> 오차벡터를 모수벡터 <span class="math inline">\(\pmb \beta\)</span>로 미분하면 다음과 같은 결과를 얻는다.</p>
 <p><span class="math display">\[
 \pardifftwo{\pmb e}{\pmb \beta} = \pardifftwo{ (\pmb y - \pmb X \pmb \beta)}{ \pmb \beta} =
 - \pardifftwo{ \pmb X \pmb \beta}{ \pmb \beta} \equiv

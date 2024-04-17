@@ -1,0 +1,1678 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>통계적 예측모형 - 7&nbsp; 분산분석 모형</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../references.html" rel="next">
+<link href="../qmd/modelselection.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script>
+<script type="text/javascript">
+ window.MathJax = {
+  tex: {
+    macros: {
+    RR: '{\\mathbb R}',                    // a simple string replacement
+    hatmat:'{\\pmb X ({\\pmb X}^t {\\pmb X} )^{-1} {\\pmb X}^t}',
+    bold: ['\\boldsymbol{#1}',1] ,     // this macro has one parameter
+    pardiff: ['\\frac{\\partial#2}{\\partial#1}', 2, 'x'], // this macro has an optional parameter that defaults to 'x'
+    pardifftwo: ['\\frac{\\partial#1}{\\partial#2}', 2],
+    pardiffd: ['\\frac{\\partial#1}{\\partial#2^t \\partial#2}', 2],
+    pardiffdd: ['\\frac{\\partial#1}{\\partial#3 \\partial#2}', 3],
+    norm: ['\\lVert#1\\rVert',1]
+  },
+  environments: {
+  braced: ["\\left\\{", "\\right\\}"]
+  }
+ }
+};
+</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/anova.html"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">분산분석 모형</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">통계적 예측모형</a> 
+        <div class="sidebar-tools-main">
+    <a href="../통계적-예측모형.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="검색"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/lse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">선형 회귀모형의 소개</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">선형회귀에서의 추론</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/inference2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">모형의 비교</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/modeleval2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">모형의 진단</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/residual.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">관측값에 대한 진단</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/modelselection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">모형의 선택</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/anova.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">분산분석 모형</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_mat_basic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">행렬의 기초</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_vector_space.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">벡터공간</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_eigen_value.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">고유값과 고유벡터</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_vec_cal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">벡터 미분</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/multivar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">다변량 확률변수의 성질</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/quadratic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">이차형식과 제곱합의 분포</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/aic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">모형선택의 정보 기준</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/practice-01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/practice-02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/practice-03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">R-실습: 관측값에 대한 진단</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/practice-04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">R-실습: 모형의 선택</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul class="collapse">
+  <li><a href="#서론" id="toc-서론" class="nav-link active" data-scroll-target="#서론"><span class="header-section-number">7.1</span> 서론</a></li>
+  <li><a href="#일원배치법" id="toc-일원배치법" class="nav-link" data-scroll-target="#일원배치법"><span class="header-section-number">7.2</span> 일원배치법</a></li>
+  <li><a href="#선형모형과-제약-조건" id="toc-선형모형과-제약-조건" class="nav-link" data-scroll-target="#선형모형과-제약-조건"><span class="header-section-number">7.3</span> 선형모형과 제약 조건</a></li>
+  <li><a href="#불완전-계수행렬에서의-추정" id="toc-불완전-계수행렬에서의-추정" class="nav-link" data-scroll-target="#불완전-계수행렬에서의-추정"><span class="header-section-number">7.4</span> 불완전 계수행렬에서의 추정</a></li>
+  <li><a href="#추정-가능한-함수" id="toc-추정-가능한-함수" class="nav-link" data-scroll-target="#추정-가능한-함수"><span class="header-section-number">7.5</span> 추정 가능한 함수</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-notfullrank" class="quarto-section-identifier"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">분산분석 모형</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="서론" class="level2" data-number="7.1">
+<h2 data-number="7.1" class="anchored" data-anchor-id="서론"><span class="header-section-number">7.1</span> 서론</h2>
+<p>선형모형에서 설계행렬(design matrix) <span class="math inline">\(\pmb X\)</span>가 완전계수(full rank)행렬일 때 회귀계수의 추정치는 최소제곱법에서 구해진 정규방정식의 유일한 해로 구해진다.</p>
+<p><span class="math display">\[
+(\pmb X^t \pmb X ) \pmb \beta = \pmb X^t \pmb y \quad \Rightarrow \quad \hat {\pmb \beta} = (\pmb X^t \pmb X )^{-1} \pmb X^t \pmb y
+\]</span></p>
+<p>그러나 여러 가지 실험이나 자료의 형태에서 설계행렬 <span class="math inline">\(\pmb X\)</span>의 계수가 완전하지 않을 때가 있으며(less than full rank)</p>
+<p><span class="math display">\[
+rank(\pmb X) =r &lt; p= \text{ number of columns in } \pmb X
+\]</span></p>
+<p>이러한 경우에는 정규방정식에서 유일한 해가 존재하지 않는다. 이 장에서는 이러한 경우의 해결 방법을 알아 보고 일원 배치법에 어떻게 적용되는 자를 알아본다.</p>
+</section>
+<section id="일원배치법" class="level2" data-number="7.2">
+<h2 data-number="7.2" class="anchored" data-anchor-id="일원배치법"><span class="header-section-number">7.2</span> 일원배치법</h2>
+<p>이제 일원배치법에 대한 통계적 모형에서 모수에 대한 추정을 생각해 보자.</p>
+<p><span id="eq-oneway"><span class="math display">\[
+y_{ij} = \mu + \alpha_i + e_{ij} ,\quad i=1,2,\dots,a,~~j=1,2,
+\dots,r
+\tag{7.1}\]</span></span></p>
+<p>추정해야할 모수는 전체 평균 <span class="math inline">\(\mu\)</span>와 각 그룹의 처리 효과 <span class="math inline">\(\alpha_1,\alpha_2, \dots, \alpha_a\)</span> 그리고 분산 <span class="math inline">\(\sigma_E^2\)</span>이다. 전체 평균과 그룹의 효과는 오차제곱합(Sum of Square Error; SSE)을 최소로 하는 모수를 추정하는 최소제곱법(Least Square method; LS)으로 구할 수 있다.</p>
+<p><span id="eq-lsesse"><span class="math display">\[
+\min_{\mu, \alpha_1, \dots \alpha_a} \sum_{i=1}^a \sum_{j=1}^r
+(y_{ij} - \mu -\alpha_i)^2 =\min_{\mu, \alpha_1, \dots \alpha_a} SSE
+\tag{7.2}\]</span></span></p>
+<p>위의 오차제곱합이 모든 모수에 대하여 미분가능한 이차식으므로 최소제곱 추정량은 제곱합을 모수에 대하여 미분하고 0 으로 놓아 방정식을 풀어서 얻을 수 있다.</p>
+<p>오차제곱합을 모수 <span class="math inline">\(\mu\)</span>와 <span class="math inline">\(\alpha_1,\alpha_2,\dots,\alpha_a\)</span> 로 미분하여 0 으로 놓은 방정식은 다음과 같다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+&amp; \pardiff{}{\mu} SSE = -2 \sum_{i=1}^a \sum_{j=1}^r (y_{ij} - \mu -\alpha_i) = 0 \\
+&amp; \pardiff{}{\alpha_i} SSE = -2 \sum_{j=1}^r (y_{ij} - \mu -\alpha_i) = 0 , \quad i=1,2,\dots, a
+\end{aligned}
+\]</span></p>
+<p>위의 방정식을 정리하면 다음과 같은 <span class="math inline">\(a+1\)</span>개의 방정식을 얻는다.</p>
+<p><span id="eq-normaleq1"><span class="math display">\[
+\begin{aligned}
+   \mu +\frac{ \sum_{i=1}^a \alpha_i}{a} &amp; = \bar {\bar y}\\
+   \mu + \alpha_1  &amp; =  \bar {y}_{1.} \\
+   \mu + \alpha_2  &amp; =  \bar {y}_{2.} \\
+         \cdots &amp; \cdots \\
+   \mu + \alpha_a  &amp; =  \bar {y}_{a.} \\
+\end{aligned}
+\tag{7.3}\]</span></span></p>
+<p>위의 방정식에서 첫 번째 방정식은 다른 <span class="math inline">\(a\)</span>개의 방정식을 모두 합한 방정식과 같다. 따라서 모수는 <span class="math inline">\(a+1\)</span>개이지만 실제 방정식의 개수는 <span class="math inline">\(a\)</span>개이므로 유일한 해가 얻어지지 않는다. 따라서 유일한 해를 구하려면 하나의 제약조건이 필요하며 일반적으로 다음과 같은 두 개의 조건 중 하나를 사용한다.</p>
+<section id="set-to-zero-condition" class="level3" data-number="7.2.1">
+<h3 data-number="7.2.1" class="anchored" data-anchor-id="set-to-zero-condition"><span class="header-section-number">7.2.1</span> set-to-zero condition</h3>
+<p>첫 번째 효과 <span class="math inline">\(\alpha_1\)</span>를 0으로 놓는 조건을 주는 것이다 (<span class="math inline">\(\alpha_1=0\)</span>). set-to-zero 조건 하에서는 다음과 같은 추정량이 얻어진다.</p>
+<p><span id="eq-setzeroest"><span class="math display">\[
+\hat \mu = \bar {y}_{1.}, \quad \hat \alpha_1=0, ~~  \hat \alpha_i = \bar {y}_{i.} -\bar {y}_{1.},~~i=2,\dots,a
+\tag{7.4}\]</span></span></p>
+</section>
+<section id="sum-to-zero-condition" class="level3" data-number="7.2.2">
+<h3 data-number="7.2.2" class="anchored" data-anchor-id="sum-to-zero-condition"><span class="header-section-number">7.2.2</span> sum-to-zero condition</h3>
+<p>처리들의 효과의 합은 0이라는 조건을 주는 것이다 ( <span class="math inline">\(\sum_{i=1}^a  \alpha_i=0\)</span>). sum-to-zero 조건에서는 계수의 추정치가 다음과 같이 주어진다.</p>
+<p><span id="eq-sumzeroest"><span class="math display">\[
+\hat \mu = \bar {\bar {y}}, \quad \hat \alpha_i = \bar {y}_{i.} -\bar {\bar {y}},~~i=1,2,\dots,a
+\tag{7.5}\]</span></span></p>
+<p>여기서 유의할 점은 <strong>개별 모수들의 추정량은 조건에 따라서 달라지지만 집단의 평균을 나타내는 모수 <span class="math inline">\(\mu+ \alpha_i\)</span> 에 대한 추정량은 언제나 같다</strong>.</p>
+<p><span class="math display">\[  
+\widehat{\mu+ \alpha_i} = \hat \mu + \hat {\alpha}_i =  \bar {y}_{i.}
+\]</span></p>
+<p>만약에 자료를 아래와 같은 평균 모형으로 나타낼 경우에는 각 평균 <span class="math inline">\(\mu_i\)</span> 는 각 그룹의 표본 평균으로 추정된다.</p>
+<p><span class="math display">\[  y_{ij} = \mu_i + e_{ij} \]</span></p>
+<p>평균 모형에서 각 그룹의 모평균에 대한 최소제곱 추정량은 <span class="math inline">\(\hat \mu_i = \bar {y}_{i.}\)</span> 이며 이는 주효과 모형에서의 추정량과 동일하다.</p>
+<p>또한 모형에 관계없이 오차항의 분산 <span class="math inline">\(\sigma_E^2\)</span> 에 대한 추정량은 다음과 같이 주어진다.</p>
+<p><span class="math display">\[  
+\hat \sigma_E^2 = \frac{ \sum_i \sum_j (y_{ij} - \hat \mu -\hat \alpha_i )^2}{a(r-1)}
+\]</span></p>
+</section>
+</section>
+<section id="선형모형과-제약-조건" class="level2" data-number="7.3">
+<h2 data-number="7.3" class="anchored" data-anchor-id="선형모형과-제약-조건"><span class="header-section-number">7.3</span> 선형모형과 제약 조건</h2>
+<p>일원배치 모형 <a href="#eq-oneway" class="quarto-xref">식&nbsp;<span>7.1</span></a> 를 다음과 같은 벡터를 이용한 선형모형(linear model, regression model) 형태로 나타내고자 한다.</p>
+<p><span id="eq-lm"><span class="math display">\[
+\pmb y = \pmb X \pmb \beta +\pmb e
+\tag{7.6}\]</span></span></p>
+<p>위의 선형모형식의 요소 <span class="math inline">\(\pmb y\)</span>, <span class="math inline">\(\pmb X\)</span>, <span class="math inline">\(\pmb \beta\)</span>, <span class="math inline">\(\pmb e\)</span>는 다음과 같은 벡터와 행렬로 표현된다.</p>
+<p><span id="eq-lm2"><span class="math display">\[
+\begin{bmatrix}
+y_{11} \\
+y_{12} \\
+\vdots \\
+y_{1r} \\
+y_{21} \\
+y_{22} \\
+\vdots \\
+y_{2r} \\
+\vdots \\
+y_{a1} \\
+y_{a2} \\
+\vdots \\
+y_{ar} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 &amp; 1 &amp; 0 &amp; . &amp; . &amp; 0 \\
+1 &amp; 1 &amp; 0 &amp; . &amp; . &amp; 0 \\
+1 &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 1 &amp; 0 &amp; . &amp; . &amp; 0 \\
+1 &amp; 0 &amp; 1 &amp; . &amp; . &amp; 0 \\
+1 &amp; 0 &amp; 1 &amp; . &amp; . &amp; 0 \\
+1 &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 0 &amp; 1 &amp; . &amp; . &amp; 0 \\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 0 &amp; 0 &amp; . &amp; . &amp; 1 \\
+1 &amp; 0 &amp; 0 &amp; . &amp; . &amp; 1 \\
+1 &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 0 &amp; 0 &amp; . &amp; . &amp; 1 \\
+\end{bmatrix}
+\begin{bmatrix}
+\mu \\
+\alpha_{1} \\
+\alpha_{2} \\
+\vdots \\
+\alpha_{a} \\
+\end{bmatrix} +
+\begin{bmatrix}
+e_{11} \\
+e_{12} \\
+\vdots \\
+e_{1r} \\
+e_{21} \\
+e_{22} \\
+\vdots \\
+e_{2r} \\
+\vdots \\
+e_{a1} \\
+e_{a2} \\
+\vdots \\
+e_{ar} \\
+\end{bmatrix}
+\tag{7.7}\]</span></span></p>
+<p>이제 위에서 논의한 최소제곱법을 선형 모형 <a href="#eq-lm" class="quarto-xref">식&nbsp;<span>7.6</span></a> 에 적용하면 다음과 같이 표현할 수 있다.</p>
+<p><span id="eq-rsq2"><span class="math display">\[
+\min_{\mu, \alpha_1, \dots \alpha_a} \sum_{i=1}^a \sum_{j=1}^r
+(y_{ij} - \mu -\alpha_i)^2 = \min_{\pmb \beta } ( \pmb y -  \pmb X \pmb \beta )^t( \pmb y -  \pmb X \pmb \beta )
+\tag{7.8}\]</span></span></p>
+<p>최소제곱법의 기준을 만족하는 계수 <span class="math inline">\(\pmb \beta\)</span>는 다음과 같은 정규방정식(normal equation)의 해(solution)이다.</p>
+<p><span id="eq-normaleq2"><span class="math display">\[
+\pmb X^t \pmb X \pmb \beta = \pmb X^t \pmb y
+\tag{7.9}\]</span></span></p>
+<p>정규방정식 <a href="#eq-normaleq2" class="quarto-xref">식&nbsp;<span>7.9</span></a> 을 일워배치의 선형모형식 <a href="#eq-lm2" class="quarto-xref">식&nbsp;<span>7.7</span></a> 에 나타난 <span class="math inline">\(\pmb y\)</span>, <span class="math inline">\(\pmb X\)</span>로 이용하여 나타내면 다음과 같다.</p>
+<p><span id="eq-normaleq3"><span class="math display">\[
+\begin{bmatrix}
+ar   &amp; r &amp; r &amp; \cdot &amp; \cdot &amp; r \\
+r &amp; r &amp;  0  &amp; \cdot &amp; \cdot &amp; 0 \\
+r &amp; 0   &amp; r  &amp; \cdot &amp; \cdot &amp; 0 \\
+\cdot &amp; \cdot   &amp; \cdot  &amp; \cdot &amp; \cdot &amp; \cdot \\
+\cdot &amp; \cdot   &amp; \cdot  &amp; \cdot &amp; \cdot &amp; \cdot \\
+r &amp; 0   &amp;  0   &amp; \cdot &amp; \cdot &amp; r \\
+\end{bmatrix}
+\begin{bmatrix}
+\mu \\
+\alpha_{1} \\
+\alpha_{2} \\
+\cdot \\
+\cdot \\
+\alpha_{a} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+ar \bar {\bar y} \\
+r {\bar y}_{1.}\\
+r \bar y_{2.}\\
+\cdot \\
+\cdot \\
+r \bar y_{a.}
+\end{bmatrix}
+\tag{7.10}\]</span></span></p>
+<p>정규방정식 <a href="#eq-normaleq3" class="quarto-xref">식&nbsp;<span>7.10</span></a> 는 위에서 구한 최소제곱법에서 유도된 방정식 <a href="#eq-normaleq1" class="quarto-xref">식&nbsp;<span>7.3</span></a> 과 같다.</p>
+<p>여기서 유의할 점은 선형모형식 <a href="#eq-lm2" class="quarto-xref">식&nbsp;<span>7.7</span></a> 의 계획행렬 <span class="math inline">\(\pmb X\)</span> 가 완전 계수(full rank) 행렬이 아니다. 계획행렬 <span class="math inline">\(\pmb X\)</span>의 첫 번째 열은 다른 열을 합한 것과 같다. 또한 정규 방정식 <a href="#eq-normaleq3" class="quarto-xref">식&nbsp;<span>7.10</span></a> 에서 <span class="math inline">\(\pmb X^t \pmb X\)</span> 행렬도 완전계수 행렬이 아니다. 따라서 <span class="math inline">\(\pmb X^t \pmb X\)</span> 행렬의 역행렬은 존재하지 않는다.</p>
+<p>이러한 이유로 모수에 대한 유일한 추정량이 존재하지 않기 때문에 앞에서 언급한 제약 조건을 고려해야 정규방정식을 풀 수 있다.</p>
+<section id="set-to-zero-조건에서의-모형과-최소제곱-추정량" class="level3" data-number="7.3.1">
+<h3 data-number="7.3.1" class="anchored" data-anchor-id="set-to-zero-조건에서의-모형과-최소제곱-추정량"><span class="header-section-number">7.3.1</span> Set-to-zero 조건에서의 모형과 최소제곱 추정량</h3>
+<p>만약 Set-to-zero 조건을 가정한다면 모수에서 <span class="math inline">\(\alpha_1\)</span>을 제외하고 선형모형식 <a href="#eq-lm2" class="quarto-xref">식&nbsp;<span>7.7</span></a> 를 다음과 같이 다시 표현할 수 있다.<br>
+효과 <span class="math inline">\(\alpha_1\)</span>을 0 으로 놓는다는 것은 <span class="math inline">\(\alpha_1\)</span>을 추정할 필요가 없으므로 모수벡터 <span class="math inline">\(\pmb \beta\)</span> 에서 <span class="math inline">\(\alpha_1\)</span>를 빼고 게획행렬에서도 대응하는 열을 제거하는 것이다.</p>
+<p><span id="eq-lm-zero"><span class="math display">\[
+\begin{bmatrix}
+y_{11} \\
+y_{12} \\
+\vdots \\
+y_{1r} \\
+y_{21} \\
+y_{22} \\
+\vdots \\
+y_{2r} \\
+\vdots \\
+y_{a1} \\
+y_{a2} \\
+\vdots \\
+y_{ar} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 &amp;  0 &amp; . &amp; . &amp; 0 \\
+1 &amp;  0 &amp; . &amp; . &amp; 0 \\
+1 &amp;  \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp;  0 &amp; . &amp; . &amp; 0 \\
+1 &amp;  1 &amp; . &amp; . &amp; 0 \\
+1 &amp;  1 &amp; . &amp; . &amp; 0 \\
+1 &amp;  \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp;  1 &amp; . &amp; . &amp; 0 \\
+\vdots &amp;  \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp;  0 &amp; . &amp; . &amp; 1 \\
+1 &amp;  0 &amp; . &amp; . &amp; 1 \\
+1 &amp;  \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp;  0 &amp; . &amp; . &amp; 1 \\
+\end{bmatrix}
+\begin{bmatrix}
+\mu \\
+\alpha_{2} \\
+\alpha_{3} \\
+\vdots \\
+\alpha_{a} \\
+\end{bmatrix} +
+\begin{bmatrix}
+e_{11} \\
+e_{12} \\
+\vdots \\
+e_{1r} \\
+e_{21} \\
+e_{22} \\
+\vdots \\
+e_{2r} \\
+\vdots \\
+e_{a1} \\
+e_{a2} \\
+\vdots \\
+e_{ar} \\
+\end{bmatrix}
+\tag{7.11}\]</span></span></p>
+<p>이제 수정된 모형식 <a href="#eq-lm-zero" class="quarto-xref">식&nbsp;<span>7.11</span></a> 에 최소제곱법을 적용하여 정규방정식을 구하면 다음과 같은 방정식을 얻는다.</p>
+<p><span id="eq-normaleq-zero"><span class="math display">\[
+\begin{bmatrix}
+ar   &amp; r &amp; r &amp; \cdot &amp; \cdot &amp; r \\
+r &amp; r &amp;  0  &amp; \cdot &amp; \cdot &amp; 0 \\
+r &amp; 0   &amp; r  &amp; \cdot &amp; \cdot &amp; 0 \\
+\cdot &amp; \cdot   &amp; \cdot  &amp; \cdot &amp; \cdot &amp; \cdot \\
+\cdot &amp; \cdot   &amp; \cdot  &amp; \cdot &amp; \cdot &amp; \cdot \\
+r &amp; 0   &amp;  0   &amp; \cdot &amp; \cdot &amp; r \\
+\end{bmatrix}
+\begin{bmatrix}
+\mu \\
+\alpha_{2} \\
+\alpha_{3} \\
+\cdot \\
+\cdot \\
+\alpha_{a} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+ar \bar {\bar y} \\
+r {\bar y}_{2.}\\
+r \bar y_{3.}\\
+\cdot \\
+\cdot \\
+r \bar y_{a.}
+\end{bmatrix}
+\tag{7.12}\]</span></span></p>
+<p>위의 정규방정 <a href="#eq-normaleq-zero" class="quarto-xref">식&nbsp;<span>7.12</span></a> 를 풀면 위에서 언급한 sum-to-zero 조건에서 구해지는 모수의 추정량 <a href="#eq-setzeroest" class="quarto-xref">식&nbsp;<span>7.4</span></a> 를 얻을 수 있다.</p>
+</section>
+<section id="sum-to-zero-조건에서의-모형과-최소제곱-추정량" class="level3" data-number="7.3.2">
+<h3 data-number="7.3.2" class="anchored" data-anchor-id="sum-to-zero-조건에서의-모형과-최소제곱-추정량"><span class="header-section-number">7.3.2</span> Sum-to-zero 조건에서의 모형과 최소제곱 추정량</h3>
+<p>이제 Sum-to-zero 조건에서 모수의 추정에 대해 알아보자. 조건 <span class="math inline">\(\sum_{i=1}^a \alpha_i =0\)</span> 조건을 마지막 모수 <span class="math inline">\(\alpha_a\)</span>에 대하여 표현하면 다음과 같다.</p>
+<p><span class="math display">\[ \alpha_a = -\alpha_1 - \alpha_2 - \dots - \alpha_{a-1} \]</span></p>
+<p>따라서 마지막 처리 <span class="math inline">\(\alpha_a\)</span> 에 대한 관측값에 대한 모형은 다음과 같아 쓸 수 있다.</p>
+<p><span class="math display">\[ y_{aj} = \mu + \alpha_a + e_{aj} = \mu +( -\alpha_1 - \alpha_2 - \dots - \alpha_{a-1}) + e_{ij} \]</span></p>
+<p>이러한 결과를 모형방정식에 반영한다. 즉, 모수벡터 <span class="math inline">\(\pmb \beta\)</span> 에서 <span class="math inline">\(\alpha_a\)</span>를 제거하고 게획행렬에 위의 마지막 처리에 대한 효과식을 반영하면 다음과 같은 선형모형식을 얻는다.</p>
+<p><span id="eq-lm-sum"><span class="math display">\[
+\begin{bmatrix}
+y_{11} \\
+y_{12} \\
+\vdots \\
+y_{1r} \\
+y_{21} \\
+y_{22} \\
+\vdots \\
+y_{2r} \\
+\vdots \\
+y_{a1} \\
+y_{a2} \\
+\vdots \\
+y_{ar} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+1 &amp; 1 &amp; 0 &amp; . &amp; . &amp; 0 \\
+1 &amp; 1 &amp; 0 &amp; . &amp; . &amp; 0 \\
+1 &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 1 &amp; 0 &amp; . &amp; . &amp; 0 \\
+1 &amp; 0 &amp; 1 &amp; . &amp; . &amp; 0 \\
+1 &amp; 0 &amp; 1 &amp; . &amp; . &amp; 0 \\
+1 &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 0 &amp; 1 &amp; . &amp; . &amp; 0 \\
+\vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 0 &amp; 0 &amp; . &amp; . &amp; 1 \\
+1 &amp; 0 &amp; 0 &amp; . &amp; . &amp; 1 \\
+1 &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp; 0 &amp; 0 &amp; . &amp; . &amp; 1 \\
+1 &amp; 0 &amp; 0 &amp; . &amp; . &amp; 1 \\
+1 &amp; -1 &amp; -1 &amp; . &amp; . &amp; -1 \\
+1 &amp; -1 &amp; -1 &amp; . &amp; . &amp; -1 \\
+1 &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots &amp; \vdots \\
+1 &amp; -1 &amp; -1 &amp; . &amp; . &amp; -1 \\
+1 &amp; -1 &amp; -1 &amp; . &amp; . &amp; -1 \\
+\end{bmatrix}
+\begin{bmatrix}
+\mu \\
+\alpha_{1} \\
+\alpha_{2} \\
+\vdots \\
+\alpha_{a-1} \\
+\end{bmatrix} +
+\begin{bmatrix}
+e_{11} \\
+e_{12} \\
+\vdots \\
+e_{1r} \\
+e_{21} \\
+e_{22} \\
+\vdots \\
+e_{2r} \\
+\vdots \\
+e_{a1} \\
+e_{a2} \\
+\vdots \\
+e_{ar} \\
+\end{bmatrix}
+\tag{7.13}\]</span></span></p>
+<p>이제 수정된 모형식 <a href="#eq-lm-sum" class="quarto-xref">식&nbsp;<span>7.13</span></a> 에 최소제곱법을 적용하여 정규방정식을 구하면 다음과 같은 방정식을 얻는다.</p>
+<p><span id="eq-normaleq-sum"><span class="math display">\[
+\begin{bmatrix}
+ar   &amp; 0 &amp; 0 &amp; \cdot &amp; \cdot &amp; 0 \\
+0 &amp; 2r &amp;  r  &amp; \cdot &amp; \cdot &amp; r \\
+0 &amp; r   &amp; 2r  &amp; \cdot &amp; \cdot &amp; r \\
+\cdot &amp; \cdot   &amp; \cdot  &amp; \cdot &amp; \cdot &amp; \cdot \\
+\cdot &amp; \cdot   &amp; \cdot  &amp; \cdot &amp; \cdot &amp; \cdot \\
+0 &amp; r   &amp;  r   &amp; \cdot &amp; \cdot &amp; 2r \\
+\end{bmatrix}
+\begin{bmatrix}
+\mu \\
+\alpha_{1} \\
+\alpha_{2} \\
+\cdot \\
+\cdot \\
+\alpha_{a-1} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+ar \bar {\bar y} \\
+r {\bar y}_{1.}-r {\bar y}_{a.} \\
+r \bar y_{2.}-r {\bar y}_{a.}\\
+\cdot \\
+\cdot \\
+r \bar y_{a-1,.} -r {\bar y}_{a.}
+\end{bmatrix}
+\tag{7.14}\]</span></span></p>
+<p>위의 정규방정 <a href="#eq-normaleq-sum" class="quarto-xref">식&nbsp;<span>7.14</span></a> 를 풀면 위에서 언급한 sum-to-zero 조건에서 구해지는 모수의 추정량 <a href="#eq-sumzeroest" class="quarto-xref">식&nbsp;<span>7.5</span></a> 를 얻을 수 있다.</p>
+</section>
+<section id="예제-7.3" class="level3" data-number="7.3.3">
+<h3 data-number="7.3.3" class="anchored" data-anchor-id="예제-7.3"><span class="header-section-number">7.3.3</span> 예제 7.3</h3>
+<p>교과서 예제 7.3 은 4년제 대학교의 학년별 영어시험 점수 자료이다. 이 자료는 4개의 학년에 대하여 각각 6명의 학생들에 대한 영어시험 점수이다. 이 자료를 이용하여 일원배치법을 적용하고 각 학년의 평균 점수에 대한 추정량을 구해보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(english1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  score grade
+1    81     1
+2    75     1
+3    69     1
+4    90     1
+5    72     1
+6    83     1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>english1<span class="sc">$</span>grade <span class="ot">&lt;-</span> <span class="fu">factor</span>(english1<span class="sc">$</span>grade)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(english1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>     score       grade
+ Min.   :62.00   1:6  
+ 1st Qu.:72.00   2:6  
+ Median :79.00   3:5  
+ Mean   :77.33   4:4  
+ 3rd Qu.:81.00        
+ Max.   :94.00        </code></pre>
+</div>
+</div>
+<p>이제 다음과 같이 일원배치 모형을 적합하고 결과를 보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>fit_anova_set0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(score <span class="sc">~</span> grade, <span class="at">data=</span>english1)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_anova_set0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = score ~ grade, data = english1)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-9.500 -5.500  0.600  4.667 11.667 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   78.333      2.868  27.312 1.75e-15 ***
+grade2        -3.833      4.056  -0.945   0.3579    
+grade3        -6.933      4.254  -1.630   0.1215    
+grade4         9.167      4.535   2.021   0.0593 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 7.025 on 17 degrees of freedom
+Multiple R-squared:  0.4341,    Adjusted R-squared:  0.3342 
+F-statistic: 4.347 on 3 and 17 DF,  p-value: 0.01905</code></pre>
+</div>
+</div>
+<p>함수 <code>lm()</code> 을 이용하여 일원배치 모형을 적합한 결과를 보면 default 로 <code>grade</code> 에 대하여 1학년 효과 <code>grade1</code> 는 0 으로 고정되고 <code>grade2</code>, <code>grade3</code>, <code>grade4</code> 에 대한 추정치는 각각 -3.83, - 6.933, 9.167 로 추정된다. 즉, 범주형 변수의 첫 번째 수준을 0으로 고정하고 이를 기준으로 다른 수준에 대한 효과를 추정한 것이다.</p>
+<p><span class="math display">\[ \hat \mu = 78.333, \quad \hat \alpha_1 =0, \quad \hat \alpha_2 = -3.83, \quad \hat \alpha_3 = -6.933, \quad \hat \alpha_4 = 9.167 \]</span> 사용된 계획행렬을 보면 다음과 같다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(fit_anova_set0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   (Intercept) grade2 grade3 grade4
+1            1      0      0      0
+2            1      0      0      0
+3            1      0      0      0
+4            1      0      0      0
+5            1      0      0      0
+6            1      0      0      0
+7            1      1      0      0
+8            1      1      0      0
+9            1      1      0      0
+10           1      1      0      0
+11           1      1      0      0
+12           1      1      0      0
+13           1      0      1      0
+14           1      0      1      0
+15           1      0      1      0
+16           1      0      1      0
+17           1      0      1      0
+18           1      0      0      1
+19           1      0      0      1
+20           1      0      0      1
+21           1      0      0      1
+attr(,"assign")
+[1] 0 1 1 1
+attr(,"contrasts")
+attr(,"contrasts")$grade
+[1] "contr.treatment"</code></pre>
+</div>
+</div>
+<p>이제 각 학년에 영어 평균 <span class="math inline">\(\mu + \alpha_i\)</span> 에 대한 추정값 <span class="math inline">\(\widehat{
+\mu + \alpha_i}\)</span> 를 구해보자.</p>
+<p><span class="math display">\[  \widehat{\mu + \alpha_i} = \hat {\mu} + \hat {\alpha}_i  \]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>emmeans<span class="sc">::</span><span class="fu">emmeans</span>(fit_anova_set0, <span class="st">"grade"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> grade emmean   SE df lower.CL upper.CL
+ 1       78.3 2.87 17     72.3     84.4
+ 2       74.5 2.87 17     68.4     80.6
+ 3       71.4 3.14 17     64.8     78.0
+ 4       87.5 3.51 17     80.1     94.9
+
+Confidence level used: 0.95 </code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+노트
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>함수 <code>lm</code> 에서 default 로 설정되는 set-to-zero 조건은 다음과 명령어로 지정할 수 있다.</p>
+<pre><code>options(contrasts=c("contr.treatment", "contr.poly"))</code></pre>
+</div>
+</div>
+<p>이제 일원배치 모형에서 sum-to-zero 조건을 적용하여 모수를 추정해 보자. sum-to-zero 조건을 적용하려면 다음과 같은 명령어를 실행해야 한다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">contrasts=</span><span class="fu">c</span>(<span class="st">"contr.sum"</span>, <span class="st">"contr.poly"</span>))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>이제 sum-to-zero 조건을 적용하여 일원배치 모형을 적합하고 결과를 보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>fit_anova_sum0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(score <span class="sc">~</span> grade, <span class="at">data=</span>english1)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_anova_sum0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = score ~ grade, data = english1)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-9.500 -5.500  0.600  4.667 11.667 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   77.933      1.554  50.135   &lt;2e-16 ***
+grade1         0.400      2.555   0.157   0.8775    
+grade2        -3.433      2.555  -1.344   0.1967    
+grade3        -6.533      2.711  -2.410   0.0276 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 7.025 on 17 degrees of freedom
+Multiple R-squared:  0.4341,    Adjusted R-squared:  0.3342 
+F-statistic: 4.347 on 3 and 17 DF,  p-value: 0.01905</code></pre>
+</div>
+</div>
+<p>sum-to-zero 조건하에서 계획행렬은 다음과 같다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(fit_anova_sum0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>   (Intercept) grade1 grade2 grade3
+1            1      1      0      0
+2            1      1      0      0
+3            1      1      0      0
+4            1      1      0      0
+5            1      1      0      0
+6            1      1      0      0
+7            1      0      1      0
+8            1      0      1      0
+9            1      0      1      0
+10           1      0      1      0
+11           1      0      1      0
+12           1      0      1      0
+13           1      0      0      1
+14           1      0      0      1
+15           1      0      0      1
+16           1      0      0      1
+17           1      0      0      1
+18           1     -1     -1     -1
+19           1     -1     -1     -1
+20           1     -1     -1     -1
+21           1     -1     -1     -1
+attr(,"assign")
+[1] 0 1 1 1
+attr(,"contrasts")
+attr(,"contrasts")$grade
+[1] "contr.sum"</code></pre>
+</div>
+</div>
+<p>sum-to-zero 조건하에서 일원배치 모형을 적합한 결과를 보면 다음과 같다.</p>
+<p><span class="math display">\[ \hat \mu = 77.933, \quad \hat \alpha_1 = 0.400, \quad \hat \alpha_2 = -3.433, \quad \hat \alpha_3 = - 6.533, \quad \hat \alpha_4 = -(\hat \alpha_1 + \hat \alpha_2 + \hat \alpha_3) =  9.566 \]</span></p>
+<p>이렇게 set_to_zero 조건과 sum-to-zero 조건을 적용한 결과는 다르지만 각 학년의 평균에 대한 추정치는 동일하다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>emmeans<span class="sc">::</span><span class="fu">emmeans</span>(fit_anova_sum0, <span class="st">"grade"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> grade emmean   SE df lower.CL upper.CL
+ 1       78.3 2.87 17     72.3     84.4
+ 2       74.5 2.87 17     68.4     80.6
+ 3       71.4 3.14 17     64.8     78.0
+ 4       87.5 3.51 17     80.1     94.9
+
+Confidence level used: 0.95 </code></pre>
+</div>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+노트
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>참고로 교과서에서 4학년을 기준으로 다른 학년들과 비교하기 위하여 변수 <code>grade</code> 의 수준(level) 의 순서를 설정할 때 다음과 같이 4학년을 첫 번째 수준으로 설정하면 된다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">contrasts=</span><span class="fu">c</span>(<span class="st">"contr.treatment"</span>, <span class="st">"contr.poly"</span>))</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>english1<span class="sc">$</span>grade <span class="ot">&lt;-</span> <span class="fu">factor</span>(english1<span class="sc">$</span>grade, <span class="at">levels =</span> <span class="fu">c</span>(<span class="dv">4</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>))</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(english1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>'data.frame':   21 obs. of  2 variables:
+ $ score: int  81 75 69 90 72 83 65 80 73 79 ...
+ $ grade: Factor w/ 4 levels "4","1","2","3": 2 2 2 2 2 2 3 3 3 3 ...</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>fit_anova_set0_1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(score <span class="sc">~</span> grade, <span class="at">data=</span>english1)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_anova_set0_1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = score ~ grade, data = english1)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-9.500 -5.500  0.600  4.667 11.667 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   87.500      3.513  24.910 8.06e-15 ***
+grade1        -9.167      4.535  -2.021  0.05927 .  
+grade2       -13.000      4.535  -2.867  0.01069 *  
+grade3       -16.100      4.713  -3.416  0.00329 ** 
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 7.025 on 17 degrees of freedom
+Multiple R-squared:  0.4341,    Adjusted R-squared:  0.3342 
+F-statistic: 4.347 on 3 and 17 DF,  p-value: 0.01905</code></pre>
+</div>
+</div>
+</div>
+</div>
+</section>
+</section>
+<section id="불완전-계수행렬에서의-추정" class="level2" data-number="7.4">
+<h2 data-number="7.4" class="anchored" data-anchor-id="불완전-계수행렬에서의-추정"><span class="header-section-number">7.4</span> 불완전 계수행렬에서의 추정</h2>
+<p>설계행렬 <span class="math inline">\(\pmb X\)</span>의 계수가 완전하지 않을 때 회귀 계수를 추정하기 위한 방법으로서 다음과 같은 세 가지 방법이 있다.</p>
+<section id="모수의-재조정-reparameterization" class="level3" data-number="7.4.1">
+<h3 data-number="7.4.1" class="anchored" data-anchor-id="모수의-재조정-reparameterization"><span class="header-section-number">7.4.1</span> 모수의 재조정 (reparameterization)</h3>
+<p><span class="math inline">\(\pmb X\)</span>의 계수가 완전하지 않을 때 설계행렬의 열을 다시 구성하여 계수를 완전하게 하는 방법이 있다. 즉 <span class="math inline">\(\pmb X = (\pmb X_1, \pmb X_2)\)</span>으로 표시하고 <span class="math inline">\(\pmb X_1\)</span>을 <span class="math inline">\(n \times r~ (r &lt; p)\)</span>라고 하며 어떤 행렬 <span class="math inline">\(\pmb F\)</span>가 존재하여 <span class="math inline">\(\pmb X_2 = \pmb X_1 \pmb F\)</span>의 관계를 가진다고 가정하자. 이러한 관계는 <span class="math inline">\(\pmb X_2\)</span>의 열들이 <span class="math inline">\(\pmb X_1\)</span>의 열들의 선형결합으로 표현될 수 있다는 것을 의미한다. 이러한 경우에 선형모형은 다음과 같이 표현될 수 있다.</p>
+<p><span class="math display">\[
+\pmb y= \pmb X \pmb \beta + \pmb e = \pmb X_1 (\pmb I, \pmb F)\pmb \beta  + \pmb e = \pmb X_1 \pmb \alpha +\pmb e
+\]</span> 여기서 새롭게 조정된 계수 <span class="math inline">\(\pmb \alpha\)</span>와 처음의 계수 <span class="math inline">\(\pmb \beta\)</span>는 다음과 같은 관계가 있다.</p>
+<p><span class="math display">\[
+\pmb \alpha =   (\pmb I, \pmb F)\pmb \beta = (\pmb \beta_1,  \pmb \beta_2)
+\]</span></p>
+<p>따라서 새롭게 구성된 선형모형 <span class="math inline">\(\pmb y=\pmb X_1 \pmb \alpha +\pmb e\)</span>에서 새로운 계수의 추정치는 <span class="math inline">\(\hat {\pmb \alpha} = (\pmb X_1^t \pmb X_1 )^{-1} \pmb X_1^t \pmb y\)</span> 이다.</p>
+</section>
+<section id="부가-조건의-이용" class="level3" data-number="7.4.2">
+<h3 data-number="7.4.2" class="anchored" data-anchor-id="부가-조건의-이용"><span class="header-section-number">7.4.2</span> 부가 조건의 이용</h3>
+<p>회귀게수에 부가 조건(side condition)을 주면 유일한 계수의 추정치를 구할 수 있다. 즉 <span class="math inline">\((p-r) \times p\)</span> 행렬 <span class="math inline">\(\pmb H\)</span>를 고려하고 <span class="math inline">\(\pmb H \pmb \beta =0\)</span>이라는 부가조건을 가정하자. 즉 모든 <span class="math inline">\(\pmb \eta = R(\pmb X)\)</span>에 대하여 <span class="math inline">\(\pmb \eta=\pmb X \pmb \beta\)</span>와 <span class="math inline">\(\pmb H \pmb \beta =0\)</span>를 만족하는 <span class="math inline">\(\pmb \beta\)</span>는 유일하게 존재한다.</p>
+<p>이러한 부가 조건 <span class="math inline">\(\pmb H \pmb \beta =0\)</span>과 정규방정식 <span class="math inline">\((\pmb X^t \pmb X ) \pmb \beta = \pmb X^t \pmb y\)</span>를 동시에 만족하는 유일한 해를 구하고 이를 최소제곱추정량으로 한다. 이러한 부가 조건을 주는 방법은 분산분석을 이용하는 여러 가지 선형 모형 (예: 일원 배치법)에 자주 사용된다.</p>
+</section>
+<section id="일반화-역행렬의-이용" class="level3" data-number="7.4.3">
+<h3 data-number="7.4.3" class="anchored" data-anchor-id="일반화-역행렬의-이용"><span class="header-section-number">7.4.3</span> 일반화 역행렬의 이용</h3>
+<p><span class="math inline">\(\pmb X\)</span>의 계수가 완전하지 않을 때 일반화 역행렬(generalized inverse matrix)를 이용하면 회귀계수의 추정치를 구할 수 있다.</p>
+<p>여기서 <span class="math inline">\(m \times n\)</span> 행렬 <span class="math inline">\(\pmb A\)</span>의 일반화 역행렬 <span class="math inline">\(\pmb A^{-}\)</span>는 다음을 만족하는 행렬이다.</p>
+<p><span class="math display">\[
+\pmb A = \pmb A \pmb A^{-} \pmb A
+\]</span></p>
+<p>일반화 역행렬은 일반적으로 유일하지 않다. <span class="math inline">\(\pmb A\)</span>가 정방행렬이고 정칙행렬일 때 유일하게 존재하며 <span class="math inline">\(\pmb A^- = \pmb A^{-1}\)</span>이다. 정규방정식 <span class="math inline">\(\pmb X^t \pmb y=\pmb X^t \pmb X  \hat {\pmb \beta}\)</span>의 양변에 <span class="math inline">\(\pmb X^t \pmb X  (\pmb X^t \pmb X )^-\)</span>를 곱하면</p>
+<p><span class="math display">\[\pmb X^t \pmb X  (\pmb X^t \pmb X )^- \pmb X \pmb y =
+\pmb X^t \pmb X  (\pmb X^t \pmb X )^- \pmb X^t \pmb X \hat {\pmb \beta} =
+\pmb X^t \pmb X  \hat {\pmb \beta} = \pmb X^t \pmb y
+\]</span></p>
+<p>이므로 <span class="math inline">\(\hat {\pmb \beta} = (\pmb X^t \pmb X )^- \pmb X^t \pmb y\)</span>는 정규방정식의 해가 된다. 앞에서 언급하였듯이 일반화 역함수를 이용한 계수의 추정량은 유일하지 않다. 그러나 반응변수의 추정량 <span class="math inline">\(\hat {\pmb y} = \pmb X \hat {\pmb \beta}\)</span>는 추정된 계수에 관계없이 유일하다.</p>
+</section>
+</section>
+<section id="추정-가능한-함수" class="level2" data-number="7.5">
+<h2 data-number="7.5" class="anchored" data-anchor-id="추정-가능한-함수"><span class="header-section-number">7.5</span> 추정 가능한 함수</h2>
+<section id="일원배치법에-추정가능한-모수" class="level3" data-number="7.5.1">
+<h3 data-number="7.5.1" class="anchored" data-anchor-id="일원배치법에-추정가능한-모수"><span class="header-section-number">7.5.1</span> 일원배치법에 추정가능한 모수</h3>
+<p>앞 절에서 보았듯이 일원배치법을 선형 모형식으로 표현하는 경우 평균에 대한 모수는 모두 <span class="math inline">\(a+1\)</span> 개가 있다.</p>
+<p><span class="math display">\[ \mu, \alpha_1, \alpha_2, \cdots, \alpha_a \]</span></p>
+<p>하지만 모형식에서 계획행렬 <span class="math inline">\(\pmb X\)</span>가 완전 계수 행렬이 아니기 때문에 1개의 제약 조건을 가정하고 모수를 추정하였다. 하지만 제약 조건이 달라지면 각 모수의 추정량이 달라지기 때문에 각 모수는 유일한 값으로 추정이 불가능하다.</p>
+<p>이렇게 각 모수들은 제약 조건에 따라서 유일하게 추정이 불가능하지만 앞 절에서 보았듯이 <span class="math inline">\(\mu + \alpha_i\)</span> 에 대한 추정량은 제약조건에 관계없이 표본 평균 <span class="math inline">\(\bar y_{i.}\)</span>으로 동일하게 추정되어 진다.</p>
+<p>그러면 어떤 모수들은 유일하게 추정이 불가능하고 어떤 모수들이 유일하게 추정이 가능할까?</p>
+<p>이제 제약조건이 달라도 유일하게 추정이 가능한 모수들의 형태를 살펴보자.</p>
+</section>
+<section id="추정가능한-모수의-함수" class="level3" data-number="7.5.2">
+<h3 data-number="7.5.2" class="anchored" data-anchor-id="추정가능한-모수의-함수"><span class="header-section-number">7.5.2</span> 추정가능한 모수의 함수</h3>
+<p>선형모형 <span class="math inline">\(\pmb y =\pmb X \pmb \beta + \pmb e\)</span> 에서 계획행렬 <span class="math inline">\(\pmb X\)</span>의 계수가 완전하지 않으면 모수 벡터 <span class="math inline">\(\pmb \beta\)</span>는 유일한 값으로 추정할 수 없다.</p>
+<p>이제 임의의 벡터 <span class="math inline">\(\pmb c\)</span>가 있을 때 모수들의 선형결합 <span class="math inline">\(\psi = \pmb c^t \pmb \beta\)</span>를 고려하자.</p>
+<p>예를 들어 일원배치 모형에서는 다음과 같은 모수들의 선형결합을 고려하는 것이다.</p>
+<p><span class="math display">\[
+\psi = \pmb c^t \pmb \beta =
+[ c_0~ c_1~ c_2~ \cdots~~c_a]
+\begin{bmatrix}
+\mu \\
+\alpha_1 \\
+\alpha_2 \\
+\vdots \\
+\alpha_a
+\end{bmatrix}
+=c_0 \mu + c_1 \alpha_1 + c_2 \alpha_2 + \cdots + c_a \alpha_a
+\]</span></p>
+<p>위에서 본 것처럼 하나의 모수 <span class="math inline">\(\alpha_1\)</span>에 대한 유일한 추정은 불가능하다.</p>
+<p><span class="math display">\[  
+\alpha_1 = (0) \mu + (1) \alpha_1 + (0) \alpha_2 + \cdots + (0) \alpha_a
+\]</span></p>
+<p>하지만 모수의 조합 <span class="math inline">\(\mu+ \alpha_2\)</span> 은 유일한 추정이 가능하다.</p>
+<p><span class="math display">\[  
+\mu + \alpha_1 = (1) \mu + (1) \alpha_1 + (0) \alpha_2 + \cdots + (0) \alpha_a
+\]</span></p>
+<p>이제 문제는 선형조합 <span class="math inline">\(\psi= \pmb c^t \pmb \beta\)</span> 에서 계수들 <span class="math inline">\(c_0, c_1, \dots, c_a\)</span>가 어떤 값을 가지는 경우 유일한 추정이 가능한 지 알아내는 것이다.</p>
+<p>이제 <span class="math inline">\(\psi = \pmb c^t \pmb \beta\)</span> 에 대한 유일한 추정량 <span class="math inline">\(\hat \psi\)</span> 이 있다고 가정하자. 선형 모형에서 추정량 <span class="math inline">\(\hat \psi\)</span>의 형태는 관측값에 대한 선형함수가 되어야 한다. 따라서 추정량을 <span class="math inline">\(\hat \psi = \pmb a^t \pmb y\)</span> 로 나타낼 수 있다. 이제 추정량 <span class="math inline">\(\hat \psi\)</span>의 기대값은 <span class="math inline">\(\psi=\pmb c^t \pmb \beta\)</span>이어야 하므로 다음이 성립해야 한다.</p>
+<p><span class="math display">\[
+E(\hat \psi| \pmb X) = E(\pmb a^t \pmb y| \pmb X) = \pmb a^t E(\pmb y| \pmb X) = \pmb a^t \pmb X \pmb \beta = \pmb c^t \pmb \beta
+\]</span></p>
+<p>위의 식에서 가장 마지막 두 항의 관계를 보면 다음이 성립해야 한다.</p>
+<p><span id="eq-estimable"><span class="math display">\[
+\pmb a^t \pmb X = \pmb c^t  \quad \text{ equivalently }\quad \pmb c = \pmb X^t \pmb a
+\tag{7.15}\]</span></span></p>
+<p>즉 추정가능한 모수의 조합 <span class="math inline">\(\psi = \pmb c^t \pmb \beta\)</span>에서 <strong>계수 벡터 <span class="math inline">\(\pmb c\)</span> 는 계획행렬에 있는 행들의 선형 조합</strong>으로 표시되어야 한다는 것이다. 이렇게 유일하게 추정이 가능한 모수의 조합을 <strong>추정가능한 함수(estimable function)</strong>이라고 한다.</p>
+</section>
+<section id="예제" class="level3" data-number="7.5.3">
+<h3 data-number="7.5.3" class="anchored" data-anchor-id="예제"><span class="header-section-number">7.5.3</span> 예제</h3>
+<p>2개의 수준이 있고 반복이 2번 있는 일원배치 <span class="math inline">\((a=2,r=2)\)</span> 에 대한 선형모형 <a href="#eq-lm2" class="quarto-xref">식&nbsp;<span>7.7</span></a> 을 생각해보자. 이 경우 계획행렬 <span class="math inline">\(\pmb X\)</span> 과 모수벡터 <span class="math inline">\(\pmb \beta\)</span> 는 다음과 같다.</p>
+<p><span class="math display">\[
+\pmb X =
+\begin{bmatrix}
+1 &amp; 1 &amp; 0  \\
+1 &amp; 1 &amp; 0  \\
+1 &amp; 0 &amp; 1  \\
+1 &amp; 0 &amp; 1  
+\end{bmatrix}
+\quad
+\pmb \beta =
+\begin{bmatrix}
+\mu \\
+\alpha_1 \\
+\alpha_2
+\end{bmatrix}
+\]</span></p>
+<p>이제 유일하게 추정 가능한 모수 조합 <span class="math inline">\(\psi\)</span> 은 어떤 형태일까?</p>
+<p><span class="math display">\[ \psi = \pmb c^t \pmb \beta = c_0 \mu + c_1 \alpha_1 + c_2 \alpha_2 \]</span></p>
+<p>위의 식 <a href="#eq-estimable" class="quarto-xref">식&nbsp;<span>7.15</span></a> 에서 추정가능한 모수의 조합에 대한 계수 벡터 <span class="math inline">\(\pmb c\)</span> 는 다음과 같은 조건을 만족해야 한다.</p>
+<p><span class="math display">\[ \pmb c = {\pmb X}^t \pmb a \]</span></p>
+<p>이제 임의의 벡터 <span class="math inline">\(\pmb a\)</span> 에 대하여 <span class="math inline">\(\pmb c= \pmb X^t \pmb a\)</span>의 형태를 보자.</p>
+<p><span id="eq-esticond"><span class="math display">\[
+\begin{aligned}
+\pmb c &amp;=
+\pmb X^t \pmb a \\ &amp; =
+\begin{bmatrix}
+1 &amp; 1 &amp; 1 &amp; 1  \\
+1 &amp; 1 &amp; 0 &amp; 0  \\
+0 &amp; 0 &amp; 1 &amp; 1  
+\end{bmatrix}
+\begin{bmatrix}
+a_1 \\
+a_2 \\
+a_3 \\
+a_4
+\end{bmatrix} \\
+&amp; =
+a_1
+\begin{bmatrix}
+1 \\
+1 \\
+0
+\end{bmatrix}
++
+a_2
+\begin{bmatrix}
+1 \\
+1 \\
+0
+\end{bmatrix}
++
+a_3
+\begin{bmatrix}
+1 \\
+0 \\
+1
+\end{bmatrix}
++
+a_4
+\begin{bmatrix}
+1 \\
+0 \\
+1
+\end{bmatrix} \\
+&amp; =
+(a_1 + a_2)
+\begin{bmatrix}
+1 \\
+1 \\
+0
+\end{bmatrix}
++
+(a_3 + a_4)
+\begin{bmatrix}
+1 \\
+0 \\
+1
+\end{bmatrix} \\
+&amp;=
+b_1
+\begin{bmatrix}
+1 \\
+1 \\
+0
+\end{bmatrix}
++
+b_2
+\begin{bmatrix}
+1 \\
+0 \\
+1
+\end{bmatrix}
+\end{aligned}
+\tag{7.16}\]</span></span></p>
+<p>이제 <strong><span class="math inline">\(\pmb X^t \pmb a\)</span> 는 계획행렬 <span class="math inline">\(\pmb X\)</span>에 있는 유일한 행들의 선형조합</strong>임을 알 수 있다.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+노트
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>위의 식 <a href="#eq-esticond" class="quarto-xref">식&nbsp;<span>7.16</span></a> 에서 유의할 점은 벡터 <span class="math inline">\(\pmb a=[a_1 ~a_2~a_3~a_4]^t\)</span>는 임의로 주어진 벡터이다.</p>
+<p>식 <a href="#eq-esticond" class="quarto-xref">식&nbsp;<span>7.16</span></a> 에서 <span class="math inline">\(a_1=1\)</span>, <span class="math inline">\(a_2=1\)</span> 인 경우는 <span class="math inline">\(a_1=2\)</span>, <span class="math inline">\(a_2=0\)</span> 인 경우와 동일하다.</p>
+</div>
+</div>
+<p>따라서 유일하게 추정 가능한 모수의 선형조합 <span class="math inline">\(\psi = \pmb c^t \pmb \beta\)</span> 에 대한 계수 벡터 <span class="math inline">\(\pmb c =[ c_0 ~ c_1 ~ c_2]^t\)</span> 는 계획행렬 <span class="math inline">\(\pmb X\)</span>의 유일한 행들의 선형 조합으로 구성되어야 한다.</p>
+<p><span id="eq-esticond2"><span class="math display">\[
+\pmb c =
+\begin{bmatrix}
+c_0 \\
+c_1 \\
+c_2
+\end{bmatrix}
+=
+b_1
+\begin{bmatrix}
+1 \\
+1 \\
+0
+\end{bmatrix}
++
+b_2
+\begin{bmatrix}
+1 \\
+0 \\
+1
+\end{bmatrix}
+\tag{7.17}\]</span></span></p>
+<ul>
+<li>처리의 효과를 나타내는 모수 <span class="math inline">\(\alpha_i\)</span>는 추정이 불가능하다.</li>
+</ul>
+<p>첫 번째 처리에 대한 효과 모수 <span class="math inline">\(\alpha_1\)</span> 를 선형조합으로 나타내면</p>
+<p><span class="math display">\[ \alpha_1 = c_0 \mu + c_1 \alpha_1 + c_2 \alpha_2 = (0) \mu + (1) \alpha_1 + (0) \alpha_2 \]</span></p>
+<p>따라서 조건 <a href="#eq-esticond2" class="quarto-xref">식&nbsp;<span>7.17</span></a> 에서 <span class="math inline">\(\pmb c^t = [0~1~0]\)</span>을 만들수 있는 계수 <span class="math inline">\(b_1\)</span>과 <span class="math inline">\(b_2\)</span>를 찾아야 하는데 이는 불가능하다. 따라서 모수 <span class="math inline">\(\alpha_1\)</span> 은 추정 불가능하다.</p>
+<p><span class="math display">\[
+\pmb c =
+\begin{bmatrix}
+0 \\
+1 \\
+0
+\end{bmatrix}
+=
+b_1
+\begin{bmatrix}
+1 \\
+1 \\
+0
+\end{bmatrix}
++
+b_2
+\begin{bmatrix}
+1 \\
+0 \\
+1
+\end{bmatrix}
+\]</span></p>
+<ul>
+<li>처리의 평균을 나타내는 모수의 조합 <span class="math inline">\(\mu + \alpha_i\)</span>는 추정이 가능하다.</li>
+</ul>
+<p>모수 조합 <span class="math inline">\(\mu + \alpha_1\)</span> 를 선형조합으로 나타내면</p>
+<p><span class="math display">\[ \mu + \alpha_1 = c_0 \mu + c_1 \alpha_1 + c_2 \alpha_2 = (1) \mu + (1) \alpha_1 + (0) \alpha_2 \]</span></p>
+<p>따라서 조건 <a href="#eq-esticond2" class="quarto-xref">식&nbsp;<span>7.17</span></a> 에서 <span class="math inline">\(\pmb c^t = [1~1~0]\)</span>을 만들수 있는 계수는 <span class="math inline">\(b_1=1\)</span>과 <span class="math inline">\(b_2=0\)</span> 이므로 추정이 가능하다.</p>
+<p><span class="math display">\[
+\pmb c =
+\begin{bmatrix}
+1 \\
+1 \\
+0
+\end{bmatrix}
+=
+(1)
+\begin{bmatrix}
+1 \\
+1 \\
+0
+\end{bmatrix}
++
+(0)
+\begin{bmatrix}
+1 \\
+0 \\
+1
+\end{bmatrix}
+\]</span></p>
+<ul>
+<li>처리 효과의 차이를 나타내는 모수의 조합 <span class="math inline">\(\alpha_1-\alpha_2\)</span>는 추정이 가능하다.</li>
+</ul>
+<p><span class="math display">\[ \alpha_1 -\alpha_2= c_0 \mu + c_1 \alpha_1 + c_2 \alpha_2 = (0) \mu + (1) \alpha_1 + (-1) \alpha_2 \]</span></p>
+<p>따라서 조건 <a href="#eq-esticond2" class="quarto-xref">식&nbsp;<span>7.17</span></a> 에서 <span class="math inline">\(\pmb c^t = [0~1~-1]\)</span>을 만들수 있는 계수는 <span class="math inline">\(b_1=1\)</span>과 <span class="math inline">\(b_2=-1\)</span> 이므로 추정이 가능하다.</p>
+<p><span class="math display">\[
+\pmb c =
+\begin{bmatrix}
+0 \\
+1 \\
+-1
+\end{bmatrix}
+=
+(1)
+\begin{bmatrix}
+1 \\
+1 \\
+0
+\end{bmatrix}
++
+(-1)
+\begin{bmatrix}
+1 \\
+0 \\
+1
+\end{bmatrix}
+\]</span></p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "복사완료!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "복사완료!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../qmd/modelselection.html" class="pagination-link" aria-label="모형의 선택">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">모형의 선택</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../references.html" class="pagination-link" aria-label="References">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
