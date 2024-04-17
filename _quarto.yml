@@ -18,6 +18,7 @@ book:
     - qmd/modeleval2.qmd
     - qmd/residual.qmd
     - qmd/modelselection.qmd
+    - qmd/anova.qmd
     - references.qmd
   
   appendices:

@@ -1,0 +1,919 @@
+# 분산분석 모형 {#sec-notfullrank} 
+
+```{r warning=FALSE, echo=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
+source(here::here("common", "_common.R"))
+source(here::here("common", "_preprocess.R"))
+```
+
+## 서론
+
+선형모형에서 설계행렬(design matrix) $\pmb X$가 완전계수(full rank)행렬일 때 회귀계수의 추정치는 최소제곱법에서 구해진  정규방정식의 유일한 해로 구해진다.
+
+$$
+(\pmb X^t \pmb X ) \pmb \beta = \pmb X^t \pmb y \quad \Rightarrow \quad \hat {\pmb \beta} = (\pmb X^t \pmb X )^{-1} \pmb X^t \pmb y 
+$$
+
+그러나 여러 가지 실험이나 자료의 형태에서 설계행렬 $\pmb X$의 계수가 완전하지 않을 때가 있으며(less than full rank) 
+
+$$
+rank(\pmb X) =r < p= \text{ number of columns in } \pmb X 
+$$
+
+이러한 경우에는 정규방정식에서 유일한 해가 존재하지 않는다. 이 장에서는 이러한 경우의 해결 방법을 알아 보고 일원 배치법에 어떻게 적용되는 자를 알아본다.
+
+
+## 일원배치법
+
+이제 일원배치법에 대한 통계적 모형에서 모수에 대한 추정을 생각해 보자.
+
+$$
+y_{ij} = \mu + \alpha_i + e_{ij} ,\quad i=1,2,\dots,a,~~j=1,2,
+\dots,r
+$$ {#eq-oneway} 
+
+추정해야할 모수는 전체 평균 $\mu$와 각 그룹의 처리 효과 $\alpha_1,\alpha_2, \dots, \alpha_a$ 그리고 분산 $\sigma_E^2$이다. 전체 평균과 그룹의 효과는 오차제곱합(Sum of Square Error; SSE)을 최소로 하는 모수를 추정하는 최소제곱법(Least Square method; LS)으로 구할 수 있다.
+
+$$ 
+ \min_{\mu, \alpha_1, \dots \alpha_a} \sum_{i=1}^a \sum_{j=1}^r 
+(y_{ij} - \mu -\alpha_i)^2 =\min_{\mu, \alpha_1, \dots \alpha_a} SSE 
+$$ {#eq-lsesse} 
+
+위의 오차제곱합이 모든 모수에 대하여 미분가능한 이차식으므로 최소제곱 추정량은 제곱합을 모수에 대하여  미분하고 0 으로 놓아 방정식을 풀어서 얻을 수 있다.
+
+오차제곱합을 모수 $\mu$와 $\alpha_1,\alpha_2,\dots,\alpha_a$ 로 미분하여 0 으로 놓은 방정식은 다음과 같다.
+
+$$
+\begin{aligned}
+& \pardiff{}{\mu} SSE = -2 \sum_{i=1}^a \sum_{j=1}^r (y_{ij} - \mu -\alpha_i) = 0 \\
+& \pardiff{}{\alpha_i} SSE = -2 \sum_{j=1}^r (y_{ij} - \mu -\alpha_i) = 0 , \quad i=1,2,\dots, a 
+\end{aligned}
+$$
+
+위의 방정식을 정리하면 다음과 같은 $a+1$개의 방정식을 얻는다. 
+
+$$
+\begin{aligned}
+   \mu +\frac{ \sum_{i=1}^a \alpha_i}{a} & = \bar {\bar y}\\
+   \mu + \alpha_1  & =  \bar {y}_{1.} \\
+   \mu + \alpha_2  & =  \bar {y}_{2.} \\
+         \cdots & \cdots \\
+   \mu + \alpha_a  & =  \bar {y}_{a.} \\
+\end{aligned}
+$$ {#eq-normaleq1}    
+
+위의 방정식에서 첫 번째 방정식은 다른 $a$개의 방정식을 모두 합한 방정식과 같다. 따라서 모수는 $a+1$개이지만 실제 방정식의 개수는 $a$개이므로
+유일한 해가 얻어지지 않는다. 따라서 유일한 해를 구하려면 하나의 제약조건이 필요하며 일반적으로 다음과 같은 두 개의 조건 중 하나를 사용한다. 
+
+
+###   set-to-zero condition
+
+첫 번째  효과 $\alpha_1$를 0으로 놓는 조건을 주는 것이다 ($\alpha_1=0$).  set-to-zero 조건 하에서는 다음과 같은 추정량이 얻어진다.
+
+$$
+\hat \mu = \bar {y}_{1.}, \quad \hat \alpha_1=0, ~~  \hat \alpha_i = \bar {y}_{i.} -\bar {y}_{1.},~~i=2,\dots,a
+$$ {#eq-setzeroest} 
+
+### sum-to-zero condition
+
+처리들의 효과의 합은 0이라는 조건을 주는 것이다 ( $\sum_{i=1}^a  \alpha_i=0$). sum-to-zero 조건에서는 계수의 추정치가 다음과 같이 주어진다.
+
+
+$$
+\hat \mu = \bar {\bar {y}}, \quad \hat \alpha_i = \bar {y}_{i.} -\bar {\bar {y}},~~i=1,2,\dots,a 
+$$ {#eq-sumzeroest} 
+
+여기서 유의할 점은 **개별 모수들의 추정량은 조건에 따라서 달라지지만 집단의 평균을 나타내는 모수 $\mu+ \alpha_i$ 에 대한 추정량은 언제나 같다**.
+
+$$  
+\widehat{\mu+ \alpha_i} = \hat \mu + \hat {\alpha}_i =  \bar {y}_{i.} 
+$$ 
+
+만약에 자료를  아래와 같은 평균 모형으로 나타낼 경우에는 각 평균 $\mu_i$ 는 각 그룹의 표본 평균으로 추정된다.
+
+$$  y_{ij} = \mu_i + e_{ij} $$ 
+
+평균 모형에서 각 그룹의 모평균에 대한 최소제곱 추정량은 $\hat \mu_i = \bar {y}_{i.}$ 이며 이는 주효과 모형에서의 추정량과 동일하다. 
+
+
+또한 모형에 관계없이 오차항의 분산 $\sigma_E^2$ 에 대한 추정량은 다음과 같이 주어진다.
+
+$$  
+\hat \sigma_E^2 = \frac{ \sum_i \sum_j (y_{ij} - \hat \mu -\hat \alpha_i )^2}{a(r-1)}
+$$ 
+
+
+## 선형모형과 제약 조건 
+
+일원배치 모형 @eq-oneway 를 다음과 같은 벡터를 이용한 선형모형(linear model, regression model) 형태로 나타내고자 한다. 
+
+$$
+\pmb y = \pmb X \pmb \beta +\pmb e
+$$ {#eq-lm} 
+
+위의 선형모형식의 요소 $\pmb y$, $\pmb X$, $\pmb \beta$, $\pmb e$는 다음과 같은 벡터와 행렬로 표현된다. 
+
+$$
+\begin{bmatrix}
+y_{11} \\
+y_{12} \\
+\vdots \\
+y_{1r} \\
+y_{21} \\
+y_{22} \\
+\vdots \\
+y_{2r} \\
+\vdots \\
+y_{a1} \\
+y_{a2} \\
+\vdots \\
+y_{ar} \\
+\end{bmatrix} 
+ =
+\begin{bmatrix}
+1 & 1 & 0 & . & . & 0 \\
+1 & 1 & 0 & . & . & 0 \\
+1 & \vdots & \vdots & \vdots & \vdots & \vdots \\
+1 & 1 & 0 & . & . & 0 \\
+1 & 0 & 1 & . & . & 0 \\
+1 & 0 & 1 & . & . & 0 \\
+1 & \vdots & \vdots & \vdots & \vdots & \vdots \\
+1 & 0 & 1 & . & . & 0 \\
+\vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+1 & 0 & 0 & . & . & 1 \\
+1 & 0 & 0 & . & . & 1 \\
+1 & \vdots & \vdots & \vdots & \vdots & \vdots \\
+1 & 0 & 0 & . & . & 1 \\
+\end{bmatrix}
+\begin{bmatrix}
+\mu \\
+\alpha_{1} \\
+\alpha_{2} \\
+\vdots \\
+\alpha_{a} \\
+\end{bmatrix} +
+\begin{bmatrix}
+e_{11} \\
+e_{12} \\
+\vdots \\
+e_{1r} \\
+e_{21} \\
+e_{22} \\
+\vdots \\
+e_{2r} \\
+\vdots \\
+e_{a1} \\
+e_{a2} \\
+\vdots \\
+e_{ar} \\
+\end{bmatrix}
+$$ {#eq-lm2} 
+
+이제 위에서 논의한 최소제곱법을 선형 모형 @eq-lm  에 적용하면 다음과 같이 표현할 수 있다.
+
+
+$$ 
+ \min_{\mu, \alpha_1, \dots \alpha_a} \sum_{i=1}^a \sum_{j=1}^r 
+(y_{ij} - \mu -\alpha_i)^2 = \min_{\pmb \beta } ( \pmb y -  \pmb X \pmb \beta )^t( \pmb y -  \pmb X \pmb \beta ) 
+$$ {#eq-rsq2} 
+
+최소제곱법의 기준을 만족하는 계수 $\pmb \beta$는 다음과 같은 정규방정식(normal equation)의 해(solution)이다.
+
+
+$$
+\pmb X^t \pmb X \pmb \beta = \pmb X^t \pmb y
+$$ {#eq-normaleq2} 
+
+정규방정식 @eq-normaleq2  을 일워배치의  선형모형식 @eq-lm2  에 나타난 $\pmb y$, $\pmb X$로 이용하여 나타내면 다음과 같다.
+
+$$
+\begin{bmatrix}
+ar   & r & r & \cdot & \cdot & r \\
+r & r &  0  & \cdot & \cdot & 0 \\
+r & 0   & r  & \cdot & \cdot & 0 \\
+\cdot & \cdot   & \cdot  & \cdot & \cdot & \cdot \\
+\cdot & \cdot   & \cdot  & \cdot & \cdot & \cdot \\
+r & 0   &  0   & \cdot & \cdot & r \\
+\end{bmatrix}
+\begin{bmatrix}
+\mu \\
+\alpha_{1} \\
+\alpha_{2} \\
+\cdot \\
+\cdot \\
+\alpha_{a} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+ar \bar {\bar y} \\
+r {\bar y}_{1.}\\
+r \bar y_{2.}\\
+\cdot \\
+\cdot \\
+r \bar y_{a.}
+\end{bmatrix}
+$$ {#eq-normaleq3} 
+
+정규방정식 @eq-normaleq3  는 위에서 구한 최소제곱법에서 유도된 방정식 @eq-normaleq1  과 같다. 
+
+여기서 유의할 점은 선형모형식 @eq-lm2  의 계획행렬 $\pmb X$ 가 완전 계수(full rank) 행렬이 아니다.
+계획행렬 $\pmb X$의 첫 번째 열은 다른 열을 합한 것과 같다.
+또한 정규 방정식  @eq-normaleq3 에서 $\pmb X^t \pmb X$ 행렬도 완전계수 행렬이 아니다.
+따라서 $\pmb X^t \pmb X$ 행렬의 역행렬은 존재하지 않는다. 
+
+이러한 이유로 모수에 대한 유일한 추정량이 존재하지  않기 때문에 앞에서 언급한 제약 조건을 고려해야 정규방정식을 풀 수 있다.
+
+### Set-to-zero 조건에서의 모형과 최소제곱 추정량
+
+만약 Set-to-zero 조건을 가정한다면 모수에서 $\alpha_1$을 제외하고 선형모형식 @eq-lm2 를 다음과 같이 다시 표현할 수 있다.  
+효과 $\alpha_1$을 0 으로 놓는다는 것은 $\alpha_1$을 추정할 필요가 없으므로 모수벡터 $\pmb \beta$ 에서 $\alpha_1$를 빼고 
+게획행렬에서도 대응하는 열을 제거하는 것이다.
+
+
+$$
+\begin{bmatrix}
+y_{11} \\
+y_{12} \\
+\vdots \\
+y_{1r} \\
+y_{21} \\
+y_{22} \\
+\vdots \\
+y_{2r} \\
+\vdots \\
+y_{a1} \\
+y_{a2} \\
+\vdots \\
+y_{ar} \\
+\end{bmatrix} 
+ =
+\begin{bmatrix}
+1 &  0 & . & . & 0 \\
+1 &  0 & . & . & 0 \\
+1 &  \vdots & \vdots & \vdots & \vdots \\
+1 &  0 & . & . & 0 \\
+1 &  1 & . & . & 0 \\
+1 &  1 & . & . & 0 \\
+1 &  \vdots & \vdots & \vdots & \vdots \\
+1 &  1 & . & . & 0 \\
+\vdots &  \vdots & \vdots & \vdots & \vdots \\
+1 &  0 & . & . & 1 \\
+1 &  0 & . & . & 1 \\
+1 &  \vdots & \vdots & \vdots & \vdots \\
+1 &  0 & . & . & 1 \\
+\end{bmatrix}
+\begin{bmatrix}
+\mu \\
+\alpha_{2} \\
+\alpha_{3} \\
+\vdots \\
+\alpha_{a} \\
+\end{bmatrix} +
+\begin{bmatrix}
+e_{11} \\
+e_{12} \\
+\vdots \\
+e_{1r} \\
+e_{21} \\
+e_{22} \\
+\vdots \\
+e_{2r} \\
+\vdots \\
+e_{a1} \\
+e_{a2} \\
+\vdots \\
+e_{ar} \\
+\end{bmatrix}
+$$ {#eq-lm-zero} 
+
+
+이제 수정된 모형식 @eq-lm-zero  에 최소제곱법을 적용하여 정규방정식을 구하면 다음과 같은 방정식을 얻는다. 
+
+
+$$
+\begin{bmatrix}
+ar   & r & r & \cdot & \cdot & r \\
+r & r &  0  & \cdot & \cdot & 0 \\
+r & 0   & r  & \cdot & \cdot & 0 \\
+\cdot & \cdot   & \cdot  & \cdot & \cdot & \cdot \\
+\cdot & \cdot   & \cdot  & \cdot & \cdot & \cdot \\
+r & 0   &  0   & \cdot & \cdot & r \\
+\end{bmatrix}
+\begin{bmatrix}
+\mu \\
+\alpha_{2} \\
+\alpha_{3} \\
+\cdot \\
+\cdot \\
+\alpha_{a} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+ar \bar {\bar y} \\
+r {\bar y}_{2.}\\
+r \bar y_{3.}\\
+\cdot \\
+\cdot \\
+r \bar y_{a.}
+\end{bmatrix}
+$$ {#eq-normaleq-zero} 
+
+위의 정규방정 @eq-normaleq-zero  를 풀면 위에서 언급한 sum-to-zero 조건에서 구해지는 모수의 추정량 @eq-setzeroest 를 얻을 수 있다.
+
+
+### Sum-to-zero 조건에서의 모형과 최소제곱 추정량
+
+이제 Sum-to-zero 조건에서 모수의 추정에 대해 알아보자. 조건 $\sum_{i=1}^a \alpha_i =0$ 조건을 마지막 모수 $\alpha_a$에 대하여 표현하면 다음과 같다.
+
+$$ \alpha_a = -\alpha_1 - \alpha_2 - \dots - \alpha_{a-1} $$
+
+따라서 마지막 처리 $\alpha_a$ 에 대한 관측값에 대한 모형은 다음과 같아 쓸 수 있다.
+
+$$ y_{aj} = \mu + \alpha_a + e_{aj} = \mu +( -\alpha_1 - \alpha_2 - \dots - \alpha_{a-1}) + e_{ij} $$
+
+이러한 결과를 모형방정식에 반영한다. 즉, 모수벡터 $\pmb \beta$ 에서 $\alpha_a$를 제거하고 게획행렬에 위의 마지막 처리에 대한 효과식을 반영하면 다음과 같은 선형모형식을 얻는다.
+
+$$
+\begin{bmatrix}
+y_{11} \\
+y_{12} \\
+\vdots \\
+y_{1r} \\
+y_{21} \\
+y_{22} \\
+\vdots \\
+y_{2r} \\
+\vdots \\
+y_{a1} \\
+y_{a2} \\
+\vdots \\
+y_{ar} \\
+\end{bmatrix} 
+ =
+\begin{bmatrix}
+1 & 1 & 0 & . & . & 0 \\
+1 & 1 & 0 & . & . & 0 \\
+1 & \vdots & \vdots & \vdots & \vdots & \vdots \\
+1 & 1 & 0 & . & . & 0 \\
+1 & 0 & 1 & . & . & 0 \\
+1 & 0 & 1 & . & . & 0 \\
+1 & \vdots & \vdots & \vdots & \vdots & \vdots \\
+1 & 0 & 1 & . & . & 0 \\
+\vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+1 & 0 & 0 & . & . & 1 \\
+1 & 0 & 0 & . & . & 1 \\
+1 & \vdots & \vdots & \vdots & \vdots & \vdots \\
+1 & 0 & 0 & . & . & 1 \\
+1 & 0 & 0 & . & . & 1 \\
+1 & -1 & -1 & . & . & -1 \\
+1 & -1 & -1 & . & . & -1 \\
+1 & \vdots & \vdots & \vdots & \vdots & \vdots \\
+1 & -1 & -1 & . & . & -1 \\
+1 & -1 & -1 & . & . & -1 \\
+\end{bmatrix}
+\begin{bmatrix}
+\mu \\
+\alpha_{1} \\
+\alpha_{2} \\
+\vdots \\
+\alpha_{a-1} \\
+\end{bmatrix} +
+\begin{bmatrix}
+e_{11} \\
+e_{12} \\
+\vdots \\
+e_{1r} \\
+e_{21} \\
+e_{22} \\
+\vdots \\
+e_{2r} \\
+\vdots \\
+e_{a1} \\
+e_{a2} \\
+\vdots \\
+e_{ar} \\
+\end{bmatrix}
+$$ {#eq-lm-sum} 
+
+이제 수정된 모형식 @eq-lm-sum  에 최소제곱법을 적용하여 정규방정식을 구하면 다음과 같은 방정식을 얻는다. 
+
+
+$$
+\begin{bmatrix}
+ar   & 0 & 0 & \cdot & \cdot & 0 \\
+0 & 2r &  r  & \cdot & \cdot & r \\
+0 & r   & 2r  & \cdot & \cdot & r \\
+\cdot & \cdot   & \cdot  & \cdot & \cdot & \cdot \\
+\cdot & \cdot   & \cdot  & \cdot & \cdot & \cdot \\
+0 & r   &  r   & \cdot & \cdot & 2r \\
+\end{bmatrix}
+\begin{bmatrix}
+\mu \\
+\alpha_{1} \\
+\alpha_{2} \\
+\cdot \\
+\cdot \\
+\alpha_{a-1} \\
+\end{bmatrix}
+=
+\begin{bmatrix}
+ar \bar {\bar y} \\
+r {\bar y}_{1.}-r {\bar y}_{a.} \\
+r \bar y_{2.}-r {\bar y}_{a.}\\
+\cdot \\
+\cdot \\
+r \bar y_{a-1,.} -r {\bar y}_{a.}
+\end{bmatrix}
+$$ {#eq-normaleq-sum} 
+
+위의 정규방정 @eq-normaleq-sum  를 풀면 위에서 언급한 sum-to-zero 조건에서 구해지는 모수의 추정량 @eq-sumzeroest 를 얻을 수 있다.
+
+
+### 예제 7.3
+
+
+교과서 예제 7.3 은 4년제 대학교의 학년별 영어시험 점수 자료이다. 이 자료는 4개의 학년에 대하여 각각 6명의 학생들에 대한 영어시험 점수이다. 이 자료를 이용하여 일원배치법을 적용하고 각 학년의 평균 점수에 대한 추정량을 구해보자.
+
+```{r}
+head(english1)
+english1$grade <- factor(english1$grade)
+summary(english1)
+```
+
+이제 다음과 같이 일원배치 모형을 적합하고 결과를 보자.
+
+```{r}
+fit_anova_set0 <- lm(score ~ grade, data=english1)
+summary(fit_anova_set0)
+```
+
+함수 `lm()` 을 이용하여 일원배치 모형을 적합한 결과를 보면 default 로 `grade` 에 대하여 1학년 효과 `grade1` 는 0 으로 고정되고 `grade2`, `grade3`, `grade4` 에 대한 추정치는 각각 -3.83,  - 6.933, 9.167 로 추정된다. 즉, 범주형 변수의 첫 번째 수준을 0으로 고정하고 이를 기준으로 다른 수준에 대한 효과를 추정한 것이다.
+
+
+$$ \hat \mu = 78.333, \quad \hat \alpha_1 =0, \quad \hat \alpha_2 = -3.83, \quad \hat \alpha_3 = -6.933, \quad \hat \alpha_4 = 9.167 $$
+사용된 계획행렬을 보면 다음과 같다.
+
+```{r}
+model.matrix(fit_anova_set0)
+```
+
+
+이제 각 학년에 영어 평균 $\mu + \alpha_i$ 에 대한 추정값 $\widehat{
+\mu + \alpha_i}$ 를 구해보자.
+
+$$  \widehat{\mu + \alpha_i} = \hat {\mu} + \hat {\alpha}_i  $$
+
+```{r}
+emmeans::emmeans(fit_anova_set0, "grade")
+```
+
+
+::: {.callout-note}
+
+함수 `lm` 에서 default 로 설정되는 set-to-zero 조건은 다음과 명령어로 지정할 수 있다. 
+
+```
+options(contrasts=c("contr.treatment", "contr.poly"))
+```
+
+:::
+
+
+이제 일원배치 모형에서 sum-to-zero 조건을 적용하여 모수를 추정해 보자. sum-to-zero 조건을 적용하려면 다음과 같은 명령어를 실행해야 한다.
+
+```{r}
+options(contrasts=c("contr.sum", "contr.poly"))
+```
+
+
+이제 sum-to-zero 조건을 적용하여 일원배치 모형을 적합하고 결과를 보자.
+```{r}
+fit_anova_sum0 <- lm(score ~ grade, data=english1)
+summary(fit_anova_sum0)
+```
+
+
+sum-to-zero  조건하에서 계획행렬은 다음과 같다.
+
+```{r}
+model.matrix(fit_anova_sum0)
+```
+
+
+sum-to-zero  조건하에서 일원배치 모형을 적합한 결과를 보면 다음과 같다.
+
+$$ \hat \mu = 77.933, \quad \hat \alpha_1 = 0.400, \quad \hat \alpha_2 = -3.433, \quad \hat \alpha_3 = - 6.533, \quad \hat \alpha_4 = -(\hat \alpha_1 + \hat \alpha_2 + \hat \alpha_3) =  9.566 $$
+
+이렇게 set_to_zero 조건과 sum-to-zero 조건을 적용한 결과는 다르지만 각 학년의 평균에 대한 추정치는 동일하다. 
+
+```{r}
+emmeans::emmeans(fit_anova_sum0, "grade")
+```
+
+::: {.callout-note}
+
+참고로 교과서에서 4학년을 기준으로 다른 학년들과 비교하기 위하여 변수 `grade` 의 수준(level) 의 순서를 설정할 때 다음과 같이 4학년을 첫 번째 수준으로 설정하면 된다.
+
+```{r} 
+options(contrasts=c("contr.treatment", "contr.poly"))
+english1$grade <- factor(english1$grade, levels = c(4,1,2,3))
+str(english1)
+```
+
+
+```{r}
+fit_anova_set0_1 <- lm(score ~ grade, data=english1)
+summary(fit_anova_set0_1)
+```
+
+:::
+
+
+## 불완전 계수행렬에서의 추정
+
+설계행렬 $\pmb X$의 계수가 완전하지 않을 때 회귀 계수를 추정하기 위한 방법으로서 다음과 같은 세 가지 방법이 있다.
+
+
+
+### 모수의 재조정 (reparameterization)
+
+$\pmb X$의 계수가 완전하지 않을 때 설계행렬의 열을 다시 구성하여 계수를 완전하게 하는 방법이 있다. 즉 $\pmb X = (\pmb X_1, \pmb X_2)$으로 표시하고 $\pmb X_1$을 $n \times r~ (r < p)$라고 하며 어떤 행렬 $\pmb F$가 존재하여 $\pmb X_2 = \pmb X_1 \pmb F$의 관계를 가진다고 가정하자. 이러한 관계는 $\pmb X_2$의 열들이 $\pmb X_1$의 열들의 선형결합으로 표현될 수 있다는 것을 의미한다. 이러한 경우에 선형모형은 다음과 같이 표현될 수 있다.
+
+$$
+\pmb y= \pmb X \pmb \beta + \pmb e = \pmb X_1 (\pmb I, \pmb F)\pmb \beta  + \pmb e = \pmb X_1 \pmb \alpha +\pmb e
+$$
+여기서 새롭게 조정된  계수 $\pmb \alpha$와 처음의 계수 $\pmb \beta$는 다음과 같은 관계가 있다.
+
+$$
+\pmb \alpha =   (\pmb I, \pmb F)\pmb \beta = (\pmb \beta_1,  \pmb \beta_2)
+$$
+
+따라서 새롭게 구성된 선형모형 $\pmb y=\pmb X_1 \pmb \alpha +\pmb e$에서 새로운 계수의 추정치는 $\hat {\pmb \alpha} = (\pmb X_1^t \pmb X_1 )^{-1} \pmb X_1^t \pmb y$ 이다.
+
+
+
+### 부가 조건의 이용
+
+회귀게수에 부가 조건(side condition)을 주면 유일한 계수의 추정치를 구할 수 있다. 즉 $(p-r) \times p$ 행렬 $\pmb H$를 고려하고 $\pmb H \pmb \beta =0$이라는 부가조건을  가정하자. 즉 모든 $\pmb \eta = R(\pmb X)$에 대하여 $\pmb \eta=\pmb X \pmb \beta$와 $\pmb H \pmb \beta =0$를 만족하는 $\pmb \beta$는 유일하게 존재한다.
+
+```{=tex}
+$$ 
+\begin{bmatrix}
+\pmb \eta \\
+\pmb 0
+\end{bmatrix}
+=
+\begin{bmatrix}
+\pmb X \\
+\pmb H \\
+\end{bmatrix}
+\pmb \beta
+\equiv
+\pmb G \pmb \beta,
+\quad \text{with} \quad
+\pmb G =
+\begin{bmatrix}
+\pmb X \\
+\pmb H \\
+\end{bmatrix}
+$$ 
+```
+
+이러한 부가 조건 $\pmb H \pmb \beta =0$과  정규방정식 $(\pmb X^t \pmb X ) \pmb \beta = \pmb X^t \pmb y$를 동시에 만족하는 유일한 해를 구하고 이를 최소제곱추정량으로 한다. 이러한 부가 조건을 주는 방법은 분산분석을 이용하는 여러 가지 선형 모형 (예: 일원 배치법)에 자주 사용된다.
+
+
+### 일반화 역행렬의 이용
+
+$\pmb X$의 계수가 완전하지 않을 때 일반화 역행렬(generalized inverse matrix)를 이용하면 회귀계수의 추정치를 구할 수 있다.
+
+여기서 $m \times n$ 행렬 $\pmb A$의 일반화 역행렬 $\pmb A^{-}$는 다음을 만족하는 행렬이다.
+
+$$
+\pmb A = \pmb A \pmb A^{-} \pmb A
+$$
+
+일반화 역행렬은 일반적으로 유일하지 않다. $\pmb A$가 정방행렬이고 정칙행렬일 때 유일하게 존재하며 $\pmb A^- = \pmb A^{-1}$이다.
+ 정규방정식 $\pmb X^t \pmb y=\pmb X^t \pmb X  \hat {\pmb \beta}$의 양변에 $\pmb X^t \pmb X  (\pmb X^t \pmb X )^-$를 곱하면
+ 
+ 
+$$\pmb X^t \pmb X  (\pmb X^t \pmb X )^- \pmb X \pmb y = 
+\pmb X^t \pmb X  (\pmb X^t \pmb X )^- \pmb X^t \pmb X \hat {\pmb \beta} = 
+\pmb X^t \pmb X  \hat {\pmb \beta} = \pmb X^t \pmb y 
+$$
+
+이므로 $\hat {\pmb \beta} = (\pmb X^t \pmb X )^- \pmb X^t \pmb y$는 정규방정식의 해가 된다. 앞에서 언급하였듯이 일반화 역함수를 이용한 계수의 추정량은 유일하지 않다. 그러나 반응변수의 추정량 $\hat {\pmb y} = \pmb X \hat {\pmb \beta}$는 추정된 계수에 관계없이 유일하다.
+
+
+
+## 추정 가능한 함수
+
+
+### 일원배치법에 추정가능한 모수
+
+앞 절에서 보았듯이 일원배치법을 선형 모형식으로 표현하는 경우 평균에 대한 모수는 모두 $a+1$ 개가 있다.
+
+$$ \mu, \alpha_1, \alpha_2, \cdots, \alpha_a $$
+
+하지만 모형식에서 계획행렬 $\pmb X$가 완전 계수 행렬이 아니기 때문에 1개의 제약 조건을 가정하고 모수를 추정하였다.
+하지만 제약 조건이 달라지면 각 모수의 추정량이 달라지기 때문에 각 모수는 유일한 값으로 추정이 불가능하다. 
+
+
+이렇게 각 모수들은 제약 조건에 따라서 유일하게 추정이 불가능하지만 앞 절에서 보았듯이 $\mu + \alpha_i$ 에 대한 추정량은 제약조건에 관계없이 
+표본 평균 $\bar y_{i.}$으로 동일하게 추정되어 진다.
+
+그러면 어떤 모수들은 유일하게 추정이 불가능하고 어떤 모수들이 유일하게 추정이 가능할까?
+
+이제 제약조건이 달라도 유일하게 추정이 가능한 모수들의 형태를 살펴보자. 
+
+### 추정가능한 모수의 함수
+
+선형모형 $\pmb y =\pmb X \pmb \beta + \pmb e$ 에서  계획행렬 $\pmb X$의 계수가 완전하지 않으면 모수 벡터 $\pmb \beta$는 유일한 값으로 추정할 수 없다.
+
+
+이제 임의의 벡터 $\pmb c$가 있을 때 모수들의 선형결합 $\psi = \pmb c^t \pmb \beta$를 고려하자.
+
+예를 들어 일원배치 모형에서는 다음과 같은 모수들의 선형결합을 고려하는 것이다.
+
+$$ 
+\psi = \pmb c^t \pmb \beta = 
+[ c_0~ c_1~ c_2~ \cdots~~c_a] 
+\begin{bmatrix}
+\mu \\
+\alpha_1 \\
+\alpha_2 \\
+\vdots \\
+\alpha_a
+\end{bmatrix}
+=c_0 \mu + c_1 \alpha_1 + c_2 \alpha_2 + \cdots + c_a \alpha_a 
+$$
+
+위에서 본 것처럼 하나의 모수  $\alpha_1$에 대한  유일한 추정은 불가능하다.
+
+$$  
+\alpha_1 = (0) \mu + (1) \alpha_1 + (0) \alpha_2 + \cdots + (0) \alpha_a 
+$$
+
+하지만  모수의 조합 $\mu+ \alpha_2$ 은 유일한 추정이 가능하다.
+
+$$  
+\mu + \alpha_1 = (1) \mu + (1) \alpha_1 + (0) \alpha_2 + \cdots + (0) \alpha_a 
+$$
+
+이제 문제는 선형조합 $\psi= \pmb c^t \pmb \beta$ 에서 계수들 $c_0, c_1, \dots, c_a$가 어떤 값을 가지는 경우 유일한 추정이 가능한 지 알아내는 것이다. 
+
+
+이제 $\psi = \pmb c^t \pmb \beta$ 에 대한 유일한 추정량 $\hat \psi$ 이 있다고 가정하자.  선형 모형에서 추정량 $\hat \psi$의 형태는 관측값에 대한 선형함수가 되어야 한다. 따라서  추정량을 $\hat \psi = \pmb a^t \pmb y$ 로 나타낼 수 있다. 이제 추정량 $\hat \psi$의 기대값은 $\psi=\pmb c^t \pmb \beta$이어야 하므로 다음이 성립해야 한다.
+
+
+$$ 
+E(\hat \psi| \pmb X) = E(\pmb a^t \pmb y| \pmb X) = \pmb a^t E(\pmb y| \pmb X) = \pmb a^t \pmb X \pmb \beta = \pmb c^t \pmb \beta 
+$$
+
+
+
+위의 식에서 가장 마지막 두 항의 관계를 보면 다음이 성립해야 한다.
+
+$$
+\pmb a^t \pmb X = \pmb c^t  \quad \text{ equivalently }\quad \pmb c = \pmb X^t \pmb a
+$$ {#eq-estimable} 
+
+즉 추정가능한 모수의 조합 $\psi = \pmb c^t \pmb \beta$에서 **계수 벡터 $\pmb c$ 는 계획행렬에 있는 행들의 선형 조합**으로 표시되어야 한다는 것이다. 이렇게 유일하게 추정이 가능한
+모수의 조합을 **추정가능한 함수(estimable function)**이라고 한다.
+
+
+
+### 예제
+
+2개의 수준이 있고 반복이 2번 있는 일원배치 $(a=2,r=2)$ 에 대한 선형모형 @eq-lm2 을 생각해보자. 이 경우 계획행렬 $\pmb X$ 과 모수벡터 $\pmb \beta$ 는 다음과 같다.
+
+$$
+\pmb X = 
+\begin{bmatrix}
+1 & 1 & 0  \\
+1 & 1 & 0  \\
+1 & 0 & 1  \\
+1 & 0 & 1  
+\end{bmatrix}
+\quad 
+\pmb \beta = 
+\begin{bmatrix}
+\mu \\
+\alpha_1 \\
+\alpha_2 
+\end{bmatrix}
+$$
+
+이제 유일하게 추정 가능한 모수 조합 $\psi$ 은 어떤 형태일까?
+
+$$ \psi = \pmb c^t \pmb \beta = c_0 \mu + c_1 \alpha_1 + c_2 \alpha_2 $$
+
+위의 식 @eq-estimable 에서 추정가능한 모수의 조합에 대한 계수 벡터 $\pmb c$
+는 다음과 같은 조건을 만족해야 한다.
+
+$$ \pmb c = {\pmb X}^t \pmb a $$
+
+이제 임의의 벡터 $\pmb a$ 에 대하여  $\pmb c= \pmb X^t \pmb a$의 형태를 보자.
+
+$$
+\begin{aligned}
+\pmb c &= 
+\pmb X^t \pmb a \\ & = 
+\begin{bmatrix}
+1 & 1 & 1 & 1  \\
+1 & 1 & 0 & 0  \\
+0 & 0 & 1 & 1  
+\end{bmatrix}
+\begin{bmatrix}
+a_1 \\
+a_2 \\
+a_3 \\
+a_4 
+\end{bmatrix} \\
+& = 
+a_1 
+\begin{bmatrix}
+1 \\
+1 \\
+0 
+\end{bmatrix}
++
+a_2
+\begin{bmatrix}
+1 \\
+1 \\
+0 
+\end{bmatrix}
++ 
+a_3 
+\begin{bmatrix}
+1 \\
+0 \\
+1 
+\end{bmatrix}
++
+ a_4
+\begin{bmatrix}
+1 \\
+0 \\
+1 
+\end{bmatrix} \\
+& = 
+(a_1 + a_2)
+\begin{bmatrix}
+1 \\
+1 \\
+0 
+\end{bmatrix}
++ 
+(a_3 + a_4)
+\begin{bmatrix}
+1 \\
+0 \\
+1 
+\end{bmatrix} \\
+&= 
+b_1
+\begin{bmatrix}
+1 \\
+1 \\
+0 
+\end{bmatrix}
++ 
+b_2
+\begin{bmatrix}
+1 \\
+0 \\
+1 
+\end{bmatrix} 
+\end{aligned} 
+$$ {#eq-esticond} 
+
+이제 **$\pmb X^t \pmb a$ 는 계획행렬 $\pmb X$에 있는 유일한 행들의 선형조합**임을 알 수 있다.
+
+
+::: {.callout-note}
+
+위의 식 @eq-esticond  에서 유의할 점은 벡터 $\pmb a=[a_1 ~a_2~a_3~a_4]^t$는 임의로 주어진 벡터이다.
+
+식 @eq-esticond  에서 $a_1=1$, $a_2=1$ 인 경우는  $a_1=2$, $a_2=0$ 인 경우와 동일하다. 
+
+:::
+
+
+따라서 유일하게 추정 가능한 모수의 선형조합 $\psi = \pmb c^t \pmb \beta$ 에 대한 계수 벡터 $\pmb c =[ c_0 ~ c_1 ~ c_2]^t$ 는 계획행렬 $\pmb X$의 유일한 행들의 선형 조합으로 구성되어야 한다.
+
+
+$$
+\pmb c =
+\begin{bmatrix}
+c_0 \\
+c_1 \\
+c_2 
+\end{bmatrix}
+= 
+b_1
+\begin{bmatrix}
+1 \\
+1 \\
+0 
+\end{bmatrix}
++ 
+b_2
+\begin{bmatrix}
+1 \\
+0 \\
+1 
+\end{bmatrix}
+$$ {#eq-esticond2} 
+
+- 처리의 효과를 나타내는 모수 $\alpha_i$는 추정이 불가능하다.
+
+ 첫 번째 처리에  대한 효과 모수 $\alpha_1$ 를 선형조합으로 나타내면 
+ 
+ $$ \alpha_1 = c_0 \mu + c_1 \alpha_1 + c_2 \alpha_2 = (0) \mu + (1) \alpha_1 + (0) \alpha_2 $$
+ 
+ 따라서 조건 @eq-esticond2  에서 $\pmb c^t = [0~1~0]$을 만들수 있는 계수 $b_1$과 $b_2$를 찾아야 하는데 이는 불가능하다. 따라서 모수 $\alpha_1$ 은 추정 불가능하다.
+ 
+ $$ 
+\pmb c =
+\begin{bmatrix}
+0 \\
+1 \\
+0 
+\end{bmatrix}
+= 
+b_1
+\begin{bmatrix}
+1 \\
+1 \\
+0 
+\end{bmatrix}
++ 
+b_2
+\begin{bmatrix}
+1 \\
+0 \\
+1 
+\end{bmatrix}
+$$ 
+
+- 처리의 평균을 나타내는 모수의 조합 $\mu + \alpha_i$는 추정이 가능하다.
+
+ 모수 조합 $\mu + \alpha_1$ 를 선형조합으로 나타내면 
+ 
+ $$ \mu + \alpha_1 = c_0 \mu + c_1 \alpha_1 + c_2 \alpha_2 = (1) \mu + (1) \alpha_1 + (0) \alpha_2 $$
+ 
+ 따라서  조건 @eq-esticond2  에서 $\pmb c^t = [1~1~0]$을 만들수 있는 계수는  $b_1=1$과 $b_2=0$ 이므로  추정이 가능하다.
+ 
+ $$ 
+\pmb c =
+\begin{bmatrix}
+1 \\
+1 \\
+0 
+\end{bmatrix}
+= 
+(1)
+\begin{bmatrix}
+1 \\
+1 \\
+0 
+\end{bmatrix}
++ 
+(0)
+\begin{bmatrix}
+1 \\
+0 \\
+1 
+\end{bmatrix}
+$$ 
+
+- 처리 효과의 차이를 나타내는 모수의 조합 $\alpha_1-\alpha_2$는 추정이 가능하다.
+
+ $$ \alpha_1 -\alpha_2= c_0 \mu + c_1 \alpha_1 + c_2 \alpha_2 = (0) \mu + (1) \alpha_1 + (-1) \alpha_2 $$
+ 
+ 따라서  조건 @eq-esticond2  에서 $\pmb c^t = [0~1~-1]$을 만들수 있는 계수는 $b_1=1$과 $b_2=-1$ 이므로 추정이 가능하다.
+ 
+ $$ 
+\pmb c =
+\begin{bmatrix}
+0 \\
+1 \\
+-1 
+\end{bmatrix}
+= 
+(1)
+\begin{bmatrix}
+1 \\
+1 \\
+0 
+\end{bmatrix}
++ 
+(-1)
+\begin{bmatrix}
+1 \\
+0 \\
+1 
+\end{bmatrix}
+$$ 
+
