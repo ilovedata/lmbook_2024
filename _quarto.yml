@@ -33,6 +33,7 @@ book:
     - qmd/practice-02.qmd
     - qmd/practice-03.qmd
     - qmd/practice-04.qmd
+    - qmd/practice-05.qmd
 
 bibliography: references.bib
 

@@ -1,0 +1,345 @@
+# R-실습: 분산분석 모형 {#sec-multiple-05-anova}
+
+
+
+```{r warning=FALSE, echo=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
+source(here::here("common", "_common.R"))
+source(here::here("common", "_preprocess.R"))
+```
+
+
+## 일원배치: 예제와 R 프로그램
+
+### 예제: 실험계획 
+
+4개의 서로 다른 원단업체에서 직물을 공급받고 있다. 공급한 직물의 긁힘에
+대한 저항력을 알아보기 위하여 각 업체마다 4개의 제품을 랜덤하게 선택하여
+($a=4$, $r=4$) 일원배치법에 의하여 마모도 검사을 실시하였다.
+
+### 자료의 생성
+
+```{r}
+company<- as.factor(rep(c(1:4), each=4))
+response<- c(1.93, 2.38, 2.20, 2.25,
+             2.55, 2.72, 2.75, 2.70,
+             2.40, 2.68, 2.32, 2.28,
+             2.33, 2.38, 2.28, 2.25)
+df31<- data.frame(company=company, response= response)
+df31
+
+
+```
+
+각 수준에 대한 표보 평균을 구해보자.
+
+```{r}
+df31s <- df31 %>% group_by(company)  %>%  summarise(mean=mean(response), median= median(response), sd=sd(response), min=min(response), max=max(response))
+df31s
+```
+
+### 선형모형의 적합(set-to-zero)
+
+이제 자료를 다음과 같은 선형 모형으로 적합해 보자. 선형 모형의 적합은
+`lm()` 함수를 사용한다.
+
+$$ y_{ij} = \mu + \alpha_i + e_{ij}  $$
+
+여기서 선형식의 모수와 `R`의 변수는 다음과 같은 관계를 가진다,
+
+
+
+| 선형식의 모수 | `R`의 변수 |
+|-------------:|---------------:| 
+| $\mu$      | `(Intercept)` |
+| $\alpha_1$ | `company1` |
+| $\alpha_2$ | `company2` |
+| $\alpha_3$ | `company3` |
+| $\alpha_4$ | `company4` |
+
+
+```{r}
+fit1 <- lm(response~company,data=df31)
+summary(fit1)
+```
+
+위에서 적합한 결과를 보면 평균 $\mu$와 4개의 처리 $\alpha_1$,
+$\alpha_2$, $\alpha_3$, $\alpha_4$ 가 모형에 있지만 모수의 추정량은
+평균(`intercept`)과 3개의 모수(`company2`, `company3`, `company4`)만
+추정량이 주어진다.
+
+`R` 에서 옵션을 지정하지 않고 함수 `lm()`으로 선형모형을 적합하는 경우 set-to-zero 조건을
+적용하며 자료에 나타난 처리의 수준들 중 순위가 가장 낮은 수준의 효과를
+0으로 지정한다 (`company1`=0 ). set-to-zero 조건을 강제로 지정하려면 다음과 같은 명령문을 먼저 실행한다.
+
+```
+options(contrasts=c("contr.treatment", "contr.poly"))
+```
+
+위의 결과를 보면 `(Intercept)`에 대한 추정량이 첫 번째 처리 `company1`의
+평균과 같은 것을 알 수 있다.
+
+set-to-zero 조건에서의 계획행렬은 다음과 같이 볼 수 있다.
+
+```{r}
+model.matrix(fit1)
+```
+
+이제 각 처리 평균에 대한 추정값 $\widehat{\mu+ \alpha_i}$을 구해보자.
+
+```{r}
+emmeans(fit1, "company")
+```
+
+이 경우 처리 평균에 대한 추정값은 산술 평균과 동일하게 나온다.
+
+### 선형모형의 적합 (sum-to-zero)
+
+이제 일원배치 모형에서 sum-to-zero 조건을 적용하여 모수를 추정해 보자.
+sum-to-zero 조건을 적용하려면 다음과 같은 명령어를 실행해야 한다.
+
+```{r}
+options(contrasts=c("contr.sum", "contr.poly"))
+```
+
+이제 다시 선형모형을 적합하고 추정결과를 보자.
+
+```{r}
+fit2 <- lm(response~company,data=df31)
+summary(fit2)
+```
+
+이제 sum-to-zero 조건에 따라서 위의 set-to-zero 결과와 모수의 추정값이
+다르게 나타나는 것을 알 수 있다. 마지막 모수 `company4`($\alpha_4$)는
+sum-to-zero 조건을 이용하여 다음과 같은 관계를 이용하여 구할 수 있다.
+
+$$  \alpha_4 = -(\alpha_1 + \alpha_2 + \alpha_3) $$
+
+sum-to-zero 조건에서의 계획행렬은 다음과 같이 볼 수 있다.
+
+```{r}
+model.matrix(fit2)
+```
+
+이제 각 처리 평균에 대한 추정값 $\widehat{\mu+ \alpha_i}$을 구해보면 set-to-zero 조건에서의 추정값과 동일함을 알 수 있다. 
+
+```{r}
+emmeans(fit2, "company")
+```
+
+
+### 분산분석 
+
+분산분석의 결과는 어떠한 제약 조건에서도 동일하다.
+
+```{r}
+res1 <- anova(fit1)
+res1
+```
+
+```{r}
+res2<- anova(fit2)
+res2
+```
+
+
+
+### 다중비교 예제 
+
+앞에서 살펴본 일원배치법 예제은 4개의 처리가 있다. 따라서 ${4 \choose 2} =6$
+개의 가설 검정(또는 신뢰구간)을 수행해야 한다.
+
+4개의 `company`가 처리 수준이며  각 처리수준 은 `1`, `2`, `3`, `4`로 표시된다. 
+
+```{r}
+df31s
+```
+
+#### 다중비교 방법을 적용하지 않는 경우
+
+먼저 다중비교 방법을 적용하지 않는 경우 결과를 보자. 함수 `LSD.test`
+에서 `p.adj=c("none")`를 지정하면 다중 비교를 적용하지 않는다. 명령문
+`p.adj` 를 지정하지 않으면 수정을 하지 않는 LSD 방법에 의한 신뢰 구간
+@eq-twomeanci  와 검정 방법 @eq-lsd 로 구한 결과를 준다.
+
+```{r}
+anova.res <- aov(response~company,data=df31) #일원배치
+test1 <- LSD.test(anova.res, "company", alpha = 0.05, group = FALSE, console = FALSE, p.adj=c("none") )
+test1$comparison
+```
+
+#### 본페로니 수정(Bonferroni correction)
+
+이제 다중비교 방법 중에 가장 보수적인 본페로니 수정(Bonferroni
+correction)을 적용해 보자. 함수 `LSD.test` 에서
+`p.adj=c("bonferroni")`를 이용한다.
+
+아래의 결과는 본페로니 수정 방법에 의한 신뢰 구간
+와 검정 방법으로 구한 결과이다.
+
+본페로니 수정이 적용된 신뢰구간은 LSD 방법의
+신뢰구간보다 길며 수정된 p-값은 LSD 방법으로 구한 값의 6배이다. LSD 방법을
+적용하는 경우 유의한 차이를 보이는 조합이 4개로
+나타났는데(1-2,1-3,2-3,2-4) 본페로니 수정을 적용한 경우에는 2개로 줄어
+들었다(1-2,2-4)
+
+수정한 p-값이 1이 초과하면 확률이기 때문에 1로 주어진다.
+
+```{r}
+test2 <- LSD.test(anova.res, "company", alpha = 0.05, group = FALSE, console = FALSE, p.adj=c("bonferroni") )
+test2$comparison
+```
+
+#### Tukey의 HSD
+
+함수`TukeyHSD`는 분산분석을 실행한 결과를 이용하여 다중비교 방법 중 가장
+많이 이용되는 Tukey's Honest Significant Difference (HSD) 방법으로
+다중비교를 제공한다.
+
+Tukey의 HSD는 너무 보수적인 결과를 주는 본페로니 수정을 개선한 것이다. 
+따라서 Tukey의 HSD 에서 얻은 결과는 수정하지 않는 LDS 의 결과와 Bonferoni
+방법의 중간에 있다고 할 수 있다.
+
+Tukey의 HSD 에서는 본페로니와 유사하게 2개의 조합(1-2,2-4)만이 유의한
+차이가 있다고 나타난다.
+
+```{r multiple2}
+anova.res <- aov(response~company,data=df31) #일원배치
+test3 <- TukeyHSD(anova.res, conf.level = 0.95, ordered=FALSE)
+test3
+```
+
+```{r}
+plot(test3)
+```
+
+#### 세 방법에서의 p-값 비교
+
+위에서 살펴본 수정을 하지 않은 LSD 방법, Tukey의 HSD 방법과 본페로니
+방법에서 계산된 p-값을 아래 표에서 비교하였다.
+
+| 평균의 비교 조합 |    LSD |    HSD |   Bonf |
+|-----:|-------:|-------:|-------:|
+|  1-2 | 0.0004 | 0.0017 | 0.0021 |
+|  1-3 | 0.0397 | 0.1509 | 0.2383 |
+|  1-4 | 0.2520 | 0.6363 | 1.0000 |
+|  2-3 | 0.0229 | 0.0924 | 0.1374 |
+|  2-4 | 0.0030 | 0.0137 | 0.0179 |
+|  3-4 | 0.2916 | 0.6944 | 1.0000 |
+
+: LSD, Bonferoni, HSD 방법의 p-값 비교
+
+
+
+
+## 예제  7.1 - 일원배치 
+
+이제 교재 예제  7.1 (271 페이지)에서 관고비 자료 `adsale`에서 판매액을 예측하는 회귀식을 고려해 보자.
+
+먼저 `adsale` 데이터프레임에서  두 변수 광고비 `ad` 와 매체 `media` 변수의 차이점을 알아보자. 먼저 광고비 `ad`는 수치 변수(numeric variable)로서 함수 `class()`를 이용하면 정수(integer) 형태인 것을 알 수 있다. 수치변수는 정수, 실수, 복소수 등을 의미한다.
+
+반면 매체 `media` 는 범주형 변수로서 함수 `class()`를 이용하면 범주형(factor) 형태인 것을 알 수 있다. `levels`는 범주형 변수의 항목을 나타내는 것으로서 범주형 변수 `media`는 두 개의 항목 `방송`과 `신문`으로 이루어 졌음을 알 수 있다.  
+
+
+```{r}
+head(adsale)
+adsale$ad
+adsale$media
+class(adsale$ad)
+class(adsale$media)
+```
+
+그룹별 기초통계량을 계산해보자.
+
+```{r}
+adsalesum <- adsale %>% group_by(media)  %>%  summarise(mean=mean(ad), median= median(ad), sd=sd(ad), min=min(ad), max=max(ad))
+adsalesum
+```
+
+
+함수 lm()으로 선형모형을 적합하는 경우 set-to-zero 조건을 적용하며 자료에 나타난 처리의 수준들 중 순위가 가장 낮은 수준의 효과를 0으로 지정한다  set-to-zero 조건을 강제로 지정하려면 다음과 같은 명령문을 먼저 실행한다.
+
+```{r}
+options(contrasts=c("contr.treatment", "contr.poly"))
+```
+
+이제 광고비 `ad` 와 매체 `media` 를 포함한 회귀식을 적합시켜 보자. `R`의 `lm` 함수는 
+범주형변수를 자동적으로 가변수로 바꾸어 준다. 회귀식에 사용된 디자인행렬을 보면 `media`에 해당하는 열이 0 과 1로 이루어진 벡터로 바뀌었음을 알 수 있다.  
+
+
+
+```{r}
+fit1 <- lm(sale~ ad + media, data=adsale)
+summary(fit1)
+model.matrix(fit1)
+data.frame(media=adsale$media, z=model.matrix(fit1)[,3])
+```
+
+## 예제  7.2 - 교호작용 
+
+```{r}
+fit2 <- lm(sale ~ ad + media + ad:media, data=adsale)
+summary(fit2)
+anova(fit2)
+model.matrix(fit2)
+```
+
+
+## 예제 7.3 - 일원배치 2
+
+```{r}
+english1
+class(english1$grade)
+```
+
+위의 결과로 보면 변수 `grade`는 수치형 변수이다. 따라서 이를 범주형 변수로 바꾸어 주어야 한다. 위의 명령문은 함수 `factor()`를 사용하여 수치 변수인 `grade`를  항목의 순서가 4,1,2,3 (`levels=c(4,1:3)`) 인 범주형 변수로 바꾸어 주는 것이다.  
+
+```{r}
+english1$grade <- factor(english1$grade, levels=c(4, 1:3), labels = c("4학년", "1학년", "2학년", "3학년"))
+english1$grade
+```
+
+그룹별 기초통계량을 계산해보자.
+
+```{r}
+english1sum <-english1 %>% group_by(grade)  %>%  summarise(mean=mean(score), median= median(score), sd=sd(score), min=min(score), max=max(score))
+english1sum 
+```
+
+
+이제 일원배치모형을 적합시키고 ANOVA F-검정을 수행해 보자.
+
+```{r}
+fit3 <- lm(score ~ grade, english1)
+summary(fit3)
+anova(fit3)
+```  
+
+적합한 모형을 이용하여 최소제곱 평균을 구해보자.
+
+```{r}
+emmeans(fit3, "grade")
+```
+
+다중비교 방법을 적용하지 않고 각 학년별 평균의 차이를 비교하자.
+
+```{r}
+anova.res <- aov(fit3)
+test1 <- LSD.test(anova.res, "grade", alpha = 0.05, group = FALSE, console = FALSE, p.adj=c("none") )
+test1$comparison
+```
+
+본페로니 수정(Bonferroni correction)을 적용하여 각 학년별 평균의 차이를 비교하자.
+
+```{r}
+test2 <- LSD.test(anova.res, "grade", alpha = 0.05, group = FALSE, console = FALSE, p.adj=c("bonferroni") )
+test2$comparison
+```
+
+다중비교 방법 중 가장 많이 이용되는 Tukey’s Honest Significant Difference (HSD) 방법으로 
+각 학년별 평균의 차이를 비교하자.
+
+```{r}
+test3 <- TukeyHSD(anova.res, conf.level = 0.95, ordered=FALSE)
+test3
+```
