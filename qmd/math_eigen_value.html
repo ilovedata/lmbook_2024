@@ -30,7 +30,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../qmd/math_vec_cal.html" rel="next">
+<link href="../qmd/math_matrix_decomp.html" rel="next">
 <link href="../qmd/math_vector_space.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -207,6 +207,18 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../qmd/ancova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">공분산분석</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/compute.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">최소제곱 추정량의 계산</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
@@ -240,56 +252,62 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../qmd/math_matrix_decomp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">행렬의 분해</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../qmd/math_vec_cal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">벡터 미분</span></span></a>
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">벡터 미분</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/multivar.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">다변량 확률변수의 성질</span></span></a>
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">다변량 확률변수의 성질</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/quadratic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">이차형식과 제곱합의 분포</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">이차형식과 제곱합의 분포</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/aic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">모형선택의 정보 기준</span></span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">모형선택의 정보 기준</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-01.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-02.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></span></a>
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-03.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">R-실습: 관측값에 대한 진단</span></span></a>
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">R-실습: 관측값에 대한 진단</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">R-실습: 모형의 선택</span></span></a>
+ <span class="menu-text"><span class="chapter-number">L</span>&nbsp; <span class="chapter-title">R-실습: 모형의 선택</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">L</span>&nbsp; <span class="chapter-title">R-실습: 분산분석 모형</span></span></a>
+ <span class="menu-text"><span class="chapter-number">M</span>&nbsp; <span class="chapter-title">R-실습: 분산분석 모형</span></span></a>
   </div>
 </li>
       </ul>
@@ -547,14 +565,14 @@ E_2 = \text{span}\left\{\begin{bmatrix}-2\\ 5 \\ 1\end{bmatrix}\right\}
 <p><span id="eq-symmdecomp1"><span class="math display">\[
 \pmb  P^t \pmb  A \pmb  P = \pmb  \Lambda = diag(\lambda_1, \lambda_2, \dots, \lambda_n)
 \tag{C.3}\]</span></span></p>
-<p><a href="quadratic.html#eq-symmdecomp1" class="quarto-xref">식&nbsp;<span>F.2</span></a> 의 분해에서 <span class="math inline">\(\lambda_i\)</span>는 행렬 <span class="math inline">\(\pmb  A\)</span>의 고유치이며 행렬 <span class="math inline">\(\pmb  P\)</span>의 <span class="math inline">\(i\)</span> 번째 열은 대응하는 고유벡터 <span class="math inline">\(\pmb  p_i\)</span> 로 구성되어 있다.</p>
+<p><a href="quadratic.html#eq-symmdecomp1" class="quarto-xref">식&nbsp;<span>G.2</span></a> 의 분해에서 <span class="math inline">\(\lambda_i\)</span>는 행렬 <span class="math inline">\(\pmb  A\)</span>의 고유치이며 행렬 <span class="math inline">\(\pmb  P\)</span>의 <span class="math inline">\(i\)</span> 번째 열은 대응하는 고유벡터 <span class="math inline">\(\pmb  p_i\)</span> 로 구성되어 있다.</p>
 <p><span class="math display">\[
 \pmb  P = [ \pmb  p_1~~ \pmb  p_2 ~~ \dots ~~ \pmb  p_n ]
 \]</span> 이제 위의 분해를 증명해 보자. 고유치 <span class="math inline">\(\lambda_i\)</span> 와 대응하는 고유벡터 <span class="math inline">\(\pmb  p_i\)</span>의 정의에 따라서 다음과 같은 <span class="math inline">\(n\)</span>개의 식을 얻을 수 있고</p>
 <p><span class="math display">\[ \pmb  A \pmb  p_i = \lambda_i \pmb  p_i , \quad i=1,2,3\dots, n \]</span></p>
-<p>위의 식을을 합쳐서 표기하면 다음과 같은 식을 얻으며 이는 <a href="quadratic.html#eq-symmdecomp1" class="quarto-xref">식&nbsp;<span>F.2</span></a> 를 의미한다.</p>
+<p>위의 식을을 합쳐서 표기하면 다음과 같은 식을 얻으며 이는 <a href="quadratic.html#eq-symmdecomp1" class="quarto-xref">식&nbsp;<span>G.2</span></a> 를 의미한다.</p>
 <p><span class="math display">\[ \pmb  A \pmb  P = \pmb  P \pmb  \Lambda \]</span></p>
-<p><a href="quadratic.html#eq-symmdecomp1" class="quarto-xref">식&nbsp;<span>F.2</span></a> 를 다시 쓰면 다음과 같은 스펙트럴 분해(spectral decomposition)를 얻는다.</p>
+<p><a href="quadratic.html#eq-symmdecomp1" class="quarto-xref">식&nbsp;<span>G.2</span></a> 를 다시 쓰면 다음과 같은 스펙트럴 분해(spectral decomposition)를 얻는다.</p>
 <p><span id="eq-spectral"><span class="math display">\[
 \pmb  A  = \pmb  P \pmb  \Lambda \pmb  P^t  = \sum_{i=1}^n \lambda_i \pmb  p_i \pmb  {p}_i^t
 \tag{C.4}\]</span></span></p>
@@ -966,8 +984,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../qmd/math_vec_cal.html" class="pagination-link" aria-label="벡터 미분">
-        <span class="nav-page-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">벡터 미분</span></span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../qmd/math_matrix_decomp.html" class="pagination-link" aria-label="행렬의 분해">
+        <span class="nav-page-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">행렬의 분해</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

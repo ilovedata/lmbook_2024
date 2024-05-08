@@ -1,0 +1,1208 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>통계적 예측모형 - 8&nbsp; 공분산분석</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../qmd/compute.html" rel="next">
+<link href="../qmd/anova.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script>
+<script type="text/javascript">
+ window.MathJax = {
+  tex: {
+    macros: {
+    RR: '{\\mathbb R}',                    // a simple string replacement
+    hatmat:'{\\pmb X ({\\pmb X}^t {\\pmb X} )^{-1} {\\pmb X}^t}',
+    bold: ['\\boldsymbol{#1}',1] ,     // this macro has one parameter
+    pardiff: ['\\frac{\\partial#2}{\\partial#1}', 2, 'x'], // this macro has an optional parameter that defaults to 'x'
+    pardifftwo: ['\\frac{\\partial#1}{\\partial#2}', 2],
+    pardiffd: ['\\frac{\\partial#1}{\\partial#2^t \\partial#2}', 2],
+    pardiffdd: ['\\frac{\\partial#1}{\\partial#3 \\partial#2}', 3],
+    norm: ['\\lVert#1\\rVert',1]
+  },
+  environments: {
+  braced: ["\\left\\{", "\\right\\}"]
+  }
+ }
+};
+</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/ancova.html"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">공분산분석</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">통계적 예측모형</a> 
+        <div class="sidebar-tools-main">
+    <a href="../통계적-예측모형.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="검색"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/lse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">선형 회귀모형의 소개</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">선형회귀에서의 추론</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/inference2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">모형의 비교</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/modeleval2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">모형의 진단</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/residual.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">관측값에 대한 진단</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/modelselection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">모형의 선택</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/anova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">분산분석 모형</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/ancova.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">공분산분석</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/compute.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">최소제곱 추정량의 계산</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_mat_basic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">행렬의 기초</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_vector_space.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">벡터공간</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_eigen_value.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">고유값과 고유벡터</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_matrix_decomp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">행렬의 분해</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_vec_cal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">벡터 미분</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/multivar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">다변량 확률변수의 성질</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/quadratic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">이차형식과 제곱합의 분포</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/aic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">모형선택의 정보 기준</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/practice-01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/practice-02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/practice-03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">R-실습: 관측값에 대한 진단</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/practice-04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">L</span>&nbsp; <span class="chapter-title">R-실습: 모형의 선택</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/practice-05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">M</span>&nbsp; <span class="chapter-title">R-실습: 분산분석 모형</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul class="collapse">
+  <li><a href="#공분산분석-개요" id="toc-공분산분석-개요" class="nav-link active" data-scroll-target="#공분산분석-개요"><span class="header-section-number">8.1</span> 공분산분석 개요</a></li>
+  <li><a href="#공분산분석의-모형" id="toc-공분산분석의-모형" class="nav-link" data-scroll-target="#공분산분석의-모형"><span class="header-section-number">8.2</span> 공분산분석의 모형</a></li>
+  <li><a href="#모수의-추정" id="toc-모수의-추정" class="nav-link" data-scroll-target="#모수의-추정"><span class="header-section-number">8.3</span> 모수의 추정</a></li>
+  <li><a href="#가설검정" id="toc-가설검정" class="nav-link" data-scroll-target="#가설검정"><span class="header-section-number">8.4</span> 가설검정</a></li>
+  <li><a href="#예제-1-영어교육-방법" id="toc-예제-1-영어교육-방법" class="nav-link" data-scroll-target="#예제-1-영어교육-방법"><span class="header-section-number">8.5</span> 예제 1: 영어교육 방법</a></li>
+  <li><a href="#예제-2-저혈당-실험" id="toc-예제-2-저혈당-실험" class="nav-link" data-scroll-target="#예제-2-저혈당-실험"><span class="header-section-number">8.6</span> 예제 2: 저혈당 실험</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-ancova" class="quarto-section-identifier"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">공분산분석</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="공분산분석-개요" class="level2" data-number="8.1">
+<h2 data-number="8.1" class="anchored" data-anchor-id="공분산분석-개요"><span class="header-section-number">8.1</span> 공분산분석 개요</h2>
+<p>서로 다른 집단을 비교하는 실험이나 관측연구에서 관심이 있는 처리(treatment)나 요인(factor)뿐만 아니라 다른 예측변수들도 반응변수에 영향을 미친다. 이러한 예측변수들의 영향을 제거하기 위한 방법은 여러가지가 있지만 실험인 경우 임의화 방법(randomization)으로 그 영향을 상쇄시킬 수 도 있고 관측연구인 경우에는 사례-대조연구 방법을 이용하여 그 영향을 최소화하려고 노력을 한다.</p>
+<p>하지만 일반적으로 관측연구(observational study)는 피실험자가 임의로 처리에 배정되지 않고, 다양한 요인을 제어하기 어렵기 때문에 전체변동에서 관심있는 요인(처리)의 효과를 제외한 오차에 의한 변동이 크다.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../myimages/variation1.png" class="img-fluid figure-img"></p>
+<figcaption>실험과 관측연구에서의 전체 변동의 설명</figcaption>
+</figure>
+</div>
+<p>많은 경우에 처리 이외의 여러 가지 변수들이 반응변수에 영향을 미친다. 이러한 경우에 이러한 독립변수(또는 예측변수)를 모형에 포함시켜서 그 영향을 반영하고 동시에 자료의 변동을 부가적으로 설명해주는 방법이 공분산 분석(analysis of covariance; ANCOVA)이다.</p>
+<p>공분산 분석에서 고려되는 예측변수를 공변량(covarite)라고 부른다. 대부분의 실험연구에는 실험 전에 여러 가지 점수를 측정하는데 이 경우 이러한 점수를 공변량으로 모형에 포함시켜주는 것이 좋다 (예: 실험 전 상태에 대한 점수, 시험점수, IQ 점수). 또한 임상실험을 여러 개의 병원에서 진행하는 경우 병원 효과를 공변량으로 자주 사용한다.<br>
+공분산 모형의 주요한 장점은 <strong>반응변수에 대해 설명력이 높은 공변량을 사용하게 되면 잔차제곱합이 감소하여 처리의 효과에 대한 검정력을 높일 수 있다.</strong> 또한 공변량에 의한 편이(bias)도 줄이는 효과도 있다</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../myimages/variation2.png" class="img-fluid figure-img"></p>
+<figcaption>공분산분석에 의한 전체 변동의 설명</figcaption>
+</figure>
+</div>
+<p>간단한 예제로 분산분석 모형과 공분산분석 모형의 효율을 비교해 보자. 아래 왼쪽 그림은 3개의 집단을 비교하는 경우 반응변수의 분포를 상자그림으로 나타낸 것이다. 만약 반응변수가 나이와 상관관계가 높을 때 나이를 공변량으로 포함한 공분산분석 모형을 사용하면 오차에 의한 변동, 즉 잔차제곱합의 크기가 상재적으로 작아져서 처리의 효과에 대한 검정력이 높아진다.(오른쪽 그림)</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../myimages/covariate.png" class="img-fluid figure-img"></p>
+<figcaption>공분산분석의 효과</figcaption>
+</figure>
+</div>
+<p>공변량으로 사용할 수 있는 대표적이; 변수는 다음과 같다.</p>
+<ul>
+<li>기저 상태(baseline)
+<ul>
+<li>임상실험에서 환자가 실험에 참여하기 전에 환자의 상태(baseline condition, severity)가 처리의 효과 외에 반응값에 영향을 줄 수 있으므로 공변량으로 모형에 고려한다.</li>
+<li>교육 방법의 비교 실험에서 처리 전 학생의 점수는 중요한 공변량이 될 수 있다.</li>
+</ul></li>
+<li>그룹 정보
+<ul>
+<li>다기관(multicenter) 임상실험에서 각 의료기관에 대한 효과가 처리 효과 외에 반응값에 영향을 줄 수 있으므로 공변량으로 모형에 고려 (일반적으로 대부분의 분석에서 기관을 공변량으로 고려)</li>
+</ul></li>
+</ul>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+주의
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>여기서 주의해야 할 점은 공변량과 처리는 독립이 되야한다는 점이다.</strong></p>
+<p>만약 처리의 결과가 공변량에 영향을 미치게 되면 이러한 공변량은 모형에 포함시키는 것이 부적절하다.</p>
+<p>예를 들어 자동차정비 교육을 위한 두 가지 학습법을 비교하는 실험을 생각해 보자. 학생들을 임의로 두 가지 학습법중 하나를 선택하여 3개월 동안 교육을 받게 하고 시험을 보아 평균 점수(반응변수)의 차이를 알아보았다. 이 떄 공변량으로 총 학습시간을 고려하였는데 학습법의 선택(처리)이 총 학습시간(공변량)에 영향을 줄 수 있다. 즉 고려된 학습법 중 하나는 컴퓨터를 이용한 학습법이며 이 학습법에 배정된 학생들은 컴퓨터 사용를 익히는 시간까지 학습시간에 포함되는 것이 나타났다. 이렇게 공변량이 처리에 의해 영향을 받는 경우(교호작용이 있는 경우)는 이를 모형에 포함시키는 것은 위험하다.</p>
+<p>이러한 실험에서는 실험 전에 측정한 학생의 정비 능력은 공변량으로 사용하는 것이 적절할 수 있다.</p>
+</div>
+</div>
+</section>
+<section id="공분산분석의-모형" class="level2" data-number="8.2">
+<h2 data-number="8.2" class="anchored" data-anchor-id="공분산분석의-모형"><span class="header-section-number">8.2</span> 공분산분석의 모형</h2>
+<p>이제 일원배치에서 하나의 공변량이 있는 공분산분석의 모형은 일원배치 모형에 공변량 <span class="math inline">\(x\)</span>의 효과를 다음과 같이 더해주는 것이다.</p>
+<p><span id="eq-ancovamodel1"><span class="math display">\[
+y_{ij} = \mu + \alpha_i + \beta(x_{ij} - \bar x_{..}) + e_{ij},
+\quad i=1,2,\dots,a, ~~ j=1,2,\dots,r
+\tag{8.1}\]</span></span></p>
+<p>모형 <a href="#eq-ancovamodel1" class="quarto-xref">식&nbsp;<span>8.1</span></a> 에서 <span class="math inline">\(x_{ij}\)</span>는 관측값 <span class="math inline">\(y_{ij}\)</span>의 공변량이며 <span class="math inline">\(\bar x_{..} = \sum_{i=1}^a \sum_{j=1}^r x_{ij}\)</span>로 공변량의 전체 평균이다. 위의 효과모형은 다음과 같이 평균모형으로 나타낼 수 있다. 어떤 모형이든 모수에 대한 가설 검정의 결과는 동일하다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+y_{ij} &amp; = \mu + \alpha_i + \beta(x_{ij} - \bar x_{..}) + e_{ij} \\
+  &amp; = \beta_0 + \alpha_i + \beta x_{ij} + e_{ij} \\
+  &amp; = \beta_{0i} + \beta x_{ij} + e_{ij}
+\end{aligned}
+\]</span></p>
+<p>일반적으로 공분산분석 모형을 다루는 경우 <a href="#eq-ancovamodel1" class="quarto-xref">식&nbsp;<span>8.1</span></a> 모형과 같이 평균을 빼고 중심화된 공변량을 모형에서 고려한다.</p>
+</section>
+<section id="모수의-추정" class="level2" data-number="8.3">
+<h2 data-number="8.3" class="anchored" data-anchor-id="모수의-추정"><span class="header-section-number">8.3</span> 모수의 추정</h2>
+<p>모형 <a href="#eq-ancovamodel1" class="quarto-xref">식&nbsp;<span>8.1</span></a> 에서 각 모수의 추정은 ANOVA 모형에서와 같이 최소제곱법을 이용하여 추정하며 부가조건 <span class="math inline">\(\sum_i \alpha_i =0\)</span> 을 이용하면 다음과 같은 추정량을 얻을 수 있다</p>
+<p><span class="math display">\[
+\begin{aligned}
+\hat \mu &amp; = \bar y_{..} \\
+\hat \alpha_i &amp; =\bar y_{i.} - \bar y_{..} -\hat \beta(\bar x_{i.} -\bar x_{..}) \\
+\hat \beta &amp; =  \frac{ \sum_i \sum_j (x_{ij} - \bar x_{i.})(y_{ij}-\bar y_{i.})}{\sum_i \sum_j (x_{ij} - \bar x_{i.})^2}
+\end{aligned}
+\]</span></p>
+</section>
+<section id="가설검정" class="level2" data-number="8.4">
+<h2 data-number="8.4" class="anchored" data-anchor-id="가설검정"><span class="header-section-number">8.4</span> 가설검정</h2>
+<p>공분산 분석 모형에서는 다음과 같은 두 가지 가설을 검정할 수 있다. 분산 분석 모형에서와 같이 각 그룹의 평균에 대한 검정을 할 수 있고</p>
+<p><span class="math display">\[
+H_0: \alpha_1 = \alpha_2 =...=\alpha_a =0  \quad \text{vesus} \quad H_1: \text{ not } H_0
+\]</span></p>
+<p>또한 공변량의 효과에 대한 검정도 할 수 있다.</p>
+<p><span id="eq-hypoancova"><span class="math display">\[
+H_0: \beta =0  \quad \text{vesus} \quad H_1: \beta \ne 0
+\tag{8.2}\]</span></span></p>
+<p>가설검정을 위한 제곱합들을 다음과 같이 정의하자.</p>
+<p><span class="math display">\[
+\begin{aligned}
+S_{xx(i)} &amp; = \sum_{i=1}^a (x_{ij} - \bar x_{i.})^2 \\
+S_{yy(i)} &amp; = \sum_{i=1}^a (y_{ij} - \bar y_{i.})^2 \\
+S_{xy(i)} &amp; = \sum_{i=1}^a (x_{ij} - \bar x_{i.})(y_{ij} - \bar y_{i.}) \\
+S_{xx} &amp; = \sum_{i=1}^a \sum_{j=1}^r (x_{ij} - \bar x)^2 \\
+S_{yy} &amp; = \sum_{i=1}^a \sum_{j=1}^r (y_{ij} - \bar y)^2 \\
+S_{xy} &amp; = \sum_{i=1}^a \sum_{j=1}^r (x_{ij} - \bar x)(y_{ij} - \bar y)\\
+SST &amp; = \sum_{i=1}^a \sum_{j=1}^r (y_{ij} - \bar y)^2 \\
+SSA &amp; = \frac{(S_{xx})(S_{yy}) -(S_{xy})^2}{S_{xx}} -SSE \\
+SSX &amp; = \sum_{i=1}^a S_{yy(i)} -SSE \\
+SSE &amp; = \frac{(\sum_i S_{xx(i)})(\sum_i S_{yy(i)})-(\sum_i S_{xy(i)})^2}{\sum_i S_{xx(i)}}
+\end{aligned}
+\]</span></p>
+<p>이제 위의 두 검정은 다음과 같은 분산분석표를 이용한 F-검정법으로 수행할 수 있다. <span class="math inline">\(N=ar\)</span>으로 총 관측값의 개수이다.</p>
+<table class="table">
+<caption>공분산분석 모형의 분산분석표</caption>
+<thead>
+<tr class="header">
+<th style="text-align: center;">요인</th>
+<th style="text-align: left;">제곱합</th>
+<th style="text-align: left;">자유도</th>
+<th style="text-align: left;">평균제곱합</th>
+<th style="text-align: left;">F</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: center;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">공변량</td>
+<td style="text-align: left;"><span class="math inline">\(SSX\)</span></td>
+<td style="text-align: left;">1</td>
+<td style="text-align: left;"><span class="math inline">\(MSX = SSX/1\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(F_1 = MSX / MSE\)</span></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">처리</td>
+<td style="text-align: left;"><span class="math inline">\(SSA\)</span></td>
+<td style="text-align: left;">a-1</td>
+<td style="text-align: left;"><span class="math inline">\(MSA = SSA/(a-1)\)</span></td>
+<td style="text-align: left;"><span class="math inline">\(F_2 = MSA / MSE\)</span></td>
+</tr>
+<tr class="even">
+<td style="text-align: center;">오차</td>
+<td style="text-align: left;"><span class="math inline">\(SSE\)</span></td>
+<td style="text-align: left;">N-a-1</td>
+<td style="text-align: left;"><span class="math inline">\(MSE = SSE/(N-a-1)\)</span></td>
+<td style="text-align: left;"></td>
+</tr>
+<tr class="odd">
+<td style="text-align: center;">총합</td>
+<td style="text-align: left;"><span class="math inline">\(SST\)</span></td>
+<td style="text-align: left;">N-1</td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"></td>
+</tr>
+</tbody>
+</table>
+<p>위의 분산분석표에서 공변량 효과에 대한 가설 <a href="#eq-hypoancova" class="quarto-xref">식&nbsp;<span>8.2</span></a> 은 다음과 같이 p-값을 계산하여 검정할 수 있다.</p>
+<p><span class="math display">\[ p-value = P[ F(1, N-a-1) &gt; F_1 ] \]</span></p>
+<p>또한 그룹의 평균에 대한 검정은 ANOVA 검정과 유사하게 p-값을 계산하여 검정할 수 있다.</p>
+<p><span class="math display">\[ p-value = P[ F(a-1, N-a-1) &gt; F_2 ] \]</span></p>
+<p>위의 두 F-검정에 쓰이는 F-분포의 두 번째 자유도가 ANOVA 검정에서 사용되는 자유도(<span class="math inline">\(N-a\)</span>)보다 하나가 작음(<span class="math inline">\(N-a-1\)</span>)을 유의하자.</p>
+</section>
+<section id="예제-1-영어교육-방법" class="level2" data-number="8.5">
+<h2 data-number="8.5" class="anchored" data-anchor-id="예제-1-영어교육-방법"><span class="header-section-number">8.5</span> 예제 1: 영어교육 방법</h2>
+<p>교과서 예제 7.4에 나타난 영어교육 방법을 비교하는 실험을 공분산분석을 이용하여 분석해 보자. 실험은 3개의 교육방법(<code>method</code>)을 비교하는 실험이며 반응변수는 교육 후 시험 점수(<code>postscore</code>)이다. 실험 전에 학생들의 영어능력을 측정한 실험 전 점수(<code>prescore</code>)를 공변량으로 사용하고자 한다.</p>
+<p>먼저 함수 <code>relevel</code> 을 이용하여 <code>method</code> 변수의 수준에서 <code>C</code> 를 기준 수준으로 지정하자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>english2<span class="sc">$</span>method <span class="ot">&lt;-</span> <span class="fu">relevel</span>(english2<span class="sc">$</span>method, <span class="at">ref=</span><span class="st">"C"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>이제 공변량을 사용하지 않는 분산분석 모형을 적합해 보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>fit_anova <span class="ot">&lt;-</span> <span class="fu">lm</span>(postscore<span class="sc">~</span>method, <span class="at">data=</span>english2 )</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_anova)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = postscore ~ method, data = english2)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-14.000  -6.444   1.111   5.556  14.000 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  79.8889     2.7181  29.392   &lt;2e-16 ***
+methodA       1.0000     3.8439   0.260    0.797    
+methodB      -0.8889     3.8439  -0.231    0.819    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 8.154 on 24 degrees of freedom
+Multiple R-squared:  0.009972,  Adjusted R-squared:  -0.07253 
+F-statistic: 0.1209 on 2 and 24 DF,  p-value: 0.8867</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fit_anova)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: postscore
+          Df  Sum Sq Mean Sq F value Pr(&gt;F)
+method     2   16.07   8.037  0.1209 0.8867
+Residuals 24 1595.78  66.491               </code></pre>
+</div>
+</div>
+<p>위에서 일원배치 분산분석 결과에서 <code>method</code>의 효과가 유의하지 않다고 나타났다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(english2, <span class="fu">aes</span>(method, postscore))<span class="sc">+</span><span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ancova_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" style="width:75.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>이제 공변량을 포함한 공분산분석 모형을 적합해 보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>fit_ancova <span class="ot">&lt;-</span> <span class="fu">lm</span>(postscore<span class="sc">~</span>prescore <span class="sc">+</span> method, <span class="at">data=</span>english2 )</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit_ancova)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = postscore ~ prescore + method, data = english2)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.5044 -1.2316 -0.2874  1.3847  3.8373 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept) 22.67685    3.22300   7.036 3.61e-07 ***
+prescore     0.73981    0.04066  18.195 3.76e-15 ***
+methodA      3.05503    1.00713   3.033  0.00591 ** 
+methodB     -1.87530    1.00225  -1.871  0.07411 .  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.123 on 23 degrees of freedom
+Multiple R-squared:  0.9357,    Adjusted R-squared:  0.9273 
+F-statistic: 111.5 on 3 and 23 DF,  p-value: 7.563e-14</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fit_ancova)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: postscore
+          Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+prescore   1 1399.85 1399.85 310.593 7.472e-15 ***
+method     2  108.34   54.17  12.019 0.0002671 ***
+Residuals 23  103.66    4.51                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>실험 전 영어 점수를 공변량으로 포함하면 교육 후 점수에 유의한 영향을 미치는 것으로 나타났다. 또한 교육 방법의 효과도 유의하게 나타났다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>english2<span class="sc">$</span>pred <span class="ot">=</span> <span class="fu">predict</span>(fit_ancova)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(english2, <span class="fu">aes</span>(<span class="at">x=</span>prescore, <span class="at">y=</span>postscore, <span class="at">colour =</span> method)) <span class="sc">+</span> </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_line</span>(<span class="fu">aes</span>(<span class="at">y =</span> pred), <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="fu">theme_bw</span>()</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ancova_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" style="width:75.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="예제-2-저혈당-실험" class="level2" data-number="8.6">
+<h2 data-number="8.6" class="anchored" data-anchor-id="예제-2-저혈당-실험"><span class="header-section-number">8.6</span> 예제 2: 저혈당 실험</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a>dd <span class="ot">&lt;-</span> <span class="fu">read.table</span> (<span class="st">"../data/chapter-5-data.txt"</span>,<span class="at">sep=</span><span class="st">""</span>,<span class="at">header =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="fu">colnames</span>(dd) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"trt"</span>,<span class="st">"x"</span>,<span class="st">"y"</span>)</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>dd<span class="sc">$</span>trt <span class="ot">&lt;-</span> <span class="fu">factor</span>(dd<span class="sc">$</span>trt)</span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(dd)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  trt    x    y
+1   1 27.2 32.6
+2   1 33.0 37.7
+3   2 28.6 33.8
+4   2 26.5 30.7
+5   3 28.6 35.2
+6   3 23.2 28.9</code></pre>
+</div>
+</div>
+<p>혈당을 감소시키기 위한 다섯 개의 처리(<code>trt</code>)를 비교하려고 한다. 반응 변수 <span class="math inline">\(y\)</span>는 치료 적용 1달 후 혈당량 수치이며 각 처리그룹에 대한 자료와 상자그림은 다음과 같다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dd, <span class="fu">aes</span>(trt, y))<span class="sc">+</span><span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ancova_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" style="width:75.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>공변량 <span class="math inline">\(x\)</span> 는 치료 전 측정한 혈당량 수치이며 치료 후의 수치 <span class="math inline">\(y\)</span>의 관계는 다음과 같은 산점도로 나타낼 수 있으며 강한 양의 선형관계가 있다는 것을 알 수 있다.즉 초기 형당량 수치가 크면 1달 후 혈당량 수치도 평균적으로 크다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dd, <span class="fu">aes</span>(x, y))<span class="sc">+</span><span class="fu">geom_point</span>(<span class="fu">aes</span>(<span class="at">colour =</span> trt))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ancova_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" style="width:75.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>이제 공변량을 사용하지 않는 분산분석 모형을 적합해 보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>diab1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span>trt, <span class="at">data=</span>dd )</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(diab1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ trt, data = dd)
+
+Residuals:
+   Min     1Q Median     3Q    Max 
+-5.225 -1.781 -0.800  2.306  5.275 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)   34.475      1.634  21.094 1.46e-12 ***
+trt2          -2.825      2.311  -1.222 0.240469    
+trt3          -3.625      2.311  -1.568 0.137642    
+trt4          -2.250      2.311  -0.973 0.345753    
+trt5          -9.450      2.311  -4.089 0.000968 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 3.269 on 15 degrees of freedom
+Multiple R-squared:  0.5532,    Adjusted R-squared:  0.434 
+F-statistic: 4.643 on 4 and 15 DF,  p-value: 0.01224</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(diab1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: y
+          Df Sum Sq Mean Sq F value  Pr(&gt;F)  
+trt        4 198.41  49.602  4.6425 0.01224 *
+Residuals 15 160.26  10.684                  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>위의 결과를 보면 5개의 처리가 유의하게 다르다고 나타났다.</p>
+<p>다음으로 치료 전의 혈당 <span class="math inline">\(x\)</span> 를 공변량으로 포함한 공분석 결과를 적합해 보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a>diab2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span>x <span class="sc">+</span> trt, <span class="at">data=</span>dd )</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(diab2)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+lm(formula = y ~ x + trt, data = dd)
+
+Residuals:
+    Min      1Q  Median      3Q     Max 
+-3.1360 -1.0024 -0.2827  0.7257  6.0806 
+
+Coefficients:
+            Estimate Std. Error t value Pr(&gt;|t|)    
+(Intercept)  13.9437     4.8219   2.892 0.011834 *  
+x             0.7534     0.1723   4.373 0.000637 ***
+trt2         -2.7685     1.5554  -1.780 0.096793 .  
+trt3         -1.6660     1.6186  -1.029 0.320776    
+trt4         -1.6284     1.5618  -1.043 0.314787    
+trt5         -4.5903     1.9115  -2.401 0.030788 *  
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+Residual standard error: 2.2 on 14 degrees of freedom
+Multiple R-squared:  0.8112,    Adjusted R-squared:  0.7437 
+F-statistic: 12.03 on 5 and 14 DF,  p-value: 0.0001164</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(diab2)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Analysis of Variance Table
+
+Response: y
+          Df  Sum Sq Mean Sq F value    Pr(&gt;F)    
+x          1 256.747 256.747 53.0673 4.003e-06 ***
+trt        4  34.188   8.547  1.7666    0.1917    
+Residuals 14  67.734   4.838                      
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+</div>
+</div>
+<p>분산분석 모형에서는 평균 잔차제곱합이 <span class="math inline">\(MSE=10.684\)</span> 이지만 공분산분석에서는 <span class="math inline">\(MSE=4.838\)</span> 로 감소하였다.</p>
+<p>이는 공변량인 치료 전의 혈당이 치료 후의 혈당을 설명하는데 중요한 요인이므로 모형의 설명력이 높아진 결과이다.</p>
+<p>하지만 처리의 효과를 보면 공분산분석에서는 유의한 차이가 나타나지 않았다. 이는 공변량인 치료 전의 혈당이 치료 후의 혈당을 설명하는데 매우 유의한 요인이기 떄문이다. 즉 치료 후의 혈당의 집단별 변동이 큰 이유는 치료 효과때문이 아니라 치료 전의 혈당과 처리의 관계 때문으로 보여진다 (아래 그림).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="fu">ggplot</span>(dd, <span class="fu">aes</span>(trt, x))<span class="sc">+</span><span class="fu">geom_boxplot</span>() <span class="sc">+</span> <span class="fu">theme_bw</span>()</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="ancova_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" style="width:75.0%"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>이러한 결과의 교훈은 여러 개의 집단을 비교하는 경우, 처리를 배정할 때 임의화 방법(randomization)을 사용하여 실험 전 환자들의 인구적 특성과 증상의 정도가 처리그룹간에 큰 차이가 없이 만들어야 한다. 우리가 살펴본 저혈당 임상실험은 처리를 비교하기 위한 공정한 실험이라고 보기 힘들다.</p>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "복사완료!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "복사완료!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../qmd/anova.html" class="pagination-link" aria-label="분산분석 모형">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">분산분석 모형</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../qmd/compute.html" class="pagination-link" aria-label="최소제곱 추정량의 계산">
+        <span class="nav-page-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">최소제곱 추정량의 계산</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

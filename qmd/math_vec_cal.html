@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>통계적 예측모형 - 부록 D — 벡터 미분</title>
+<title>통계적 예측모형 - 부록 E — 벡터 미분</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -31,7 +31,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
 <link href="../qmd/multivar.html" rel="next">
-<link href="../qmd/math_eigen_value.html" rel="prev">
+<link href="../qmd/math_matrix_decomp.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -129,7 +129,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/math_vec_cal.html"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">벡터 미분</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/math_vec_cal.html"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">벡터 미분</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -207,6 +207,18 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../qmd/ancova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">공분산분석</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/compute.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">최소제곱 추정량의 계산</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
@@ -240,56 +252,62 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../qmd/math_matrix_decomp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">행렬의 분해</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../qmd/math_vec_cal.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">벡터 미분</span></span></a>
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">벡터 미분</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/multivar.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">다변량 확률변수의 성질</span></span></a>
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">다변량 확률변수의 성질</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/quadratic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">이차형식과 제곱합의 분포</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">이차형식과 제곱합의 분포</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/aic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">모형선택의 정보 기준</span></span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">모형선택의 정보 기준</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-01.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-02.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></span></a>
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-03.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">R-실습: 관측값에 대한 진단</span></span></a>
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">R-실습: 관측값에 대한 진단</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">R-실습: 모형의 선택</span></span></a>
+ <span class="menu-text"><span class="chapter-number">L</span>&nbsp; <span class="chapter-title">R-실습: 모형의 선택</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">L</span>&nbsp; <span class="chapter-title">R-실습: 분산분석 모형</span></span></a>
+ <span class="menu-text"><span class="chapter-number">M</span>&nbsp; <span class="chapter-title">R-실습: 분산분석 모형</span></span></a>
   </div>
 </li>
       </ul>
@@ -304,20 +322,20 @@ window.Quarto = {
     <h2 id="toc-title">목차</h2>
    
   <ul class="collapse">
-  <li><a href="#용어" id="toc-용어" class="nav-link active" data-scroll-target="#용어"><span class="header-section-number">D.1</span> 용어</a></li>
-  <li><a href="#벡터-미분의-표기법" id="toc-벡터-미분의-표기법" class="nav-link" data-scroll-target="#벡터-미분의-표기법"><span class="header-section-number">D.2</span> 벡터 미분의 표기법</a></li>
-  <li><a href="#함성함수의-미분법" id="toc-함성함수의-미분법" class="nav-link" data-scroll-target="#함성함수의-미분법"><span class="header-section-number">D.3</span> 함성함수의 미분법</a></li>
-  <li><a href="#두-벡터-내적의-미분" id="toc-두-벡터-내적의-미분" class="nav-link" data-scroll-target="#두-벡터-내적의-미분"><span class="header-section-number">D.4</span> 두 벡터 내적의 미분</a></li>
-  <li><a href="#벡터-미분의-응용" id="toc-벡터-미분의-응용" class="nav-link" data-scroll-target="#벡터-미분의-응용"><span class="header-section-number">D.5</span> 벡터 미분의 응용</a></li>
+  <li><a href="#용어" id="toc-용어" class="nav-link active" data-scroll-target="#용어"><span class="header-section-number">E.1</span> 용어</a></li>
+  <li><a href="#벡터-미분의-표기법" id="toc-벡터-미분의-표기법" class="nav-link" data-scroll-target="#벡터-미분의-표기법"><span class="header-section-number">E.2</span> 벡터 미분의 표기법</a></li>
+  <li><a href="#함성함수의-미분법" id="toc-함성함수의-미분법" class="nav-link" data-scroll-target="#함성함수의-미분법"><span class="header-section-number">E.3</span> 함성함수의 미분법</a></li>
+  <li><a href="#두-벡터-내적의-미분" id="toc-두-벡터-내적의-미분" class="nav-link" data-scroll-target="#두-벡터-내적의-미분"><span class="header-section-number">E.4</span> 두 벡터 내적의 미분</a></li>
+  <li><a href="#벡터-미분의-응용" id="toc-벡터-미분의-응용" class="nav-link" data-scroll-target="#벡터-미분의-응용"><span class="header-section-number">E.5</span> 벡터 미분의 응용</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/math_vec_cal.html"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">벡터 미분</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/math_vec_cal.html"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">벡터 미분</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="vector-cal-01" class="quarto-section-identifier">부록 D — 벡터 미분</span></h1>
+<h1 class="title"><span id="vector-cal-01" class="quarto-section-identifier">부록 E — 벡터 미분</span></h1>
 </div>
 
 
@@ -334,8 +352,8 @@ window.Quarto = {
 </header>
 
 
-<section id="용어" class="level2" data-number="D.1">
-<h2 data-number="D.1" class="anchored" data-anchor-id="용어"><span class="header-section-number">D.1</span> 용어</h2>
+<section id="용어" class="level2" data-number="E.1">
+<h2 data-number="E.1" class="anchored" data-anchor-id="용어"><span class="header-section-number">E.1</span> 용어</h2>
 <ul>
 <li>vector differential: 벡터 미분</li>
 <li>partial derivative: 편미분</li>
@@ -343,8 +361,8 @@ window.Quarto = {
 <li>Jacobian: 야코비안, 자코비안</li>
 </ul>
 </section>
-<section id="벡터-미분의-표기법" class="level2" data-number="D.2">
-<h2 data-number="D.2" class="anchored" data-anchor-id="벡터-미분의-표기법"><span class="header-section-number">D.2</span> 벡터 미분의 표기법</h2>
+<section id="벡터-미분의-표기법" class="level2" data-number="E.2">
+<h2 data-number="E.2" class="anchored" data-anchor-id="벡터-미분의-표기법"><span class="header-section-number">E.2</span> 벡터 미분의 표기법</h2>
 <p>이제 다변량함수(multivariate function), <span class="math inline">\(f: \RR^n \rightarrow \RR^m\)</span>에 대한 미분을 생각해보자.</p>
 <p>먼저 간단한 예제를 고려해 보자. 두 열벡터</p>
 <p><span class="math display">\[
@@ -364,7 +382,7 @@ y_3
 <p>를 고려하고 다음과 같은 함수로 두 벡터의 관계가 정의된다고 하자.</p>
 <p><span id="eq-vec-cal-xy"><span class="math display">\[
 y_1 = x_1^2 + x_2, \quad y_2= \exp (x_1) + 3 x_2, \quad y_3 = \sin(x_1) + x_2^3
-\tag{D.1}\]</span></span></p>
+\tag{E.1}\]</span></span></p>
 <p>위의 관계를 함수 관계 <span class="math inline">\(\pmb f: \RR^2 \rightarrow \RR^3\)</span> 로 나타내보면</p>
 <p><span class="math display">\[
 \pmb f(\pmb x) =
@@ -382,7 +400,7 @@ y_1 = x_1^2 + x_2, \quad y_2= \exp (x_1) + 3 x_2, \quad y_3 = \sin(x_1) + x_2^3
 \pardifftwo{  f_1}{ x_2} &amp; = 1,    &amp; \quad \pardifftwo{  f_2}{ x_1} &amp; = 3,         &amp; \quad
 \pardifftwo{  f_3}{ x_1} &amp; = 3 x_2^2 \\
 \end{aligned}
-\tag{D.2}\]</span></span></p>
+\tag{E.2}\]</span></span></p>
 <p>이제 이제 편미분값들을 행렬의 형태로 정리해보자. 편미분을 행렬에 배치할 떄 다음과 같은 규칙을 사용할 것이다.</p>
 <ul>
 <li>행렬의 행은 <span class="math inline">\(\pmb x\)</span>의 차원 <span class="math inline">\(n\)</span> 과 같다.</li>
@@ -438,7 +456,7 @@ y_1 = x_1^2 + x_2, \quad y_2= \exp (x_1) + 3 x_2, \quad y_3 = \sin(x_1) + x_2^3
 \pardifftwo{ f_m}{x}
 \end{bmatrix}
 \]</span></p>
-<p>참고로 <a href="#eq-vec-cal-xy" class="quarto-xref">식&nbsp;<span>D.1</span></a> 에서 정의한 함수 관계를 두 벡터 <span class="math inline">\(\pmb x\)</span> 와 <span class="math inline">\(\pmb y\)</span> 의 사상관계로 보면</p>
+<p>참고로 <a href="#eq-vec-cal-xy" class="quarto-xref">식&nbsp;<span>E.1</span></a> 에서 정의한 함수 관계를 두 벡터 <span class="math inline">\(\pmb x\)</span> 와 <span class="math inline">\(\pmb y\)</span> 의 사상관계로 보면</p>
 <p><span class="math display">\[ \pmb f : \pmb x \mapsto \pmb y \]</span> 다음과 같이 그레디언트 벡터를 표기할 수 있다.</p>
 <p><span class="math display">\[  \pardifftwo{ \pmb f}{\pmb x} = \pardifftwo{ \pmb y}{\pmb x}
 =
@@ -448,8 +466,8 @@ y_1 = x_1^2 + x_2, \quad y_2= \exp (x_1) + 3 x_2, \quad y_3 = \sin(x_1) + x_2^3
 \end{bmatrix}
 \]</span></p>
 </section>
-<section id="함성함수의-미분법" class="level2" data-number="D.3">
-<h2 data-number="D.3" class="anchored" data-anchor-id="함성함수의-미분법"><span class="header-section-number">D.3</span> 함성함수의 미분법</h2>
+<section id="함성함수의-미분법" class="level2" data-number="E.3">
+<h2 data-number="E.3" class="anchored" data-anchor-id="함성함수의-미분법"><span class="header-section-number">E.3</span> 함성함수의 미분법</h2>
 <p>이제 합성함수의 미분법(chain rule)에 대하여 알아보자.</p>
 <p>두 개의 함수</p>
 <p><span class="math display">\[
@@ -462,8 +480,8 @@ y_1 = x_1^2 + x_2, \quad y_2= \exp (x_1) + 3 x_2, \quad y_3 = \sin(x_1) + x_2^3
 <p>이러한 합성함수의 미분은 다음과 같이 계산된다.</p>
 <p><span id="eq-vec-chain-01"><span class="math display">\[
 \pardifftwo{ \pmb h}{\pmb x} = \pardifftwo{ \pmb f \circ \pmb g}{\pmb x} = \pardifftwo{ \pmb g}{\pmb x} \pardifftwo{ \pmb f}{\pmb g}
-\tag{D.3}\]</span></span></p>
-<p><a href="#eq-vec-chain-01" class="quarto-xref">식&nbsp;<span>D.3</span></a> 에서 <span class="math inline">\(\pardifftwo{ \pmb f}{\pmb g}\)</span>는 <span class="math inline">\(m \times p\)</span> Jacovian 벡터이고</p>
+\tag{E.3}\]</span></span></p>
+<p><a href="#eq-vec-chain-01" class="quarto-xref">식&nbsp;<span>E.3</span></a> 에서 <span class="math inline">\(\pardifftwo{ \pmb f}{\pmb g}\)</span>는 <span class="math inline">\(m \times p\)</span> Jacovian 벡터이고</p>
 <p><span class="math display">\[
 \pardifftwo{ \pmb f}{\pmb g}
 \begin{bmatrix}
@@ -490,10 +508,10 @@ y_1 = x_1^2 + x_2, \quad y_2= \exp (x_1) + 3 x_2, \quad y_3 = \sin(x_1) + x_2^3
 \underset{ n \times p} {\pardifftwo{ \pmb h}{\pmb x}} = \underset{ n \times m} {\pardifftwo{ \pmb g}{\pmb x}} \underset{ m \times p} {\pardifftwo{ \pmb f}{\pmb g}}
 \]</span></p>
 </section>
-<section id="두-벡터-내적의-미분" class="level2" data-number="D.4">
-<h2 data-number="D.4" class="anchored" data-anchor-id="두-벡터-내적의-미분"><span class="header-section-number">D.4</span> 두 벡터 내적의 미분</h2>
-<section id="상수벡터와-변수벡터의-내적" class="level3" data-number="D.4.1">
-<h3 data-number="D.4.1" class="anchored" data-anchor-id="상수벡터와-변수벡터의-내적"><span class="header-section-number">D.4.1</span> 상수벡터와 변수벡터의 내적</h3>
+<section id="두-벡터-내적의-미분" class="level2" data-number="E.4">
+<h2 data-number="E.4" class="anchored" data-anchor-id="두-벡터-내적의-미분"><span class="header-section-number">E.4</span> 두 벡터 내적의 미분</h2>
+<section id="상수벡터와-변수벡터의-내적" class="level3" data-number="E.4.1">
+<h3 data-number="E.4.1" class="anchored" data-anchor-id="상수벡터와-변수벡터의-내적"><span class="header-section-number">E.4.1</span> 상수벡터와 변수벡터의 내적</h3>
 <p>먼저 상수 벡터 <span class="math inline">\(\pmb a\)</span>와 변수 벡터 <span class="math inline">\(\pmb x\)</span>의 내적의 미분을 생각해 보자.</p>
 <p>참고로 다음과 같이 두 벡터의 내적은 스칼라이다.</p>
 <p><span class="math display">\[ \pmb a^t \pmb x = \pmb x^t \pmb a = a_1 x_1 + a_2x_2 + \dots + a_n x_n \]</span></p>
@@ -510,49 +528,49 @@ a_n
 <p>위의 식에서 상수벡터 <span class="math inline">\(\pmb a\)</span>는 가 전치로 앞에 나타나는 표현 <span class="math inline">\(\pmb x^t \pmb a\)</span> 를 사용하면 결과 벡터 <span class="math inline">\(\pmb a\)</span>가 열벡터로 그대로 나타나지므로 <strong>내적의 미분 표기</strong>로 사용할 것이다.</p>
 <p><span id="eq-vec-diff"><span class="math display">\[
 \pardifftwo{ \pmb x^t \pmb a}{\pmb x} =  \pardifftwo{  \pmb x^t}{\pmb x} \pmb a =\pmb I  \pmb a = \pmb a
-\tag{D.4}\]</span></span></p>
+\tag{E.4}\]</span></span></p>
 </section>
-<section id="상수벡터와-함수벡터의-내적" class="level3" data-number="D.4.2">
-<h3 data-number="D.4.2" class="anchored" data-anchor-id="상수벡터와-함수벡터의-내적"><span class="header-section-number">D.4.2</span> 상수벡터와 함수벡터의 내적</h3>
-<p>더 나아가서 상수 벡터 <span class="math inline">\(\pmb a\)</span>와 함수 벡터 <span class="math inline">\(\pmb f\)</span>의 내적의 미분도 <a href="#eq-vec-diff" class="quarto-xref">식&nbsp;<span>D.4</span></a> 을 표시하는 동일한 논리로 다음과 같이 표기할 수 있다.</p>
+<section id="상수벡터와-함수벡터의-내적" class="level3" data-number="E.4.2">
+<h3 data-number="E.4.2" class="anchored" data-anchor-id="상수벡터와-함수벡터의-내적"><span class="header-section-number">E.4.2</span> 상수벡터와 함수벡터의 내적</h3>
+<p>더 나아가서 상수 벡터 <span class="math inline">\(\pmb a\)</span>와 함수 벡터 <span class="math inline">\(\pmb f\)</span>의 내적의 미분도 <a href="#eq-vec-diff" class="quarto-xref">식&nbsp;<span>E.4</span></a> 을 표시하는 동일한 논리로 다음과 같이 표기할 수 있다.</p>
 <p><span id="eq-vec-diff-0"><span class="math display">\[
 \pardifftwo{ \pmb f^t \pmb a}{\pmb x} =  \pardifftwo{  \pmb f^t}{\pmb x} \pmb a
-\tag{D.5}\]</span></span></p>
-<p>참고로 <a href="#eq-vec-diff-0" class="quarto-xref">식&nbsp;<span>D.5</span></a> 에서 <span class="math inline">\(\pardifftwo{  \pmb f}{\pmb x}\)</span>는 행벡터가 아닌 행렬로 나타날 수 있다.</p>
+\tag{E.5}\]</span></span></p>
+<p>참고로 <a href="#eq-vec-diff-0" class="quarto-xref">식&nbsp;<span>E.5</span></a> 에서 <span class="math inline">\(\pardifftwo{  \pmb f}{\pmb x}\)</span>는 행벡터가 아닌 행렬로 나타날 수 있다.</p>
 </section>
-<section id="함수벡터와-함수벡터의-내적" class="level3" data-number="D.4.3">
-<h3 data-number="D.4.3" class="anchored" data-anchor-id="함수벡터와-함수벡터의-내적"><span class="header-section-number">D.4.3</span> 함수벡터와 함수벡터의 내적</h3>
+<section id="함수벡터와-함수벡터의-내적" class="level3" data-number="E.4.3">
+<h3 data-number="E.4.3" class="anchored" data-anchor-id="함수벡터와-함수벡터의-내적"><span class="header-section-number">E.4.3</span> 함수벡터와 함수벡터의 내적</h3>
 <p>이제 다음과 같이 같은 공간으로 사상되는 두 함수 <span class="math inline">\(\pmb f\)</span> 와 <span class="math inline">\(\pmb g\)</span> 의 내적을 생각해 보자.</p>
 <p><span class="math display">\[ \pmb f : \RR^n \mapsto \RR^m, \quad \pmb g : \RR^n \mapsto \RR^m\]</span></p>
 <p>두 함수의 내적을 미분하는 경우 곱셉 법칙을 적용하여야 하는데 행렬의 곱셉에서는 교환법칙이 성립되지 않으므로 순서에 주의해야 한다.</p>
 <p>내적 <span class="math inline">\(\pmb f^t \pmb g\)</span> 를 각각 따로 미분해야 하는데 각 벡터에 대해 따로 미분을 실행해 보자</p>
 <ul>
-<li><span class="math inline">\(\pmb f\)</span> 를 미분하는 경우 <span class="math inline">\(\pmb g\)</span> 는 상수 벡터 <span class="math inline">\(\pmb a\)</span> 로 취급한다. 그리고 <a href="#eq-vec-diff-0" class="quarto-xref">식&nbsp;<span>D.5</span></a> 를 적용한다.</li>
+<li><span class="math inline">\(\pmb f\)</span> 를 미분하는 경우 <span class="math inline">\(\pmb g\)</span> 는 상수 벡터 <span class="math inline">\(\pmb a\)</span> 로 취급한다. 그리고 <a href="#eq-vec-diff-0" class="quarto-xref">식&nbsp;<span>E.5</span></a> 를 적용한다.</li>
 </ul>
 <p><span id="eq-vec-diff-1"><span class="math display">\[
 \pardifftwo{ \pmb f^t \pmb g}{\pmb x} = \pardifftwo{ \pmb f^t \pmb a}{\pmb x} =
 =  \pardifftwo{ \pmb f^t}{\pmb x} \pmb a=
 \pardifftwo{ \pmb f}{\pmb x} \pmb g
-\tag{D.6}\]</span></span></p>
+\tag{E.6}\]</span></span></p>
 <ul>
-<li><span class="math inline">\(\pmb g\)</span> 를 미분하는 경우 <span class="math inline">\(\pmb f\)</span> 는 상수 벡터 <span class="math inline">\(\pmb a\)</span> 로 취급한다. 그리고 <a href="#eq-vec-diff-0" class="quarto-xref">식&nbsp;<span>D.5</span></a> 를 적용한다.</li>
+<li><span class="math inline">\(\pmb g\)</span> 를 미분하는 경우 <span class="math inline">\(\pmb f\)</span> 는 상수 벡터 <span class="math inline">\(\pmb a\)</span> 로 취급한다. 그리고 <a href="#eq-vec-diff-0" class="quarto-xref">식&nbsp;<span>E.5</span></a> 를 적용한다.</li>
 </ul>
 <p><span id="eq-vec-diff-2"><span class="math display">\[
 \pardifftwo{ \pmb f^t \pmb g}{\pmb x} = \pardifftwo{ \pmb a^t \pmb g}{\pmb x} =
 \pardifftwo{ \pmb g^t \pmb a}{\pmb x} =
 \pardifftwo{ \pmb g^t}{\pmb x}  \pmb a =
 \pardifftwo{ \pmb g}{\pmb x} \pmb f
-\tag{D.7}\]</span></span></p>
-<p>이제 위의 두 결과 <a href="#eq-vec-diff-1" class="quarto-xref">식&nbsp;<span>D.6</span></a> 과 <a href="#eq-vec-diff-2" class="quarto-xref">식&nbsp;<span>D.7</span></a> 를 합치면 다음과 같은 최종적인 결과를 얻을 수 있다.</p>
+\tag{E.7}\]</span></span></p>
+<p>이제 위의 두 결과 <a href="#eq-vec-diff-1" class="quarto-xref">식&nbsp;<span>E.6</span></a> 과 <a href="#eq-vec-diff-2" class="quarto-xref">식&nbsp;<span>E.7</span></a> 를 합치면 다음과 같은 최종적인 결과를 얻을 수 있다.</p>
 <p><span id="eq-vec-diff-prod"><span class="math display">\[
 \pardifftwo{ \pmb f^t \pmb g}{\pmb x} =  \pardifftwo{ \pmb f}{\pmb x} \pmb g +  \pardifftwo{ \pmb g}{\pmb x} \pmb f
-\tag{D.8}\]</span></span></p>
+\tag{E.8}\]</span></span></p>
 </section>
 </section>
-<section id="벡터-미분의-응용" class="level2" data-number="D.5">
-<h2 data-number="D.5" class="anchored" data-anchor-id="벡터-미분의-응용"><span class="header-section-number">D.5</span> 벡터 미분의 응용</h2>
-<section id="선형사상의-미분상" class="level3" data-number="D.5.1">
-<h3 data-number="D.5.1" class="anchored" data-anchor-id="선형사상의-미분상"><span class="header-section-number">D.5.1</span> 선형사상의 미분상</h3>
+<section id="벡터-미분의-응용" class="level2" data-number="E.5">
+<h2 data-number="E.5" class="anchored" data-anchor-id="벡터-미분의-응용"><span class="header-section-number">E.5</span> 벡터 미분의 응용</h2>
+<section id="선형사상의-미분상" class="level3" data-number="E.5.1">
+<h3 data-number="E.5.1" class="anchored" data-anchor-id="선형사상의-미분상"><span class="header-section-number">E.5.1</span> 선형사상의 미분상</h3>
 <p>이제 앞에서 배운 벡터의 미분을 이용하여 유용한 응용 공식을 유도해보자.</p>
 <p>먼저 선형변환 <span class="math inline">\(\pmb y = \pmb A \pmb x\)</span> 를 생각해 보자. 이때 (<span class="math inline">\(M \times N\)</span>)-<span class="math inline">\(\pmb A\)</span>는 상수 행렬이다. 이때 <span class="math inline">\(\pmb y\)</span>를 <span class="math inline">\(\pmb x\)</span>로 미분하면 다음과 같다.</p>
 <p>먼저 행렬 <span class="math inline">\(\pmb A\)</span>의 <span class="math inline">\(i\)</span> 번째 행을 <span class="math inline">\(\pmb a_i^t\)</span>라고 하면</p>
@@ -603,7 +621,7 @@ A_{12} &amp; A_{22} &amp; \dots &amp; A_{M2} \\
 A_{1N} &amp; A_{2N} &amp; \dots &amp; A_{MN} \\
 \end{bmatrix} = \pmb A^t
 \]</span> 따라서 선형사상의 미분은 선형변환 행렬의 전치이다.</p>
-<p><span id="eq-vec-diff-linear"><span class="math display">\[ \pardifftwo{\pmb A \pmb x}{\pmb x}  = \pmb A^t  \tag{D.9}\]</span></span></p>
+<p><span id="eq-vec-diff-linear"><span class="math display">\[ \pardifftwo{\pmb A \pmb x}{\pmb x}  = \pmb A^t  \tag{E.9}\]</span></span></p>
 <!--
 ### 이차형식의 미분
 
@@ -1060,13 +1078,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
-      <a href="../qmd/math_eigen_value.html" class="pagination-link" aria-label="고유값과 고유벡터">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">고유값과 고유벡터</span></span>
+      <a href="../qmd/math_matrix_decomp.html" class="pagination-link" aria-label="행렬의 분해">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">행렬의 분해</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../qmd/multivar.html" class="pagination-link" aria-label="다변량 확률변수의 성질">
-        <span class="nav-page-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">다변량 확률변수의 성질</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">다변량 확률변수의 성질</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

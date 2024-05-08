@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>통계적 예측모형 - 부록 L — R-실습: 분산분석 모형</title>
+<title>통계적 예측모형 - 부록 M — R-실습: 분산분석 모형</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -162,7 +162,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/practice-05.html"><span class="chapter-number">L</span>&nbsp; <span class="chapter-title">R-실습: 분산분석 모형</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/practice-05.html"><span class="chapter-number">M</span>&nbsp; <span class="chapter-title">R-실습: 분산분석 모형</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -240,6 +240,18 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../qmd/ancova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">공분산분석</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/compute.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">최소제곱 추정량의 계산</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
@@ -273,56 +285,62 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../qmd/math_matrix_decomp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">행렬의 분해</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../qmd/math_vec_cal.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">벡터 미분</span></span></a>
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">벡터 미분</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/multivar.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">다변량 확률변수의 성질</span></span></a>
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">다변량 확률변수의 성질</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/quadratic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">이차형식과 제곱합의 분포</span></span></a>
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">이차형식과 제곱합의 분포</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/aic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">모형선택의 정보 기준</span></span></a>
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">모형선택의 정보 기준</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-01.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-02.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></span></a>
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-03.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">R-실습: 관측값에 대한 진단</span></span></a>
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">R-실습: 관측값에 대한 진단</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">R-실습: 모형의 선택</span></span></a>
+ <span class="menu-text"><span class="chapter-number">L</span>&nbsp; <span class="chapter-title">R-실습: 모형의 선택</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-05.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">L</span>&nbsp; <span class="chapter-title">R-실습: 분산분석 모형</span></span></a>
+ <span class="menu-text"><span class="chapter-number">M</span>&nbsp; <span class="chapter-title">R-실습: 분산분석 모형</span></span></a>
   </div>
 </li>
       </ul>
@@ -337,19 +355,19 @@ window.Quarto = {
     <h2 id="toc-title">목차</h2>
    
   <ul class="collapse">
-  <li><a href="#일원배치-예제와-r-프로그램" id="toc-일원배치-예제와-r-프로그램" class="nav-link active" data-scroll-target="#일원배치-예제와-r-프로그램"><span class="header-section-number">L.1</span> 일원배치: 예제와 R 프로그램</a></li>
-  <li><a href="#예제-7.1---일원배치" id="toc-예제-7.1---일원배치" class="nav-link" data-scroll-target="#예제-7.1---일원배치"><span class="header-section-number">L.2</span> 예제 7.1 - 일원배치</a></li>
-  <li><a href="#예제-7.2---교호작용" id="toc-예제-7.2---교호작용" class="nav-link" data-scroll-target="#예제-7.2---교호작용"><span class="header-section-number">L.3</span> 예제 7.2 - 교호작용</a></li>
-  <li><a href="#예제-7.3---일원배치-2" id="toc-예제-7.3---일원배치-2" class="nav-link" data-scroll-target="#예제-7.3---일원배치-2"><span class="header-section-number">L.4</span> 예제 7.3 - 일원배치 2</a></li>
+  <li><a href="#일원배치-예제와-r-프로그램" id="toc-일원배치-예제와-r-프로그램" class="nav-link active" data-scroll-target="#일원배치-예제와-r-프로그램"><span class="header-section-number">M.1</span> 일원배치: 예제와 R 프로그램</a></li>
+  <li><a href="#예제-7.1---일원배치" id="toc-예제-7.1---일원배치" class="nav-link" data-scroll-target="#예제-7.1---일원배치"><span class="header-section-number">M.2</span> 예제 7.1 - 일원배치</a></li>
+  <li><a href="#예제-7.2---교호작용" id="toc-예제-7.2---교호작용" class="nav-link" data-scroll-target="#예제-7.2---교호작용"><span class="header-section-number">M.3</span> 예제 7.2 - 교호작용</a></li>
+  <li><a href="#예제-7.3---일원배치-2" id="toc-예제-7.3---일원배치-2" class="nav-link" data-scroll-target="#예제-7.3---일원배치-2"><span class="header-section-number">M.4</span> 예제 7.3 - 일원배치 2</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/practice-05.html"><span class="chapter-number">L</span>&nbsp; <span class="chapter-title">R-실습: 분산분석 모형</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/practice-05.html"><span class="chapter-number">M</span>&nbsp; <span class="chapter-title">R-실습: 분산분석 모형</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-multiple-05-anova" class="quarto-section-identifier">부록 L — R-실습: 분산분석 모형</span></h1>
+<h1 class="title"><span id="sec-multiple-05-anova" class="quarto-section-identifier">부록 M — R-실습: 분산분석 모형</span></h1>
 </div>
 
 
@@ -366,14 +384,14 @@ window.Quarto = {
 </header>
 
 
-<section id="일원배치-예제와-r-프로그램" class="level2" data-number="L.1">
-<h2 data-number="L.1" class="anchored" data-anchor-id="일원배치-예제와-r-프로그램"><span class="header-section-number">L.1</span> 일원배치: 예제와 R 프로그램</h2>
-<section id="예제-실험계획" class="level3" data-number="L.1.1">
-<h3 data-number="L.1.1" class="anchored" data-anchor-id="예제-실험계획"><span class="header-section-number">L.1.1</span> 예제: 실험계획</h3>
+<section id="일원배치-예제와-r-프로그램" class="level2" data-number="M.1">
+<h2 data-number="M.1" class="anchored" data-anchor-id="일원배치-예제와-r-프로그램"><span class="header-section-number">M.1</span> 일원배치: 예제와 R 프로그램</h2>
+<section id="예제-실험계획" class="level3" data-number="M.1.1">
+<h3 data-number="M.1.1" class="anchored" data-anchor-id="예제-실험계획"><span class="header-section-number">M.1.1</span> 예제: 실험계획</h3>
 <p>4개의 서로 다른 원단업체에서 직물을 공급받고 있다. 공급한 직물의 긁힘에 대한 저항력을 알아보기 위하여 각 업체마다 4개의 제품을 랜덤하게 선택하여 (<span class="math inline">\(a=4\)</span>, <span class="math inline">\(r=4\)</span>) 일원배치법에 의하여 마모도 검사을 실시하였다.</p>
 </section>
-<section id="자료의-생성" class="level3" data-number="L.1.2">
-<h3 data-number="L.1.2" class="anchored" data-anchor-id="자료의-생성"><span class="header-section-number">L.1.2</span> 자료의 생성</h3>
+<section id="자료의-생성" class="level3" data-number="M.1.2">
+<h3 data-number="M.1.2" class="anchored" data-anchor-id="자료의-생성"><span class="header-section-number">M.1.2</span> 자료의 생성</h3>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>company<span class="ot">&lt;-</span> <span class="fu">as.factor</span>(<span class="fu">rep</span>(<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">4</span>), <span class="at">each=</span><span class="dv">4</span>))</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>response<span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="fl">1.93</span>, <span class="fl">2.38</span>, <span class="fl">2.20</span>, <span class="fl">2.25</span>,</span>
@@ -417,8 +435,8 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="선형모형의-적합set-to-zero" class="level3" data-number="L.1.3">
-<h3 data-number="L.1.3" class="anchored" data-anchor-id="선형모형의-적합set-to-zero"><span class="header-section-number">L.1.3</span> 선형모형의 적합(set-to-zero)</h3>
+<section id="선형모형의-적합set-to-zero" class="level3" data-number="M.1.3">
+<h3 data-number="M.1.3" class="anchored" data-anchor-id="선형모형의-적합set-to-zero"><span class="header-section-number">M.1.3</span> 선형모형의 적합(set-to-zero)</h3>
 <p>이제 자료를 다음과 같은 선형 모형으로 적합해 보자. 선형 모형의 적합은 <code>lm()</code> 함수를 사용한다.</p>
 <p><span class="math display">\[ y_{ij} = \mu + \alpha_i + e_{ij}  \]</span></p>
 <p>여기서 선형식의 모수와 <code>R</code>의 변수는 다음과 같은 관계를 가진다,</p>
@@ -525,8 +543,8 @@ Confidence level used: 0.95 </code></pre>
 </div>
 <p>이 경우 처리 평균에 대한 추정값은 산술 평균과 동일하게 나온다.</p>
 </section>
-<section id="선형모형의-적합-sum-to-zero" class="level3" data-number="L.1.4">
-<h3 data-number="L.1.4" class="anchored" data-anchor-id="선형모형의-적합-sum-to-zero"><span class="header-section-number">L.1.4</span> 선형모형의 적합 (sum-to-zero)</h3>
+<section id="선형모형의-적합-sum-to-zero" class="level3" data-number="M.1.4">
+<h3 data-number="M.1.4" class="anchored" data-anchor-id="선형모형의-적합-sum-to-zero"><span class="header-section-number">M.1.4</span> 선형모형의 적합 (sum-to-zero)</h3>
 <p>이제 일원배치 모형에서 sum-to-zero 조건을 적용하여 모수를 추정해 보자. sum-to-zero 조건을 적용하려면 다음과 같은 명령어를 실행해야 한다.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="fu">options</span>(<span class="at">contrasts=</span><span class="fu">c</span>(<span class="st">"contr.sum"</span>, <span class="st">"contr.poly"</span>))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -602,8 +620,8 @@ Confidence level used: 0.95 </code></pre>
 </div>
 </div>
 </section>
-<section id="분산분석" class="level3" data-number="L.1.5">
-<h3 data-number="L.1.5" class="anchored" data-anchor-id="분산분석"><span class="header-section-number">L.1.5</span> 분산분석</h3>
+<section id="분산분석" class="level3" data-number="M.1.5">
+<h3 data-number="M.1.5" class="anchored" data-anchor-id="분산분석"><span class="header-section-number">M.1.5</span> 분산분석</h3>
 <p>분산분석의 결과는 어떠한 제약 조건에서도 동일하다.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a>res1 <span class="ot">&lt;-</span> <span class="fu">anova</span>(fit1)</span>
@@ -634,8 +652,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </section>
-<section id="다중비교-예제" class="level3" data-number="L.1.6">
-<h3 data-number="L.1.6" class="anchored" data-anchor-id="다중비교-예제"><span class="header-section-number">L.1.6</span> 다중비교 예제</h3>
+<section id="다중비교-예제" class="level3" data-number="M.1.6">
+<h3 data-number="M.1.6" class="anchored" data-anchor-id="다중비교-예제"><span class="header-section-number">M.1.6</span> 다중비교 예제</h3>
 <p>앞에서 살펴본 일원배치법 예제은 4개의 처리가 있다. 따라서 <span class="math inline">\({4 \choose 2} =6\)</span> 개의 가설 검정(또는 신뢰구간)을 수행해야 한다.</p>
 <p>4개의 <code>company</code>가 처리 수준이며 각 처리수준 은 <code>1</code>, <code>2</code>, <code>3</code>, <code>4</code>로 표시된다.</p>
 <div class="cell">
@@ -650,9 +668,9 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 4 4        2.31   2.30 0.0572  2.25  2.38</code></pre>
 </div>
 </div>
-<section id="다중비교-방법을-적용하지-않는-경우" class="level4" data-number="L.1.6.1">
-<h4 data-number="L.1.6.1" class="anchored" data-anchor-id="다중비교-방법을-적용하지-않는-경우"><span class="header-section-number">L.1.6.1</span> 다중비교 방법을 적용하지 않는 경우</h4>
-<p>먼저 다중비교 방법을 적용하지 않는 경우 결과를 보자. 함수 <code>LSD.test</code> 에서 <code>p.adj=c("none")</code>를 지정하면 다중 비교를 적용하지 않는다. 명령문 <code>p.adj</code> 를 지정하지 않으면 수정을 하지 않는 LSD 방법에 의한 신뢰 구간 <a href="anova.html#eq-twomeanci" class="quarto-xref">식&nbsp;<span>7.18</span></a> 와 검정 방법 <a href="anova.html#eq-lsd" class="quarto-xref">식&nbsp;<span>7.19</span></a> 로 구한 결과를 준다.</p>
+<section id="다중비교-방법을-적용하지-않는-경우" class="level4" data-number="M.1.6.1">
+<h4 data-number="M.1.6.1" class="anchored" data-anchor-id="다중비교-방법을-적용하지-않는-경우"><span class="header-section-number">M.1.6.1</span> 다중비교 방법을 적용하지 않는 경우</h4>
+<p>먼저 다중비교 방법을 적용하지 않는 경우 결과를 보자. 함수 <code>LSD.test</code> 에서 <code>p.adj=c("none")</code>를 지정하면 다중 비교를 적용하지 않는다. 명령문 <code>p.adj</code> 를 지정하지 않으면 수정을 하지 않는 LSD 방법에 의한 신뢰 구간 <a href="anova.html#eq-twomeanci" class="quarto-xref">식&nbsp;<span>7.24</span></a> 와 검정 방법 <a href="anova.html#eq-lsd" class="quarto-xref">식&nbsp;<span>7.25</span></a> 로 구한 결과를 준다.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>anova.res <span class="ot">&lt;-</span> <span class="fu">aov</span>(response<span class="sc">~</span>company,<span class="at">data=</span>df31) <span class="co">#일원배치</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>test1 <span class="ot">&lt;-</span> <span class="fu">LSD.test</span>(anova.res, <span class="st">"company"</span>, <span class="at">alpha =</span> <span class="fl">0.05</span>, <span class="at">group =</span> <span class="cn">FALSE</span>, <span class="at">console =</span> <span class="cn">FALSE</span>, <span class="at">p.adj=</span><span class="fu">c</span>(<span class="st">"none"</span>) )</span>
@@ -668,8 +686,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </section>
-<section id="본페로니-수정bonferroni-correction" class="level4" data-number="L.1.6.2">
-<h4 data-number="L.1.6.2" class="anchored" data-anchor-id="본페로니-수정bonferroni-correction"><span class="header-section-number">L.1.6.2</span> 본페로니 수정(Bonferroni correction)</h4>
+<section id="본페로니-수정bonferroni-correction" class="level4" data-number="M.1.6.2">
+<h4 data-number="M.1.6.2" class="anchored" data-anchor-id="본페로니-수정bonferroni-correction"><span class="header-section-number">M.1.6.2</span> 본페로니 수정(Bonferroni correction)</h4>
 <p>이제 다중비교 방법 중에 가장 보수적인 본페로니 수정(Bonferroni correction)을 적용해 보자. 함수 <code>LSD.test</code> 에서 <code>p.adj=c("bonferroni")</code>를 이용한다.</p>
 <p>아래의 결과는 본페로니 수정 방법에 의한 신뢰 구간 와 검정 방법으로 구한 결과이다.</p>
 <p>본페로니 수정이 적용된 신뢰구간은 LSD 방법의 신뢰구간보다 길며 수정된 p-값은 LSD 방법으로 구한 값의 6배이다. LSD 방법을 적용하는 경우 유의한 차이를 보이는 조합이 4개로 나타났는데(1-2,1-3,2-3,2-4) 본페로니 수정을 적용한 경우에는 2개로 줄어 들었다(1-2,2-4)</p>
@@ -688,8 +706,8 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </section>
-<section id="tukey의-hsd" class="level4" data-number="L.1.6.3">
-<h4 data-number="L.1.6.3" class="anchored" data-anchor-id="tukey의-hsd"><span class="header-section-number">L.1.6.3</span> Tukey의 HSD</h4>
+<section id="tukey의-hsd" class="level4" data-number="M.1.6.3">
+<h4 data-number="M.1.6.3" class="anchored" data-anchor-id="tukey의-hsd"><span class="header-section-number">M.1.6.3</span> Tukey의 HSD</h4>
 <p>함수<code>TukeyHSD</code>는 분산분석을 실행한 결과를 이용하여 다중비교 방법 중 가장 많이 이용되는 Tukey’s Honest Significant Difference (HSD) 방법으로 다중비교를 제공한다.</p>
 <p>Tukey의 HSD는 너무 보수적인 결과를 주는 본페로니 수정을 개선한 것이다. 따라서 Tukey의 HSD 에서 얻은 결과는 수정하지 않는 LDS 의 결과와 Bonferoni 방법의 중간에 있다고 할 수 있다.</p>
 <p>Tukey의 HSD 에서는 본페로니와 유사하게 2개의 조합(1-2,2-4)만이 유의한 차이가 있다고 나타난다.</p>
@@ -724,8 +742,8 @@ $company
 </div>
 </div>
 </section>
-<section id="세-방법에서의-p-값-비교" class="level4" data-number="L.1.6.4">
-<h4 data-number="L.1.6.4" class="anchored" data-anchor-id="세-방법에서의-p-값-비교"><span class="header-section-number">L.1.6.4</span> 세 방법에서의 p-값 비교</h4>
+<section id="세-방법에서의-p-값-비교" class="level4" data-number="M.1.6.4">
+<h4 data-number="M.1.6.4" class="anchored" data-anchor-id="세-방법에서의-p-값-비교"><span class="header-section-number">M.1.6.4</span> 세 방법에서의 p-값 비교</h4>
 <p>위에서 살펴본 수정을 하지 않은 LSD 방법, Tukey의 HSD 방법과 본페로니 방법에서 계산된 p-값을 아래 표에서 비교하였다.</p>
 <table class="table">
 <caption>LSD, Bonferoni, HSD 방법의 p-값 비교</caption>
@@ -779,8 +797,8 @@ $company
 </section>
 </section>
 </section>
-<section id="예제-7.1---일원배치" class="level2" data-number="L.2">
-<h2 data-number="L.2" class="anchored" data-anchor-id="예제-7.1---일원배치"><span class="header-section-number">L.2</span> 예제 7.1 - 일원배치</h2>
+<section id="예제-7.1---일원배치" class="level2" data-number="M.2">
+<h2 data-number="M.2" class="anchored" data-anchor-id="예제-7.1---일원배치"><span class="header-section-number">M.2</span> 예제 7.1 - 일원배치</h2>
 <p>이제 교재 예제 7.1 (271 페이지)에서 관고비 자료 <code>adsale</code>에서 판매액을 예측하는 회귀식을 고려해 보자.</p>
 <p>먼저 <code>adsale</code> 데이터프레임에서 두 변수 광고비 <code>ad</code> 와 매체 <code>media</code> 변수의 차이점을 알아보자. 먼저 광고비 <code>ad</code>는 수치 변수(numeric variable)로서 함수 <code>class()</code>를 이용하면 정수(integer) 형태인 것을 알 수 있다. 수치변수는 정수, 실수, 복소수 등을 의미한다.</p>
 <p>반면 매체 <code>media</code> 는 범주형 변수로서 함수 <code>class()</code>를 이용하면 범주형(factor) 형태인 것을 알 수 있다. <code>levels</code>는 범주형 변수의 항목을 나타내는 것으로서 범주형 변수 <code>media</code>는 두 개의 항목 <code>방송</code>과 <code>신문</code>으로 이루어 졌음을 알 수 있다.</p>
@@ -889,8 +907,8 @@ attr(,"contrasts")$media
 </div>
 </div>
 </section>
-<section id="예제-7.2---교호작용" class="level2" data-number="L.3">
-<h2 data-number="L.3" class="anchored" data-anchor-id="예제-7.2---교호작용"><span class="header-section-number">L.3</span> 예제 7.2 - 교호작용</h2>
+<section id="예제-7.2---교호작용" class="level2" data-number="M.3">
+<h2 data-number="M.3" class="anchored" data-anchor-id="예제-7.2---교호작용"><span class="header-section-number">M.3</span> 예제 7.2 - 교호작용</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(sale <span class="sc">~</span> ad <span class="sc">+</span> media <span class="sc">+</span> ad<span class="sc">:</span>media, <span class="at">data=</span>adsale)</span>
 <span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit2)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
@@ -950,8 +968,8 @@ attr(,"contrasts")$media
 </div>
 </div>
 </section>
-<section id="예제-7.3---일원배치-2" class="level2" data-number="L.4">
-<h2 data-number="L.4" class="anchored" data-anchor-id="예제-7.3---일원배치-2"><span class="header-section-number">L.4</span> 예제 7.3 - 일원배치 2</h2>
+<section id="예제-7.3---일원배치-2" class="level2" data-number="M.4">
+<h2 data-number="M.4" class="anchored" data-anchor-id="예제-7.3---일원배치-2"><span class="header-section-number">M.4</span> 예제 7.3 - 일원배치 2</h2>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb57"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a>english1</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
@@ -1502,7 +1520,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../qmd/practice-04.html" class="pagination-link" aria-label="R-실습: 모형의 선택">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">R-실습: 모형의 선택</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">L</span>&nbsp; <span class="chapter-title">R-실습: 모형의 선택</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
