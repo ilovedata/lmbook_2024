@@ -19,12 +19,15 @@ book:
     - qmd/residual.qmd
     - qmd/modelselection.qmd
     - qmd/anova.qmd
+    - qmd/ancova.qmd
+    - qmd/compute.qmd
     - references.qmd
   
   appendices:
     - qmd/math_mat_basic.qmd
     - qmd/math_vector_space.qmd
     - qmd/math_eigen_value.qmd
+    - qmd/math_matrix_decomp.qmd
     - qmd/math_vec_cal.qmd
     - qmd/multivar.qmd
     - qmd/quadratic.qmd

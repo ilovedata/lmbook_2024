@@ -1,0 +1,300 @@
+# 최소제곱 추정량의 계산 {#sec-compute} 
+
+```{r warning=FALSE, echo=FALSE, message=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning=FALSE, message=FALSE)
+source(here::here("common", "_common.R"))
+source(here::here("common", "_preprocess.R"))
+```
+
+이제 선형모형에서 회귀계수를 구하는 계산 방법에 대하여 알아보자. 최소제곱법(동시에 최대 가능도 추정법)에 의한 회귀게수의 추정치를 구하려면 다음과 같은 최적화 문제를 풀어야한다. 
+
+$$
+\underset{\pmb  \beta}{\min} \norm{ \pmb  y - \pmb  X \pmb  \beta}^2 
+$$  {#eq-comp-crit} 
+
+위의 최적화 문제로 부터 유도된 회귀계수에 대한 정규 방정식(normal equation)은 다음과 같다.
+
+$$
+ {\pmb  X}^t \pmb  X \pmb  \beta = \pmb  X^t \pmb  y
+$$  {#eq-comp-lse} 
+
+@eq-comp-lse  에 대한 해를 구하는 경우 대수적으로는 $\hat { \pmb  \beta} = ({\pmb  X}^t \pmb  X )^{-1} \pmb  X^t \pmb  y$로 표시하지만 
+실제 계산에서 역행렬 $({\pmb  X}^t \pmb  X )^{-1}$을 실제로 구하지는 않는다.  @eq-comp-lse 에서 나타난 것과 같은 선형방정식을 
+푸는 계산적 방법은 가우스 소거법(Gauss elimination ), 교환 연산(sweep operator) 등에 의한 전통적인 방법들이 있다. 교환 연산(sweep operator) 방법은 SAS 프로그램에서 최소제곱법을 푸는 방법으로 사용된다. 이러한 전통적인 방법들은 가우스 소거법에 근거하여 핼과 열 연산에 의한 소거법을 기반으로 한다. 하지만 최근에 나온 통계 계산 패키지에서는 소거법을 사용하지 않는다. 
+
+
+이 장에서는 최근 통계 계산 프로그램이 사용하는 행렬 분해에 의한 방법을 살펴보고자 한다. 다음에 나오는 방법들은 계획행렬 $\pmb  X$가 최대 계수(full rank)가 아닌 경우에도 적용할 수 있지만 여기서는 최대 계수인 경우만 고려하겠다.
+
+아래 방법들을 공부하기 전에 @sec-matdecomp 에 제시된 행렬의 분해 방법을 먼저 공부하자.
+
+## 촐레스키 분해의 이용 
+
+방정식 @eq-comp-lse  에서 완쪽 항에 있는  $\pmb  A = {\pmb  X}^t \pmb  X$ 가 양정치 행렬이라고 하자. 양정치 행렬 A은 다음과 같이 유일하게 촐레스키 분해(Cholesky decomposition)가 가능하다.
+
+$$
+\pmb  A = {\pmb  X}^t \pmb  X = \pmb  L \pmb  L^t 
+$$  {#eq-comp-chol} 
+
+위의 분해에서 행렬 $\pmb  L$은 양수의 대각원소를 가지는 하삼각 행렬(lower triangular matrix)이다. 
+
+이제 촐레스키 분해를 정규 방정식에 적용해보자.
+
+$$   \pmb  L \pmb  L^t \pmb  \beta = \pmb  X^t \pmb  y $$ 
+
+위의 식에서 $\pmb  L^t \pmb  \beta = \pmb  \beta_*$라고 하면 다음과 같은 방정식을 얻게 되고 이 방정식은 행렬 $\pmb  L$이 하삼각 행렬이기 때문에 대수적으로 축차식을 이용하여 쉽게 해 $\hat {\pmb  \beta}_*$를 얻을 수 있다.
+
+$$ \pmb  L \pmb  \beta_* = \pmb  X^t \pmb  y $$
+
+다음으로 관계식 $\pmb  L^t \pmb  \beta = \pmb  \beta_*$ 이용하여 다음의 방정식을 풀면 회귀계수의 추정치 $\hat { \pmb  \beta}$를 얻게 된다. 아래의 방정식 또한 $\pmb  L^t$가 상삼각 행렬이기 때문에 축차적인 계산이 가능하다.
+
+$$ \pmb  L^t \pmb  \beta = \hat {\pmb  \beta}_*$$
+
+
+## QR 분해의 이용  
+
+차원이 $n \times p$인 계획 행렬 $\pmb  X$의 QR 분해가 다음과 같이 주어졌다고 하자.  $rank(\pmb  X)=p< n$ 이라고 가정하자. 
+
+
+$$  \pmb  X =\pmb  Q_1 \pmb  R_1 $$
+위의 QR 분해에서  $\pmb  Q_1$는 $p$ 개의 직교하는 열을 가진 $n \times p$ 행렬이다 ($\pmb  Q_1^t \pmb  Q_1= \pmb  I$). 또한 행렬 $\pmb  R_1$은 차원이 $p \times p$인 상삼각 행렬(upper diagonal matrix)이다. 
+
+그러면  행렬 $\pmb  X$는 다음과 같은 확장된 분해를 가진다.  
+
+$$
+\pmb   X = \pmb  Q \pmb  R =  
+\begin{bmatrix} \pmb  Q_1 & \pmb  Q_2  \end{bmatrix} \begin{bmatrix} \pmb  R_1 \\ \pmb  0 
+\end{bmatrix} 
+$$
+
+
+위에서 $\pmb  Q_2$ 는 행렬 $\pmb  Q_1$의 열들과 직교하는 $n-p$ 개의 추가 정규직교 벡터들로 이루어진 행렬이다. $\pmb  Q_1$과 $\pmb  Q_2$는 각각 $n \times p$,  $n \times (n-p)$의 행렬이다. 따라서 행렬 $\pmb  Q = [\pmb  Q_1 ~\pmb  Q_2]$는 $n \times n$ 직교행렬이다 ($\pmb  Q^t \pmb  Q = \pmb  Q \pmb  Q^t = \pmb  I$). 
+
+또한 $\pmb  R$는 $n \times p$ 이며 $\pmb  0$은 차원이 $(n-p) \times p$인 영행렬이다.
+
+
+$$ 
+\pmb  R = 
+\begin{bmatrix}
+\pmb  R_1 \\
+\pmb  0 
+\end{bmatrix}
+$$
+
+이제 $\pmb  Q^t \pmb  Q =\pmb  I$를 이용하여 잔차제곱합 $\norm{ \pmb  y-\pmb  X \pmb  \beta}^2$를 다음과 같이 분해할 수 있다.
+
+$$
+\begin{aligned}
+\norm{ \pmb  y-\pmb  X \pmb  \beta}^2 & = (\pmb  y-\pmb  X \pmb  \beta)^t (\pmb  y-\pmb  X\pmb  \beta) \notag \\
+  & =(\pmb  y-\pmb  X \pmb  \beta)^t \pmb  Q \pmb  Q^t (\pmb  y-\pmb  X \pmb  \beta) \notag \\
+  & = (\pmb  Q^t \pmb  y-\pmb  Q^t \pmb  X \pmb  \beta)^t  (\pmb  Q^t  \pmb  y-\pmb  Q^t  \pmb  X \pmb  \beta) \notag \\
+  & =(\pmb  c -\pmb  R \pmb  \beta)^t  (\pmb  c -\pmb  R \pmb  \beta) \notag \\
+  & =  
+  \left ( 
+  \begin{bmatrix}
+  \pmb  c_1 \\
+  \pmb  c_2
+  \end{bmatrix}
+  -
+  \begin{bmatrix}
+  \pmb  R_1 \\
+  \pmb  0
+  \end{bmatrix}
+  \pmb  \beta
+  \right )^t
+   \left ( 
+  \begin{bmatrix}
+  \pmb  c_1 \\
+  \pmb  c_2
+  \end{bmatrix}
+  -
+  \begin{bmatrix}
+  \pmb  R_1 \\
+  \pmb  0
+  \end{bmatrix}
+  \pmb  \beta
+  \right ) \notag \\
+  & = (\pmb  c_1 -\pmb  R_1 \pmb  \beta)^t  (\pmb  c_1 -\pmb  R_1 \pmb  \beta) + \pmb  c_2^t \pmb  c_2 \notag \\
+  & = \norm{ \pmb  c_1 - \pmb  R_1 \pmb  \beta }^2 + \norm{\pmb  c_2}^2 
+\end{aligned}
+$$
+
+결과를 요약하면 다음과 같은 분해를 얻는다.
+
+$$
+\norm{ \pmb  y-\pmb  X \pmb  \beta}^2 = \norm{ \pmb  c_1 - \pmb  R_1 \pmb  \beta }^2 + \norm{\pmb  c_2}^2 
+$$  {#eq-decompres} 
+
+여기서
+
+$$
+\pmb  c= \pmb  Q^t \pmb  y=
+ \begin{bmatrix} 
+   \pmb  Q_1^t \\ 
+   \pmb  Q_2^t 
+   \end{bmatrix} \pmb  y 
+   =
+   \begin{bmatrix} 
+   \pmb  Q_1^t \pmb  y  \\ 
+   \pmb  Q_2^t \pmb  y 
+   \end{bmatrix}
+   = \begin{bmatrix} 
+   \pmb  c_1 \\ 
+   \pmb  c_2 
+\end{bmatrix}  
+$$
+
+위의   @eq-decompres 를 보면 벡터 $\pmb  c_2= \pmb  Q_2^t \pmb  y$는  $\pmb  \beta$와 관계가 없으므로  잔차제곱합 $\norm{ \pmb  y-\pmb  X \pmb  \beta}^2$ 을 최소화하는 
+$\pmb  \beta$는 $\norm{ \pmb  c_1 - \pmb  R_1 \pmb  \beta }^2$을 0으로 만드는 것이다. 즉 $\pmb  R_1 \pmb  \beta =\pmb  c_1$를 만족하는 $\pmb  \beta$가 최소제곱 추정량이다.
+
+$$
+\\pmbin_{\pmb  \beta} \norm{ \pmb  y-\pmb  X \pmb  \beta}^2 = \\pmbin_{\pmb  \beta} \norm{ \pmb  c_1 - \pmb  R_1 \pmb  \beta }^2 +  \norm{\pmb  c_2}^2 
+$$
+
+$\pmb  X$가 완전계수 행렬이므로 상삼각행렬인 $\pmb  R_1$도 완전계수 행렬이다. 따라서 방정식 $\pmb  R_1 \pmb  \beta = \pmb  c_1$는 유일한 해는 상삼각행렬의 성질을 이용하여 축차식으로 쉽게 구할 수 있다.
+
+$$ \hat {\pmb  \beta} =\pmb  R_1^{-1} \pmb  c_1 $$ 
+
+추정량은 $\hat {\pmb  \beta}$은 실제 역행렬을 구하지 않고 구할 수 있다.  
+
+
+참고로 잔차제곱합 $SSE$는 다음과 같이 계산된다.
+
+$$ SSE = \norm{ \pmb  y-\pmb  X \hat {\pmb  \beta}}^2 = \norm{\pmb  c_2}^2 = \pmb  y^t \pmb  Q_2 \pmb  Q_2^t \pmb  y $$
+
+
+## SVD 을 이용 
+
+이제 최소제곱법을 SVD (Singular Value Decomposition) 으로 푸는 방법을 살펴보자. 차원이 $n \times p$인 계획 행렬 $\pmb  X$ 이 주어지고 $rank(\pmb  X)=p< n$ 이라고 가정하자.  
+
+이제 계획행렬 $\pmb  X$ 은 SVD 를 이용하여 다음과 같이 분해할 수 있다.
+
+
+$$  \pmb  X = \pmb  U \pmb  R  \pmb  V^t$$
+위의 분해에서 각 행렬의 특성은 다음과 같다.
+
+- $\pmb  U$: $n \times n$ 직교행렬
+- $\pmb  V$: $p \times p$ 직교행렬
+
+$\pmb  R$은 $n \times p$ 행렬이며 윗 부분  $p \times p$ 행렬 $R_1$은 대각 행렬이다. 
+$\pmb  R$의 아래 부분 $(n-p) \times p$는 영행렬이다.
+
+$$ 
+\pmb  R = 
+\begin{bmatrix}
+\pmb  R_1 \\
+\pmb  0
+\end{bmatrix}
+\quad 
+\pmb  R_1 = diag(r_1, r_2, \dots, r_p)
+$$
+
+따라서 계획행렬의 분해는 다음과 같이 축소할 수 있다.
+
+$$
+\pmb  X = \pmb  U \pmb  R  \pmb  V^t = 
+\begin{bmatrix}
+\pmb  U_1 & \pmb  U_2
+\end{bmatrix}
+\begin{bmatrix}
+\pmb  R_1 \\
+\pmb  0
+\end{bmatrix}
+\pmb  V^t
+= \pmb  U_1 \pmb  R_1  \pmb  V^t
+$$  {#eq-svd} 
+
+위의   @eq-svd  에서 행렬 $\pmb  U_1$은 $n \times p$, $\pmb  U_2$은 $n \times (n-p)$ 행렬이며 
+$\pmb  U_1^t \pmb  U_1 = \pmb  I$, $\pmb  U_2^t \pmb  U_2 = \pmb  I$ 이다. 
+
+
+이제 최소제곱법의 해를 SVD 로 구해보자.
+
+$$
+\begin{aligned}
+\norm{ \pmb  y-\pmb  X \pmb  \beta}^2 & = (\pmb  y-\pmb  X \pmb  \beta)^t (\pmb  y-\pmb  X\pmb  \beta) \\
+  & = (\pmb  y-\pmb  U  \pmb  R   \pmb  V^t \pmb  \beta)^t (\pmb  y-\pmb  U  \pmb  R   \pmb  V^t \pmb  \beta) \\
+  & =  (\pmb  y-\pmb  U  \pmb  R   \pmb  V^t \pmb  \beta)^t \pmb  U   \pmb  U ^t (\pmb  y-\pmb  U  \pmb  R   \pmb  V^t \pmb  \beta) \\
+  & =  (\pmb  U ^t \pmb  y- \pmb  U ^t \pmb  U  \pmb  R   \pmb  V^t \pmb  \beta)^t    (\pmb  U ^t \pmb  y-\pmb  U ^t \pmb  U  \pmb  R   \pmb  V^t \pmb  \beta) \\
+  & =  (\pmb  U ^t \pmb  y-  \pmb  R   \pmb  V^t \pmb  \beta)^t    (\pmb  U ^t \pmb  y- \pmb  R   \pmb  V^t \pmb  \beta) \\
+  & = \norm{ \pmb  U ^t \pmb  y-  \pmb  R   \pmb  V^t \pmb  \beta}^2 \\
+  & = \norm{ \pmb  c -  \pmb  R   \pmb  \beta_*}^2  \\
+    & =  
+  \left ( 
+  \begin{bmatrix}
+  \pmb  c_1 \\
+  \pmb  c_2
+  \end{bmatrix}
+  -
+  \begin{bmatrix}
+  \pmb  R_1 \\
+  \pmb  0
+  \end{bmatrix}
+  \pmb  \beta_*
+  \right )^t
+   \left ( 
+  \begin{bmatrix}
+  \pmb  c_1 \\
+  \pmb  c_2
+  \end{bmatrix}
+  -
+  \begin{bmatrix}
+  \pmb  R_1 \\
+  \pmb  0
+  \end{bmatrix}
+  \pmb  \beta_*
+  \right )  \\
+& =  (\pmb  c_1 -\pmb  R_1 \pmb  \beta_*)^t  (\pmb  c_1 -\pmb  R_1 \pmb  \beta_*) + \pmb  c_2^t \pmb  c_2  \\
+  & = \norm{ \pmb  c_1 - \pmb  R_1 \pmb  \beta_* }^2 + \norm{\pmb  c_2}^2 
+\end{aligned}
+$$
+
+
+이제 위의 분해에서 다음과 같이 새로운 벡터를 정의한다.
+
+$$
+\pmb  c = \pmb  U^t \pmb  y,  \quad \pmb  \beta_* = \pmb  V^t \pmb  \beta 
+$$ {#eq-svdpara} 
+
+그리고 
+
+$$
+\pmb  c= \pmb  U^t \pmb  y=
+ \begin{bmatrix} 
+   \pmb  U_1^t \\ 
+   \pmb  U_2^t 
+   \end{bmatrix} \pmb  y 
+   =
+   \begin{bmatrix} 
+   \pmb  U_1^t \pmb  y  \\ 
+   \pmb  U_2^t \pmb  y 
+   \end{bmatrix}
+   = \begin{bmatrix} 
+   \pmb  c_1 \\ 
+   \pmb  c_2 
+\end{bmatrix}  
+$$
+
+이제  QR 분해와 유사하게 최소제곱의 오차제곱합은 다음과 같이 분해된다.
+
+$$
+\norm{ \pmb  y-\pmb  X \pmb  \beta}^2  = 
+\norm{ \pmb  c_1 - \pmb  R_1 \pmb  \beta_* }^2 + \norm{\pmb  c_2}^2 
+ =\sum_{i=1}^p (c_{1i} - r_i \beta_{*i})^2 + \norm{\pmb  c_2}^2 
+$$  {#eq-svdlse} 
+ 
+ 위의 분해 @eq-svdlse  는 행렬 $\pmb  R_1$이 대각행렬임을 이용한 것이다. 이제   @eq-svdlse  를 최소화하는 벡터  $\hat {\pmb  \beta}_*$ 의 원소들은  다음과 같이 구할 수 있고 
+ 
+ $$ \hat \beta_{*i} =\frac{ c_{1i}}{r_i}, \quad i=1,2,\dots,p $$
+ 
+ 최종적으로   @eq-svdpara  의 관계를 이용하면 최소제곱 추정량은 다음과 같이 주어진다.
+ 
+ $$ \hat {\pmb  \beta} = \pmb  V \hat {\pmb  \beta}_* $$ 
+ 참고로 QR 분해 방법과 유사하게 잔차제곱합 $SSE$는 다음과 같이 계산된다.
+
+$$ SSE = \norm{ \pmb  y-\pmb  X \hat {\pmb  \beta}}^2 = \norm{\pmb  c_2}^2 = \pmb  y^t \pmb  U_2 \pmb  U_2^t \pmb  y $$
+
+ 
+::: {.callout-note}
+위에서 논의한 촐레스키, QR, SVD 를 이용한 최소제곱 추정량 $\hat \beta$를 구하는 방법은 계획행렬이 
+완전 계수가 아닌 경우에도 ($rank(X)<p$) 쉽게 적용할 수 있다.
+:::
