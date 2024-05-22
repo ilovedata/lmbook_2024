@@ -299,8 +299,7 @@ df3 %>% ggplot(aes(x=reserved, y=boarding)) +
 예약 자료와 그에 대한 그림을 그려보면 다음과 같다.
 
 ```{r}
-df %>% kbl(caption = '열차 죄석 예약 현황(출발일 20일 전부터)') %>%
-  kable_styling(bootstrap_options = "striped", full_width = T, position = "center", font_size=12)
+df %>% head()
 ```
 
 ```{r train1, fig.align='center',fig.cap="예약 20일 전에서 출발일까지의 열차 예약 현황"}
