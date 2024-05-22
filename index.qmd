@@ -34,6 +34,16 @@ library(leaps)
 library(plotly)
 library(plot3D)
 
+library(mvtnorm)
+library(nlstools)
+
+# 라이브러리 `ElemStatLearn`는 더 이상 R 라이브러리에 없으므로 다음 사이트에서 다운로드 받아서 직접 화일로 설치해야 한다**
+# 다운로드 사이트: https://cran.r-project.org/src/contrib/Archive/ElemStatLearn/
+# install.packages("~/Downloads/ElemStatLearn_2015.6.26.2.tar.gz", repos = NULL, type = "source")
+
+library(ElemStatLearn)
+
+
 # 아래 3 문장은 한글을 포함한 ggplot 그림이 포함된 HTML, PDF로 만드는 경우 사용
 library(showtext)
 font_add_google("Nanum Pen Script", "gl")

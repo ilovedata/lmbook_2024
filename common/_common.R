@@ -16,6 +16,11 @@ library(car)
 library(olsrr)
 library(leaps)
 
+library(mvtnorm)
+library(nlstools)
+
+library(ElemStatLearn)
+
 # 아래 3 문장은 한글을 포함한 ggplot 그림이 포함된 HTML, PDF로 만드는 경우 사용
 library(showtext)
 font_add_google("Nanum Pen Script", "gl")

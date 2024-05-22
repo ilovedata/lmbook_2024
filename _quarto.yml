@@ -21,6 +21,7 @@ book:
     - qmd/anova.qmd
     - qmd/ancova.qmd
     - qmd/compute.qmd
+    - qmd/extension.qmd
     - references.qmd
   
   appendices:
