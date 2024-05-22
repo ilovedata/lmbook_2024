@@ -253,6 +253,12 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../qmd/extension.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">회귀모형의 확장</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
@@ -528,7 +534,7 @@ e_{ar} \\
 <p><span id="eq-normaleq2"><span class="math display">\[
 \pmb X^t \pmb X \pmb \beta = \pmb X^t \pmb y
 \tag{7.9}\]</span></span></p>
-<p>정규방정식 <a href="#eq-normaleq2" class="quarto-xref">식&nbsp;<span>7.9</span></a> 을 일워배치의 선형모형식 <a href="#eq-lm2" class="quarto-xref">식&nbsp;<span>7.7</span></a> 에 나타난 <span class="math inline">\(\pmb y\)</span>, <span class="math inline">\(\pmb X\)</span>로 이용하여 나타내면 다음과 같다.</p>
+<p>정규방정식 <a href="#eq-normaleq2" class="quarto-xref">식&nbsp;<span>7.9</span></a> 을 일워배치의 선형모형식 <a href="extension.html#eq-lm2" class="quarto-xref">식&nbsp;<span>10.16</span></a> 에 나타난 <span class="math inline">\(\pmb y\)</span>, <span class="math inline">\(\pmb X\)</span>로 이용하여 나타내면 다음과 같다.</p>
 <p><span id="eq-normaleq3"><span class="math display">\[
 \begin{bmatrix}
 ar   &amp; r &amp; r &amp; \cdot &amp; \cdot &amp; r \\
@@ -557,11 +563,11 @@ r \bar y_{a.}
 \end{bmatrix}
 \tag{7.10}\]</span></span></p>
 <p>정규방정식 <a href="#eq-normaleq3" class="quarto-xref">식&nbsp;<span>7.10</span></a> 는 위에서 구한 최소제곱법에서 유도된 방정식 <a href="#eq-normaleq1" class="quarto-xref">식&nbsp;<span>7.3</span></a> 과 같다.</p>
-<p>여기서 유의할 점은 선형모형식 <a href="#eq-lm2" class="quarto-xref">식&nbsp;<span>7.7</span></a> 의 계획행렬 <span class="math inline">\(\pmb X\)</span> 가 완전 계수(full rank) 행렬이 아니다. 계획행렬 <span class="math inline">\(\pmb X\)</span>의 첫 번째 열은 다른 열을 합한 것과 같다. 또한 정규 방정식 <a href="#eq-normaleq3" class="quarto-xref">식&nbsp;<span>7.10</span></a> 에서 <span class="math inline">\(\pmb X^t \pmb X\)</span> 행렬도 완전계수 행렬이 아니다. 따라서 <span class="math inline">\(\pmb X^t \pmb X\)</span> 행렬의 역행렬은 존재하지 않는다.</p>
+<p>여기서 유의할 점은 선형모형식 <a href="extension.html#eq-lm2" class="quarto-xref">식&nbsp;<span>10.16</span></a> 의 계획행렬 <span class="math inline">\(\pmb X\)</span> 가 완전 계수(full rank) 행렬이 아니다. 계획행렬 <span class="math inline">\(\pmb X\)</span>의 첫 번째 열은 다른 열을 합한 것과 같다. 또한 정규 방정식 <a href="#eq-normaleq3" class="quarto-xref">식&nbsp;<span>7.10</span></a> 에서 <span class="math inline">\(\pmb X^t \pmb X\)</span> 행렬도 완전계수 행렬이 아니다. 따라서 <span class="math inline">\(\pmb X^t \pmb X\)</span> 행렬의 역행렬은 존재하지 않는다.</p>
 <p>이러한 이유로 모수에 대한 유일한 추정량이 존재하지 않기 때문에 앞에서 언급한 제약 조건을 고려해야 정규방정식을 풀 수 있다.</p>
 <section id="set-to-zero-조건에서의-모형과-최소제곱-추정량" class="level3" data-number="7.3.1">
 <h3 data-number="7.3.1" class="anchored" data-anchor-id="set-to-zero-조건에서의-모형과-최소제곱-추정량"><span class="header-section-number">7.3.1</span> Set-to-zero 조건에서의 모형과 최소제곱 추정량</h3>
-<p>만약 Set-to-zero 조건을 가정한다면 모수에서 <span class="math inline">\(\alpha_1\)</span>을 제외하고 선형모형식 <a href="#eq-lm2" class="quarto-xref">식&nbsp;<span>7.7</span></a> 를 다음과 같이 다시 표현할 수 있다.<br>
+<p>만약 Set-to-zero 조건을 가정한다면 모수에서 <span class="math inline">\(\alpha_1\)</span>을 제외하고 선형모형식 <a href="extension.html#eq-lm2" class="quarto-xref">식&nbsp;<span>10.16</span></a> 를 다음과 같이 다시 표현할 수 있다.<br>
 효과 <span class="math inline">\(\alpha_1\)</span>을 0 으로 놓는다는 것은 <span class="math inline">\(\alpha_1\)</span>을 추정할 필요가 없으므로 모수벡터 <span class="math inline">\(\pmb \beta\)</span> 에서 <span class="math inline">\(\alpha_1\)</span>를 빼고 게획행렬에서도 대응하는 열을 제거하는 것이다.</p>
 <p><span id="eq-lm-zero"><span class="math display">\[
 \begin{bmatrix}
@@ -1075,7 +1081,7 @@ E(\hat \psi| \pmb X) = E(\pmb a^t \pmb y| \pmb X) = \pmb a^t E(\pmb y| \pmb X) =
 </section>
 <section id="예제" class="level3" data-number="7.5.3">
 <h3 data-number="7.5.3" class="anchored" data-anchor-id="예제"><span class="header-section-number">7.5.3</span> 예제</h3>
-<p>2개의 수준이 있고 반복이 2번 있는 일원배치 <span class="math inline">\((a=2,r=2)\)</span> 에 대한 선형모형 <a href="#eq-lm2" class="quarto-xref">식&nbsp;<span>7.7</span></a> 을 생각해보자. 이 경우 계획행렬 <span class="math inline">\(\pmb X\)</span> 과 모수벡터 <span class="math inline">\(\pmb \beta\)</span> 는 다음과 같다.</p>
+<p>2개의 수준이 있고 반복이 2번 있는 일원배치 <span class="math inline">\((a=2,r=2)\)</span> 에 대한 선형모형 <a href="extension.html#eq-lm2" class="quarto-xref">식&nbsp;<span>10.16</span></a> 을 생각해보자. 이 경우 계획행렬 <span class="math inline">\(\pmb X\)</span> 과 모수벡터 <span class="math inline">\(\pmb \beta\)</span> 는 다음과 같다.</p>
 <p><span class="math display">\[
 \pmb X =
 \begin{bmatrix}
