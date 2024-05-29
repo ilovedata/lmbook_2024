@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>통계적 예측모형 - 부록 J — R-실습: 중회귀 모형 진단</title>
+<title>통계적 예측모형 - 부록 K — R-실습: 중회귀 모형 진단</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -163,7 +163,7 @@ window.Quarto = {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/practice-02.html"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/practice-02.html"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></a></li></ol></nav>
         <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
@@ -259,6 +259,12 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../qmd/glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">일반화 선형모형</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
@@ -316,38 +322,44 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../qmd/mle.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">지수군 분포</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../qmd/aic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">모형선택의 정보 기준</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">모형선택의 정보 기준</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-01.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></span></a>
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-02.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></span></a>
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-03.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">R-실습: 관측값에 대한 진단</span></span></a>
+ <span class="menu-text"><span class="chapter-number">L</span>&nbsp; <span class="chapter-title">R-실습: 관측값에 대한 진단</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">L</span>&nbsp; <span class="chapter-title">R-실습: 모형의 선택</span></span></a>
+ <span class="menu-text"><span class="chapter-number">M</span>&nbsp; <span class="chapter-title">R-실습: 모형의 선택</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">M</span>&nbsp; <span class="chapter-title">R-실습: 분산분석 모형</span></span></a>
+ <span class="menu-text"><span class="chapter-number">N</span>&nbsp; <span class="chapter-title">R-실습: 분산분석 모형</span></span></a>
   </div>
 </li>
       </ul>
@@ -362,18 +374,18 @@ window.Quarto = {
     <h2 id="toc-title">목차</h2>
    
   <ul class="collapse">
-  <li><a href="#변수변환" id="toc-변수변환" class="nav-link active" data-scroll-target="#변수변환"><span class="header-section-number">J.1</span> 변수변환</a></li>
-  <li><a href="#box-cox-변환" id="toc-box-cox-변환" class="nav-link" data-scroll-target="#box-cox-변환"><span class="header-section-number">J.2</span> Box-Cox 변환</a></li>
-  <li><a href="#다중공선성" id="toc-다중공선성" class="nav-link" data-scroll-target="#다중공선성"><span class="header-section-number">J.3</span> 다중공선성</a></li>
+  <li><a href="#변수변환" id="toc-변수변환" class="nav-link active" data-scroll-target="#변수변환"><span class="header-section-number">K.1</span> 변수변환</a></li>
+  <li><a href="#box-cox-변환" id="toc-box-cox-변환" class="nav-link" data-scroll-target="#box-cox-변환"><span class="header-section-number">K.2</span> Box-Cox 변환</a></li>
+  <li><a href="#다중공선성" id="toc-다중공선성" class="nav-link" data-scroll-target="#다중공선성"><span class="header-section-number">K.3</span> 다중공선성</a></li>
   </ul>
 </nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/practice-02.html"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></a></li></ol></nav>
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/practice-02.html"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title"><span id="sec-multiple-02-diag" class="quarto-section-identifier">부록 J — R-실습: 중회귀 모형 진단</span></h1>
+<h1 class="title"><span id="sec-multiple-02-diag" class="quarto-section-identifier">부록 K — R-실습: 중회귀 모형 진단</span></h1>
 </div>
 
 
@@ -390,10 +402,10 @@ window.Quarto = {
 </header>
 
 
-<section id="변수변환" class="level2" data-number="J.1">
-<h2 data-number="J.1" class="anchored" data-anchor-id="변수변환"><span class="header-section-number">J.1</span> 변수변환</h2>
-<section id="예제-4.8" class="level3" data-number="J.1.1">
-<h3 data-number="J.1.1" class="anchored" data-anchor-id="예제-4.8"><span class="header-section-number">J.1.1</span> 예제 4.8</h3>
+<section id="변수변환" class="level2" data-number="K.1">
+<h2 data-number="K.1" class="anchored" data-anchor-id="변수변환"><span class="header-section-number">K.1</span> 변수변환</h2>
+<section id="예제-4.8" class="level3" data-number="K.1.1">
+<h3 data-number="K.1.1" class="anchored" data-anchor-id="예제-4.8"><span class="header-section-number">K.1.1</span> 예제 4.8</h3>
 <p>여기서 이용한 자료 <code>bug</code> 는 살충제의 독성실험에서 살충제에 노출된 벌레들의 생존개체수를 시간대별로 관측한 것이다.</p>
 <ul>
 <li><code>y</code> :생존벌레의 수</li>
@@ -437,11 +449,11 @@ window.Quarto = {
 </div>
 </section>
 </section>
-<section id="box-cox-변환" class="level2" data-number="J.2">
-<h2 data-number="J.2" class="anchored" data-anchor-id="box-cox-변환"><span class="header-section-number">J.2</span> Box-Cox 변환</h2>
+<section id="box-cox-변환" class="level2" data-number="K.2">
+<h2 data-number="K.2" class="anchored" data-anchor-id="box-cox-변환"><span class="header-section-number">K.2</span> Box-Cox 변환</h2>
 <p>Box-Cox 변환은 다음과 같이 수행한다. 패키지 <code>MASS</code> 의 함수 <code>boxcox</code> 를 이용한다.</p>
-<section id="예제-4.10" class="level3" data-number="J.2.1">
-<h3 data-number="J.2.1" class="anchored" data-anchor-id="예제-4.10"><span class="header-section-number">J.2.1</span> 예제 4.10</h3>
+<section id="예제-4.10" class="level3" data-number="K.2.1">
+<h3 data-number="K.2.1" class="anchored" data-anchor-id="예제-4.10"><span class="header-section-number">K.2.1</span> 예제 4.10</h3>
 <ul>
 <li><code>foot</code>:발길이(mm), 양말을 벗은 상태로 측정하였고 오른쪽 발만 측정하였다.</li>
 <li><code>forearm</code>: 팔안쪽길이(mm), 손목부터 팔꿈치가 접히는 부분까지의 길이이다. 오른쪽 팔만 측정하였다.</li>
@@ -477,8 +489,8 @@ window.Quarto = {
 </div>
 </div>
 </section>
-<section id="예제-4.11" class="level3" data-number="J.2.2">
-<h3 data-number="J.2.2" class="anchored" data-anchor-id="예제-4.11"><span class="header-section-number">J.2.2</span> 예제 4.11</h3>
+<section id="예제-4.11" class="level3" data-number="K.2.2">
+<h3 data-number="K.2.2" class="anchored" data-anchor-id="예제-4.11"><span class="header-section-number">K.2.2</span> 예제 4.11</h3>
 <p>예제 4.11 자료 <code>wool</code> 는 Box &amp; Cox의 1964년 논문에서 사용한 예제로, 양모의 강력을 알아보기 위해 <span class="math inline">\(3^3\)</span> 요인실험을 수행한 결과이다.</p>
 <ul>
 <li><code>cycle</code> :반응변수. 시편이 끊어질 때까지의 측정 횟수.</li>
@@ -597,10 +609,10 @@ F-statistic: 216.8 on 3 and 23 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </section>
 </section>
-<section id="다중공선성" class="level2" data-number="J.3">
-<h2 data-number="J.3" class="anchored" data-anchor-id="다중공선성"><span class="header-section-number">J.3</span> 다중공선성</h2>
-<section id="고유값과-고유벡터에-대한-이론" class="level3" data-number="J.3.1">
-<h3 data-number="J.3.1" class="anchored" data-anchor-id="고유값과-고유벡터에-대한-이론"><span class="header-section-number">J.3.1</span> 고유값과 고유벡터에 대한 이론</h3>
+<section id="다중공선성" class="level2" data-number="K.3">
+<h2 data-number="K.3" class="anchored" data-anchor-id="다중공선성"><span class="header-section-number">K.3</span> 다중공선성</h2>
+<section id="고유값과-고유벡터에-대한-이론" class="level3" data-number="K.3.1">
+<h3 data-number="K.3.1" class="anchored" data-anchor-id="고유값과-고유벡터에-대한-이론"><span class="header-section-number">K.3.1</span> 고유값과 고유벡터에 대한 이론</h3>
 <p>선형모형 <span class="math inline">\(E(\pmb y | \pmb X) = \pmb X \pmb \beta\)</span> 에서 계획행렬 <span class="math inline">\(\pmb X\)</span>의 열들이 선형독립이 아닌 경우 다중공선성이 발생한다. 다중공선성은 계획행렬 <span class="math inline">\(\pmb X\)</span>의 열들이 선형종속인 경우에 발생한다.</p>
 <p>대칭행렬 <span class="math inline">\(\pmb X^t \pmb  X\)</span>의 고유값 <span class="math inline">\(\lambda_i\)</span>와 그에 대응하는 고유벡터 <span class="math inline">\(\pmb  p_i\)</span>는 다음을 만족하는 실수와 벡터이다.</p>
 <p><span class="math display">\[ (\pmb X^t \pmb  X ) \pmb  p_i = \lambda_i \pmb  p_i \]</span></p>
@@ -636,14 +648,14 @@ p_{p,k}
 <p>또한 회귀계수 벡터 <span class="math inline">\(\hat \beta\)</span>의 공분산 행렬이 다음과 같이 주어지므로</p>
 <p><span id="eq-eq1"><span class="math display">\[
 Cov(\hat {\pmb \beta}) = \sigma^2 (\pmb X^t \pmb X)^{-1} = \sigma^2  \pmb P \pmb \Lambda^{-1} \pmb P^t
-\tag{J.1}\]</span></span></p>
+\tag{K.1}\]</span></span></p>
 <p>다음과 같은 식이 성립한다.</p>
 <p><span id="eq-eq2"><span class="math display">\[
 var(\hat \beta_k) / \sigma^2 = \frac{p^2_{k1}}{\lambda_1} + \frac{p^2_{k2}}{\lambda_2} + \dots \frac{p^2_{k, p}}{\lambda_{p}}
-\tag{J.2}\]</span></span></p>
+\tag{K.2}\]</span></span></p>
 </section>
-<section id="고유값과-고유벡터에-대한-예제-두-개의-독립변수" class="level3" data-number="J.3.2">
-<h3 data-number="J.3.2" class="anchored" data-anchor-id="고유값과-고유벡터에-대한-예제-두-개의-독립변수"><span class="header-section-number">J.3.2</span> 고유값과 고유벡터에 대한 예제: 두 개의 독립변수</h3>
+<section id="고유값과-고유벡터에-대한-예제-두-개의-독립변수" class="level3" data-number="K.3.2">
+<h3 data-number="K.3.2" class="anchored" data-anchor-id="고유값과-고유벡터에-대한-예제-두-개의-독립변수"><span class="header-section-number">K.3.2</span> 고유값과 고유벡터에 대한 예제: 두 개의 독립변수</h3>
 <p>이제 다음과 두 개의 독립변수가 있는 회귀 모형을 고려해 보자.</p>
 <p><span class="math display">\[ y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + e_i, i=1,2,\cdots,n \]</span></p>
 <p>절편을 제외한 두 개의 표준화된 독립변수들로 이루어진 행렬을 <span class="math inline">\(\pmb X\)</span>로 표시하자.</p>
@@ -854,7 +866,7 @@ p_{21}^2 \frac{1}{\lambda_1} +   p_{22}^2 \frac{1}{\lambda_2}
 \end{bmatrix}
 \end{aligned}
 \]</span></p>
-<p>앞 절에서 나온 회귀계수 추정량의 분산 공식 <a href="#eq-eq1" class="quarto-xref">식&nbsp;<span>J.1</span></a> 과 <a href="#eq-eq2" class="quarto-xref">식&nbsp;<span>J.2</span></a> 를 적용하면 다음과 같은 식을 얻을 수 있다.</p>
+<p>앞 절에서 나온 회귀계수 추정량의 분산 공식 <a href="#eq-eq1" class="quarto-xref">식&nbsp;<span>K.1</span></a> 과 <a href="#eq-eq2" class="quarto-xref">식&nbsp;<span>K.2</span></a> 를 적용하면 다음과 같은 식을 얻을 수 있다.</p>
 <p><span class="math display">\[
 \begin{aligned}
 Var(\hat \beta_k)/\sigma^2
@@ -865,8 +877,8 @@ Var(\hat \beta_k)/\sigma^2
 \]</span></p>
 <p>위의 분산 공식에서 제일 작은 두 번째 고유값 <span class="math inline">\(\lambda_2 = 1- \rho\)</span>가 0에 가까우면 분산이 매우 커지는 것을 알 수 있다. 이 고유값은 상관계수 <span class="math inline">\(\rho\)</span>가 1에 가까울 수록 0에 가까워 진다.</p>
 </section>
-<section id="예제-4.13" class="level3" data-number="J.3.3">
-<h3 data-number="J.3.3" class="anchored" data-anchor-id="예제-4.13"><span class="header-section-number">J.3.3</span> 예제 4.13</h3>
+<section id="예제-4.13" class="level3" data-number="K.3.3">
+<h3 data-number="K.3.3" class="anchored" data-anchor-id="예제-4.13"><span class="header-section-number">K.3.3</span> 예제 4.13</h3>
 <p>중고차 예제에서 가상의 변수를 만들어 적합할 때 완벽한 선형관계가 존재하면 적합 시 변수를 제거하는 것을 알 수 있다.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>usedcars2 <span class="ot">&lt;-</span> usedcars <span class="sc">%&gt;%</span>  <span class="fu">mutate</span>(<span class="at">ccmile =</span> cc <span class="sc">+</span> mileage)</span>
@@ -899,8 +911,8 @@ F-statistic: 59.21 on 4 and 25 DF,  p-value: 2.184e-12</code></pre>
 </div>
 </div>
 </section>
-<section id="예제-4.14" class="level3" data-number="J.3.4">
-<h3 data-number="J.3.4" class="anchored" data-anchor-id="예제-4.14"><span class="header-section-number">J.3.4</span> 예제 4.14</h3>
+<section id="예제-4.14" class="level3" data-number="K.3.4">
+<h3 data-number="K.3.4" class="anchored" data-anchor-id="예제-4.14"><span class="header-section-number">K.3.4</span> 예제 4.14</h3>
 <p>모형을 적합해 보자.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>hald.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span> ., <span class="at">data=</span>hald)</span>
@@ -1421,12 +1433,12 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
       <a href="../qmd/practice-01.html" class="pagination-link" aria-label="R-실습: 중회귀 모형 적합">
-        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></span>
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></span>
       </a>          
   </div>
   <div class="nav-page nav-page-next">
       <a href="../qmd/practice-03.html" class="pagination-link" aria-label="R-실습: 관측값에 대한 진단">
-        <span class="nav-page-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">R-실습: 관측값에 대한 진단</span></span> <i class="bi bi-arrow-right-short"></i>
+        <span class="nav-page-text"><span class="chapter-number">L</span>&nbsp; <span class="chapter-title">R-실습: 관측값에 대한 진단</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

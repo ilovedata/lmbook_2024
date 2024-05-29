@@ -225,6 +225,12 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../qmd/glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">일반화 선형모형</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
@@ -282,38 +288,44 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../qmd/mle.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">지수군 분포</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../qmd/aic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">모형선택의 정보 기준</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">모형선택의 정보 기준</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-01.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></span></a>
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-02.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></span></a>
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-03.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">R-실습: 관측값에 대한 진단</span></span></a>
+ <span class="menu-text"><span class="chapter-number">L</span>&nbsp; <span class="chapter-title">R-실습: 관측값에 대한 진단</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">L</span>&nbsp; <span class="chapter-title">R-실습: 모형의 선택</span></span></a>
+ <span class="menu-text"><span class="chapter-number">M</span>&nbsp; <span class="chapter-title">R-실습: 모형의 선택</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">M</span>&nbsp; <span class="chapter-title">R-실습: 분산분석 모형</span></span></a>
+ <span class="menu-text"><span class="chapter-number">N</span>&nbsp; <span class="chapter-title">R-실습: 분산분석 모형</span></span></a>
   </div>
 </li>
       </ul>
@@ -507,7 +519,7 @@ BIC &amp;= n\log(2\pi) + n + n \log  \frac{SSE_p}{n} + (\log n) (p+1)
 \tag{6.10}\]</span></span></p>
 <p>여기서 <span class="math inline">\(p\)</span>는 회귀모형에 포함된 독립변수의 개수이며 오차항의 분산까지 포함하여 모수의 총 개수는 <span class="math inline">\(p+1\)</span> 이다.</p>
 <p>이제 잔차제곱합 <span class="math inline">\(SSE_p\)</span> 가 작아지면 AIC 와 BIC의 <span class="math inline">\(SSE_p\)</span> 부분이 작아지지만 각 측도의 벌칙항은 증가하게 된다. 여러 개의 모형을 비교하 때 AIC, BIC 의 값이 작은 모형이 좋은 모형이라고 할 수 있다. 또한 주목할 점은 AIC, BIC 의 벌칙항이 다르며 특히 BIC 의 벌칙항에 표본의 개수 <span class="math inline">\(n\)</span> 이 로그스케일로 포함되어 있다.</p>
-<p>AIC 와 BIC 에 대한 이론적인 설명은 <a href="aic.html" class="quarto-xref"><span>부록 H</span></a> 에 제시되어 있으니 참고하자.</p>
+<p>AIC 와 BIC 에 대한 이론적인 설명은 <a href="aic.html" class="quarto-xref"><span>부록 I</span></a> 에 제시되어 있으니 참고하자.</p>
 </section>
 <section id="변수-선택법" class="level2" data-number="6.4">
 <h2 data-number="6.4" class="anchored" data-anchor-id="변수-선택법"><span class="header-section-number">6.4</span> 변수 선택법</h2>

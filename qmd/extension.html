@@ -84,7 +84,7 @@ div.csl-indent {
 <script src="../site_libs/quarto-search/fuse.min.js"></script>
 <script src="../site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="../">
-<link href="../references.html" rel="next">
+<link href="../qmd/glm.html" rel="next">
 <link href="../qmd/compute.html" rel="prev">
 <script src="../site_libs/quarto-html/quarto.js"></script>
 <script src="../site_libs/quarto-html/popper.min.js"></script>
@@ -279,6 +279,12 @@ window.Quarto = {
 </li>
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../qmd/glm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">일반화 선형모형</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../references.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text">References</span></a>
   </div>
@@ -336,38 +342,44 @@ window.Quarto = {
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
+  <a href="../qmd/mle.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">지수군 분포</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
   <a href="../qmd/aic.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">모형선택의 정보 기준</span></span></a>
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">모형선택의 정보 기준</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-01.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></span></a>
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-02.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></span></a>
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-03.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">R-실습: 관측값에 대한 진단</span></span></a>
+ <span class="menu-text"><span class="chapter-number">L</span>&nbsp; <span class="chapter-title">R-실습: 관측값에 대한 진단</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-04.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">L</span>&nbsp; <span class="chapter-title">R-실습: 모형의 선택</span></span></a>
+ <span class="menu-text"><span class="chapter-number">M</span>&nbsp; <span class="chapter-title">R-실습: 모형의 선택</span></span></a>
   </div>
 </li>
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../qmd/practice-05.html" class="sidebar-item-text sidebar-link">
- <span class="menu-text"><span class="chapter-number">M</span>&nbsp; <span class="chapter-title">R-실습: 분산분석 모형</span></span></a>
+ <span class="menu-text"><span class="chapter-number">N</span>&nbsp; <span class="chapter-title">R-실습: 분산분석 모형</span></span></a>
   </div>
 </li>
       </ul>
@@ -385,7 +397,7 @@ window.Quarto = {
   <li><a href="#개요" id="toc-개요" class="nav-link active" data-scroll-target="#개요"><span class="header-section-number">10.1</span> 개요</a></li>
   <li><a href="#자료-만들기" id="toc-자료-만들기" class="nav-link" data-scroll-target="#자료-만들기"><span class="header-section-number">10.2</span> 자료 만들기</a></li>
   <li><a href="#로버스트-회귀" id="toc-로버스트-회귀" class="nav-link" data-scroll-target="#로버스트-회귀"><span class="header-section-number">10.3</span> 로버스트 회귀</a></li>
-  <li><a href="#비선형-회귀분석" id="toc-비선형-회귀분석" class="nav-link" data-scroll-target="#비선형-회귀분석"><span class="header-section-number">10.4</span> 비선형 회귀분석</a></li>
+  <li><a href="#sec-nonlinear" id="toc-sec-nonlinear" class="nav-link" data-scroll-target="#sec-nonlinear"><span class="header-section-number">10.4</span> 비선형 회귀분석</a></li>
   <li><a href="#비모수-회귀모형" id="toc-비모수-회귀모형" class="nav-link" data-scroll-target="#비모수-회귀모형"><span class="header-section-number">10.5</span> 비모수 회귀모형</a></li>
   <li><a href="#스플라인-회귀모형" id="toc-스플라인-회귀모형" class="nav-link" data-scroll-target="#스플라인-회귀모형"><span class="header-section-number">10.6</span> 스플라인 회귀모형</a></li>
   </ul>
@@ -801,8 +813,8 @@ df3 %>% ggplot(aes(x=reserved, y=boarding)) +
 -->
 </section>
 </section>
-<section id="비선형-회귀분석" class="level2" data-number="10.4">
-<h2 data-number="10.4" class="anchored" data-anchor-id="비선형-회귀분석"><span class="header-section-number">10.4</span> 비선형 회귀분석</h2>
+<section id="sec-nonlinear" class="level2" data-number="10.4">
+<h2 data-number="10.4" class="anchored" data-anchor-id="sec-nonlinear"><span class="header-section-number">10.4</span> 비선형 회귀분석</h2>
 <section id="예제-철도-여객-운송" class="level3" data-number="10.4.1">
 <h3 data-number="10.4.1" class="anchored" data-anchor-id="예제-철도-여객-운송"><span class="header-section-number">10.4.1</span> 예제: 철도 여객 운송</h3>
 <p>철도 여객 운송은 사람들이 장거리 이동을 하는 경우 많이 이용한다. 하루에고 백 대가 넘는 열차가 운행되며 하나의 열차는 출발역에서 시작하여 중간에 여러 역에 정차함으로서 여러 지역 간의 여행을 가능하게 한다. 이렇게 하루에도 수 천개의 출발지와 목적지를 가지는 기차 노선이 운영되고 있다. 따라서 여객 운송을 관리하는 주체는 여객 노선의 수요를 예측하고 좌석을 합리적이고 효율적으로 할당하는 작업이 필요하다.</p>
@@ -1239,8 +1251,8 @@ K \left ( \frac{x -y}{h} \right )  = (2\pi h^2)^{-1/2} \exp  \left (  - \frac{(x
 <span id="cb44-11"><a href="#cb44-11" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>다음의 함수 <code>kernel.fitted(x,y,h)</code>는 주어진 자료벡터 <code>x</code>,<code>y</code>와 구간의 크기 <code>h</code>에 대하여 반응변수의 예측값 <span class="math inline">\(\hat Y_i =\hat m_h(X_i)\)</span> 을 커널추정으로 구해준다.</p>
-<p><span class="math display">\[  \hat Y_i = \hat m(X_i) = \frac{ \sum_{j=1}^n K \left ( \frac{X_i -X_j}{h} \right ) Y_i }
-{ \sum_{j=1}^n K \left ( \frac{X_i -X_j}{h} \right ) }  = \sum_{j=1}^{n} l_j(X_i) Y_i \]</span></p>
+<p><span class="math display">\[  \hat Y_i = \hat m(X_i) = \frac{ \sum_{j=1}^n K \left ( \frac{X_i -X_j}{h} \right ) Y_j }
+{ \sum_{j=1}^n K \left ( \frac{X_i -X_j}{h} \right ) }  = \sum_{j=1}^{n} l_j(X_i) Y_j \]</span></p>
 <p>또한 위의 식에서 <span class="math inline">\(L_{ij}  = l_j(X_i)\)</span>라고 하면 다음과 같은 선형예측식에서 <span class="math inline">\(n \times n\)</span> 행렬 <span class="math inline">\(L = \{ L_{ij} \}\)</span>의 대각원소 <span class="math inline">\(L_{ii}\)</span>도 계산해준다.</p>
 <p><span class="math display">\[  \hat Y  = L Y \]</span></p>
 <div class="cell">
@@ -2205,8 +2217,8 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="../references.html" class="pagination-link" aria-label="References">
-        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="../qmd/glm.html" class="pagination-link" aria-label="일반화 선형모형">
+        <span class="nav-page-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">일반화 선형모형</span></span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -1,0 +1,1953 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.4.550">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>통계적 예측모형 - 11&nbsp; 일반화 선형모형</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../references.html" rel="next">
+<link href="../qmd/extension.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "일치 없음",
+    "search-matching-documents-text": "일치된 문서",
+    "search-copy-link-title": "검색 링크 복사",
+    "search-hide-matches-text": "추가 검색 결과 숨기기",
+    "search-more-match-text": "추가 검색결과",
+    "search-more-matches-text": "추가 검색결과",
+    "search-clear-button-title": "제거",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "취소",
+    "search-submit-button-title": "검색",
+    "search-label": "검색"
+  }
+}</script>
+<script type="text/javascript">
+ window.MathJax = {
+  tex: {
+    macros: {
+    RR: '{\\mathbb R}',                    // a simple string replacement
+    hatmat:'{\\pmb X ({\\pmb X}^t {\\pmb X} )^{-1} {\\pmb X}^t}',
+    bold: ['\\boldsymbol{#1}',1] ,     // this macro has one parameter
+    pardiff: ['\\frac{\\partial#2}{\\partial#1}', 2, 'x'], // this macro has an optional parameter that defaults to 'x'
+    pardifftwo: ['\\frac{\\partial#1}{\\partial#2}', 2],
+    pardiffd: ['\\frac{\\partial#1}{\\partial#2^t \\partial#2}', 2],
+    pardiffdd: ['\\frac{\\partial#1}{\\partial#3 \\partial#2}', 3],
+    norm: ['\\lVert#1\\rVert',1]
+  },
+  environments: {
+  braced: ["\\left\\{", "\\right\\}"]
+  }
+ }
+};
+</script>
+
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/glm.html"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">일반화 선형모형</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">통계적 예측모형</a> 
+        <div class="sidebar-tools-main">
+    <a href="../통계적-예측모형.pdf" title="Download PDF" class="quarto-navigation-tool px-1" aria-label="Download PDF"><i class="bi bi-file-pdf"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="검색"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/lse.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">선형 회귀모형의 소개</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/inference.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">선형회귀에서의 추론</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/inference2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">모형의 비교</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/modeleval2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">모형의 진단</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/residual.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">관측값에 대한 진단</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/modelselection.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">모형의 선택</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/anova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">분산분석 모형</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/ancova.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">공분산분석</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/compute.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">9</span>&nbsp; <span class="chapter-title">최소제곱 추정량의 계산</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/extension.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">회귀모형의 확장</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/glm.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">일반화 선형모형</span></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">References</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+ <span class="menu-text">Appendices</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="토글 섹션">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_mat_basic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">A</span>&nbsp; <span class="chapter-title">행렬의 기초</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_vector_space.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">B</span>&nbsp; <span class="chapter-title">벡터공간</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_eigen_value.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">C</span>&nbsp; <span class="chapter-title">고유값과 고유벡터</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_matrix_decomp.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">D</span>&nbsp; <span class="chapter-title">행렬의 분해</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/math_vec_cal.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">E</span>&nbsp; <span class="chapter-title">벡터 미분</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/multivar.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">F</span>&nbsp; <span class="chapter-title">다변량 확률변수의 성질</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/quadratic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">G</span>&nbsp; <span class="chapter-title">이차형식과 제곱합의 분포</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/mle.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">H</span>&nbsp; <span class="chapter-title">지수군 분포</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/aic.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">I</span>&nbsp; <span class="chapter-title">모형선택의 정보 기준</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/practice-01.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">J</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 적합</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/practice-02.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">K</span>&nbsp; <span class="chapter-title">R-실습: 중회귀 모형 진단</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/practice-03.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">L</span>&nbsp; <span class="chapter-title">R-실습: 관측값에 대한 진단</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/practice-04.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">M</span>&nbsp; <span class="chapter-title">R-실습: 모형의 선택</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../qmd/practice-05.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">N</span>&nbsp; <span class="chapter-title">R-실습: 분산분석 모형</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">목차</h2>
+   
+  <ul class="collapse">
+  <li><a href="#일반화-선형모형" id="toc-일반화-선형모형" class="nav-link active" data-scroll-target="#일반화-선형모형"><span class="header-section-number">11.1</span> 일반화 선형모형</a></li>
+  <li><a href="#일반화-선형모형의-가능도함수" id="toc-일반화-선형모형의-가능도함수" class="nav-link" data-scroll-target="#일반화-선형모형의-가능도함수"><span class="header-section-number">11.2</span> 일반화 선형모형의 가능도함수</a></li>
+  <li><a href="#최대가능도추정" id="toc-최대가능도추정" class="nav-link" data-scroll-target="#최대가능도추정"><span class="header-section-number">11.3</span> 최대가능도추정</a></li>
+  <li><a href="#최대가능도추정량의-계산" id="toc-최대가능도추정량의-계산" class="nav-link" data-scroll-target="#최대가능도추정량의-계산"><span class="header-section-number">11.4</span> 최대가능도추정량의 계산</a></li>
+  <li><a href="#편차" id="toc-편차" class="nav-link" data-scroll-target="#편차"><span class="header-section-number">11.5</span> 편차</a></li>
+  <li><a href="#이항변수에-대한-회귀모형" id="toc-이항변수에-대한-회귀모형" class="nav-link" data-scroll-target="#이항변수에-대한-회귀모형"><span class="header-section-number">11.6</span> 이항변수에 대한 회귀모형</a></li>
+  <li><a href="#발생-횟수에-대한-모형" id="toc-발생-횟수에-대한-모형" class="nav-link" data-scroll-target="#발생-횟수에-대한-모형"><span class="header-section-number">11.7</span> 발생 횟수에 대한 모형</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span id="sec-glm" class="quarto-section-identifier"><span class="chapter-number">11</span>&nbsp; <span class="chapter-title">일반화 선형모형</span></span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="일반화-선형모형" class="level2" data-number="11.1">
+<h2 data-number="11.1" class="anchored" data-anchor-id="일반화-선형모형"><span class="header-section-number">11.1</span> 일반화 선형모형</h2>
+<p>선형모형의 의미는 모형에서 고려하는 설명변수가 변할 때 반응값의 평균이 변하는 관계가 선형이라는 것이다. 즉, 반응값의 평균을 설명하는 회귀식이 회귀계수에 대하여 선형이라는 의미이다. 참고로 아래<br>
+<a href="#eq-glm-linearmodel" class="quarto-xref">식&nbsp;<span>11.1</span></a> 의 오른쪽에 나타나는 식을 선형예측식(linear predictor, <span class="math inline">\(\eta\)</span>)라고 부른다.</p>
+<p><span id="eq-glm-linearmodel"><span class="math display">\[
+E(y|x_1,x_2,\dots,x_p) =  \beta_ 1 x_1 + \dots + \beta_p x_p  \equiv \eta
+\tag{11.1}\]</span></span></p>
+<p>이러한 선형성의 가정이 적절하지 않은 경우가 있다. 예를 들어 공학에서나 생물학에서 사용되는 비선형 회귀모형(nonlinear regression model)처럼 반응변수의 변화가 설명변수들의 복잡한 비선형 관계(예를 들어 미분방정식의 관계)로 나타나는 경우로 흔히 나타난다. 이러한 비선형 회귀모형은 <a href="extension.html#sec-nonlinear" class="quarto-xref"><span>섹션 10.4</span></a> 장에서 다루었다.</p>
+<p>반응변수가 가질 수 있는 평균값의 범위에 제한이 있을 수 있다. 예를 들어 베르누이 분포의 경우 평균이 성공확률이기 때문에 0과 1사이에 있으며 포아송 분포의 경우 반응값은 음의 값을 가질 수 없다. 따라서 <a href="#eq-glm-linearmodel" class="quarto-xref">식&nbsp;<span>11.1</span></a> 의 선형예측식 <span class="math inline">\(\eta\)</span>와 반응값의 평균 <span class="math inline">\(E(y| x)\)</span>의 관계를 선형모형 <a href="#eq-glm-linearmodel" class="quarto-xref">식&nbsp;<span>11.1</span></a> 처럼 정의할 수 없다.</p>
+<p>이렇게 반응변수의 평균과 선형에측식의 범위가 일치하지 않는 경우 임의의 단조증가 함수 <span class="math inline">\(g\)</span>를 사용하여 그 범위를 일치하게 만들어 줄 수 있다. 예를 들어 베르누이 분포의 경우 표준 정규분포의 누적분포함수 <span class="math inline">\(\Phi\)</span>를 사용하여 확률의 범위와 선형에측식의 범위를 맞추어 줄 수 있다. 이러한 회귀모형을 프로빗(probit)모형이라고 부른다.</p>
+<p><span id="eq-probitlink"><span class="math display">\[
+\Phi^{-1} [p(y| x)] =   \beta_ 1 x_1 + \dots + \beta_p x_p =\eta
+\tag{11.2}\]</span></span></p>
+<p>이제부터 정규분포하에서 정의되는 선형모형을 다른 분포들로 확장한 모형인 일반화 선형모형(Generalized Linear Model; GLM)을 살펴보기로 하자.</p>
+<section id="지수군-분포와-일반화-선형모형" class="level3" data-number="11.1.1">
+<h3 data-number="11.1.1" class="anchored" data-anchor-id="지수군-분포와-일반화-선형모형"><span class="header-section-number">11.1.1</span> 지수군 분포와 일반화 선형모형</h3>
+<p>지수군 분포에 대한 자세한 내용은 <a href="mle.html" class="quarto-xref"><span>부록 H</span></a> 에 있으니 참고하자.</p>
+<p>일변량 확률변수 지수군(exponential family) 분포를 따른다고 가정하자.</p>
+<p><span class="math display">\[
+f (y | \theta, \phi ) = \exp \left \{ \frac{y \theta-b (\theta) }{a(\phi) } + c(y,\phi) \right \}
+\]</span></p>
+<p>충분통계량이 관측값 <span class="math inline">\(y\)</span>이고 1차원의 기본형 모수<span class="math inline">\(\theta\)</span>로 정의된 분포임을 유의하자.</p>
+<p>확률변수 <span class="math inline">\(y\)</span>의 평균을 <span class="math inline">\(\mu = E(y)\)</span> 이라고 하고 독립변수 벡터 <span class="math inline">\(x\)</span>와 회귀계수 벡터 <span class="math inline">\(\beta\)</span>로 구성된 선형예측식을 <span class="math inline">\(\eta\)</span>라고 하자.</p>
+<p><span id="eq-linpred"><span class="math display">\[
+\eta = { x}^t  \beta
+\tag{11.3}\]</span></span></p>
+<p>일반화 선형모형은 분포의 특성에 따라 주어진 단조증가함수 <span class="math inline">\(g\)</span> 를 이용하여 <span class="math inline">\(y\)</span> 의 평균과 선형예측식의 관계를 설정하는 모형이다. 이러한 함수 <span class="math inline">\(g\)</span> 를 연결함수(link function)라고 부른다.</p>
+<p><span id="eq-linkfunction"><span class="math display">\[
+g(\mu) = g(E[y|  x]) = { x}^t  \beta
+\tag{11.4}\]</span></span></p>
+<p>반응값의 분포가 주어진 경우 연결함수는 평균의 범위와 선형에측식의 범위를 연속적으로 1-1 대응하게 해주는 함수이며 사용할 수 있는 가능한 함수는 무한히 많다. 예를 들어 베르부이 분포의 경우 위에서 정의된 프로빗 모형 <a href="#eq-probitlink" class="quarto-xref">식&nbsp;<span>11.2</span></a> 에서 <span class="math inline">\(\Phi^{-1}\)</span> 같이 (0,1) 에서 실수전체 집합으로 단조증가하는 함수는 모두 연결함수로 고려할 수 있다.</p>
+<p>지수군 분포에서 모수 <span class="math inline">\(\theta\)</span>를 기본형모수(canonical parameter)라고 부르며 일반적으로 <span class="math inline">\(\theta\)</span> 는 평균 <span class="math inline">\(\mu\)</span>의 비선형 함수로 나타난다. 만약 다음과 같은 관계를 나타내는 연결함수 <span class="math inline">\(g\)</span> 가 있다면 그 함수를 기본형 연결함수(canonical link function)이라고 부른다.</p>
+<p><span id="eq-canonicallinkfunction"><span class="math display">\[
+\theta = \eta
+\tag{11.5}\]</span></span></p>
+<p>예를 들어 이항분포의 확률밀도함수를 지수군 분포의 형태로 표현했을 때 그 형태를 보면 다음과 같은 관계를 알 수 있다.</p>
+<p><span class="math display">\[
+\theta  = \log \frac{\mu}{1-\mu}  = \log \frac{p}{1-p}
+\]</span></p>
+<p>따라서 <a href="#eq-canonicallinkfunction" class="quarto-xref">식&nbsp;<span>11.5</span></a> 을 만족하는 연결함수는 다음과 같고</p>
+<p><span id="eq-logitlink"><span class="math display">\[
+\log \frac{p}{1-p}  = \eta = { x}^t  \beta
+\tag{11.6}\]</span></span></p>
+<p>이를 로짓 연결함수(logit link function)이라고 부르며 이는 이항분포의 기본형 연결함수이다.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+노트
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>만약 <span class="math inline">\(y\)</span>의 분포가 정규분포이며 연결함수 <span class="math inline">\(g\)</span>가 <span class="math inline">\(g(\mu) = \mu\)</span>이면 선형회귀모형이 된다. <span class="math display">\[  E[y| x] = { x}^t  \beta \]</span></p>
+</div>
+</div>
+</section>
+</section>
+<section id="일반화-선형모형의-가능도함수" class="level2" data-number="11.2">
+<h2 data-number="11.2" class="anchored" data-anchor-id="일반화-선형모형의-가능도함수"><span class="header-section-number">11.2</span> 일반화 선형모형의 가능도함수</h2>
+<p>하나의 표본 <span class="math inline">\(y\)</span>에 대하여 기본형 모수 <span class="math inline">\(\theta\)</span> 하나인 로그가능도함수(log likelihood function) <span class="math inline">\(\ell\)</span>은 다음과 같이 정의된다.</p>
+<p><span class="math display">\[  \ell = \log  f(y)  = \frac{y\theta-b(\theta)}{a(\phi) } + \log c(y, \phi) \]</span></p>
+<p>표본 <span class="math inline">\(y_1,y_2,\dots,y_n\)</span> 가 각각 설명변수 벡터<span class="math inline">\({ x}_1, { x}_2, \dots,{ x}_n\)</span>에서 독립적으로 얻어졌다면 로그가능도함수 <span class="math inline">\(\ell_n\)</span> 은 다음과 같다.</p>
+<p><span id="eq-likefunctionsample"><span class="math display">\[
+\ell_n = \log \prod_{i=1}^n f(y_i)  = \sum_{i=1}^n \frac{y_i \theta_i-b(\theta_i)}{a(\phi_i) }  + \sum_{i=1}^n  \log c(y_i, \phi)
+\tag{11.7}\]</span></span></p>
+<p>여기서 <span class="math inline">\(\theta_i\)</span>는 <span class="math inline">\(i\)</span> 번째 관측값에 대한 모수로서 첨자 <span class="math inline">\(i\)</span> 를 붙이는 이유는 관측치의 기대값 <span class="math inline">\(\mu_i = E(y_i | { x}_i)\)</span>가 독립변수의 값 <span class="math inline">\({ x}_i\)</span>에 따라 다를 수 있고 <span class="math inline">\(\theta_i\)</span>는 평균 <span class="math inline">\(\mu_i\)</span>의 함수이기 떄문이다.</p>
+<p>이제 <a href="#eq-linkfunction" class="quarto-xref">식&nbsp;<span>11.4</span></a> 과 같이 설명변수와 반응변수 평균과의 관계가 연결함수 <span class="math inline">\(g\)</span>로 정의되었다고 하자.</p>
+<p><span id="eq-linkfunctionsample"><span class="math display">\[
+g(\mu_i) = g(E[y_i| { x}_i ]) = { x}_i^t  \beta \equiv \eta_i, \quad i=1,2,\dots,n
+\tag{11.8}\]</span></span></p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+노트
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="citation" data-cites="nelder1972generalized">Nelder 와/과 Wedderburn (<a href="../references.html#ref-nelder1972generalized" role="doc-biblioref">1972</a>)</span> 에서 연결 함수(link function)의 개념이 제시할 때 다음과 같은 작업 변량(working variate) <span class="math inline">\(z_i\)</span>를 이용하여 선형모형을 일반화하고자 하였다. 즉, 작업 변량 <span class="math inline">\(z_i\)</span></p>
+<p><span class="math display">\[
+\begin{aligned}
+z_i &amp; = g(\mu_i ) + g_\mu(\mu)(y_i - \mu_i) \\
+    &amp; = { x}_i^t  \beta + g_\mu(\mu)(y_i - \mu_i) \\
+    &amp; \simeq { x}_i^t  \beta + r_i
+\end{aligned}
+\]</span></p>
+<p>위의 식에서 오른쪽 식의 두번째 항의 기대값이 0이므로 이를 오차항과 같이 생각하면 위의 모형을 오차항의 분산이 다른 선형모형으로 생각할 수 있다. 지수군 분포의 성질을 이용하면 작업 변량 <span class="math inline">\(z_i\)</span>의 분산은 다음과 같다.</p>
+<p><span id="eq-varianceweight"><span class="math display">\[
+Var(z_i) = Var(r_i) = [g_\mu(\mu_i)]^2 Var(y_i) = [g_\mu(\mu_i)]^2 [ a(\phi_i)v(\mu_i)]
+\tag{11.9}\]</span></span></p>
+<p>이러한 가정하에서 작업 변량 <span class="math inline">\(z_i\)</span>를 반응변수로 놓고 분산의 역수를 가중치로하는 가중 선형모형(wighted linear regression) 을 최소제곡법으로 적합하고 계수의 값이 수렴할 때까지 반복적으로 수행하는하는 계산법을 제공하였다. 이러한 방법을 반복가중최소최곱법(iterative weighted least square method; IWLS)라고 부른다.</p>
+<p><span class="citation" data-cites="searle2001generalized">(<a href="../references.html#ref-searle2001generalized" role="doc-biblioref">Searle 와/과 McCulloch 2001</a> 의 136 쪽 참조)</span></p>
+</div>
+</div>
+<div id="ex-glm-binomial">
+<p>주어진 예측변수 <span class="math inline">\(\pmb  x_i=(x_{1i},\dots,x_{pi})^t\)</span>에서 실행횟수가 <span class="math inline">\(m_i\)</span>인 이항분포<span class="math inline">\(B(m_i, p(x_i))\)</span>를 생각하자. <span class="math inline">\(m_i\)</span>의 시행 중에 성공의 횟수가 <span class="math inline">\(y_i\)</span>라고 하면 <span class="math inline">\(y_i\)</span>의 평균과 분산은 다음과 같다.</p>
+<p><span class="math display">\[
+E(y_i | x_i ) = m_i p(x_i), \quad \quad Var(y_i | x_i) = m_i p(x_i) (1-p(x_i)) , \quad i=1,2,\dots,n
+\]</span></p>
+<p>이항분포를 위한 로지스틱 회귀방정식은 선형예측식과 성공의 확률의 관계를 다음과 같이 정한다.</p>
+<p><span id="eq-muli-logistic"><span class="math display">\[
+\log \left [ \frac{p(x_i)}{1-p(x_i)} \right  ] = {\pmb  x}^t_i {\pmb  \beta} = \beta_0 + \beta_1 x_{1i} + \dots \beta_p x_{pi}
+\tag{11.10}\]</span></span></p>
+<p>서로 독립인 관측값 <span class="math inline">\((y_1,y_2,\dots,y_n)\)</span>의 가능도함수(likelihood function) <span class="math inline">\(L\)</span>은 이항분포들의 결합확률밀도함수와 같고 아래와 같이 주어지며</p>
+<p><span class="math display">\[
+L = \prod_{i=1}^n f(y_i|p(x_i)) = \prod_{i=1}^n \left [  {{m_i}\choose{y_i}} \right] {p(x_i)}^y_i {(1-p(x_i))}^{m-y_i}
+\]</span></p>
+<p>로그가능도함수(log likelihood function) <span class="math inline">\(l\)</span> 은 다음과 같이 나타낼 수 있다.</p>
+<p><span id="eq-bionom-loglike"><span class="math display">\[
+\begin{aligned}
+l  &amp; = \log L = \sum_i \log {{m_i}\choose{y_i}} + \sum_i y_i \log p(x_i) + \sum_i (m_i -y_i) \log (1-p(x_i))  \notag  \\
+   &amp; = c(\pmb  y,\pmb  m) + \sum_i y_i \log \left [ \frac{p(x_i)}{1-p(x_i)} \right  ] + \sum_i m_i \log (1-p(x_i))  
+\end{aligned}
+\tag{11.11}\]</span></span></p>
+<p>위의 로그가능도함수에서 볼 수 있듯이 충분통계량인 성공의 횟수 <span class="math inline">\(y_i\)</span>와 곱으로 나타내어진 함수가 로짓함수이며 이렇게 가능도함수에서 얻어진 결합함수를 자연결합함수(natural link function)이라고 한다.</p>
+</div>
+</section>
+<section id="최대가능도추정" class="level2" data-number="11.3">
+<h2 data-number="11.3" class="anchored" data-anchor-id="최대가능도추정"><span class="header-section-number">11.3</span> 최대가능도추정</h2>
+<p>이제 회귀계수 <span class="math inline">\(\beta\)</span>를 최대가능도추정법(Maximum Likelihood Estimation)으로 구하기 위하여 로그가능도함수 <a href="#eq-likefunctionsample" class="quarto-xref">식&nbsp;<span>11.7</span></a> 를 회귀계수 벡터 <span class="math inline">\(\beta\)</span>로 미분한 가능도함수 방정식을 고려하자.</p>
+<p><span id="eq-glmmleeq"><span class="math display">\[
+\pardifftwo{  \ell_n }{   \beta} =  0
+\tag{11.12}\]</span></span></p>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+중요
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>여기서 일반화 선형모형에서 나타나는 모수들 <span class="math inline">\(\beta\)</span>, <span class="math inline">\(\mu_i\)</span>, <span class="math inline">\(\theta_i\)</span>의 관계를 살펴보자.</p>
+<ol type="1">
+<li>회귀계수 벡터 <span class="math inline">\(\beta\)</span>는 설명변수 벡터 <span class="math inline">\({ x}_i\)</span>와 내적 형태로 연결되어 있으며 이를 선형 예측식이라고 한다.</li>
+</ol>
+<p><span class="math display">\[  
+\eta_i = { x}^t_i  \beta
+\]</span></p>
+<ol start="2" type="1">
+<li>선형 예측식 <span class="math inline">\(\eta_i\)</span>는 관측값의 평균 <span class="math inline">\(\mu_i\)</span>와 연결함수 <span class="math inline">\(g\)</span>로 연결되어 있다.</li>
+</ol>
+<p><span class="math display">\[  
+g(\mu_i) = \eta_i
+\]</span></p>
+<ol start="3" type="1">
+<li>관측값의 평균 <span class="math inline">\(\mu_i\)</span>는 기본형 모수 <span class="math inline">\(\theta_i\)</span>와 함수 <span class="math inline">\(b\)</span>로 연결되어 있다.</li>
+</ol>
+<p><span class="math display">\[  
+b'(\theta_i) = \mu_i
+\]</span></p>
+</div>
+</div>
+<p>일반화 선형모형에서 최종적으로 추정해야 하는 모수는 회귀계수 벡터 <span class="math inline">\(\beta\)</span> 이며 모수 <span class="math inline">\(\beta\)</span>, <span class="math inline">\(\mu_i\)</span>, <span class="math inline">\(\theta_i\)</span> 다음과 연결되어 있음을 알 수 있다.</p>
+<p><span id="eq-parameterrelation"><span class="math display">\[
+\beta \underset{  g}{\longrightarrow} \mu_i  \underset{  b }{\longrightarrow}  \theta_i
+\tag{11.13}\]</span></span></p>
+<p>최대가능도 추정량을 구하는 방정식을 유도할 때 다음과 같은 일반화 선형모형의 지수군 분포에서 나타나는 미분공식이 적용된다.</p>
+<ol type="1">
+<li><strong>선형 예측식의 미분</strong>:</li>
+</ol>
+<p><span class="math display">\[
+\pardifftwo{ \eta }{ \beta} = \pardifftwo{ { x}^t \beta }{ \beta } = x
+\]</span></p>
+<ol start="2" type="1">
+<li><strong>연결함수의 역함수에 대한 미분</strong>: <span class="math inline">\(g(\mu) = \eta\)</span> 의 관계를 이용하면</li>
+</ol>
+<p><span class="math display">\[
+\pardifftwo{\mu}{\eta} =   \pardifftwo{\mu}{g(\mu)} = \left [ \pardifftwo{g(\mu)}{\mu} \right   ]^{-1} = [g'(\mu)]^{-1} = g^{-1}_{\mu} (\mu)
+\]</span></p>
+<p>여기서 <span class="math inline">\(g_{\mu}(\mu) = g'(\mu)\)</span>로서 연결함수의 미분을 나타내는 기호이다.</p>
+<ol start="3" type="1">
+<li><strong>평균과 기본형모수의 미분, 분산함수</strong>: 평균과 분산의 관계식을 이용하면</li>
+</ol>
+<p><span class="math display">\[
+\frac{\partial \theta }{\partial \mu } =
+\left [ \frac{\partial \mu }{\partial  \theta } \right ]^{-1} =
+\left [ b''(\theta) \right ]^{-1} = \frac{1}{v(\mu)}
+\]</span></p>
+<section id="가능도-방정식의-유도-첫-번째-방법" class="level3" data-number="11.3.1">
+<h3 data-number="11.3.1" class="anchored" data-anchor-id="가능도-방정식의-유도-첫-번째-방법"><span class="header-section-number">11.3.1</span> 가능도 방정식의 유도: 첫 번째 방법</h3>
+<p>이제 가능도 함수 <a href="#eq-likefunctionsample" class="quarto-xref">식&nbsp;<span>11.7</span></a> 의 형태를 이용하여 방정식 <a href="#eq-glmmleeq" class="quarto-xref">식&nbsp;<span>11.12</span></a> 를 을 유도해 보자.</p>
+<p><span id="eq-likeeqfirst"><span class="math display">\[
+\begin{aligned}
+0 &amp; =\pardifftwo{ \ell_n}{  \beta }\\
+&amp;=  \sum_{i=1}^n \left [ \frac{1}{a(\psi_i)} \right ] \left [ y_i \pardifftwo{ \theta_i}{  \beta } -\pardifftwo{ b(\theta_i)}{ \beta }  \right ] \\
+&amp;= \sum_{i=1}^n \left [ \frac{1}{a(\psi_i)} \right ] \left [ y_i \pardifftwo{ \theta_i}{  \beta }
+-\pardifftwo{ \theta_i }{  \beta } \pardifftwo{ b(\theta_i)}{ \theta_i }  \right ] \\
+&amp;=  \sum_{i=1}^n  \left [ \frac{1}{a(\psi_i)} \right ] \left [ \pardifftwo{ \theta_i }{  \beta } (y_i  - \mu_i)  \right ] \\
+&amp;=  \sum_{i=1}^n \left [ \frac{1}{a(\psi_i)} \right ] \left [ \pardifftwo{ \eta_i }{  \beta } \pardifftwo{ \mu_i }{ \eta_i} \pardifftwo{ \theta_i }{ \mu_i}(y_i  - \mu_i)
+  \right ] \\
+&amp;=  \sum_{i=1}^n \left [ \frac{1}{a(\psi_i)} \right ] \left [ { x}_i \frac{ (y_i  - \mu_i) }{ v(\mu_i) g_\mu(\mu_i) }   \right ] \\
+&amp;=  \sum_{i=1}^n  \left [  x_i w_i g_\mu(\mu_i) (y_i  - \mu_i)      \right ] \\
+&amp; =
+\begin{bmatrix}
+\sum_{i=1}^n x_{i1} w_i g_{\mu}(\mu_i) (y_i - \mu_i) \\
+\sum_{i=1}^n x_{i2} w_i g_{\mu}(\mu_i) (y_i - \mu_i) \\
+\vdots \\
+\sum_{i=1}^n x_{ip} w_i g_{\mu}(\mu_i) (y_i - \mu_i)
+\end{bmatrix}
+\end{aligned}
+\tag{11.14}\]</span></span></p>
+<p>여기서 가중치 <span class="math inline">\(w_i\)</span>는 다음과 정의한다. 가중치 <span class="math inline">\(w_i\)</span>는 앞에서 설명한 작업 변량의 분산의 역수와 동일하다. <a href="#eq-varianceweight" class="quarto-xref">식&nbsp;<span>11.9</span></a> 을 참조하자.</p>
+<p><span class="math display">\[
+w_i \equiv \frac{1}{ g^2_\mu(\mu_i)
+a(\phi_i) v(\mu_i) }
+\]</span></p>
+</section>
+<section id="가능도-방정식의-유도-두-번째-방법" class="level3" data-number="11.3.2">
+<h3 data-number="11.3.2" class="anchored" data-anchor-id="가능도-방정식의-유도-두-번째-방법"><span class="header-section-number">11.3.2</span> 가능도 방정식의 유도: 두 번째 방법</h3>
+<p>위의 방정식@eq-glmmleeq 에 미분의 연쇄법칙(chain rule)을 적용하면 다음과 같은 방정식을 얻는다.</p>
+<p><span id="eq-glmmleeqchain"><span class="math display">\[
+\pardifftwo{  \ell_n }{   \beta} = \pardifftwo{   \eta }{   \beta } \pardifftwo{   \mu }{   \eta } \pardifftwo{   \theta }{  \mu } \pardifftwo{  \ell_n }{   \theta } =0  
+\tag{11.15}\]</span></span></p>
+<p>위의 식에서 <span class="math inline">\(\eta\)</span>, <span class="math inline">\(\mu\)</span>, <span class="math inline">\(\theta\)</span>는 다음과 같이 <span class="math inline">\(n\)</span>개의 대응되는 원소로 이루어진 벡터이다.</p>
+<p><span class="math display">\[
+\eta =
+\begin{bmatrix}
+\eta_1 \\
+\eta_2 \\
+\vdots \\
+\eta_n
+\end{bmatrix}, \quad
+\mu =
+\begin{bmatrix}
+\mu_1 \\
+\mu_2 \\
+\vdots \\
+\mu_n
+\end{bmatrix}, \quad
+\theta =
+\begin{bmatrix}
+\theta_1 \\
+\theta_2 \\
+\vdots \\
+\theta_n
+\end{bmatrix}
+\]</span></p>
+<p>이제 <a href="#eq-glmmleeqchain" class="quarto-xref">식&nbsp;<span>11.15</span></a> 에서 나타난 도함수들을 각각 구해보자. 먼저</p>
+<p><span class="math display">\[
+\begin{aligned}
+\pardifftwo{   \eta }{   \beta } &amp; =
+\left [ \pardifftwo{  \eta_1 }{   \beta } ~~ \pardifftwo{  \eta_2 }{   \beta } ~~ \dots ~~ \pardifftwo{  \eta_n }{   \beta } \right ] \\
+&amp; = \left [ \pardifftwo{  { x}^t_1   \beta }{   \beta } ~~ \pardifftwo{   { x}^t_2   \beta  }{   \beta } ~~ \dots ~~ \pardifftwo{   { x}^t_n   \beta  }{   \beta } \right ]  \\
+&amp; = [ { x}_1 ~~ { x}_2 ~~ \dots ~~ { x}_n ] \\
+&amp; = { X}^t
+\end{aligned}
+\]</span></p>
+<p>위의 식에서 행렬 <span class="math inline">\(X\)</span>는 <span class="math inline">\(n \times p\)</span> 계획행렬이다. 또한</p>
+<p><span class="math display">\[
+\begin{aligned}
+\pardifftwo{   \mu }{   \eta } &amp; =
+\left [ \pardifftwo{  \mu_1 }{   \eta } ~~ \pardifftwo{  \mu_2 }{   \eta } ~~ \dots ~~ \pardifftwo{  \mu_n }{   \eta } \right ] \\
+&amp; = \left [ \pardifftwo{  g^{-1}(\eta_1) }{   \eta } ~~ \pardifftwo{   g^{-1}(\eta_2) }{   \eta } ~~ \dots ~~ \pardifftwo{   g^{-1}(\eta_2) }{   \eta } \right ]  \\
+&amp; =
+\begin{bmatrix}
+\frac{1}{g'(\mu_1)} &amp; 0 &amp; \dots &amp; 0 \\
+0 &amp; \frac{1}{g'(\mu_2)} &amp; \dots &amp; 0 \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+0 &amp; 0 &amp; \dots &amp; \frac{1}{g'(\mu_n)}  
+\end{bmatrix} \\
+&amp; =
+\begin{bmatrix}
+g^{-1}_{\mu}(\mu_1)  &amp; &amp; &amp;  \\
+&amp; g^{-1}_{\mu}(\mu_2) &amp;  &amp;  \\
+&amp;  &amp; \ddots &amp;  \\
+&amp; &amp;  &amp; g^{-1}_{\mu}(\mu_n)
+\end{bmatrix}
+\end{aligned}
+\]</span></p>
+<p>위에서 <span class="math inline">\(\pardifftwo{ \mu }{ \eta }\)</span>는 <span class="math inline">\(n\)</span>-차원 대각행렬이며 <span class="math inline">\(g_\mu(\mu) = g'(\mu)\)</span>로서 연결함수 <span class="math inline">\(g\)</span>를 1차 미분한 함수이다.</p>
+<p>또한 다음과 같은 결과를 얻는다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\pardifftwo{   \theta }{   \mu } &amp; =
+\left [ \pardifftwo{  \theta_1 }{   \mu } ~~ \pardifftwo{  \theta_2 }{   \mu } ~~ \dots ~~ \pardifftwo{  \theta_n }{   \mu } \right ] \\
+&amp; =
+\begin{bmatrix}
+\frac{1}{b''(\theta_1)} &amp; 0 &amp; \dots &amp; 0 \\
+0 &amp; \frac{1}{b''(\theta_2)} &amp; \dots &amp; 0 \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+0 &amp; 0 &amp; \dots &amp; \frac{1}{b''(\theta_n)}  
+\end{bmatrix} \\
+&amp; =
+\begin{bmatrix}
+v^{-1}(\mu_1)  &amp; &amp; &amp;  \\
+&amp; v^{-1}(\mu_2) &amp;  &amp;  \\
+&amp;  &amp; \ddots &amp;  \\
+&amp; &amp;  &amp; v^{-1}(\mu_n)
+\end{bmatrix}
+\end{aligned}
+\]</span></p>
+<p>마지막으로 <a href="#eq-likefunctionsample" class="quarto-xref">식&nbsp;<span>11.7</span></a> 를 이용하면 로그가능도함수 <span class="math inline">\(\ell_n\)</span> 을 <span class="math inline">\(\theta\)</span>로 미분한 <span class="math inline">\(n\)</span>-차원 벡터는 다음과 같이 얻어진다.</p>
+<p><span class="math display">\[
+\pardifftwo{  \ell_n }{   \theta}   =
+\begin{bmatrix}
+\frac{y_1 - b'(\theta_1)}{a(\phi_1)} \\
+\frac{y_2 - b'(\theta_2)}{a(\phi_2)} \\
+\vdots \\
+\frac{y_n - b'(\theta_n)}{a(\phi_n)}
+\end{bmatrix}
+=
+\begin{bmatrix}
+\frac{y_1 - \mu_1}{a(\phi_1)} \\
+\frac{y_2 - \mu_2}{a(\phi_2)} \\
+\vdots \\
+\frac{y_n - \mu_n}{a(\phi_n)}
+\end{bmatrix}
+\]</span></p>
+<p>이제 가능도추정을 위한 방정식 <a href="#eq-glmmleeqchain" class="quarto-xref">식&nbsp;<span>11.15</span></a> 을 위에서 유도한 도함수 벡터와 행렬을 이용하여 다시 쓰면 다음과 같다.</p>
+<p><span id="eq-likeeqsecond"><span class="math display">\[
+\begin{aligned}
+0 &amp; = \pardifftwo{  \ell_n }{   \beta} = \pardifftwo{   \eta }{   \beta } \pardifftwo{   \mu }{   \eta } \pardifftwo{   \theta }{  \mu } \pardifftwo{  \ell }{   \theta } \\
+&amp; =  { X}^t
+\begin{bmatrix}
+\frac{1}{g_{\mu}(\mu_1)}  &amp; &amp; &amp;  \\
+   &amp; \frac{1}{g_{\mu}(\mu_1)} &amp;  &amp;  \\
+  &amp;  &amp; \ddots &amp;  \\
+  &amp; &amp;  &amp; \frac{1}{g_{\mu}(\mu_n)}
+\end{bmatrix}
+  \begin{bmatrix}
+\frac{1}{v(\mu_1)}  &amp; &amp; &amp;  \\
+   &amp; \frac{1}{v(\mu_2)} &amp;  &amp;  \\
+  &amp;  &amp; \ddots &amp;  \\
+  &amp; &amp;  &amp; \frac{1}{v(\mu_n)}
+\end{bmatrix}
+\begin{bmatrix}
+\frac{y_1 - \mu_1}{a(\phi_1)} \\
+\frac{y_2 - \mu_2}{a(\phi_2)} \\
+\vdots \\
+\frac{y_n - \mu_n}{a(\phi_n)}
+\end{bmatrix} \\
+&amp;=
+{ X}^t
+\begin{bmatrix}
+\frac{1}{g^2_{\mu}(\mu_1) a(\phi_1) v(\mu_1)}  &amp; &amp; &amp;  \\
+   &amp; \frac{1}{g^2_{\mu}(\mu_1)a(\phi_2)v(\mu_2)} &amp;  &amp;  \\
+  &amp;  &amp; \ddots &amp;  \\
+  &amp; &amp;  &amp; \frac{1}{g^2_{\mu}a(\phi_n)(\mu_n)v(\mu_n)}
+\end{bmatrix} \\
+&amp; \quad \quad \times
+\begin{bmatrix}
+g_{\mu}(\mu_1)   &amp; &amp; &amp;  \\
+   &amp; g_{\mu}(\mu_2) &amp;  &amp;  \\
+  &amp;  &amp; \ddots &amp;  \\
+  &amp; &amp;  &amp; g_{\mu}(\mu_n)
+\end{bmatrix}
+\begin{bmatrix}
+y_1 - \mu_1 \\
+y_2 - \mu_2 \\
+\vdots \\
+y_n - \mu_n
+\end{bmatrix} \\
+&amp; = { X}^t  W  \Delta ( y -  \mu)
+\end{aligned}
+\tag{11.16}\]</span></span></p>
+<p>위의 식에서 가중값 대각행렬 <span class="math inline">\(W\)</span>, 연결함수 미분값 대각행렬 <span class="math inline">\(\Delta\)</span>, 관측값 벡터 <span class="math inline">\(y\)</span>, 평균 벡터 <span class="math inline">\(\mu\)</span>는 다음과 같이 정의된다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+W &amp; =
+\begin{bmatrix}
+w_1  &amp; &amp; &amp;  \\
+   &amp; w_2 &amp;  &amp;  \\
+  &amp;  &amp; \ddots &amp;  \\
+  &amp; &amp;  &amp; w_n
+\end{bmatrix}
+= \begin{bmatrix}
+\frac{1}{g^2_{\mu}(\mu_1) a(\phi_1) v(\mu_1)}  &amp; &amp; &amp;  \\
+   &amp; \frac{1}{g^2_{\mu}(\mu_1)a(\phi_2)v(\mu_2)} &amp;  &amp;  \\
+  &amp;  &amp; \ddots &amp;  \\
+  &amp; &amp;  &amp; \frac{1}{g^2_{\mu}a(\phi_n)(\mu_n)v(\mu_n)}
+\end{bmatrix} \\
+\Delta &amp; =
+\begin{bmatrix}
+\delta_1   &amp; &amp; &amp;  \\
+   &amp; \delta_2 &amp;  &amp;  \\
+  &amp;  &amp; \ddots &amp;  \\
+  &amp; &amp;  &amp; \delta_n
+\end{bmatrix} =
+\begin{bmatrix}
+g_{\mu}(\mu_1)   &amp; &amp; &amp;  \\
+   &amp; g_{\mu}(\mu_2) &amp;  &amp;  \\
+  &amp;  &amp; \ddots &amp;  \\
+  &amp; &amp;  &amp; g_{\mu}(\mu_n)
+\end{bmatrix} \\
+y &amp; =
+\begin{bmatrix}
+y_1  \\
+y_2 \\
+\vdots \\
+y_n
+\end{bmatrix}, \quad
+\mu =
+\begin{bmatrix}
+\mu_1 \\
+\mu_2 \\
+\vdots \\
+\mu_n
+\end{bmatrix}
+\end{aligned}
+\]</span></p>
+</section>
+</section>
+<section id="최대가능도추정량의-계산" class="level2" data-number="11.4">
+<h2 data-number="11.4" class="anchored" data-anchor-id="최대가능도추정량의-계산"><span class="header-section-number">11.4</span> 최대가능도추정량의 계산</h2>
+<p>이제 회귀계수 <span class="math inline">\(\beta\)</span>를 최대가능도추정법(Maximum Likelihood Estimation)으로 가능도 방정식을 <a href="#eq-likeeqsecond" class="quarto-xref">식&nbsp;<span>11.16</span></a> 를 이용하면 다음과 같은 행렬 방정식으로 표시된다.</p>
+<p><span id="eq-glmmleq"><span class="math display">\[
+{ X}^t  W  \Delta  y  = { X}^t  W  \Delta  \mu
+\tag{11.17}\]</span></span></p>
+<p>위의 방정식은 일반적으로 회귀계수 벡터 <span class="math inline">\(\beta\)</span>에 대하여 선형방정식이 아니므로 최소제곱법과 같이 최대가능도 추정량을 직접 구할 수 없다.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+노트
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<ol type="1">
+<li><p>정규분포 가정 하에서 선형회귀 모형에서는 <a href="#eq-glmmleq" class="quarto-xref">식&nbsp;<span>11.17</span></a> 이 최소제곱법의 방정식 <span class="math inline">\({ X}^t  y  = { X}^t { X}  \beta\)</span>로 유도되고 직접적으로 구할 수 있다.</p></li>
+<li><p>많은 경우 스케일 모수 <span class="math inline">\(a(\phi_i)\)</span>는 관측값 <span class="math inline">\(y_i\)</span>에 따라 변하지 않고 상수인 경우가 흔하다. 즉 <span class="math inline">\(a(\phi_i) \equiv a(\phi)\)</span>. 이러한 경우 가능도 방정식 <a href="#eq-likeeqfirst" class="quarto-xref">식&nbsp;<span>11.14</span></a> 또는 <a href="#eq-likeeqsecond" class="quarto-xref">식&nbsp;<span>11.16</span></a> 에서 스케일 모수 <span class="math inline">\(a(\phi_i)\)</span>를 1로 놓고 방정식을 푼다.</p></li>
+</ol>
+</div>
+</div>
+<p>최대가능도추정량을 실제 계산하기 위하여 로그 가능도 함수의 2차 도함수(헤시안) 행렬을 구해보자. <a href="#eq-likeeqfirst" class="quarto-xref">식&nbsp;<span>11.14</span></a> 에서 얻은 1차 도함수를 한번 더 미분하면 다음과 같은 결과를 얻는다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\pardiffdd{\ell_n}{ \beta}{ \beta^t} &amp; =
+\sum \pardifftwo{}{ \beta} \left [  {  x}_i w_i g_\mu(\mu_i) (y_i  - \mu_i)      \right ] \\
+&amp; = \sum \pardifftwo{}{ \beta} \left [  { x}_i  c_i (y_i  - \mu_i)      \right ] \quad
+[ c_i \equiv w_i g_\mu(\mu_i) ] \\
+&amp; = \sum  \left [   \pardifftwo{ c_i (y_i  - \mu_i)}{ \beta} {  x}^t_i      \right ] \\
+&amp; = \sum  \left [   \pardifftwo{ c_i }{ \beta} (y_i  - \mu_i)+ \pardifftwo{  (y_i  - \mu_i)}{ \beta}   c_i    \right ] { x}^t_i \\
+&amp; = \sum  \left [   \pardifftwo{ c_i }{ \beta} (y_i  - \mu_i) - \pardifftwo{  \eta_i}{ \beta} \pardifftwo{  \mu_i}{\eta_i}   c_i    \right ] { x}^t_i \\
+&amp;= \sum  \left [   \pardifftwo{ c_i }{ \beta} (y_i  - \mu_i)- { x}_i [g_\mu(\mu)]^{-1}    c_i    \right ] { x}^t_i  \quad  [ c_i [g_\mu(\mu)]^{-1} =  w_i]   \\
+&amp;= \sum  \left [   \pardifftwo{ c_i }{\beta}  (y_i  - \mu_i) \right ]  { x}^t_i  - \sum    { x}_i w_i { x}^t_i  \\
+&amp;= \sum  \left [   \pardifftwo{ c_i }{\beta}  (y_i  - \mu_i) \right ]  { x}^t_i  - { X}^t  W { X}
+\end{aligned}
+\]</span></p>
+<p>그러므로 피셔정보 <span class="math inline">\(I( \beta)\)</span>는 다음과 같이 얻어진다.</p>
+<p><span id="eq-fisherinfo"><span class="math display">\[
+\begin{aligned}
+I( \beta) &amp; = - E \left [ \pardiffdd{\ell_n}{ \beta}{ \beta^t} \right ] \\
+&amp; = E \left [ - \sum  \left [   \pardifftwo{ c_i }{\beta}  (y_i  - \mu_i) \right ]  { x}^t_i  + { X}^t  W { X} \right ] \\
+&amp; =  0+   { X}^t  W { X}
+\end{aligned}
+\tag{11.18}\]</span></span></p>
+<p>또는 <a href="#eq-likeeqsecond" class="quarto-xref">식&nbsp;<span>11.16</span></a> 에서 얻은 1차 도함수 방정식을 를 한번 더 미분하여 기대값을 취하면 <a href="#eq-fisherinfo" class="quarto-xref">식&nbsp;<span>11.18</span></a> 와 동일한 결과를 얻는다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\pardiffdd{\ell_n}{ \beta}{ \beta^t} &amp; =
+\pardifftwo{}{ \beta} \left [  { X}^t  W  \Delta ( y -  \mu) \right ] \\
+&amp; =
+\left \{ \pardifftwo{}{ \beta} \left [ { X}^t  W  \Delta \right ] \right \} ( y -  \mu)  +
+\left \{ \pardifftwo{}{ \beta} \left [ ( y -  \mu)^t  \right ]  \right \}  \Delta  W { X} \\
+&amp; = \left \{ \pardifftwo{}{ \beta} \left [ { X}^t  W  \Delta \right ] \right \} ( y -  \mu)  
+-\left [ \pardifftwo{ \mu}{ \beta} \right ]    \Delta  W { X} \\
+  &amp; = \left \{ \pardifftwo{}{ \beta} \left [ { X}^t  W  \Delta \right ] \right \} ( y -  \mu)  
+-\left [ \pardifftwo{ \eta}{ \beta} \pardifftwo{ \mu}{ \eta} \right ]    \Delta  W { X} \\
+&amp; = \left \{ \pardifftwo{}{ \beta} \left [ { X}^t  W  \Delta \right ] \right \} ( y -  \mu)  
+-\left [ { X}^t { \Delta}^{-1} \right ]    \Delta  W { X} \\
+&amp; = \left \{ \pardifftwo{}{ \beta} \left [ { X}^t  W  \Delta \right ] \right \} ( y -  \mu)  
+-{ X}^t  W { X} \\
+\end{aligned}
+\]</span></p>
+<p>최대가능도추정량 <span class="math inline">\(\hat { \beta}\)</span>는 가능도 방정식 <a href="#eq-glmmleq" class="quarto-xref">식&nbsp;<span>11.17</span></a> 을 직접 풀어서 계산할 수 있지만 믾은 경우 직접해(explicit solution)를 구하는 것이 불가능 하다. 따라서 보통의 경우 선형화된 작업변량에 반복가중최소제곱법(iterative weighted least square; IWLS)을 적용하여 최대가능도 추정량을 구하며 IWLS로 구하는 해는 가능도 방정식 <a href="#eq-glmmleq" class="quarto-xref">식&nbsp;<span>11.17</span></a> 의 해와 동일하다.</p>
+<p>주어진 분포에서 기본 연결함수를 <span class="math inline">\(g\)</span> 라고 하고 관측값 <span class="math inline">\(y\)</span>를 변환한 작업변량 <span class="math inline">\(z=g(y)\)</span>의 테일러 전개를 다음과 같이 고려해 보자.<br>
+</p>
+<p><span class="math display">\[
+z \equiv g(y) \cong g(\mu) + g_\mu (\mu)(y-\mu)
+\]</span></p>
+<p>작업 변량 <span class="math inline">\(z\)</span> 의 분산은 <a href="#eq-varianceweight" class="quarto-xref">식&nbsp;<span>11.9</span></a> 와 같이 다음으로 주어진다.</p>
+<p><span class="math display">\[
+var(z) = v(\mu) g^2_\mu (\mu) \equiv w^{-1}
+\]</span></p>
+<p>회귀계수 벡터의 초기값을 <span class="math inline">\({ \beta}_0\)</span>라고 하자. 그러면 작업 변량의 초기값 <span class="math inline">\(z_0\)</span>는 <span class="math inline">\({ \beta}_0\)</span> 로 계산된 <span class="math inline">\(\mu_0\)</span>를 이용하여 다음과 같이 구할 수 있다.</p>
+<p><span class="math display">\[
+z_0 = g(\mu_0) + g_\mu (\mu_0)
+(y-\mu_0) = \eta_0 + g_\mu (\mu_0) (y-\mu_0)
+\]</span></p>
+<p>IWLS 추정량 <span class="math inline">\(\hat { \beta}\)</span>는 <span class="math inline">\(z_0\)</span> 를 설명변수 벡터 <span class="math inline">\(x\)</span>로 선형회귀분석을 적합할 때 가중치를 <span class="math inline">\(w_0\)</span> 로 이용하는 가중최소제곱법으로 반복적으로 적용하여 개선할 수 있다.</p>
+<p>실제로 IWLS 추정량은 피셔정보를 이용한 스코어 방법(Fisher scoring method)로 구한 최대가능도 추정량과 동일함을 보일 수 있다. 일단 회귀계수 벡터의 초기값 <span class="math inline">\(\hat { \beta}^0\)</span> 으로 계산된 피셔정보 행렬을 <span class="math inline">\(A\)</span>로 아래와 같이 정의하자.</p>
+<p><span class="math display">\[   
+A = -E \left [ \pardiffdd{\ell_n}{ \beta}{ { \beta}^t} \right ]_{ \beta= \hat { \beta}^0}
+\]</span></p>
+<p><span class="math display">\[   
+A = -E \left [ \pardiffdd{\ell_n}{ \beta}{ { \beta}^t} \right ]_{ \beta= \hat { \beta}^0}
+\]</span></p>
+<p>새로운 추정량 <span class="math inline">\(\hat { \beta}^1\)</span> 가 이전의 추정량 <span class="math inline">\(\hat { \beta}^0\)</span>에서 다음과 같은 축차식으로 계산되는 방법이 피셔 스코링 방법이다.</p>
+<p><span class="math display">\[   
+0 =  \pardifftwo{\ell_n }{ \beta} |_{ \beta=\hat { \beta}^0}- A(\hat { \beta}^1 - \hat { \beta}^0) \quad  
+\Leftrightarrow \quad  A(\hat { \beta}^1 - \hat { \beta}^0)  = \pardifftwo{\ell_n }{ \beta} |_{ \beta=\hat { \beta}^0}
+\]</span></p>
+<p>위의 피셔의 스코링 방법을 더 정리하면 다음과 같이 유도할 수 있다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+  A( \hat { \beta}^1 - \hat { \beta}^0)  &amp; = \pardifftwo{ \ell_n }{ \beta} |_{ \beta=\hat { \beta}^0} \\
+\Leftrightarrow { X}^t  { W}_0   X (\hat { \beta}^1 - \hat { \beta}^0) &amp; = { X}^t { W}_0 { \Delta}_0 ( y-{ \mu}_0) \\
+\Leftrightarrow   { X}^t { W}_0   X \hat { \beta}^1 &amp; = { X}^t { W}_0 [  X \hat { \beta}^0+ { \Delta}_0 ( y-{ \mu}_0)] \\
+  \Leftrightarrow   { X}^t { W}_0   X \hat { \beta}^1 &amp; = { X}^t { W}_0 [ { \eta}_0+ { \Delta}_0 ( y-{ \mu}_0)] \\
+    \Leftrightarrow   { X}^t { W}_0   X \hat { \beta}^1 &amp; = { X}^t { W}_0 { z}_0 \\
+\end{aligned}
+\]</span></p>
+<p>위의 방정식은 <span class="math inline">\(z_0 = \eta_0 + g_\mu (\mu_0) (y-\mu_0)\)</span>를 가중치 <span class="math inline">\(w_0\)</span>를 사용하여 얻은 가중최소제곱법에서 나온 방정식임을 알 수 있다. 따라서 최대가능도 추정량을 구하는 피셔의 스코링 방법은 앞에서 알아본 반복가중최소제곱법과 동일하다.</p>
+</section>
+<section id="편차" class="level2" data-number="11.5">
+<h2 data-number="11.5" class="anchored" data-anchor-id="편차"><span class="header-section-number">11.5</span> 편차</h2>
+<p>선형모형에서 잔차제곱합(residual sum of square; SSE)에 대한 의미를 살펴보고 이를 일반화 선형모형에 확장하는 개념인 편차(deviance)의 정의를 알아보자.</p>
+<p>먼저 다음과 같은 선형회귀식을 고려한다.</p>
+<p><span class="math display">\[
+y_i = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + \dots \beta_p x_{pi} + e_i , \quad i=1,2,\dots,n
+\]</span></p>
+<p>여기서 오차항 <span class="math inline">\(e_i\)</span>를 서로 독립이며 평균이 0이고 분산이 <span class="math inline">\(\sigma^2\)</span>인 정규분포를 따른다고 가정하고 (<span class="math inline">\(\sigma^2\)</span>는 알고있다고 가정하자) 각 관측변수의 평균을 다음과 같이 <span class="math inline">\(\mu_i\)</span>로 하자.</p>
+<p><span class="math display">\[   
+\mu_i =E(y_i|x_i)= \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + \dots +\beta_p x_{pi}
+\]</span></p>
+<p>서로 독립인 관측변수 <span class="math inline">\(y_i\)</span>의 분포는 정규분포를 따르므로</p>
+<p><span class="math display">\[  
+y_i \sim N(\mu_i,\sigma^2)   
+\]</span></p>
+<p>관측치 <span class="math inline">\(\pmb  y=(y_1,y_2,\dots,y_n)^t\)</span>의 로그가능도함수는 다음과 같이 나타낼 수 있다.</p>
+<p><span class="math display">\[  
+l(\pmb  \mu|\pmb  y) = C -\frac{n}{2} \log \sigma^2 -\frac{1}{2\sigma^2} \sum_{i=1}^n (y_i - \mu_i)^2
+\]</span></p>
+<p>예측변수 <span class="math inline">\(x_1,x_2,\dots,x_p\)</span>를 고려한 선형회귀모형에서 각 반응변수 평균의 예측에 선형예측식을 사용하며 모형에서 모수의 개수는 <span class="math inline">\(p+1\)</span>로 보통 모수의 수가 관측값의 수 <span class="math inline">\(n\)</span>보다 작다.</p>
+<p><span class="math display">\[    
+\hat \mu_i = \hat \beta_0 + \hat \beta_1 x_{1i} + \hat \beta_2 x_{2i} + \dots +\hat \beta_p x_{pi} \equiv \hat y_i
+\]</span></p>
+<p>이 때 선형회귀모형의 로그가능도함수의 최대값는 다음과 같다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+l(\hat{\pmb  \mu}|\pmb  y) &amp; = l_{regession}(\hat {\pmb  \beta}|y) \\
+&amp; = C -\frac{n}{2} \log \sigma^2 -\frac{1}{2\sigma^2} \sum_{i=1}^n (y_i - \hat \mu_i)^2  \\
+  &amp;= C -\frac{n}{2} \log \sigma^2 -\frac{1}{2\sigma^2} \sum_{i=1}^n (y_i - \hat y_i)^2  \\
+   &amp;= C -\frac{n}{2} \log \sigma^2 -\frac{1}{2\sigma^2} SSE
+\end{aligned}
+\]</span></p>
+<p>이제 위의 선형회귀모형에서 예측변수 <span class="math inline">\(x_1,x_2,\dots,x_p\)</span>를 고려하지 않는 포화 모형을 생각해보자.</p>
+<p><span class="math display">\[  
+y_i = \beta_{0i} +e_i \quad \text{or} \quad E(y_i) = \beta_{0i}
+\]</span></p>
+<p>이러한 포화 모형은 <span class="math inline">\(n\)</span>개의 반응변수의 평균을 <span class="math inline">\(n\)</span>개의 모수를 가진 모형으로 추정하는 것으로 위와 같은 모형을 포화 모형(saturated model)이라고 한다. 포화 모형에서 모수 <span class="math inline">\(\beta_{0i}\)</span>의 최소제곱 추정량(또는 최대가능도 추정량)는 관측값 <span class="math inline">\(y_i\)</span>임을 쉽게 알수 있다.</p>
+<p><span class="math display">\[  
+\min_{\beta_{0i}} \sum_{i=1}^n (y_i -\beta_{0i})^2 \quad \Rightarrow \hat \beta_{0i} = y_i, \quad i=1,2,\dots,n
+\]</span></p>
+<p>포화 모형의 의미는 우리가 생각할 수 있는 모형 중에 가장 큰 모형으로 포화모형보다 큰 모형을 생각할 수 없다. 위에서 언급한 바와 같이 <span class="math inline">\(n\)</span>개의 관측값에 대하여 모수의 수가 <span class="math inline">\(n\)</span>개보다 큰 모형을 생각하면 유일한 모수의 추정이 불가능하다.</p>
+<p>선형회귀모형에서 포화모형은 <span class="math inline">\(\hat \beta_{0i}=y_i\)</span>이며 로그가능도함수의 최대값은 <span class="math inline">\(l(\pmb  y | \pmb  y)\)</span>로 표시하며 다음과 같다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+l(\pmb  y | \pmb  y) &amp; = l_{saturated}(\hat {\pmb  \beta_{0}} | y) \\
+&amp; = C -\frac{n}{2} \log \sigma^2 -\frac{1}{2\sigma^2} \sum_{i=1}^n (y_i - \hat \beta_{0i})^2  \\
+&amp;= C -\frac{n}{2} \log \sigma^2 -\frac{1}{2\sigma^2} \sum_{i=1}^n (y_i - y_i)^2  \\
+   &amp;= C -\frac{n}{2} \log \sigma^2 + 0
+\end{aligned}
+\]</span></p>
+<p>포화모형은 설정할 수 있는 최대의 모수를 가진 가장 큰 모형이므로 우리가 생각할 수 있는 모형 중에서 관측값을 예측하는 예측력은 가장 좋다는 것을 알 수 있다(하지만 과적합모형이다). 따라서 예측변수 <span class="math inline">\(\pmb  x\)</span>들을 사용하는 선형회귀모형의 예측력이 포화모형이 가지는 예측력에 가까우면 좋은 모형이라고 생각할 수 있다. 반응변수의 평균을 예측하는 예측력은 로그가능도함수의 크기로서 나타낼 수 있다. 포화모형과 선형회귀모형의 로그가능도함수를 비교하면 포화모형의 로그가능도함수가 크다는 것을 알수 있고 (why?) 두 로그가능도함수의 의 차이를 비교하면 다음과 같다.</p>
+<p><span class="math display">\[  
+l(\pmb  y | \pmb  y) - l(\hat {\pmb  \mu} | \pmb  y) = l_{saturated}(\hat {\pmb  \beta_{0}} | y) -l_{regession}(\hat {\pmb  \beta}|y) = \frac{1}{2\sigma^2} \sum_{i=1}^n (y_i - \hat y_i)^2 = \frac{1}{2\sigma^2}  SSE
+\]</span></p>
+<p>따라서 포화모형과 로그가능도함수의의 차이가 작다는 것은 선형회귀모형의 잔차제곱합(SSE)이 작다는 것을 의미한다. 보통 잔차제곱합이 작으면 선형회귀모형의 예측력이 좋은 모형이며 이는 선형회귀모형의 가능도함수가 포화모형의 가능도함수에 가깝다는 의미이다.</p>
+<p>이렇게 모형의 예측능력을 평가하는 측도로서 편차(deviance)를 포화모형과 고려한 회귀모형의 로그가능도함수의 차이에 2를 곱한 양으로 정의한다. 따라서 편차는 작을 수록 좋다.</p>
+<p><span id="eq-deviance"><span class="math display">\[
+deviance \equiv D(\pmb  y;\hat {\pmb  \mu}) = 2 \left [ l(\pmb  y | \pmb  y) - l(\hat {\pmb  \mu} | \pmb  y) \right ]
+\tag{11.19}\]</span></span></p>
+<p>정규분포인 경우 편차는 다음과 같이 주어진다.</p>
+<p><span class="math display">\[
+D(\pmb  y;\hat {\pmb  \mu}) = 2 \left [ l(\pmb  y | \pmb  y) - l(\hat {\pmb  \mu} | \pmb  y) \right ] =
+\frac{1}{\sigma^2}  SSE
+\]</span></p>
+<p>이제 이항분포들에서 나온 관측값에 대한 포화모형을 생각해 보자.</p>
+<p><span class="math display">\[  
+y_i \sim B(m_i, p_i(x_i)), \quad i=1,2,\dots,n
+\]</span></p>
+<p>위의 모형에서 포화모형은 어떤 모형일까? 포화모형은 <span class="math inline">\(n\)</span>개의 관측변수의 평균, 여기서 <span class="math inline">\(E(y_i/m_i) = p(\pmb  x_i)\)</span>를 <span class="math inline">\(n\)</span>개의 관측치 <span class="math inline">\(y_i\)</span>를 이용하여 추정한 모형으로서 각 성공확률은 해당하는 관측된 성공의 비율에 의해 추정된다. 즉,</p>
+<p><span class="math display">\[  
+\hat p(x_i) = \frac{y_i}{m_i}
+\]</span></p>
+<p>이러한 경우의 로그가능도함수의 값은 다음과 같이 주어진다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+l(\pmb  y | \pmb  y)  &amp; =l_{saturated} \\
+&amp; = \sum_i \log {{m_i}\choose{y_i}} + \sum_i y_i \log \hat p(x_i) + \sum_i (m_i -y_i) \log (1- \hat p(x_i))  \\
+&amp; = \sum_i \log {{m_i}\choose{y_i}} + \sum_i y_i \log  \frac{y_i}{m_i} + \sum_i (m_i -y_i) \log (1- \frac{y_i}{m_i})
+\end{aligned}
+\]</span></p>
+<p>따라서 위에서 주어진 포화함수의 로그가능도함수에서 로지스틱회귀식의 로그가능도함수 <a href="#eq-bionom-loglike" class="quarto-xref">식&nbsp;<span>11.11</span></a> 를 빼고 2를 곱해서 편차를 정의할 수 있다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+D(\pmb  y;\hat {\pmb  \mu}) &amp;=  2 \left [ l(\pmb  y | \pmb  y) - l(\hat {\pmb  \mu} | \pmb  y) \right ] \\
+&amp;= 2 ( l_{saturated}-l_{regession})  \\
+   &amp; = 2 \left [\sum_i y_i \log  \frac{y_i}{m_i} + \sum_i (m_i -y_i) \log (1- \frac{y_i}{m_i})
+    -\sum_i y_i \log \hat p(x_i) - \sum_i (m_i -y_i) \log (1-\hat p(x_i)) \right ]\\
+   &amp; = 2\left  [\sum_i y_i \log \frac{y_i}{m_i \hat p(x_i) } + \sum_i (m_i -y_i) \log \frac{1-y_i/m_i}{1-\hat p(x_i)}\right ] \\
+   &amp; = 2\left [\sum_i y_i \log  \frac{y_i}{m_i \hat p(x_i) } + \sum_i (m_i -y_i) \log \frac{m_i-y_i}{m_i- m_i \hat p(x_i)} \right ] \\
+   &amp; = 2\left  [\sum_i y_i \log   \frac{y_i}{\hat y_i } + \sum_i (m_i -y_i) \log \frac{m_i-y_i}{m_i- \hat y_i } \right ]\\
+\end{aligned}
+\]</span></p>
+<p>위에서 <span class="math inline">\(\hat y_i = m_i \hat p(x_i)\)</span>으로 로지스틱 회귀에서 성공의 횟수의 평균에 대한 예측값이다.</p>
+<p>위의 논의에서 알 수 있듯이 로지스틱 회귀에서의 편차는 선형회귀 분석에서 잔차 제곱합 SSE의 의미로 해석할 수 있으며 작을 수록 모형의 예측력이 좋다는 것을 알 수 있다.</p>
+<p>또한 편차는 표본의 개수가 충분히 크면 자유도가 <span class="math inline">\(n-p\)</span> 인 카이제곱분포를 따른다. 여기서 <span class="math inline">\(p\)</span>는 회귀계수 벡터 <span class="math inline">\(\pmb  \beta\)</span>의 크기이다.</p>
+<p>정규분포와 이항분포의 편차를 비교하면 정규분포의 편차에는 산포를 나타내는 모수 <span class="math inline">\(\sigma^2\)</span> 이 포함되어 있지만 이항분포의 편차에는 다른 모수가 나타나지 않는다. <a href="#eq-deviance" class="quarto-xref">식&nbsp;<span>11.19</span></a> 에서 주어진 편차를 척도 모수(scaled parameter) 또는 산포 모수(dispersion parameter) <span class="math inline">\(\phi\)</span> 를 곱해준 값을 척도화 편차(scaled deviance) <span class="math inline">\(D^*(\pmb  y;\hat {\pmb  \mu})\)</span> 라고 부른다.</p>
+<p><span id="eq-scaleddeviance"><span class="math display">\[
+D^*(\pmb  y;\hat {\pmb  \mu}) = \phi D(\pmb  y;\hat {\pmb  \mu})
+\tag{11.20}\]</span></span></p>
+<p>정규분포에서 산포 모수가 분산 <span class="math inline">\(\phi=\sigma^2\)</span> 이므로 척도화 편차는 잔차제곱합 <span class="math inline">\(D^*(\pmb  y;\hat {\pmb  \mu}) = SSE\)</span> 가 되며 이항분포에서는 편차와 척도화 편차가 같다.</p>
+<p>이제 선형모형에서 고려하는 다음과 같은 가설 검정을 고려해 보자.</p>
+<p><span id="eq-glmhypo"><span class="math display">\[
+H_0 : \text{ reduced model} \quad vs. \quad H_1: \text{full model}
+\tag{11.21}\]</span></span></p>
+<p>예를 들어 다음과 같은 가설검정을 자주 고려하게 된다.</p>
+<p><span class="math display">\[
+H_0: \beta_{1} = \beta_2 =\dots =\beta_q =0 \quad vs. H_1: \text{ not } H_0
+\]</span></p>
+<p>만약 축소모형(reduced moldel) 에 대한 편차를 <span class="math inline">\(D_0\)</span> 라고 하고 큰 모형(full model)에 대한 척도화 편차를 <span class="math inline">\(D_1\)</span> 라고 하면 귀무가설이 참인 경우 두 편차의 차이 <span class="math inline">\(D_0 - D_1\)</span> 은 근사적으로 자유도가 <span class="math inline">\(d\)</span> 인 카이제곱분포를 따른다. 여기서 자유도 <span class="math inline">\(d\)</span> 는 두 모형의 회귀계수의 갯수 차이이다. 이러한 두 편차의 차이의 점근적 분포 가능도비검정 이론에 의하여 유도할 수 있다.</p>
+</section>
+<section id="이항변수에-대한-회귀모형" class="level2" data-number="11.6">
+<h2 data-number="11.6" class="anchored" data-anchor-id="이항변수에-대한-회귀모형"><span class="header-section-number">11.6</span> 이항변수에 대한 회귀모형</h2>
+<section id="단순-로지스틱-회귀모형" class="level3" data-number="11.6.1">
+<h3 data-number="11.6.1" class="anchored" data-anchor-id="단순-로지스틱-회귀모형"><span class="header-section-number">11.6.1</span> 단순 로지스틱 회귀모형</h3>
+<p>이제 반응변수의 값이 연속형 변수가 아니라 두 개의 가능한 결과만을 가지는 이항변수라면 선형 회귀식은 적절하지 못하다. 왜냐하면 반응변수의 기대값이 0과 1사이의 확률로 나타나기 때문이다.</p>
+<p><span class="math display">\[
+E(y|x) = 1\cdot P(y=1|x) + 0 \cdot P(y=0|x) = P(y=1|x)
+\]</span></p>
+<p>따라서 반응변수의 기대값의 범위와 예측변수가 있는 선형예측식(linear predictor) <span class="math inline">\(\beta_0 + \beta_1 x\)</span>의 범위가 일치하지 않아서 선형회귀식을 그대로 사용할 수 없다.</p>
+<p>위의 문제를 해결하기 위한 방법중의 하나는 다음과 같은 함수 <span class="math inline">\(m\)</span>를 생각하여 변환된 선형예측식의 범위를 <span class="math inline">\([0,1]\)</span>로 만드는 것이다.</p>
+<p><span class="math display">\[
+m:\Re \rightarrow [0,1]  \quad \text{and } g(x) \text{ is monotone function}.
+\]</span></p>
+<p>따라서 다음과 같은 이항변수를 반응변수로 하는 새로운 회귀식을 만들 수있다.</p>
+<p><span id="eq-logistic1"><span class="math display">\[
+E(y|x) = m(\beta_0 + \beta_1 x)
+\tag{11.22}\]</span></span></p>
+<p>주로 쓰이는 변환함수로 다음과 같은 로지스틱 함수(logistic function)가 있다.</p>
+<p><span id="eq-logisticfunc"><span class="math display">\[
+m(x) = \frac{ \exp(\beta_0 + \beta_1 x) }{ 1+ \exp(\beta_0 + \beta_1 x) }
+\tag{11.23}\]</span></span></p>
+<p>반응변수가 베르누이분포를 따를 때 위의 로지스틱홤수를 사용하는 회귀식을 로지스틱 회귀식이라고 한다.</p>
+<p><span id="eq-logisticregression"><span class="math display">\[
+P(y=1|x) = \frac{ \exp(\beta_0 + \beta_1 x) }{ 1+ \exp(\beta_0 + \beta_1 x) } =  \{ 1+ \exp[-(\beta_0 + \beta_1 x)] \}^{-1}
+\tag{11.24}\]</span></span></p>
+<p>위의 로지스틱 회귀식을 다시 역으로 정리하면 다음과 같은 식을 얻을 수 있다.</p>
+<p><span id="eq-logit2"><span class="math display">\[
+\log \left [ \frac{P(y=1|x)}{1-P(y=1|x)} \right ] = \log \frac{p(x)}{1-p(x)}=\beta_0 + \beta_1 x
+\tag{11.25}\]</span></span></p>
+<p><a href="#eq-logit2" class="quarto-xref">식&nbsp;<span>11.25</span></a> 에서 나타난 함수 <span class="math inline">\(g(p)=\log[p/(1-p)]\)</span>를 로짓함수(logit function)이라고 부르며 이는 로지스틱 함수의 역함수로서 0과 1 사이의 값을 가지는 확률을 실수 전체로 변환하는 함수로서 선형예측식의 범위와 일치하게 한다.</p>
+<p>이렇게 관측값의 평균 (베르누이분포에서는 성공확률)과 선형예측식의 관계를 설정하는 함수는 <a href="#eq-linkfunction" class="quarto-xref">식&nbsp;<span>11.4</span></a> 에서 정의한 결합함수(link function)라고 한다. 아래 로짓함수는 특별히 식 <a href="#eq-canonicallinkfunction" class="quarto-xref">식&nbsp;<span>11.5</span></a> 에 정의된 것과 같이 기본형 연결함수라고 부른다.</p>
+<p><span class="math display">\[
+g[E(y|x)] = g(p(x)) =  \log \frac{p(x)}{1-p(x)}=\beta_0 + \beta_1 x
+\]</span></p>
+<p>다른 종류의 결합함수도 생각할 수 있다. <a href="#eq-probitlink" class="quarto-xref">식&nbsp;<span>11.2</span></a> 에 나타난 프로빗 함수 <span class="math inline">\(\Phi(x)=P(Z \le x)\)</span> 또한 결합함수로 생각할 수 있다.</p>
+</section>
+<section id="오즈비" class="level3" data-number="11.6.2">
+<h3 data-number="11.6.2" class="anchored" data-anchor-id="오즈비"><span class="header-section-number">11.6.2</span> 오즈비</h3>
+<p>일반적인 선형 회귀분석의 모형에서 기울기 계수 <span class="math inline">\(\beta_1\)</span>은 기울기로서 예측변수 <span class="math inline">\(x\)</span>의 단위가 1 증가할 때 반응변수의 평균이 <span class="math inline">\(\beta_1\)</span>만큼 증가하는 것으로 해석할 수 있다. 하지만 로지스틱 회귀모형 <a href="#eq-logisticregression" class="quarto-xref">식&nbsp;<span>11.24</span></a> 에서는 이러한 해석을 할 수 없다.</p>
+<p>로지스틱 회귀모형에서 기울기 <span class="math inline">\(\beta_1\)</span>의 의미를 알아보기 위하여 다음과 같은 주어진 확률 <span class="math inline">\(p\)</span>에 대한 몇 가지 함수를 알아야 한다.</p>
+<p>먼저 하나의 확률 <span class="math inline">\(p\)</span> 에 대한 <strong>오드(odd)</strong>는 다음과 같이 정의된다.</p>
+<p><span class="math display">\[
+\text{odd} = \frac{p}{1-p}
+\]</span></p>
+<p>예로 성공의 확률이 <span class="math inline">\(1/3\)</span>일 떄 오드는 <span class="math inline">\(1/2\)</span>가 되며 이는 평균적으로 세 번의 시행할 때 한 번 성공하고 두 번 실패한다는 의미이다. 반대로 성공의 확률이 <span class="math inline">\(2/3\)</span>일 떄 오드는 <span class="math inline">\(2=2/1\)</span>가 되며 이는 평균적으로 세 번의 시행할 때 두 번 성공하고 한 번 실패한다는 의미이다. 성공의 확률이 <span class="math inline">\(1/2\)</span>일 떄 오드는 <span class="math inline">\(1\)</span>이 된다.</p>
+<p>두 개의 확률 <span class="math inline">\(p_1\)</span>과 <span class="math inline">\(p_2\)</span> 에 대한 <strong>오즈비(odds ratio)</strong> 는 다음과 같이 정의된다.</p>
+<p><span class="math display">\[
+\text{odds ratio} = \frac{p_1/(1-p_1)}{p_2/(1-p_2)}
+\]</span></p>
+<p>오즈비는 두 개의 성공 확률 <span class="math inline">\(p_1\)</span>과 <span class="math inline">\(p_2\)</span>를 비교할 때 쓰는 양이다. 두 개의 오드를 비율로서 비교하는 양이며 오즈비가 1일 경우에 두 확률은 같다.</p>
+<p>이제 단순 로지스틱 회귀식 <a href="#eq-logit2" class="quarto-xref">식&nbsp;<span>11.25</span></a> 을 생각하고 예측변수 <span class="math inline">\(x\)</span>를 0과 1의 값을 가지는 이항변수로 가정한다. <span class="math inline">\(x=1\)</span>인 경우는</p>
+<p><span class="math display">\[
+\frac{P(y=1|x=1)}{1-P(y=1|x=1)}  = \exp( \beta_0 + \beta_1)  
+\]</span></p>
+<p>이며 <span class="math inline">\(x=0\)</span>인 경우는</p>
+<p><span class="math display">\[
+\frac{P(y=1|x=0)}{1-P(y=1|x=0)} = \exp(\beta_0)   
+\]</span></p>
+<p>위에서 주어진 두 개의 오드, 즉 <span class="math inline">\(x=1\)</span>인 경우와 <span class="math inline">\(x=0\)</span>인 경우의 두 오드의 비를 구하면 다음과 같다.</p>
+<p><span class="math display">\[   
+\frac{ \frac{P(y=1|x=1)}{1-P(y=1|x=1)} } {\frac{P(y=1|x=0)}{1-P(y=1|x=0)}}  = \exp (\beta_1)
+\]</span></p>
+<p>이는 다시 쓰면</p>
+<p><span class="math display">\[
+\frac{P(y=1|x=1)}{1-P(y=1|x=1)}   = \exp (\beta_1) \frac{P(y=1|x=0)}{1-P(y=1|x=0)}
+\]</span></p>
+<p>위의 식에서 볼 때 예측변수 <span class="math inline">\(x\)</span>가 1 의 값을 가질 때 반응 변수의 오드가 예측변수 <span class="math inline">\(x\)</span>가 0일 경우의 오드의 <span class="math inline">\(\exp (\beta_1)\)</span>배로 변하는 것을 알 수 있다. 따라서 <span class="math inline">\(\exp (\beta_1)\)</span>는 반응변수의 오드의 증가량으로 볼 수 있다. 이는 두 성공확률의 오즈 비가 <span class="math inline">\(\exp (\beta_1)\)</span>을 말한다. 위의 식에 로그를 취하면 다음과 같은 관계를 얻는다.</p>
+<p><span class="math display">\[  
+\log   \left [ \frac{P(y=1|x=1)}{1-P(y=1|x=1)}  / \frac{P(y=1|x=0)}{1-P(y=1|x=0)} \right ]  = \beta_1
+\]</span></p>
+<p>즉 오즈 비의 로그값이 단순 로지스틱 회귀식에서 기울기 <span class="math inline">\(\beta_1\)</span>으로 나타난다.</p>
+<p>간단한 예제를 통하여 오즈비와 로지스틱 회귀의 기울기의 관계를 명확히 해보자. 100명의 사람들을 55세 이상의 사람(<span class="math inline">\(x=1\)</span>)과 55세 미만의 사람(<span class="math inline">\(x=0\)</span>)의 그룹으로 나누었을 떄 각 그룹에서 만성심장질환(CHD)가 있는 사람(<span class="math inline">\(y=1\)</span>)과 없는 사람(<span class="math inline">\(y=0\)</span>)의 수가 다음 표에 주어져있다.</p>
+<table class="table">
+<caption>나이와 만성심장질환의 관계</caption>
+<thead>
+<tr class="header">
+<th></th>
+<th style="text-align: right;">나이 <span class="math inline">\(\ge 55\)</span> (<span class="math inline">\(x=1\)</span>)</th>
+<th style="text-align: right;">나이 <span class="math inline">\(&lt; 55\)</span> (<span class="math inline">\(x=0\)</span>)</th>
+<th style="text-align: right;">합</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>CHD 있음 (<span class="math inline">\(y=1\)</span>)</td>
+<td style="text-align: right;">21</td>
+<td style="text-align: right;">22</td>
+<td style="text-align: right;">43</td>
+</tr>
+<tr class="even">
+<td>CHD 없음 (<span class="math inline">\(y=0\)</span>)</td>
+<td style="text-align: right;">6</td>
+<td style="text-align: right;">51</td>
+<td style="text-align: right;">57</td>
+</tr>
+<tr class="odd">
+<td>합</td>
+<td style="text-align: right;">27</td>
+<td style="text-align: right;">73</td>
+<td style="text-align: right;">100</td>
+</tr>
+</tbody>
+</table>
+<p>여기서 나이에 대한 CHD유무의 오즈비는 다음과 같이 계산된다.</p>
+<p><span class="math display">\[
+\text{Odds Ratio } = \frac{ \tfrac{21/27}{6/27}}{ \tfrac{22/73}{51/73}} = \frac{ \tfrac{21}{6}}{ \tfrac{22}{51}} = 8.11
+\]</span></p>
+<p>위의 표 <span class="math inline">\(\ref{twotwotable}\)</span>의 자료를 이용하여 로지스틱회귀를 적합시키면 결과가 아래와 같고 회귀계수 <span class="math inline">\(\beta_1\)</span>의 추정값은 오즈비의 로그값임을 알 수 있다.</p>
+<p><span class="math display">\[
+\hat \beta_1 = \log (8.11) = 2.094
+\]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>yes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">21</span>,<span class="dv">22</span>) </span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>no <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">6</span>,<span class="dv">51</span>) </span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">c</span> (<span class="dv">1</span>,<span class="dv">0</span>) </span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">glm</span>(<span class="fu">cbind</span>(yes,no) <span class="sc">~</span> x,<span class="at">family=</span><span class="fu">binomial</span>()) </span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = cbind(yes, no) ~ x, family = binomial())
+
+Coefficients:
+            Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)  -0.8408     0.2551  -3.296  0.00098 ***
+x             2.0935     0.5285   3.961 7.46e-05 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 1.8704e+01  on 1  degrees of freedom
+Residual deviance: 1.4211e-14  on 0  degrees of freedom
+AIC: 11.987
+
+Number of Fisher Scoring iterations: 3</code></pre>
+</div>
+</div>
+</section>
+<section id="로지스틱-회귀식-추정-및-예측" class="level3" data-number="11.6.3">
+<h3 data-number="11.6.3" class="anchored" data-anchor-id="로지스틱-회귀식-추정-및-예측"><span class="header-section-number">11.6.3</span> 로지스틱 회귀식 추정 및 예측</h3>
+<p>주어진 예측변수 <span class="math inline">\({\pmb  x}_i=(x_{1i},\dots,x_{pi})^t\)</span>에서 실행횟수가 <span class="math inline">\(m_i\)</span>인 이항분포<span class="math inline">\(B(m_i, p(x_i))\)</span>를 생각하자. <span class="math inline">\(m_i\)</span>의 시행 중에 성공의 횟수가 <span class="math inline">\(y_i\)</span>라고 하면 <span class="math inline">\(y_i\)</span>의 평균과 분산은 다음과 같다.</p>
+<p><span class="math display">\[
+E(y_i | x_i ) = m_i p(x_i), \quad \quad Var(y_i | x_i) = m_i p(x_i) (1-p(x_i)) , \quad i=1,2,\dots,n
+\]</span></p>
+<p>이항분포를 위한 로지스틱 회귀방정식은 선형예측식과 성공의 확률의 관계를 다음과 같이 정한다.</p>
+<p><span id="eq-mulilogistic"><span class="math display">\[
+\log \left [ \frac{p(x_i)}{1-p(x_i)} \right  ] = {\pmb  x}^t_i {\pmb  \beta} = \beta_0 + \beta_1 x_{1i} + \dots \beta_p x_{pi}
+\tag{11.26}\]</span></span></p>
+<p>서로 독립인 관측값 <span class="math inline">\((y_1,y_2,\dots,y_n)\)</span>의 가능도함수 <span class="math inline">\(L\)</span>은 이항분포들의 결합확률밀도함수와 같고 아래와 같이 주어지며</p>
+<p><span class="math display">\[
+L = \prod_{i=1}^n f(y_i|p(x_i)) = \prod_{i=1}^n \left [  {{m_i}\choose{y_i}} \right] {p(x_i)}^y_i {(1-p(x_i))}^{m-y_i}
+\]</span></p>
+<p>로그가능도함수 <span class="math inline">\(l\)</span> 은 다음과 같이 나타낼 수 있다.</p>
+<p><span id="eq-bionomloglike"><span class="math display">\[
+\begin{aligned}
+l  &amp; = \log L = \sum_i \log {{m_i}\choose{y_i}} + \sum_i y_i \log p(x_i) + \sum_i (m_i -y_i) \log (1-p(x_i))  \notag \\
+   &amp; = c(\pmb  y,\pmb  m) + \sum_i y_i \log \left [ \frac{p(x_i)}{1-p(x_i)} \right  ] + \sum_i m_i \log (1-p(x_i))   
+\end{aligned}
+\tag{11.27}\]</span></span></p>
+<p>로지스틱 회귀식이 추정된 후에 새로운 예측변수 <span class="math inline">\(x=x^*\)</span>에 대하여 성공의 확률을 예측하고 싶다면 다음과 같은 식을 써서 예측할 수 있다.</p>
+<p><span class="math display">\[  
+P(y=1|x=x^*) = \frac{ \exp(\hat \beta_0 + \hat \beta_1 x_1^* + \dots +\hat \beta_p x_p^* ) }
+{ 1+ \exp(\hat \beta_0 + \hat \beta_1 x_1^* + \dots +\hat \beta_p x_p^*) } =
+\{ 1+ \exp[-(\hat \beta_0 + \hat \beta_1 x_1^* + \dots+ \hat \beta_p x_p^*)] \}^{-1}
+\]</span></p>
+</section>
+</section>
+<section id="발생-횟수에-대한-모형" class="level2" data-number="11.7">
+<h2 data-number="11.7" class="anchored" data-anchor-id="발생-횟수에-대한-모형"><span class="header-section-number">11.7</span> 발생 횟수에 대한 모형</h2>
+<section id="포아송-회귀모형" class="level3" data-number="11.7.1">
+<h3 data-number="11.7.1" class="anchored" data-anchor-id="포아송-회귀모형"><span class="header-section-number">11.7.1</span> 포아송 회귀모형</h3>
+<p>반응변수 <span class="math inline">\(y\)</span>가 어떤 사건이 일어난 횟수(count)라면 주로 포아송분포를 확률 모형으로 사용한다.</p>
+<p><span id="eq-poissondist"><span class="math display">\[
+P(Y=y) = f(y|\mu)= \frac{ e^{-\mu} \mu^y }{y!}, \quad y=0,1,2,\dots
+\tag{11.28}\]</span></span></p>
+<p>이러한 포아송 분포에서 나온 반응변수에 대하여 예측변수 <span class="math inline">\(x\)</span>의 영향에 대한 회귀분석을 포아송 회귀식이라고 한다. 포아송 분포의 평균 <span class="math inline">\(\mu\)</span>는 양의 실수이고 선형예측식 <span class="math inline">\(\eta= {\pmb  x}^t \pmb  beta\)</span>의 범위는 실수이기 때문에 로그함수를 결합함수(link function)으로 이용하여 회귀식을 세운다.</p>
+<p><span id="eq-poissonpredictor"><span class="math display">\[
+\log E(y|{\pmb  x}_i) =\log \mu({\pmb  x}_i) = \beta_0 + \beta_1 x_1 + \dots + \beta_p x_p
+\tag{11.29}\]</span></span></p>
+<p>사실 포아송분포의 로그 가능도함수에서 로그함수가 기본형 결합함수임을 쉽게 알 수 있다. 즉, <span class="math inline">\(\pmb  y=(y_1,y_2,\dots,y_n)^t\)</span>를 서로 독립이고 평균이 <span class="math inline">\(\mu_i = \mu({\pmb  x}_i)\)</span>인 포아송 확률변수라고 한다면 로그가능도함수는 다음과 같다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+l &amp;= \log \prod_{i=1}^n  f(y_i|\mu_i)  \notag \\
+   &amp;= \sum_{i=1}^n [y_i \log \mu_i - \mu_i - \log y_i!]
+\end{aligned}
+\]</span></p>
+<p>위에서 볼 수 있듯이 충분통계량 <span class="math inline">\(y_i\)</span>에 대응하는 모수에 대한 항은 <span class="math inline">\(\log \mu_i\)</span>로서 이는 로그함수가 기본형 결합함수임을 나타낸다.</p>
+<p>포아송 회귀분석는 다음과 같은 몇 가지 특징을 가지고 있다.</p>
+<ul>
+<li><p>만약에 어떤 사건이 일어난 횟수가 몇 가지 가능한 수중 하나라면 (예: <span class="math inline">\(y \le M\)</span>) 포아송분포를 이항분포의 근사(approximation)로 생각할 수 있다. 즉 <span class="math inline">\(n\)</span>이 크고 성공확률 <span class="math inline">\(p\)</span>가 작으면 이항분포는 평균이 <span class="math inline">\(\mu=np\)</span>인 포아송 분포와 매우 가깝기 때문에 가능한 횟수가 제한되었다 하더라도 포아송 회귀식을 이용할 수 있다.</p></li>
+<li><p>사건의 일어난 횟수가 주어진 시간의 길이에 비례하고 다른 사건과 독립이면 포아송 분포를 따른다. 또한 포아송 분포는 두 개의 사건이 일어날 때 시간 간격이 지수분포(exponential distribution)을 따른다면 주어진 시간 간격동안 일어난 사건의 횟수는 포아송 분포를 따른다.</p></li>
+<li><p><span class="math inline">\(y_i\)</span>가 서로 독립이고 평균이 <span class="math inline">\(\mu_i\)</span>인 포아송 분포를 따른다면 합 <span class="math inline">\(\sum_i y_i\)</span>는 평균이 <span class="math inline">\(\sum_i \mu_i\)</span>인 포아송분포를 따른다</p></li>
+</ul>
+<p>포아송 회귀분석에서 <a href="#eq-deviance" class="quarto-xref">식&nbsp;<span>11.19</span></a> 에서 정의된 편차 <span class="math inline">\(D(\pmb  y; \hat{\pmb  \mu})\)</span>를 구해보기 위하여 포화모형을 생각해보자. 각 관측값의 평균 <span class="math inline">\(\mu_i\)</span>를 자신의 관측값 <span class="math inline">\(y_i\)</span>로 추정하는 것이 포화모형이다. 따라서 포화모형의 로그가능도함수는 다음과 같이 주어지고</p>
+<p><span class="math display">\[
+l(\pmb  y| \pmb  y) = \sum_{i=1}^n [y_i \log y_i - y_i - \log y_i!]  
+\]</span></p>
+<p>포아송 회귀분석의 로그가능도함수에 적용하면 <span class="math inline">\(D(\pmb  y; \hat{\pmb  \mu})\)</span>를 얻을 수 있다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+D(\pmb  y; \hat{\pmb  \mu}) &amp; = 2 \left [ l(\pmb  y | \pmb  y) - l(\hat {\pmb  \mu} | \pmb  y) \right ] \\
+&amp; = 2 \left \{ \sum_{i=1}^n [y_i \log y_i - y_i - \log y_i!]  
+- \sum_{i=1}^n [y_i \log \hat \mu_i - \hat mu_i - \log y_i!]  \right \} \\
+&amp;= 2 \sum_{i=1}^n [ y_i \log (y_i/\hat \mu_i) - (y_i - \hat \mu_i) ]
+\end{aligned}
+\]</span></p>
+<div id="exm-glm-poission-r" class="theorem example">
+<p><span class="theorem-title"><strong>보기 11.1 (포아송 회귀분석)</strong></span> Galapagos 군도에 있는 30개의 섬에서 사는 거북이의 개체 수를 반응변수 <span class="math inline">\(y\)</span>로하고 5개의 지리적 변수를 예측변수로 하는 포아송 회귀식을 적합하려고 한다 (자료 출처는 <span class="citation" data-cites="faraway2016extending">Faraway (<a href="../references.html#ref-faraway2016extending" role="doc-biblioref">2016</a>)</span>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(faraway)</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(gala)</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>gala <span class="ot">&lt;-</span> gala[,<span class="sc">-</span><span class="dv">2</span>]</span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>modp <span class="ot">&lt;-</span> <span class="fu">glm</span>(Species <span class="sc">~</span> .,<span class="at">family=</span>poisson, gala)</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(modp)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = Species ~ ., family = poisson, data = gala)
+
+Coefficients:
+              Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)  3.155e+00  5.175e-02  60.963  &lt; 2e-16 ***
+Area        -5.799e-04  2.627e-05 -22.074  &lt; 2e-16 ***
+Elevation    3.541e-03  8.741e-05  40.507  &lt; 2e-16 ***
+Nearest      8.826e-03  1.821e-03   4.846 1.26e-06 ***
+Scruz       -5.709e-03  6.256e-04  -9.126  &lt; 2e-16 ***
+Adjacent    -6.630e-04  2.933e-05 -22.608  &lt; 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 3510.73  on 29  degrees of freedom
+Residual deviance:  716.85  on 24  degrees of freedom
+AIC: 889.68
+
+Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="비율-모형" class="level3" data-number="11.7.2">
+<h3 data-number="11.7.2" class="anchored" data-anchor-id="비율-모형"><span class="header-section-number">11.7.2</span> 비율 모형</h3>
+<p>어떤 사건이 일어날 횟수(count)는 집단이나 시간의 크기(group size)에 의존할 수 있다. 예를 들어 각 도시의 1년 범죄 발생 횟수는 그 도시의 인구수나 크기에 비례하게 된다. 이러한 모형은 이항분포를 이용하여 분석할 수 도 있지만 사건의 발생 확률이 매우 작고 집단의 크기가 크면 포아송 근사를 통한 분석도 가능하다. 또한 어떤 경우에는 집단의 크기에 대한 정보가 부족할 수 있다.</p>
+<p>이러한 비율에 대한 모형(Rate Models)을 나타내면 아래와 같고</p>
+<p><span class="math display">\[
+\log \frac {\text{ count } } { \text{ group size } } = {\pmb  x}^t {\pmb  \beta}
+\]</span></p>
+<p>이는 다시 발생횟수에 대한 포아송 회귀모형의 형태로 나타내면 다음과 같이 쓸 수 있다. <span class="math display">\[
+\log \text{ count } =  (1)(\log \text{ group size }) + {\pmb  x}^t {\pmb  \beta}
+\]</span></p>
+<p>따라서 발생횟수에 대한 포아송 회귀분석을 적합할 때 집단의 크기를 안다면 그 로그 변환값을 회귀식에 포함하여 적합할 수 있다. 위의 식에서 알 수 있듯이 크기의 로그 변환변수는 회귀계수를 강제로 1 로 놓는 제약을 둘 수 있다. 이러한 변수를 오프셋(offset)이라고 한다.</p>
+<div id="exm-glm-ratio-r" class="theorem example">
+<p><span class="theorem-title"><strong>보기 11.2 (비율 모형)</strong></span> 세포(<code>cells</code>)에 감마 방사능을 쏘였을 떄 비정상성(<code>ca</code>)를 나타내는 횟수에 대하여 비율 모형을 적합시켰다. 독립변수는 방사능의 양(<code>doseamt</code>)와 비율(<code>doserate</code>)이다. 여기서 세포의 수(<code>cells</code>)를 오프셋(offset) 변수로 사용한다 (자료 출처는 <span class="citation" data-cites="faraway2016extending">Faraway (<a href="../references.html#ref-faraway2016extending" role="doc-biblioref">2016</a>)</span>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dicentric)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">xtabs</span>(ca<span class="sc">/</span>cells <span class="sc">~</span> doseamt<span class="sc">+</span>doserate, dicentric),<span class="dv">2</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       doserate
+doseamt  0.1 0.25  0.5    1  1.5    2  2.5    3    4
+    1   0.05 0.05 0.07 0.07 0.06 0.07 0.07 0.07 0.07
+    2.5 0.16 0.28 0.29 0.32 0.38 0.41 0.41 0.37 0.44
+    5   0.48 0.82 0.90 0.88 1.23 1.32 1.34 1.24 1.43</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>dicentric<span class="sc">$</span>dosef <span class="ot">&lt;-</span> <span class="fu">factor</span>(dicentric<span class="sc">$</span>doseamt)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>rmod <span class="ot">&lt;-</span> <span class="fu">glm</span>(ca <span class="sc">~</span> <span class="fu">offset</span>(<span class="fu">log</span>(cells))<span class="sc">+</span><span class="fu">log</span>(doserate)<span class="sc">*</span>dosef, <span class="at">family=</span>poisson,dicentric)</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(rmod)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = ca ~ offset(log(cells)) + log(doserate) * dosef, 
+    family = poisson, data = dicentric)
+
+Coefficients:
+                       Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)            -2.74671    0.03426 -80.165  &lt; 2e-16 ***
+log(doserate)           0.07178    0.03518   2.041 0.041299 *  
+dosef2.5                1.62542    0.04946  32.863  &lt; 2e-16 ***
+dosef5                  2.76109    0.04349  63.491  &lt; 2e-16 ***
+log(doserate):dosef2.5  0.16122    0.04830   3.338 0.000844 ***
+log(doserate):dosef5    0.19350    0.04243   4.561  5.1e-06 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 4753.00  on 26  degrees of freedom
+Residual deviance:   21.75  on 21  degrees of freedom
+AIC: 209.16
+
+Number of Fisher Scoring iterations: 4</code></pre>
+</div>
+</div>
+</div>
+</section>
+<section id="음이항-분포" class="level3" data-number="11.7.3">
+<h3 data-number="11.7.3" class="anchored" data-anchor-id="음이항-분포"><span class="header-section-number">11.7.3</span> 음이항 분포</h3>
+<p>베르누이 독립시행에서 <span class="math inline">\(k\)</span>번째의 성공까지의 시행회수 <span class="math inline">\(z\)</span>는 음이항 분포(negative bionomial)을 따른다. 음이항분포는 포아송 분포에서 모수가 감마를 따를 때 근사분포로 사용될 수 있다.</p>
+<p><span id="eq-negativebinom"><span class="math display">\[
+P(z) = {{z-1}\choose {k-1}} p^k (1-p)^{z-k},\quad z=k,k+1,\dots
+\tag{11.30}\]</span></span></p>
+<p>위의 분포에서 확률 변수와 모수를 다시 아래와 같이 정의하면</p>
+<p><span class="math display">\[
+y=z-k, \quad p= \frac{1}{1+\alpha}
+\]</span></p>
+<p><span class="math inline">\(y\)</span>의 확률분포는 다음과 같고</p>
+<p><span class="math display">\[
+P(y) = {{y+k-1}\choose {k-1}} \frac{\alpha^y}{(1+\alpha)^{y+k}},\quad y=0,1,2,\dots
+\]</span></p>
+<p>따라서 <span class="math inline">\(y\)</span>의 평균과 분산은 다음과 같이 주어진다.</p>
+<p><span class="math display">\[
+E(y) = \mu =k\alpha, \quad Var(y) = k\alpha + k\alpha^2= \mu + \mu^2/k
+\]</span></p>
+<p>또한 로그가능도함수는 다음과 같이 주어지고</p>
+<p><span class="math display">\[
+l= \sum_{i=1}^n \left ( y_i \log \frac{\alpha}{1+\alpha} -k \log (1+\alpha)
++ \sum_{j=0}^{y_i-1} \log (j+k) -\log y_i! \right )
+\]</span></p>
+<p>결합함수는 다음과 같다.</p>
+<p><span class="math display">\[
+\log \frac{\alpha}{1+\alpha} = \log \frac{\mu}{\mu+k} = \eta={\pmb  x}^t {\pmb  \beta}
+\]</span></p>
+<p>보통의 경우 <span class="math inline">\(k\)</span>는 고정된 상수로 생각할 수도 있고 또는 모수로 보고 추정할 수 도 있다.</p>
+</section>
+<section id="영과잉모형" class="level3" data-number="11.7.4">
+<h3 data-number="11.7.4" class="anchored" data-anchor-id="영과잉모형"><span class="header-section-number">11.7.4</span> 영과잉모형</h3>
+<p>어떤 사건의 발생 횟수에 대한 자료를 수집할 때 영(0, zero)이 비정상적으로 많이 나타나는 경우가 있다. 만약 발생횟수의 분포를 포아송분포 <a href="#eq-poissondist" class="quarto-xref">식&nbsp;<span>11.28</span></a> 으로 가정하면 0이 관측될 확률은 크지 않다.</p>
+<p><span class="math display">\[ P(y=0) =  e^{-\mu} \]</span></p>
+<p>자료에서 0의 발생 빈도가 비정상적으로 많은 자료를 영과잉 자료(zero inflated data)라고 하며 이러한 자료에 포아송 분포를 그대로 적용하면 회귀 계수의 추정량에 편이(bias)가 발생할 수 있는 여러 가지 문제가 생긴다.</p>
+<p>발생 횟수에 0이 많은 이유는 매우 다양하다. 0이 많이 발생하는 대표적인 이유를 살펴보자.</p>
+<ul>
+<li><p>외부 요인에 의하여 사건의 발생이 제약을 받는 경우</p></li>
+<li><p>발생은 했는데 관측이 안된 경우</p></li>
+<li><p>원래 0이 많은 경우</p></li>
+</ul>
+<p>이렇게 영과잉 자료를 분석할 수 있는 대표적인 모형은 영과잉 포아송 모형(zero inflated poission model; ZIP)이다. 확률변수 <span class="math inline">\(y_i\)</span>를 사건의 발생 회수라고 하면 ZIP 모형에서 0이 관측될 확률을 다음과 같이 나타낼 수 있다.</p>
+<p><span class="math display">\[
+P(y=0) = P(\text{ Extra  zeros }) + [1-P(\text{ Extra  zeros })] P(\text{ count process gives a zero })
+\]</span></p>
+<p>즉 0이 관측될 확률은 별도로 나타난 0이 관찰 될 확률과 원래 확률 과정에서 0이 관찰 될 확률의 조합(mixture)으로 나타난다. 이제 <span class="math inline">\(i\)</span>번째 관측에서 별도로 나타난 0이 관찰될 확률을 <span class="math inline">\(\pi_i\)</span>라 하면</p>
+<p><span class="math display">\[  P(y_i=0) = \pi_i + (1-\pi_i) P(\text{ count process gives a zero }) \]</span></p>
+<p>더 나아가 확률 과정이 평균이 <span class="math inline">\(\mu_i\)</span>인 포아송 분포를 따른다고 가정하면</p>
+<p><span class="math display">\[
+\begin{aligned}
+P(y_i| y_i=0) &amp;  =   \pi_i + (1-\pi_i) e^{-\mu_i} \\
+P(y_i| y_i&gt;0) &amp;  =   (1-\pi_i)\frac{ e^{-\mu_i} \mu_i^{y_i} }{y_i!}
+\end{aligned}
+\]</span></p>
+<p>위의 분포에서 <span class="math inline">\(y\)</span>의 평균과 분산을 구해보면 다음과 같이 주어진다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+E(y_i) &amp;  =   (1-\pi_i)\mu_i  \\
+Var(y_i) &amp;  =   (1-\pi_i)\mu_i + (1-\pi_i)\pi_i \mu_i^2
+\end{aligned}
+\]</span></p>
+<p>위의 식에서 볼 수 있듯이 영과잉 포아송 모형은 과포화(overdispersion)을 보인다 (<span class="math inline">\(Var(y_i) &gt; E(y_i)\)</span>). 영과잉 포아송 모형에 대한 회귀분석은 별도로 나타난 0이 관측될 확률 <span class="math inline">\(\pi_i\)</span>에 대한 로지스틱회귀와 발생회수에 대한 포아송회귀의 결합으로 분석할 수 있다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\log \frac{\pi_i} {1-\pi_i}  &amp;  = {\pmb  x}_b^t {\pmb  \beta}_b  \\
+\log \mu_i &amp;  =  {\pmb  x}_p^t {\pmb  \beta}_p
+\end{aligned}
+\]</span></p>
+<!--
+## 예제
+
+### 포아송 회귀분석
+
+Galapagos 군도에 있는 30개의 섬에서 사는 거북이의 개체 수를 반응변수 $y$로하고
+5개의 지리적 변수를 예측변수로 하는 포아송 회귀식을 적합하려고 한다 (자료 출처는 @faraway2016extending). 
+
+
+::: {.cell}
+
+```{.r .cell-code}
+library(faraway)
+data(gala)
+gala <- gala[,-2]
+modp <- glm(Species ~ .,family=poisson, gala)
+summary(modp)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+
+Call:
+glm(formula = Species ~ ., family = poisson, data = gala)
+
+Coefficients:
+              Estimate Std. Error z value Pr(>|z|)    
+(Intercept)  3.155e+00  5.175e-02  60.963  < 2e-16 ***
+Area        -5.799e-04  2.627e-05 -22.074  < 2e-16 ***
+Elevation    3.541e-03  8.741e-05  40.507  < 2e-16 ***
+Nearest      8.826e-03  1.821e-03   4.846 1.26e-06 ***
+Scruz       -5.709e-03  6.256e-04  -9.126  < 2e-16 ***
+Adjacent    -6.630e-04  2.933e-05 -22.608  < 2e-16 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 3510.73  on 29  degrees of freedom
+Residual deviance:  716.85  on 24  degrees of freedom
+AIC: 889.68
+
+Number of Fisher Scoring iterations: 5
+```
+
+
+:::
+:::
+
+
+### 비율 모형
+
+세포(`cells`)에 감마 방사능을 쏘였을 떄 비정상성(`ca`)를 나타내는 횟수에 대하여
+비율 모형을 적합시켰다. 독립변수는 방사능의 양(`doseamt`)와 비율(`doserate`)이다. 여기서 세포의 수(`cells`)를 오프셋(offset) 변수로 사용한다 (자료 출처는 @faraway2016extending). 
+
+ 
+
+::: {.cell}
+
+```{.r .cell-code}
+data(dicentric)
+round(xtabs(ca/cells ~ doseamt+doserate, dicentric),2)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+       doserate
+doseamt  0.1 0.25  0.5    1  1.5    2  2.5    3    4
+    1   0.05 0.05 0.07 0.07 0.06 0.07 0.07 0.07 0.07
+    2.5 0.16 0.28 0.29 0.32 0.38 0.41 0.41 0.37 0.44
+    5   0.48 0.82 0.90 0.88 1.23 1.32 1.34 1.24 1.43
+```
+
+
+:::
+
+```{.r .cell-code}
+dicentric$dosef <- factor(dicentric$doseamt)
+rmod <- glm(ca ~ offset(log(cells))+log(doserate)*dosef, family=poisson,dicentric)
+summary(rmod)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+
+Call:
+glm(formula = ca ~ offset(log(cells)) + log(doserate) * dosef, 
+    family = poisson, data = dicentric)
+
+Coefficients:
+                       Estimate Std. Error z value Pr(>|z|)    
+(Intercept)            -2.74671    0.03426 -80.165  < 2e-16 ***
+log(doserate)           0.07178    0.03518   2.041 0.041299 *  
+dosef2.5                1.62542    0.04946  32.863  < 2e-16 ***
+dosef5                  2.76109    0.04349  63.491  < 2e-16 ***
+log(doserate):dosef2.5  0.16122    0.04830   3.338 0.000844 ***
+log(doserate):dosef5    0.19350    0.04243   4.561  5.1e-06 ***
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for poisson family taken to be 1)
+
+    Null deviance: 4753.00  on 26  degrees of freedom
+Residual deviance:   21.75  on 21  degrees of freedom
+AIC: 209.16
+
+Number of Fisher Scoring iterations: 4
+```
+
+
+:::
+:::
+
+
+-->
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-faraway2016extending" class="csl-entry" role="listitem">
+Faraway, Julian J. 2016. <em>Extending the linear model with R: generalized linear, mixed effects and nonparametric regression models</em>. Chapman; Hall/CRC.
+</div>
+<div id="ref-nelder1972generalized" class="csl-entry" role="listitem">
+Nelder, John Ashworth, 와/과 Robert WM Wedderburn. 1972. <span>“Generalized linear models”</span>. <em>Journal of the Royal Statistical Society: Series A (General)</em> 135 (3): 370–84.
+</div>
+<div id="ref-searle2001generalized" class="csl-entry" role="listitem">
+Searle, Shayle Robert, 와/과 Charles E McCulloch. 2001. <em>Generalized, linear and mixed models</em>. Wiley.
+</div>
+</div>
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const isCodeAnnotation = (el) => {
+    for (const clz of el.classList) {
+      if (clz.startsWith('code-annotation-')) {                     
+        return true;
+      }
+    }
+    return false;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    text: function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "복사완료!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "복사완료!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+    const config = {
+      allowHTML: true,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start',
+    };
+    if (contentFn) {
+      config.content = contentFn;
+    }
+    if (onTriggerFn) {
+      config.onTrigger = onTriggerFn;
+    }
+    if (onUntriggerFn) {
+      config.onUntrigger = onUntriggerFn;
+    }
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const xrefs = window.document.querySelectorAll('a.quarto-xref');
+  const processXRef = (id, note) => {
+    // Strip column container classes
+    const stripColumnClz = (el) => {
+      el.classList.remove("page-full", "page-columns");
+      if (el.children) {
+        for (const child of el.children) {
+          stripColumnClz(child);
+        }
+      }
+    }
+    stripColumnClz(note)
+    if (id === null || id.startsWith('sec-')) {
+      // Special case sections, only their first couple elements
+      const container = document.createElement("div");
+      if (note.children && note.children.length > 2) {
+        container.appendChild(note.children[0].cloneNode(true));
+        for (let i = 1; i < note.children.length; i++) {
+          const child = note.children[i];
+          if (child.tagName === "P" && child.innerText === "") {
+            continue;
+          } else {
+            container.appendChild(child.cloneNode(true));
+            break;
+          }
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(container);
+        }
+        return container.innerHTML
+      } else {
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        return note.innerHTML;
+      }
+    } else {
+      // Remove any anchor links if they are present
+      const anchorLink = note.querySelector('a.anchorjs-link');
+      if (anchorLink) {
+        anchorLink.remove();
+      }
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(note);
+      }
+      // TODO in 1.5, we should make sure this works without a callout special case
+      if (note.classList.contains("callout")) {
+        return note.outerHTML;
+      } else {
+        return note.innerHTML;
+      }
+    }
+  }
+  for (var i=0; i<xrefs.length; i++) {
+    const xref = xrefs[i];
+    tippyHover(xref, undefined, function(instance) {
+      instance.disable();
+      let url = xref.getAttribute('href');
+      let hash = undefined; 
+      if (url.startsWith('#')) {
+        hash = url;
+      } else {
+        try { hash = new URL(url).hash; } catch {}
+      }
+      if (hash) {
+        const id = hash.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note !== null) {
+          try {
+            const html = processXRef(id, note.cloneNode(true));
+            instance.setContent(html);
+          } finally {
+            instance.enable();
+            instance.show();
+          }
+        } else {
+          // See if we can fetch this
+          fetch(url.split('#')[0])
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.getElementById(id);
+            if (note !== null) {
+              const html = processXRef(id, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      } else {
+        // See if we can fetch a full url (with no hash to target)
+        // This is a special case and we should probably do some content thinning / targeting
+        fetch(url)
+        .then(res => res.text())
+        .then(html => {
+          const parser = new DOMParser();
+          const htmlDoc = parser.parseFromString(html, "text/html");
+          const note = htmlDoc.querySelector('main.content');
+          if (note !== null) {
+            // This should only happen for chapter cross references
+            // (since there is no id in the URL)
+            // remove the first header
+            if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+              note.children[0].remove();
+            }
+            const html = processXRef(null, note);
+            instance.setContent(html);
+          } 
+        }).finally(() => {
+          instance.enable();
+          instance.show();
+        });
+      }
+    }, function(instance) {
+    });
+  }
+      let selectedAnnoteEl;
+      const selectorForAnnotation = ( cell, annotation) => {
+        let cellAttr = 'data-code-cell="' + cell + '"';
+        let lineAttr = 'data-code-annotation="' +  annotation + '"';
+        const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+        return selector;
+      }
+      const selectCodeLines = (annoteEl) => {
+        const doc = window.document;
+        const targetCell = annoteEl.getAttribute("data-target-cell");
+        const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+        const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+        const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+        const lineIds = lines.map((line) => {
+          return targetCell + "-" + line;
+        })
+        let top = null;
+        let height = null;
+        let parent = null;
+        if (lineIds.length > 0) {
+            //compute the position of the single el (top and bottom and make a div)
+            const el = window.document.getElementById(lineIds[0]);
+            top = el.offsetTop;
+            height = el.offsetHeight;
+            parent = el.parentElement.parentElement;
+          if (lineIds.length > 1) {
+            const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+            const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+            height = bottom - top;
+          }
+          if (top !== null && height !== null && parent !== null) {
+            // cook up a div (if necessary) and position it 
+            let div = window.document.getElementById("code-annotation-line-highlight");
+            if (div === null) {
+              div = window.document.createElement("div");
+              div.setAttribute("id", "code-annotation-line-highlight");
+              div.style.position = 'absolute';
+              parent.appendChild(div);
+            }
+            div.style.top = top - 2 + "px";
+            div.style.height = height + 4 + "px";
+            div.style.left = 0;
+            let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+            if (gutterDiv === null) {
+              gutterDiv = window.document.createElement("div");
+              gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+              gutterDiv.style.position = 'absolute';
+              const codeCell = window.document.getElementById(targetCell);
+              const gutter = codeCell.querySelector('.code-annotation-gutter');
+              gutter.appendChild(gutterDiv);
+            }
+            gutterDiv.style.top = top - 2 + "px";
+            gutterDiv.style.height = height + 4 + "px";
+          }
+          selectedAnnoteEl = annoteEl;
+        }
+      };
+      const unselectCodeLines = () => {
+        const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+        elementsIds.forEach((elId) => {
+          const div = window.document.getElementById(elId);
+          if (div) {
+            div.remove();
+          }
+        });
+        selectedAnnoteEl = undefined;
+      };
+        // Handle positioning of the toggle
+    window.addEventListener(
+      "resize",
+      throttle(() => {
+        elRect = undefined;
+        if (selectedAnnoteEl) {
+          selectCodeLines(selectedAnnoteEl);
+        }
+      }, 10)
+    );
+    function throttle(fn, ms) {
+    let throttle = false;
+    let timer;
+      return (...args) => {
+        if(!throttle) { // first call gets through
+            fn.apply(this, args);
+            throttle = true;
+        } else { // all the others get throttled
+            if(timer) clearTimeout(timer); // cancel #2
+            timer = setTimeout(() => {
+              fn.apply(this, args);
+              timer = throttle = false;
+            }, ms);
+        }
+      };
+    }
+      // Attach click handler to the DT
+      const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+      for (const annoteDlNode of annoteDls) {
+        annoteDlNode.addEventListener('click', (event) => {
+          const clickedEl = event.target;
+          if (clickedEl !== selectedAnnoteEl) {
+            unselectCodeLines();
+            const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+            if (activeEl) {
+              activeEl.classList.remove('code-annotation-active');
+            }
+            selectCodeLines(clickedEl);
+            clickedEl.classList.add('code-annotation-active');
+          } else {
+            // Unselect the line
+            unselectCodeLines();
+            clickedEl.classList.remove('code-annotation-active');
+          }
+        });
+      }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../qmd/extension.html" class="pagination-link" aria-label="회귀모형의 확장">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">10</span>&nbsp; <span class="chapter-title">회귀모형의 확장</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../references.html" class="pagination-link" aria-label="References">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
