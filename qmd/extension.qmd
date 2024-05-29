@@ -285,7 +285,7 @@ df3 %>% ggplot(aes(x=reserved, y=boarding)) +
 
 -->
 
-## 비선형 회귀분석 
+## 비선형 회귀분석 {#sec-nonlinear}
 
 ### 예제: 철도 여객 운송 
 
@@ -660,8 +660,8 @@ kernel = function(x,y,grid,h){
 ```
 다음의 함수 `kernel.fitted(x,y,h)`는 주어진 자료벡터 `x`,`y`와 구간의 크기 `h`에 대하여 반응변수의 예측값 $\hat Y_i =\hat m_h(X_i)$ 을 커널추정으로 구해준다. 
 
-$$  \hat Y_i = \hat m(X_i) = \frac{ \sum_{j=1}^n K \left ( \frac{X_i -X_j}{h} \right ) Y_i }
-{ \sum_{j=1}^n K \left ( \frac{X_i -X_j}{h} \right ) }  = \sum_{j=1}^{n} l_j(X_i) Y_i $$ 
+$$  \hat Y_i = \hat m(X_i) = \frac{ \sum_{j=1}^n K \left ( \frac{X_i -X_j}{h} \right ) Y_j }
+{ \sum_{j=1}^n K \left ( \frac{X_i -X_j}{h} \right ) }  = \sum_{j=1}^{n} l_j(X_i) Y_j $$ 
 
 또한 위의 식에서 $L_{ij}  = l_j(X_i)$라고 하면 다음과 같은 선형예측식에서 $n \times n$ 행렬 $L = \{ L_{ij} \}$의 대각원소 $L_{ii}$도 계산해준다.
 

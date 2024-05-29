@@ -1,0 +1,365 @@
+---
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+
+# 지수군 분포  {#sec-expfamily}
+
+::: {.callout-caution}
+이 장에서는 벡터와 스칼라의 표기를 구분없이 모두 보통체로 사용한다.
+:::
+
+## 가능도함수와 그 성질 
+
+확률변수 $y$ 가 확률밀도함수 $f(y; \theta)$를 따른다고 하자. 모수벡터 $\theta$ 에 대한 
+가능도함수 $L( \theta;y)$와  로그가능도함수 $\ell( \theta;y)$는 다음과 같이 정의한다.
+
+
+$$ 
+L( \theta) = L( \theta;y) \equiv f(y; \theta), \quad \ell( \theta) = \ell( \theta;y) \equiv \log L( \theta;y) 
+$$
+
+로그가능도함수를 모수 $\theta$로 한 번 미분한 도함수(gradient)를 스코어함수(score function) $s( \theta;y)$
+로 아래와 같이 정의한다. 또한 두 번 미분한 헤시안(hessian)의 음수를   관측피셔정보(observed Fisher information)  $J( \theta;y)$ 라고 정의한다.
+
+$$  
+s( \theta)  =  s( \theta;y) \equiv  \frac{\partial}{\partial  \theta } \ell (  \theta;y) ,\quad 
+ J( \theta) =  J( \theta;y) \equiv  -\frac{\partial^2}{\partial { \theta}^2 } \ell (  \theta;y)   $$
+
+위의 식에서 만약 모수벡터 $\theta$의 차원이 $p$라면 $s( \theta)$는 $p \times 1$ 벡터이고 $J( \theta;y)$는 $p \times p$행렬이다. 
+
+로그가능도함수는 다음의 두 가지 중요한 방정식을 만족한다.
+
+$$
+  E \left \{ \frac{\partial}{\partial  \theta } \ell (  \theta;y) \right \} =0
+$$ {#eq-onedifflike}  
+
+$$
+ E \left \{   \left [ \frac{\partial}{\partial  \theta } \ell (  \theta;y) \right ]
+\left [ \frac{\partial}{\partial  \theta} \ell (  \theta;y)  \right ]^t \right\} 
++ E \left \{ \frac{\partial^2}{\partial { \theta}^2 } \ell (  \theta;y) \right \}= 0 
+$$ {#eq-twodifflike}  
+
+ @eq-onedifflike 와  @eq-twodifflike  으로부터 다음과 같은 식이 유도되며 
+
+$$ 
+E [ s( \theta;y)] =0, \quad E [ s( \theta;y)s^t( \theta;y)] =  E[ J( \theta;y)]  
+$$
+
+다음과 같은 공식이 주어진다.
+
+$$
+\begin{aligned}
+Var[ s( \theta;y)] & = E[ s( \theta;y){ s}^t( \theta;y)] - \{ E[ s( \theta;y)]E[ { s}^t( \theta;y)] \} \\
+ & = E[ s( \theta;y){ s}^t( \theta;y)] -  0  \\
+ & = -E \left [ \frac{\partial^2}{\partial { \theta}^2 } \log f(y; \theta) \right ] \\
+ & = E[ J( \theta;y)] \\
+ & \equiv  I( \theta)
+\end{aligned}
+$$
+
+위의 식에서 스코어함수의 분산을 피셔정보(Fisher information)이라고 부르며 
+$I( \theta)$로 표기한다. 
+
+
+::: {.callout-caution}
+관측피셔정보(observed Fisher information)  $J( \theta;y)$ 는 모수와 확률변수로 정의되는 확률  이며 
+피셔정보(Fisher information) $I( \theta)$는 관측피셔정보의 기대값으로 모수만의 함수로서 더이상 확률변수가 아니다. 
+:::
+
+
+첫 번째 방정식 @eq-onedifflike 는  다음과 같이 적분과 미분의 교환에 의해 증명할 수 있다.
+
+$$
+\begin{aligned}
+0 &= \frac{\partial}{\partial  \theta }  \int  f(y; \theta)  ~ dy \\
+ &= \int  \frac{\partial}{\partial  \theta } f(y; \theta)  ~ dy  \\
+ &= \int   \frac{\frac{\partial}{\partial  \theta } f(y; \theta)}{f(y; \theta)} f(y; \theta)  ~ dy \\
+ &= \int   \frac{\partial}{\partial  \theta } \ell ( \theta;y) f(y; \theta)  ~ dy \\
+ &= E \left \{ \frac{\partial}{\partial  \theta } \ell ( \theta;y) \right \}
+\end{aligned}
+$$
+
+두 번째 방정식 @eq-twodifflike 는  아래와 같이  증명할 수 있다.
+
+$$
+\begin{aligned}
+0 &= \frac{\partial}{\partial  \theta } \int   \frac{\partial}{\partial  \theta } \ell (  \theta;y) f(y; \theta)  ~dy \\
+& =  \int  \frac{\partial}{\partial  \theta } \left \{  f(y; \theta) \left [ \frac{\partial}{\partial  \theta } \ell (  \theta;y) \right ]^t \right \}  ~dy \\
+&=  \int \left \{  \left [ \frac{\partial}{\partial  \theta } f(y; \theta) \right ] \left [ \frac{\partial}{\partial  \theta } \ell ( \theta;y) \right ]^t  + f(y; \theta) \frac{\partial}{\partial  \theta } \left [ \frac{\partial}{\partial  \theta } \ell (  \theta;y) \right ]^t    \right \} ~dy \\
+ &=  \int \left \{  \left [ \frac{\partial}{\partial  \theta } \ell ( \theta;y) \right ]  \left [ \frac{\partial}{\partial  \theta } \ell ( \theta;y) \right ]^t f(y; \theta) + \left [ \frac{\partial^2}{\partial { \theta}^2 } \ell ( \theta;y)  \right ] f(y; \theta)  \right \} ~dy \\
+ &=  E \left \{ \left [ \frac{\partial}{\partial  \theta } \ell ( \theta;y) \right ]  \left [ \frac{\partial}{\partial  \theta } \ell ( \theta;y) \right ]^t \right \} +  E \left \{ \frac{\partial^2}{\partial { \theta}^2 } \ell ( \theta;y) \right \}
+\end{aligned}
+$$
+
+## 독립표본 
+
+표본 $y_1,y_2,\dots,y_n$ 가 분포 $f(y ; { \theta})$에서  독립적으로 얻어졌다면 표본에 대한 가능도함수 $L_n ( \theta)$ 은 다음과 같다.
+
+$$
+L_n( \theta) = \prod_{i=1}^n f(y_i; { \theta}) 
+$$ {#eq-likesample}  
+
+또한 표본에 대한 로그가능도함수 $\ell_n ( \theta)$ 은 다음과 같다.
+
+$$
+\ell_n( \theta) = \ell_n( \theta;  y)=\log L_n( \theta) = \log \prod_{i=1}^n f(y_i;  \theta) = \sum_{i=1}^n \log f(y_i;  \theta) = \sum_{i=1}^n \ell( \theta; y_i)
+$$ {#eq-eqloglike}  
+
+표본에 의한 로그 가능도함수 $\ell_n( \theta)$를 미분한 값, 즉 표본에 의한 스코어 함수 $s_n( \theta)$는 다음과 같이 정의한다.
+
+$$ 
+s_n( \theta) = \pardifftwo{}{ \theta}\ell_n( \theta;  y ) 
+$$
+
+$n$개의 표본에 대한 관측피셔정보 $J_n( \theta)$와 피셔정보 $I_n( \theta)$도 한 개의 확률 변수 경우와 유사하게 다음과 같이 정의된다.
+
+
+$$  
+I_n( \theta) = E \left [  J_n( \theta;  y) \right ] = E \left [ -\pardiffdd{}{ \theta}{ \theta^t}\ell_n( \theta;  y )  \right ] 
+$$
+
+
+## 지수군 분포 
+
+
+
+확률변수 $y$가 다음과 같은형태의 분포를 따른다면 $y$의 분포는 지수군(exponential family)에 속한다고 한다.
+
+$$
+ f(y ;  \theta, \phi ) = \exp \left \{ \frac{ t (y)^t 
+  \xi ( \theta)-b( \theta)}{a(\phi) } + c(y,\phi) \right \}
+$$  {#eq-expfam}  
+
+다시 쓰면 
+
+$$ 
+ \log f(y ;  \theta, \phi ) =  \frac{ t (y)^t 
+  \xi ( \theta)-b( \theta)}{a(\phi) } + c(y,\phi) 
+$$
+
+
+지수군 분포 @eq-expfam  에서  $t (y)^t = [ t_1 (y), \dots, t_k (y)]$ 는 $k$ 개의 충분통계량으로 구성된 벡터이고  $k$-차원 벡터 $\xi ( \theta)^t  = [ \xi_1 ( \theta), \dots, \xi_k ( \theta) ]$를  **기본형 모수**(canonical parameter)라고 부른다. 또한 $a(\phi)$를 **스케일모수**(scale parameter)라고 부르며 많은 경우 $a(\phi) = a \times w$ 의 형태로 나타나며 여기서 $w$는 보통 가중치와 같은 역활을 한다. 또한 기본형 모수 $\xi ( \theta)$ 는 $y$ 의 평균 $\mu=E(y)$와 특별한 함수관계를 가진다.
+
+
+지수군 분포는 일반적으로  @eq-expfam  과 같은 나타낼 수 있으며 많은 경우 모수 $\theta$와  기본형 모수 $\xi ( \theta)$는 일대일 대응관계를 가진다. 일대일 대응 관계가 아닌 경우 
+이를 곡선형 지수군(curved exponential family)라고 부른다. 
+따라서 지수군 분포의 성질을 간결하게 유도하고 설명하기 위해서  다음과 같은 단순화된 형태의 식을 사용하는 것이 편리하다. 이후 모든 성질의 유도는 아래  @eq-expfam2  의 형태를 사용할 것이다.
+
+$$
+ \log f(y ;  \theta, \phi ) =  \frac{ { t}^t  \theta - b( \theta)}{a(\phi) } + c(y,\phi) 
+$$  {#eq-expfam2}  
+
+
+위의  @eq-expfam2  은 충분통계량 벡터를 $t$ 로 나타내고 대응하는 기본형 모수를 $\theta$로 표시한 것이다. 또한 여기서 충분통계량 벡터 $t$의 평균을 $\mu$라고 하자.
+
+$$ E( t) =  \mu $$
+
+
+###  평균, 분산과 기본형 모수의 관계
+
+이제 @eq-expfam2  에 나오는 $b( \theta)$의 미분을 다음과 같이 표시하자.
+
+$$ 
+b'(  \theta ) = \pardifftwo{b(  \theta)}{  \theta} , \quad b''(  \theta) = \pardifftwo{b( \theta)}{ \theta} 
+$$
+
+방정식 @eq-onedifflike 으로부터  다음과 같은 식이 유도된다..
+
+$$
+\begin{aligned}
+ 0 & = E \left ( \pardifftwo{\ell }{  \theta } \right ) \\
+   & = E \left (   t-b'(  \theta) )/ a(\phi) \right ) \\
+   & = [  E(t) -b'( \theta) ] / a(\phi)  \\
+   & = [  \mu-b'( \theta) ] / a(\phi) 
+\end{aligned}
+$$
+
+따라서  평균 $\mu$와 함수 $b( \theta)$는 다음과 같은 관계가 성립한다.
+
+$$
+E( t) =  \mu = b'( \theta) 
+$$ {#eq-diffmu}  
+
+ 또한 방정식 @eq-twodifflike  으로부터 다음이 성립하고
+
+$$ 
+E \left \{ a^{-2}(\phi)  [  t-b'(  \theta)][  t-b'( \theta)]^t   \right \} +  E \left \{ - a^{-1} (\phi)  b''( \theta)  \right \} =0 
+$$
+
+따라서 $t$의 분산과 함수 $b(  \theta)$는 다음과 같은 관계가 성립한다.
+
+$$
+Var ( t) = a(\phi) b''(  \theta)  \equiv a(\phi) v(  \mu)  
+$$ {#eq-varfunction}  
+
+위의 식에서 $v( \mu) = b''( \theta)$ 으로 정의하고 분산함수(variance function)라고  부른다.
+
+
+이제 분산함수의 정의로부터 $\mu,  \theta$에 대하여 다음과 같은 관계가 얻어지고 
+
+$$
+\pardifftwo{  \mu}{  \theta } = \pardifftwo{b'(  \theta)}{  \theta } = b''( \theta)  =  v( \mu)
+$$ {#eq-onediffmu}  
+
+도함수의 역관계가 다음과 같이 주어진다.
+
+$$
+\frac{\partial  \theta}{\partial   \mu } = 
+\left [ \frac{\partial  \mu }{\partial   \theta} \right ]^{-1} =
+\left [ b''(  \theta) \right ]^{-1} = v^{-1}( \mu)
+$$ {#eq-onediffmuinv}  
+
+
+
+
+### 지수군 분포의 예제 
+
+::: {#exm-mle-binom}
+
+#### 이항분포
+
+확률변수 $S$ 가 이항분포 $B(n,\mu)$를 따른다면(여기서 $\mu=p$  성공확률) 표본 비율 $y=S/n$의 로그확률밀도함수는 다음과 같다.
+
+$$
+\begin{aligned}
+ \log f(y ; \theta, \phi ) & = \log \left \{ \binom{n}{ny} \mu^{ny} (1-\mu)^{n-ny}  \right \} \\
+ & =   \frac{ y \log \frac{\mu}{1-\mu} + \log (1-\mu)}{n^{-1}} + \log \binom{n}{ny} \\
+&= \frac{y\theta-b(\theta)}{a(\phi) } + c(y,\phi) 
+ \end{aligned}
+$$
+
+
+충분통계량 $t$는 표본비율 $y$이고 기본형 모수 $\theta$와 평균 $E(y)=\mu=p$, 스케일 모수 $a(\phi)$은 다음과 같은 관계가 있다.
+
+$$
+\theta  = \log \frac{\mu}{1-\mu}  = \log \frac{p}{1-p} , \quad b(\theta) = - \log(1-\mu), \quad  a(\phi) = \frac{1}{n}
+$$ {#eq-logit}  
+평균 $\mu$를 기본형모수 $\theta$의 함수로 역변환하면 $\theta$의 로지스틱함수로 표현된다.
+
+$$
+\mu = \frac{\exp(\theta)}{1+\exp(\theta)}=\frac{1}{1+\exp(-\theta)}, 
+\quad 1-\mu = \frac{1}{1+\exp(\theta)} 
+$$
+
+또한 함수 $b(\theta)$를 기본형 모수로 나타내면 
+
+$$
+b(\theta)  = - \log ( 1-\mu)  = \log [ 1+\exp(\theta)]
+$$
+
+특별히 $n=1$인 경우는 베르누이 분포이다.
+
+이항분포에서 평균 $\mu$는 함수 $b$와 다음과 같은 관계가 있다.
+
+$$
+b'(\theta) = \frac{\exp(\theta)}{1+\exp(\theta)} =\mu
+$$
+
+또한
+
+$$
+b''(\theta) = \frac{\exp(\theta)[1+\exp(\theta)] -[\exp(\theta)]^2 }{[1+\exp(\theta)]^2} =\mu(1-\mu) = v(\mu)
+$$
+
+따라서 
+
+$$
+Var(y) = a(\phi) v(\mu) =\frac{\mu(1-\mu)}{n}
+$$
+:::
+
+
+::: {#exm-mle-poisson}
+
+#### 포아송분포
+
+확률변수 $y$ 가 포아송 분포 $poi(\mu)$를 따른다고 하자. 여기서 $E(y) = \mu$ 이다. 확률변수 $y$의 
+로그확률밀도함수는 다음과 같다.
+
+$$  \log f(y ; \theta, \phi )  = y \log \mu -\mu - log(y!) $$
+
+충분통계량 $t$는 반응값 $y$ 자체이고 기본형 모수 $\theta$와 평균 $E(y)=\mu$, 스케일 모수 $a(\phi)$은 다음과 같은 관계가 있다.기본형 모수 $\theta$와 평균 $\mu$, 스케일 모수 $a(\phi)$은 다음과 같은 관계가 있다.
+
+$$
+\theta  = \log \mu , \quad b(\theta) =  \mu , \quad  a(\phi) = 1
+$$
+
+평균 $\mu$를 기본형모수 $\theta$의 함수로 역변환하면 $\theta$의로그함수로 표현된다.
+또한 함수 $b(\theta)$를 기본형 모수로 나타내면 다음과 같다.
+$$ \mu = \exp(\theta), \quad b(\theta)  = \mu =\exp(\theta) $$
+
+따라서 포아송분포에서는 평균 $\mu$는 함수 $b$와 다음과 같은 관계가 있다.
+
+$$ 
+b'(\theta) = \exp(\theta) =\mu, \quad b''(\theta) = \exp(\theta) =\mu = v(\mu) 
+$$
+
+따라서 
+
+$$
+Var(y) = a(\phi) v(\mu) =\mu 
+$$
+:::
+
+
+::: {#exm-mle-normal}
+
+#### 정규분포
+
+확률변수 $y$ 가 정규분포 $N(\mu, \sigma^2)$를 따른다고 하자. 확률변수 $y$의 
+로그확률밀도함수는 다음과 같다. 이때 모수벡터를 ${ \theta}^t =(\mu,\sigma^2)$이다.
+
+$$
+\begin{aligned}
+\log f(y ;  \theta, \phi ) & = -\frac{1}{2} \log (2 \pi)-\frac{1}{2} \log \sigma^2 -\frac { (y - \mu)^2 }{2\sigma^2} \\ 
+   &= -\frac{1}{2} \log (2 \pi)-\frac{1}{2} \log \sigma^2 -\frac { y^2 -2 y \mu + \mu^2 }{2\sigma^2} \\
+   & = \left [ y \frac{\mu}{\sigma^2} - y^2 \frac{1}{2\sigma^2} \right ] - \left [ \frac{1}{2} \log \sigma^2 + \frac{\mu^2}{2\sigma^2} \right ] -\frac{n}{2} \log (2 \pi)
+\end{aligned} 
+$$
+
+충분 통계량과 기본형 모수는 다음과 같다.
+
+$$  
+t(y)^t = ( y, y^2), \quad   \xi ( \theta)^t = \left ( \frac{\mu}{\sigma^2}, -\frac{1}{2\sigma^2} \right ), \quad a(\phi)=1 
+$$
+
+또한 
+
+$$ 
+b( \theta) = \frac{1}{2} \log \sigma^2 + \frac{\mu^2}{2\sigma^2} 
+$$
+:::
+
+## 최대가능도추정법
+
+모수 $\theta$ 에 대한 최대가능도 추정량(Maximum Likelihood Estimator;MLE) $\hat { \theta}$는 가능도 함수를 최대로 하는 값으로 정의된다.
+
+$$ \hat { \theta}_{MLE} = \arg \max_{ \theta} L_n( \theta)  $$
+
+많은 경우 가능도 함수를 최대화하는 값을 구하기 어려우므로 가능도 함수의 로그 함수, 즉  로그가능도함수를 최대로 하는 값으로 최대가능도 추정량을 구한다.
+
+$$ \hat { \theta}_{MLE} = \arg \max_{ \theta} \ell_n( \theta)  $$
+
+
+만약  로그가능도 함수가 모수 $\theta$에 대하며 미분가능한 함수이면 
+최대가능도 추정량은 다음과 같은 방정식에 의하여 구할 수 있다.
+
+$$ \pardifftwo{}{ \theta}\ell_n( \theta;  y ) = s_n( \theta)= 0  $$
+
+
+최대가능도 추정량은 적당한 조건하에서  다음과 같은 점근적 성질(Asymptotical properties)을 가진다.
+
+
+- $\hat { \theta}_{MLE}$는 모수의 참값 $\theta_0$로 확률적 수렴한다.
+
+$$  \hat { \theta}_{MLE} \rightarrow_p  \theta_0 \quad \text{as } n
+\rightarrow \infty $$
+
+- 최대가능도추정량 $\hat { \theta}_{MLE}$는 점근적으로 정규분포를 따른다.
+
+$$ \hat { \theta}_{MLE} \sim_d  N( \theta_0,  I_n^{-1}( \theta_0)) $$
+
+

@@ -22,6 +22,7 @@ book:
     - qmd/ancova.qmd
     - qmd/compute.qmd
     - qmd/extension.qmd
+    - qmd/glm.qmd
     - references.qmd
   
   appendices:
@@ -32,6 +33,7 @@ book:
     - qmd/math_vec_cal.qmd
     - qmd/multivar.qmd
     - qmd/quadratic.qmd
+    - qmd/mle.qmd
     - qmd/aic.qmd
     - qmd/practice-01.qmd
     - qmd/practice-02.qmd
