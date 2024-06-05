@@ -6,23 +6,27 @@ source(here::here("common", "_common.R"))
 source(here::here("common", "_preprocess.R"))
 ```
 
+::: {.callout-caution}
+이 장에서는 벡터와 스칼라의 표기를 구분없이 모두 보통체로 사용한다.
+:::
 
 ## 일반화 선형모형 
 
 선형모형의 의미는 모형에서 고려하는 설명변수가 변할 때 반응값의 평균이
 변하는 관계가 선형이라는 것이다. 즉, 반응값의 평균을 설명하는 회귀식이
-회귀계수에 대하여 선형이라는 의미이다. 참고로 아래  
-@eq-glm-linearmodel 의 오른쪽에 나타나는 식을 선형예측식(linear
-predictor, $\eta$)라고 부른다.
+회귀계수에 대하여 선형이라는 의미이다. 
 
 
 $$
  E(y|x_1,x_2,\dots,x_p) =  \beta_ 1 x_1 + \dots + \beta_p x_p  \equiv \eta 
 $$ {#eq-glm-linearmodel}   
 
-이러한 선형성의 가정이 적절하지 않은 경우가 있다. 예를 들어 공학에서나
+참고로  @eq-glm-linearmodel 의 오른쪽에 나타나는 식을 선형예측식(linear
+predictor, $\eta$)라고 부른다.
+
+이러한 평균의 선형성의 가정이 적절하지 않은 경우가 있다. 예를 들어 공학이나
 생물학에서 사용되는 비선형 회귀모형(nonlinear regression model)처럼
-반응변수의 변화가 설명변수들의 복잡한 비선형 관계(예를 들어 미분방정식의
+반응변수 평균의 변화가 설명변수들의 복잡한 비선형 관계(예를 들어 미분방정식의
 관계)로 나타나는 경우로 흔히 나타난다. 이러한 비선형 회귀모형은 @sec-nonlinear 장에서 다루었다.
 
 반응변수가 가질 수 있는 평균값의 범위에 제한이 있을 수 있다. 예를 들어 베르누이 분포의 경우 평균이
@@ -58,7 +62,7 @@ f (y | \theta, \phi ) = \exp \left \{ \frac{y \theta-b (\theta) }{a(\phi) } + c(
 $$ 
  
 
-충분통계량이 관측값 $y$이고 1차원의 기본형 모수$\theta$로 정의된 분포임을 유의하자.
+충분통계량이 관측값 $y$ 이고 1차원의 기본형 모수 $\theta$ 로 정의된 분포임을 유의하자.
 
 확률변수 $y$의 평균을 $\mu = E(y)$ 이라고 하고 독립변수 벡터 $x$와
 회귀계수 벡터 $\beta$로 구성된 선형예측식을 $\eta$라고 하자.
@@ -76,16 +80,16 @@ $$
 g(\mu) = g(E[y|  x]) = { x}^t  \beta
 $$ {#eq-linkfunction}  
  
-반응값의 분포가 주어진 경우 연결함수는 평균의 범위와 선형에측식의 범위를
+반응값의 분포가 주어진 경우 연결함수는 평균의 범위와 선형예측식의 범위를
 연속적으로 1-1 대응하게 해주는 함수이며 사용할 수 있는 가능한 함수는
-무한히 많다. 예를 들어 베르부이 분포의 경우 위에서 정의된 프로빗 모형
+무한히 많다. 예를 들어 베르누이 분포의 경우 위에서 정의된 프로빗 모형
 @eq-probitlink 에서 $\Phi^{-1}$ 같이 (0,1) 에서 실수전체 집합으로
 단조증가하는 함수는 모두 연결함수로 고려할 수 있다.
 
 지수군 분포에서 모수 $\theta$를 기본형모수(canonical parameter)라고
 부르며 일반적으로 $\theta$ 는 평균 $\mu$의 비선형 함수로 나타난다. 만약
 다음과 같은 관계를 나타내는 연결함수 $g$ 가 있다면 그 함수를 기본형
-연결함수(canonical link function)이라고 부른다.
+연결함수(canonical link function) 또는 자연결합함수(natural link function)라고 부른다.
 
  
 $$
@@ -145,30 +149,9 @@ $$
 g(\mu_i) = g(E[y_i| { x}_i ]) = { x}_i^t  \beta \equiv \eta_i, \quad i=1,2,\dots,n
 $$ {#eq-linkfunctionsample}  
  
-::: {.callout-note}
-@nelder1972generalized 에서 연결 함수(link function)의 개념이 제시할 때 다음과 같은 작업 변량(working variate) $z_i$를 이용하여 선형모형을 일반화하고자 하였다. 즉, 작업 변량 $z_i$ 
+::: {#exm-glm-binomial}
 
-$$
-\begin{aligned}
-z_i & = g(\mu_i ) + g_\mu(\mu)(y_i - \mu_i) \\
-    & = { x}_i^t  \beta + g_\mu(\mu)(y_i - \mu_i) \\
-    & \simeq { x}_i^t  \beta + r_i 
-\end{aligned}
-$$
-
-위의 식에서 오른쪽 식의 두번째 항의 기대값이 0이므로 이를 오차항과 같이 생각하면 위의 모형을 오차항의 분산이 다른 선형모형으로 생각할 수 있다. 지수군 분포의 성질을 이용하면  작업 변량 $z_i$의 분산은 다음과 같다.
-
-$$
-Var(z_i) = Var(r_i) = [g_\mu(\mu_i)]^2 Var(y_i) = [g_\mu(\mu_i)]^2 [ a(\phi_i)v(\mu_i)]
-$$ {#eq-varianceweight}  
-
-이러한 가정하에서 작업 변량 $z_i$를 반응변수로 놓고 분산의 역수를 가중치로하는  가중 선형모형(wighted linear regression) 을 최소제곡법으로 적합하고 계수의 값이 수렴할 때까지 반복적으로 수행하는하는 계산법을 제공하였다. 이러한 방법을
-반복가중최소최곱법(iterative weighted least square method; IWLS)라고 부른다.  
-
-[ @searle2001generalized 의 136 쪽 참조 ]
-:::
-
-::: {#ex-glm-binomial}
+### 이항분포
 
 주어진 예측변수 $\pmb  x_i=(x_{1i},\dots,x_{pi})^t$에서 실행횟수가 $m_i$인
 이항분포$B(m_i, p(x_i))$를 생각하자. $m_i$의 시행 중에 성공의 횟수가
@@ -208,9 +191,42 @@ $$ {#eq-bionom-loglike}
 
 위의 로그가능도함수에서 볼 수 있듯이 충분통계량인 성공의 횟수 $y_i$와
 곱으로 나타내어진 함수가 로짓함수이며 이렇게 가능도함수에서 얻어진
-결합함수를 자연결합함수(natural link function)이라고 한다.
+결합함수를 기본형 연결함수라고 한다.
 
 :::
+
+
+::: {.callout-note}
+@nelder1972generalized 에서 연결 함수(link function)의 개념이 제시할 때 다음과 같은 작업 변량(working variate) $z_i$를 이용하여 선형모형을 일반화하고자 하였다. 
+작업 변량 $z_i$ 은 다음과 같이 정의된다. 
+
+
+$$
+\begin{aligned}
+z_i & =  g(y_i) \\
+    & \simeq g(\mu_i ) + g_{\mu}(\mu_i)(y_i - \mu_i) \\
+    & = { x}_i^t  \beta + g_{\mu}(\mu_i)(y_i - \mu_i) \\
+    & \simeq { x}_i^t  \beta + r_i 
+\end{aligned}
+$$
+
+위의 식에서 $g_{\mu}$ 은 연결함수 $g$ 를 미분한 함수이다. 위의 식에서  오른쪽 식의 두번째 항의 기대값이 0 이므로 
+
+$$ E(y_i - \mu_i) =0 $$
+
+$y_i - \mu_i$ 를 오차항과 같이 생각하면 위의 모형을 오차항의 분산이 다른 선형모형으로 생각할 수 있다. 지수군 분포의 성질을 이용하면  작업 변량 $z_i$의 분산은 다음과 같다.
+
+$$
+Var(z_i) = Var(r_i) = [g_\mu(\mu_i)]^2 Var(y_i) = [g_\mu(\mu_i)]^2 [ a(\phi_i)v(\mu_i)]
+$$ {#eq-varianceweight}  
+
+이러한 가정하에서 작업 변량 $z_i$를 반응변수로 놓고 분산의 역수를 가중치로하는  가중 선형모형(wighted linear regression) 을 최소제곱법으로 적합하고 계수의 값이 수렴할 때까지 반복적으로 수행하는하는 계산법을 제공하였다. 이러한 방법을
+반복가중최소최곱법(iterative weighted least square method; IWLS)라고 부른다.  
+
+[ @searle2001generalized 의 136 쪽 참조 ]
+:::
+
+
 
 ## 최대가능도추정
 
@@ -284,7 +300,7 @@ $$
 ### 가능도 방정식의 유도: 첫 번째 방법
 
 이제 가능도 함수 @eq-likefunctionsample  의 형태를 이용하여 방정식
-@eq-glmmleeq  를 을 유도해 보자.
+@eq-glmmleeq  를  유도해 보자.
 
 $$
 \begin{aligned}
@@ -320,7 +336,7 @@ $$
 
 ### 가능도 방정식의 유도: 두 번째 방법
 
-위의 방정식@eq-glmmleeq  에 미분의 연쇄법칙(chain rule)을 적용하면
+위의 방정식 @eq-glmmleeq  에 미분의 연쇄법칙(chain rule)을 적용하면
 다음과 같은 방정식을 얻는다.
 
  
@@ -612,7 +628,7 @@ $$
 $$ 
 
 최대가능도추정량 $\hat { \beta}$는 가능도 방정식 @eq-glmmleq  을
-직접 풀어서 계산할 수 있지만 믾은 경우 직접해(explicit solution)를
+직접 풀어서 계산할 수 있지만 대부분의 경우 직접해(explicit solution)를
 구하는 것이 불가능 하다. 따라서 보통의 경우 선형화된 작업변량에
 반복가중최소제곱법(iterative weighted least square; IWLS)을 적용하여
 최대가능도 추정량을 구하며 IWLS로 구하는 해는 가능도 방정식
