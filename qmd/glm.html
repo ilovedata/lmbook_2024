@@ -426,14 +426,27 @@ window.Quarto = {
 </header>
 
 
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+주의
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>이 장에서는 벡터와 스칼라의 표기를 구분없이 모두 보통체로 사용한다.</p>
+</div>
+</div>
 <section id="일반화-선형모형" class="level2" data-number="11.1">
 <h2 data-number="11.1" class="anchored" data-anchor-id="일반화-선형모형"><span class="header-section-number">11.1</span> 일반화 선형모형</h2>
-<p>선형모형의 의미는 모형에서 고려하는 설명변수가 변할 때 반응값의 평균이 변하는 관계가 선형이라는 것이다. 즉, 반응값의 평균을 설명하는 회귀식이 회귀계수에 대하여 선형이라는 의미이다. 참고로 아래<br>
-<a href="#eq-glm-linearmodel" class="quarto-xref">식&nbsp;<span>11.1</span></a> 의 오른쪽에 나타나는 식을 선형예측식(linear predictor, <span class="math inline">\(\eta\)</span>)라고 부른다.</p>
+<p>선형모형의 의미는 모형에서 고려하는 설명변수가 변할 때 반응값의 평균이 변하는 관계가 선형이라는 것이다. 즉, 반응값의 평균을 설명하는 회귀식이 회귀계수에 대하여 선형이라는 의미이다.</p>
 <p><span id="eq-glm-linearmodel"><span class="math display">\[
 E(y|x_1,x_2,\dots,x_p) =  \beta_ 1 x_1 + \dots + \beta_p x_p  \equiv \eta
 \tag{11.1}\]</span></span></p>
-<p>이러한 선형성의 가정이 적절하지 않은 경우가 있다. 예를 들어 공학에서나 생물학에서 사용되는 비선형 회귀모형(nonlinear regression model)처럼 반응변수의 변화가 설명변수들의 복잡한 비선형 관계(예를 들어 미분방정식의 관계)로 나타나는 경우로 흔히 나타난다. 이러한 비선형 회귀모형은 <a href="extension.html#sec-nonlinear" class="quarto-xref"><span>섹션 10.4</span></a> 장에서 다루었다.</p>
+<p>참고로 <a href="#eq-glm-linearmodel" class="quarto-xref">식&nbsp;<span>11.1</span></a> 의 오른쪽에 나타나는 식을 선형예측식(linear predictor, <span class="math inline">\(\eta\)</span>)라고 부른다.</p>
+<p>이러한 평균의 선형성의 가정이 적절하지 않은 경우가 있다. 예를 들어 공학이나 생물학에서 사용되는 비선형 회귀모형(nonlinear regression model)처럼 반응변수 평균의 변화가 설명변수들의 복잡한 비선형 관계(예를 들어 미분방정식의 관계)로 나타나는 경우로 흔히 나타난다. 이러한 비선형 회귀모형은 <a href="extension.html#sec-nonlinear" class="quarto-xref"><span>섹션 10.4</span></a> 장에서 다루었다.</p>
 <p>반응변수가 가질 수 있는 평균값의 범위에 제한이 있을 수 있다. 예를 들어 베르누이 분포의 경우 평균이 성공확률이기 때문에 0과 1사이에 있으며 포아송 분포의 경우 반응값은 음의 값을 가질 수 없다. 따라서 <a href="#eq-glm-linearmodel" class="quarto-xref">식&nbsp;<span>11.1</span></a> 의 선형예측식 <span class="math inline">\(\eta\)</span>와 반응값의 평균 <span class="math inline">\(E(y| x)\)</span>의 관계를 선형모형 <a href="#eq-glm-linearmodel" class="quarto-xref">식&nbsp;<span>11.1</span></a> 처럼 정의할 수 없다.</p>
 <p>이렇게 반응변수의 평균과 선형에측식의 범위가 일치하지 않는 경우 임의의 단조증가 함수 <span class="math inline">\(g\)</span>를 사용하여 그 범위를 일치하게 만들어 줄 수 있다. 예를 들어 베르누이 분포의 경우 표준 정규분포의 누적분포함수 <span class="math inline">\(\Phi\)</span>를 사용하여 확률의 범위와 선형에측식의 범위를 맞추어 줄 수 있다. 이러한 회귀모형을 프로빗(probit)모형이라고 부른다.</p>
 <p><span id="eq-probitlink"><span class="math display">\[
@@ -447,7 +460,7 @@ E(y|x_1,x_2,\dots,x_p) =  \beta_ 1 x_1 + \dots + \beta_p x_p  \equiv \eta
 <p><span class="math display">\[
 f (y | \theta, \phi ) = \exp \left \{ \frac{y \theta-b (\theta) }{a(\phi) } + c(y,\phi) \right \}
 \]</span></p>
-<p>충분통계량이 관측값 <span class="math inline">\(y\)</span>이고 1차원의 기본형 모수<span class="math inline">\(\theta\)</span>로 정의된 분포임을 유의하자.</p>
+<p>충분통계량이 관측값 <span class="math inline">\(y\)</span> 이고 1차원의 기본형 모수 <span class="math inline">\(\theta\)</span> 로 정의된 분포임을 유의하자.</p>
 <p>확률변수 <span class="math inline">\(y\)</span>의 평균을 <span class="math inline">\(\mu = E(y)\)</span> 이라고 하고 독립변수 벡터 <span class="math inline">\(x\)</span>와 회귀계수 벡터 <span class="math inline">\(\beta\)</span>로 구성된 선형예측식을 <span class="math inline">\(\eta\)</span>라고 하자.</p>
 <p><span id="eq-linpred"><span class="math display">\[
 \eta = { x}^t  \beta
@@ -456,8 +469,8 @@ f (y | \theta, \phi ) = \exp \left \{ \frac{y \theta-b (\theta) }{a(\phi) } + c(
 <p><span id="eq-linkfunction"><span class="math display">\[
 g(\mu) = g(E[y|  x]) = { x}^t  \beta
 \tag{11.4}\]</span></span></p>
-<p>반응값의 분포가 주어진 경우 연결함수는 평균의 범위와 선형에측식의 범위를 연속적으로 1-1 대응하게 해주는 함수이며 사용할 수 있는 가능한 함수는 무한히 많다. 예를 들어 베르부이 분포의 경우 위에서 정의된 프로빗 모형 <a href="#eq-probitlink" class="quarto-xref">식&nbsp;<span>11.2</span></a> 에서 <span class="math inline">\(\Phi^{-1}\)</span> 같이 (0,1) 에서 실수전체 집합으로 단조증가하는 함수는 모두 연결함수로 고려할 수 있다.</p>
-<p>지수군 분포에서 모수 <span class="math inline">\(\theta\)</span>를 기본형모수(canonical parameter)라고 부르며 일반적으로 <span class="math inline">\(\theta\)</span> 는 평균 <span class="math inline">\(\mu\)</span>의 비선형 함수로 나타난다. 만약 다음과 같은 관계를 나타내는 연결함수 <span class="math inline">\(g\)</span> 가 있다면 그 함수를 기본형 연결함수(canonical link function)이라고 부른다.</p>
+<p>반응값의 분포가 주어진 경우 연결함수는 평균의 범위와 선형예측식의 범위를 연속적으로 1-1 대응하게 해주는 함수이며 사용할 수 있는 가능한 함수는 무한히 많다. 예를 들어 베르누이 분포의 경우 위에서 정의된 프로빗 모형 <a href="#eq-probitlink" class="quarto-xref">식&nbsp;<span>11.2</span></a> 에서 <span class="math inline">\(\Phi^{-1}\)</span> 같이 (0,1) 에서 실수전체 집합으로 단조증가하는 함수는 모두 연결함수로 고려할 수 있다.</p>
+<p>지수군 분포에서 모수 <span class="math inline">\(\theta\)</span>를 기본형모수(canonical parameter)라고 부르며 일반적으로 <span class="math inline">\(\theta\)</span> 는 평균 <span class="math inline">\(\mu\)</span>의 비선형 함수로 나타난다. 만약 다음과 같은 관계를 나타내는 연결함수 <span class="math inline">\(g\)</span> 가 있다면 그 함수를 기본형 연결함수(canonical link function) 또는 자연결합함수(natural link function)라고 부른다.</p>
 <p><span id="eq-canonicallinkfunction"><span class="math display">\[
 \theta = \eta
 \tag{11.5}\]</span></span></p>
@@ -498,41 +511,15 @@ g(\mu) = g(E[y|  x]) = { x}^t  \beta
 <p><span id="eq-linkfunctionsample"><span class="math display">\[
 g(\mu_i) = g(E[y_i| { x}_i ]) = { x}_i^t  \beta \equiv \eta_i, \quad i=1,2,\dots,n
 \tag{11.8}\]</span></span></p>
-<div class="callout callout-style-default callout-note callout-titled">
-<div class="callout-header d-flex align-content-center">
-<div class="callout-icon-container">
-<i class="callout-icon"></i>
-</div>
-<div class="callout-title-container flex-fill">
-노트
-</div>
-</div>
-<div class="callout-body-container callout-body">
-<p><span class="citation" data-cites="nelder1972generalized">Nelder 와/과 Wedderburn (<a href="../references.html#ref-nelder1972generalized" role="doc-biblioref">1972</a>)</span> 에서 연결 함수(link function)의 개념이 제시할 때 다음과 같은 작업 변량(working variate) <span class="math inline">\(z_i\)</span>를 이용하여 선형모형을 일반화하고자 하였다. 즉, 작업 변량 <span class="math inline">\(z_i\)</span></p>
-<p><span class="math display">\[
-\begin{aligned}
-z_i &amp; = g(\mu_i ) + g_\mu(\mu)(y_i - \mu_i) \\
-    &amp; = { x}_i^t  \beta + g_\mu(\mu)(y_i - \mu_i) \\
-    &amp; \simeq { x}_i^t  \beta + r_i
-\end{aligned}
-\]</span></p>
-<p>위의 식에서 오른쪽 식의 두번째 항의 기대값이 0이므로 이를 오차항과 같이 생각하면 위의 모형을 오차항의 분산이 다른 선형모형으로 생각할 수 있다. 지수군 분포의 성질을 이용하면 작업 변량 <span class="math inline">\(z_i\)</span>의 분산은 다음과 같다.</p>
-<p><span id="eq-varianceweight"><span class="math display">\[
-Var(z_i) = Var(r_i) = [g_\mu(\mu_i)]^2 Var(y_i) = [g_\mu(\mu_i)]^2 [ a(\phi_i)v(\mu_i)]
-\tag{11.9}\]</span></span></p>
-<p>이러한 가정하에서 작업 변량 <span class="math inline">\(z_i\)</span>를 반응변수로 놓고 분산의 역수를 가중치로하는 가중 선형모형(wighted linear regression) 을 최소제곡법으로 적합하고 계수의 값이 수렴할 때까지 반복적으로 수행하는하는 계산법을 제공하였다. 이러한 방법을 반복가중최소최곱법(iterative weighted least square method; IWLS)라고 부른다.</p>
-<p><span class="citation" data-cites="searle2001generalized">(<a href="../references.html#ref-searle2001generalized" role="doc-biblioref">Searle 와/과 McCulloch 2001</a> 의 136 쪽 참조)</span></p>
-</div>
-</div>
-<div id="ex-glm-binomial">
-<p>주어진 예측변수 <span class="math inline">\(\pmb  x_i=(x_{1i},\dots,x_{pi})^t\)</span>에서 실행횟수가 <span class="math inline">\(m_i\)</span>인 이항분포<span class="math inline">\(B(m_i, p(x_i))\)</span>를 생각하자. <span class="math inline">\(m_i\)</span>의 시행 중에 성공의 횟수가 <span class="math inline">\(y_i\)</span>라고 하면 <span class="math inline">\(y_i\)</span>의 평균과 분산은 다음과 같다.</p>
+<div id="exm-glm-binomial" class="theorem example">
+<p><span class="theorem-title"><strong>보기 11.1 (이항분포)</strong></span> 주어진 예측변수 <span class="math inline">\(\pmb  x_i=(x_{1i},\dots,x_{pi})^t\)</span>에서 실행횟수가 <span class="math inline">\(m_i\)</span>인 이항분포<span class="math inline">\(B(m_i, p(x_i))\)</span>를 생각하자. <span class="math inline">\(m_i\)</span>의 시행 중에 성공의 횟수가 <span class="math inline">\(y_i\)</span>라고 하면 <span class="math inline">\(y_i\)</span>의 평균과 분산은 다음과 같다.</p>
 <p><span class="math display">\[
 E(y_i | x_i ) = m_i p(x_i), \quad \quad Var(y_i | x_i) = m_i p(x_i) (1-p(x_i)) , \quad i=1,2,\dots,n
 \]</span></p>
 <p>이항분포를 위한 로지스틱 회귀방정식은 선형예측식과 성공의 확률의 관계를 다음과 같이 정한다.</p>
 <p><span id="eq-muli-logistic"><span class="math display">\[
 \log \left [ \frac{p(x_i)}{1-p(x_i)} \right  ] = {\pmb  x}^t_i {\pmb  \beta} = \beta_0 + \beta_1 x_{1i} + \dots \beta_p x_{pi}
-\tag{11.10}\]</span></span></p>
+\tag{11.9}\]</span></span></p>
 <p>서로 독립인 관측값 <span class="math inline">\((y_1,y_2,\dots,y_n)\)</span>의 가능도함수(likelihood function) <span class="math inline">\(L\)</span>은 이항분포들의 결합확률밀도함수와 같고 아래와 같이 주어지며</p>
 <p><span class="math display">\[
 L = \prod_{i=1}^n f(y_i|p(x_i)) = \prod_{i=1}^n \left [  {{m_i}\choose{y_i}} \right] {p(x_i)}^y_i {(1-p(x_i))}^{m-y_i}
@@ -543,8 +530,37 @@ L = \prod_{i=1}^n f(y_i|p(x_i)) = \prod_{i=1}^n \left [  {{m_i}\choose{y_i}} \ri
 l  &amp; = \log L = \sum_i \log {{m_i}\choose{y_i}} + \sum_i y_i \log p(x_i) + \sum_i (m_i -y_i) \log (1-p(x_i))  \notag  \\
    &amp; = c(\pmb  y,\pmb  m) + \sum_i y_i \log \left [ \frac{p(x_i)}{1-p(x_i)} \right  ] + \sum_i m_i \log (1-p(x_i))  
 \end{aligned}
+\tag{11.10}\]</span></span></p>
+<p>위의 로그가능도함수에서 볼 수 있듯이 충분통계량인 성공의 횟수 <span class="math inline">\(y_i\)</span>와 곱으로 나타내어진 함수가 로짓함수이며 이렇게 가능도함수에서 얻어진 결합함수를 기본형 연결함수라고 한다.</p>
+</div>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+노트
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><span class="citation" data-cites="nelder1972generalized">Nelder 와/과 Wedderburn (<a href="../references.html#ref-nelder1972generalized" role="doc-biblioref">1972</a>)</span> 에서 연결 함수(link function)의 개념이 제시할 때 다음과 같은 작업 변량(working variate) <span class="math inline">\(z_i\)</span>를 이용하여 선형모형을 일반화하고자 하였다. 작업 변량 <span class="math inline">\(z_i\)</span> 은 다음과 같이 정의된다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+z_i &amp; =  g(y_i) \\
+    &amp; \simeq g(\mu_i ) + g_{\mu}(\mu_i)(y_i - \mu_i) \\
+    &amp; = { x}_i^t  \beta + g_{\mu}(\mu_i)(y_i - \mu_i) \\
+    &amp; \simeq { x}_i^t  \beta + r_i
+\end{aligned}
+\]</span></p>
+<p>위의 식에서 <span class="math inline">\(g_{\mu}\)</span> 은 연결함수 <span class="math inline">\(g\)</span> 를 미분한 함수이다. 위의 식에서 오른쪽 식의 두번째 항의 기대값이 0 이므로</p>
+<p><span class="math display">\[ E(y_i - \mu_i) =0 \]</span></p>
+<p><span class="math inline">\(y_i - \mu_i\)</span> 를 오차항과 같이 생각하면 위의 모형을 오차항의 분산이 다른 선형모형으로 생각할 수 있다. 지수군 분포의 성질을 이용하면 작업 변량 <span class="math inline">\(z_i\)</span>의 분산은 다음과 같다.</p>
+<p><span id="eq-varianceweight"><span class="math display">\[
+Var(z_i) = Var(r_i) = [g_\mu(\mu_i)]^2 Var(y_i) = [g_\mu(\mu_i)]^2 [ a(\phi_i)v(\mu_i)]
 \tag{11.11}\]</span></span></p>
-<p>위의 로그가능도함수에서 볼 수 있듯이 충분통계량인 성공의 횟수 <span class="math inline">\(y_i\)</span>와 곱으로 나타내어진 함수가 로짓함수이며 이렇게 가능도함수에서 얻어진 결합함수를 자연결합함수(natural link function)이라고 한다.</p>
+<p>이러한 가정하에서 작업 변량 <span class="math inline">\(z_i\)</span>를 반응변수로 놓고 분산의 역수를 가중치로하는 가중 선형모형(wighted linear regression) 을 최소제곱법으로 적합하고 계수의 값이 수렴할 때까지 반복적으로 수행하는하는 계산법을 제공하였다. 이러한 방법을 반복가중최소최곱법(iterative weighted least square method; IWLS)라고 부른다.</p>
+<p><span class="citation" data-cites="searle2001generalized">(<a href="../references.html#ref-searle2001generalized" role="doc-biblioref">Searle 와/과 McCulloch 2001</a> 의 136 쪽 참조)</span></p>
+</div>
 </div>
 </section>
 <section id="최대가능도추정" class="level2" data-number="11.3">
@@ -612,7 +628,7 @@ b'(\theta_i) = \mu_i
 \]</span></p>
 <section id="가능도-방정식의-유도-첫-번째-방법" class="level3" data-number="11.3.1">
 <h3 data-number="11.3.1" class="anchored" data-anchor-id="가능도-방정식의-유도-첫-번째-방법"><span class="header-section-number">11.3.1</span> 가능도 방정식의 유도: 첫 번째 방법</h3>
-<p>이제 가능도 함수 <a href="#eq-likefunctionsample" class="quarto-xref">식&nbsp;<span>11.7</span></a> 의 형태를 이용하여 방정식 <a href="#eq-glmmleeq" class="quarto-xref">식&nbsp;<span>11.12</span></a> 를 을 유도해 보자.</p>
+<p>이제 가능도 함수 <a href="#eq-likefunctionsample" class="quarto-xref">식&nbsp;<span>11.7</span></a> 의 형태를 이용하여 방정식 <a href="#eq-glmmleeq" class="quarto-xref">식&nbsp;<span>11.12</span></a> 를 유도해 보자.</p>
 <p><span id="eq-likeeqfirst"><span class="math display">\[
 \begin{aligned}
 0 &amp; =\pardifftwo{ \ell_n}{  \beta }\\
@@ -633,7 +649,7 @@ b'(\theta_i) = \mu_i
 \end{bmatrix}
 \end{aligned}
 \tag{11.14}\]</span></span></p>
-<p>여기서 가중치 <span class="math inline">\(w_i\)</span>는 다음과 정의한다. 가중치 <span class="math inline">\(w_i\)</span>는 앞에서 설명한 작업 변량의 분산의 역수와 동일하다. <a href="#eq-varianceweight" class="quarto-xref">식&nbsp;<span>11.9</span></a> 을 참조하자.</p>
+<p>여기서 가중치 <span class="math inline">\(w_i\)</span>는 다음과 정의한다. 가중치 <span class="math inline">\(w_i\)</span>는 앞에서 설명한 작업 변량의 분산의 역수와 동일하다. <a href="#eq-varianceweight" class="quarto-xref">식&nbsp;<span>11.11</span></a> 을 참조하자.</p>
 <p><span class="math display">\[
 w_i \equiv \frac{1}{ g^2_\mu(\mu_i)
 a(\phi_i) v(\mu_i) }
@@ -641,7 +657,7 @@ a(\phi_i) v(\mu_i) }
 </section>
 <section id="가능도-방정식의-유도-두-번째-방법" class="level3" data-number="11.3.2">
 <h3 data-number="11.3.2" class="anchored" data-anchor-id="가능도-방정식의-유도-두-번째-방법"><span class="header-section-number">11.3.2</span> 가능도 방정식의 유도: 두 번째 방법</h3>
-<p>위의 방정식@eq-glmmleeq 에 미분의 연쇄법칙(chain rule)을 적용하면 다음과 같은 방정식을 얻는다.</p>
+<p>위의 방정식 <a href="#eq-glmmleeq" class="quarto-xref">식&nbsp;<span>11.12</span></a> 에 미분의 연쇄법칙(chain rule)을 적용하면 다음과 같은 방정식을 얻는다.</p>
 <p><span id="eq-glmmleeqchain"><span class="math display">\[
 \pardifftwo{  \ell_n }{   \beta} = \pardifftwo{   \eta }{   \beta } \pardifftwo{   \mu }{   \eta } \pardifftwo{   \theta }{  \mu } \pardifftwo{  \ell_n }{   \theta } =0  
 \tag{11.15}\]</span></span></p>
@@ -898,13 +914,13 @@ I( \beta) &amp; = - E \left [ \pardiffdd{\ell_n}{ \beta}{ \beta^t} \right ] \\
 -{ X}^t  W { X} \\
 \end{aligned}
 \]</span></p>
-<p>최대가능도추정량 <span class="math inline">\(\hat { \beta}\)</span>는 가능도 방정식 <a href="#eq-glmmleq" class="quarto-xref">식&nbsp;<span>11.17</span></a> 을 직접 풀어서 계산할 수 있지만 믾은 경우 직접해(explicit solution)를 구하는 것이 불가능 하다. 따라서 보통의 경우 선형화된 작업변량에 반복가중최소제곱법(iterative weighted least square; IWLS)을 적용하여 최대가능도 추정량을 구하며 IWLS로 구하는 해는 가능도 방정식 <a href="#eq-glmmleq" class="quarto-xref">식&nbsp;<span>11.17</span></a> 의 해와 동일하다.</p>
+<p>최대가능도추정량 <span class="math inline">\(\hat { \beta}\)</span>는 가능도 방정식 <a href="#eq-glmmleq" class="quarto-xref">식&nbsp;<span>11.17</span></a> 을 직접 풀어서 계산할 수 있지만 대부분의 경우 직접해(explicit solution)를 구하는 것이 불가능 하다. 따라서 보통의 경우 선형화된 작업변량에 반복가중최소제곱법(iterative weighted least square; IWLS)을 적용하여 최대가능도 추정량을 구하며 IWLS로 구하는 해는 가능도 방정식 <a href="#eq-glmmleq" class="quarto-xref">식&nbsp;<span>11.17</span></a> 의 해와 동일하다.</p>
 <p>주어진 분포에서 기본 연결함수를 <span class="math inline">\(g\)</span> 라고 하고 관측값 <span class="math inline">\(y\)</span>를 변환한 작업변량 <span class="math inline">\(z=g(y)\)</span>의 테일러 전개를 다음과 같이 고려해 보자.<br>
 </p>
 <p><span class="math display">\[
 z \equiv g(y) \cong g(\mu) + g_\mu (\mu)(y-\mu)
 \]</span></p>
-<p>작업 변량 <span class="math inline">\(z\)</span> 의 분산은 <a href="#eq-varianceweight" class="quarto-xref">식&nbsp;<span>11.9</span></a> 와 같이 다음으로 주어진다.</p>
+<p>작업 변량 <span class="math inline">\(z\)</span> 의 분산은 <a href="#eq-varianceweight" class="quarto-xref">식&nbsp;<span>11.11</span></a> 와 같이 다음으로 주어진다.</p>
 <p><span class="math display">\[
 var(z) = v(\mu) g^2_\mu (\mu) \equiv w^{-1}
 \]</span></p>
@@ -1018,7 +1034,7 @@ l(\pmb  y | \pmb  y)  &amp; =l_{saturated} \\
 &amp; = \sum_i \log {{m_i}\choose{y_i}} + \sum_i y_i \log  \frac{y_i}{m_i} + \sum_i (m_i -y_i) \log (1- \frac{y_i}{m_i})
 \end{aligned}
 \]</span></p>
-<p>따라서 위에서 주어진 포화함수의 로그가능도함수에서 로지스틱회귀식의 로그가능도함수 <a href="#eq-bionom-loglike" class="quarto-xref">식&nbsp;<span>11.11</span></a> 를 빼고 2를 곱해서 편차를 정의할 수 있다.</p>
+<p>따라서 위에서 주어진 포화함수의 로그가능도함수에서 로지스틱회귀식의 로그가능도함수 <a href="#eq-bionom-loglike" class="quarto-xref">식&nbsp;<span>11.10</span></a> 를 빼고 2를 곱해서 편차를 정의할 수 있다.</p>
 <p><span class="math display">\[
 \begin{aligned}
 D(\pmb  y;\hat {\pmb  \mu}) &amp;=  2 \left [ l(\pmb  y | \pmb  y) - l(\hat {\pmb  \mu} | \pmb  y) \right ] \\
@@ -1256,7 +1272,7 @@ D(\pmb  y; \hat{\pmb  \mu}) &amp; = 2 \left [ l(\pmb  y | \pmb  y) - l(\hat {\pm
 \end{aligned}
 \]</span></p>
 <div id="exm-glm-poission-r" class="theorem example">
-<p><span class="theorem-title"><strong>보기 11.1 (포아송 회귀분석)</strong></span> Galapagos 군도에 있는 30개의 섬에서 사는 거북이의 개체 수를 반응변수 <span class="math inline">\(y\)</span>로하고 5개의 지리적 변수를 예측변수로 하는 포아송 회귀식을 적합하려고 한다 (자료 출처는 <span class="citation" data-cites="faraway2016extending">Faraway (<a href="../references.html#ref-faraway2016extending" role="doc-biblioref">2016</a>)</span>).</p>
+<p><span class="theorem-title"><strong>보기 11.2 (포아송 회귀분석)</strong></span> Galapagos 군도에 있는 30개의 섬에서 사는 거북이의 개체 수를 반응변수 <span class="math inline">\(y\)</span>로하고 5개의 지리적 변수를 예측변수로 하는 포아송 회귀식을 적합하려고 한다 (자료 출처는 <span class="citation" data-cites="faraway2016extending">Faraway (<a href="../references.html#ref-faraway2016extending" role="doc-biblioref">2016</a>)</span>).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(faraway)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(gala)</span>
@@ -1302,7 +1318,7 @@ Number of Fisher Scoring iterations: 5</code></pre>
 \]</span></p>
 <p>따라서 발생횟수에 대한 포아송 회귀분석을 적합할 때 집단의 크기를 안다면 그 로그 변환값을 회귀식에 포함하여 적합할 수 있다. 위의 식에서 알 수 있듯이 크기의 로그 변환변수는 회귀계수를 강제로 1 로 놓는 제약을 둘 수 있다. 이러한 변수를 오프셋(offset)이라고 한다.</p>
 <div id="exm-glm-ratio-r" class="theorem example">
-<p><span class="theorem-title"><strong>보기 11.2 (비율 모형)</strong></span> 세포(<code>cells</code>)에 감마 방사능을 쏘였을 떄 비정상성(<code>ca</code>)를 나타내는 횟수에 대하여 비율 모형을 적합시켰다. 독립변수는 방사능의 양(<code>doseamt</code>)와 비율(<code>doserate</code>)이다. 여기서 세포의 수(<code>cells</code>)를 오프셋(offset) 변수로 사용한다 (자료 출처는 <span class="citation" data-cites="faraway2016extending">Faraway (<a href="../references.html#ref-faraway2016extending" role="doc-biblioref">2016</a>)</span>).</p>
+<p><span class="theorem-title"><strong>보기 11.3 (비율 모형)</strong></span> 세포(<code>cells</code>)에 감마 방사능을 쏘였을 떄 비정상성(<code>ca</code>)를 나타내는 횟수에 대하여 비율 모형을 적합시켰다. 독립변수는 방사능의 양(<code>doseamt</code>)와 비율(<code>doserate</code>)이다. 여기서 세포의 수(<code>cells</code>)를 오프셋(offset) 변수로 사용한다 (자료 출처는 <span class="citation" data-cites="faraway2016extending">Faraway (<a href="../references.html#ref-faraway2016extending" role="doc-biblioref">2016</a>)</span>).</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">data</span>(dicentric)</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">round</span>(<span class="fu">xtabs</span>(ca<span class="sc">/</span>cells <span class="sc">~</span> doseamt<span class="sc">+</span>doserate, dicentric),<span class="dv">2</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
