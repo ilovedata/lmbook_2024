@@ -19,7 +19,7 @@ library(leaps)
 library(mvtnorm)
 library(nlstools)
 
-library(ElemStatLearn)
+#library(ElemStatLearn)
 library(faraway)
 
 

@@ -36,7 +36,7 @@ editor:
 
 - 집합 $S$ 가 연산에 대하여 닫혀있다 (closure).
 
-$$  s_1 + b \in S \quad \forall s_1,b \in S $$
+$$  s_1 + s_2 \in S \quad \forall s_1,s_2 \in S $$
 
 - 결합법칙이 성립한다 (Associativity).
 
@@ -389,12 +389,12 @@ $n \times p$ 행렬 $\pmb A$ 에 의하여 생성되는 열공간(column space)
 $C(\pmb A)$는 행렬 $\pmb A$를 구성하는 열벡터의 선형조합으로 나타낼 수
 있는 모든 벡터들의 집합을 말한다.
 
-$$ C(\pmb A) = \{ {\pmb y } | {\pmb y} = {\pmb A} {\pmb x}, {\pmb x} \in \RR^p \}  \subset \RR^n$$
+$$ C(\pmb A) = \{ {\pmb y } | {\pmb y} = {\pmb A} {\pmb x}, {\pmb x} \in \RR^p \} $$
 
 $n \times p$ 행렬 $\pmb A$ 에 의하여 생성되는 영공간(null space)
 $N(\pmb A)$ 는 다음과 같이 정의되는 벡터들의 집합을 말한다.
 
-$$ N(\pmb A) = \{ {\pmb x} | {\pmb A} {\pmb x} = {\pmb 0} \text{ for } {\pmb x} \in \RR^p \} \subset \RR^n$$
+$$ N(\pmb A) = \{ {\pmb x} | {\pmb A} {\pmb x} = {\pmb 0} \text{ for } {\pmb x} \in \RR^p \} $$
 
 벡터공간과 영공간은 다음과 같은 성질을 가진다.
 
