@@ -58,8 +58,8 @@ $$
 \begin{aligned}
 \pardifftwo{  f_1}{ x_1} & = 2x_1, & \quad \pardifftwo{  f_2}{ x_1} & = \exp(x_1), & \quad
 \pardifftwo{  f_3}{ x_1} & = \cos(x_1) \\
-\pardifftwo{  f_1}{ x_2} & = 1,    & \quad \pardifftwo{  f_2}{ x_1} & = 3,         & \quad
-\pardifftwo{  f_3}{ x_1} & = 3 x_2^2 \\
+\pardifftwo{  f_1}{ x_2} & = 1,    & \quad \pardifftwo{  f_2}{ x_2} & = 3,         & \quad
+\pardifftwo{  f_3}{ x_2} & = 3 x_2^2 \\
 \end{aligned}
 $$ {#eq-par_deriv}
 
@@ -110,12 +110,9 @@ $$
 
 $$ 
 \pardifftwo{\pmb f}{x} = 
-\begin{bmatrix} 
-\pardifftwo{ f_1}{x} \\
-\pardifftwo{ f_2}{x} \\
-\vdots \\
-\pardifftwo{ f_m}{x} 
-\end{bmatrix} 
+[
+\pardifftwo{ f_1}{x} , \pardifftwo{ f_2}{x}, \cdots, \pardifftwo{ f_m}{x} 
+]
 $$
 
 참고로 @eq-vec-cal-xy 에서 정의한 함수 관계를 두 벡터 $\pmb x$ 와 $\pmb y$ 의 사상관계로 보면 
@@ -245,7 +242,7 @@ $$ \pmb f : \RR^n \mapsto \RR^m, \quad \pmb g : \RR^n \mapsto \RR^m$$
 - $\pmb f$ 를 미분하는 경우 $\pmb g$ 는 상수 벡터 $\pmb a$ 로 취급한다. 그리고 @eq-vec-diff-0 를 적용한다.
 
 $$
-\pardifftwo{ \pmb f^t \pmb g}{\pmb x} = \pardifftwo{ \pmb f^t \pmb a}{\pmb x} = 
+\pardifftwo{ \pmb f^t \pmb g}{\pmb x} = \pardifftwo{ \pmb f^t \pmb a}{\pmb x} 
 =  \pardifftwo{ \pmb f^t}{\pmb x} \pmb a=
 \pardifftwo{ \pmb f}{\pmb x} \pmb g
 $$ {#eq-vec-diff-1}
