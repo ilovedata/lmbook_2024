@@ -2,12 +2,12 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="ko" xml:lang="ko"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.4.550">
+<meta name="generator" content="quarto-1.6.42">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>통계적 예측모형 - 부록 M — R-실습: 모형의 선택</title>
+<title>부록 M — R-실습: 모형의 선택 – 통계적 예측모형</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -33,7 +33,7 @@ div.sourceCode { overflow: auto; }
 }
 @media print {
 pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+pre > code.sourceCode > span { display: inline-block; text-indent: -5em; padding-left: 5em; }
 }
 pre.numberSource code
   { counter-reset: source-line 0; }
@@ -71,10 +71,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
 <script src="../site_libs/quarto-html/anchor.min.js"></script>
 <link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-2f5df379a58b258e96c21c0638c20c03.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="../site_libs/bootstrap/bootstrap.min.js"></script>
 <link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<link href="../site_libs/bootstrap/bootstrap-a08d9001fe0711adfabc365c1b400f34.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "sidebar",
   "copy-button": false,
@@ -122,7 +122,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 };
 </script>
 
-  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <script type="text/javascript">
@@ -160,13 +160,13 @@ window.Quarto = {
   <header id="quarto-header" class="headroom fixed-top">
   <nav class="quarto-secondary-nav">
     <div class="container-fluid d-flex">
-      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
         <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../qmd/math_mat_basic.html">Appendices</a></li><li class="breadcrumb-item"><a href="../qmd/practice-04.html"><span class="chapter-number">M</span>&nbsp; <span class="chapter-title">R-실습: 모형의 선택</span></a></li></ol></nav>
-        <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="사이드바 전환" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
-      <button type="button" class="btn quarto-search-button" aria-label="" onclick="window.quartoOpenSearch();">
+      <button type="button" class="btn quarto-search-button" aria-label="검색" onclick="window.quartoOpenSearch();">
         <i class="bi bi-search"></i>
       </button>
     </div>
@@ -271,9 +271,9 @@ window.Quarto = {
 </li>
         <li class="sidebar-item sidebar-item-section">
       <div class="sidebar-item-container"> 
-            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true">
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
  <span class="menu-text">Appendices</span></a>
-          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" aria-expanded="true" aria-label="토글 섹션">
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="토글 섹션">
             <i class="bi bi-chevron-right ms-2"></i>
           </a> 
       </div>
@@ -377,8 +377,6 @@ window.Quarto = {
   <li><a href="#aic-와-bic-계산" id="toc-aic-와-bic-계산" class="nav-link active" data-scroll-target="#aic-와-bic-계산"><span class="header-section-number">M.1</span> AIC 와 BIC 계산</a></li>
   <li><a href="#예제-6.1" id="toc-예제-6.1" class="nav-link" data-scroll-target="#예제-6.1"><span class="header-section-number">M.2</span> 예제 6.1</a></li>
   <li><a href="#변수선택-방법" id="toc-변수선택-방법" class="nav-link" data-scroll-target="#변수선택-방법"><span class="header-section-number">M.3</span> 변수선택 방법</a></li>
-  <li><a href="#연습문제-6.10" id="toc-연습문제-6.10" class="nav-link" data-scroll-target="#연습문제-6.10"><span class="header-section-number">M.4</span> 연습문제 6.10</a></li>
-  <li><a href="#연습문제-6.12" id="toc-연습문제-6.12" class="nav-link" data-scroll-target="#연습문제-6.12"><span class="header-section-number">M.5</span> 연습문제 6.12</a></li>
   </ul>
 </nav>
     </div>
@@ -528,21 +526,21 @@ BIC &amp;= n\log(2\pi) + n + n \log  \frac{SSE_p}{n} + (\log n) (p+1)
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>houseprice.rgs2 </span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   Index N            Predictors   R-Square Adj. R-Square Mallow's Cp
-3      1 1                 floor 0.86271916    0.85722792  0.83399320
-1      2 1                   tax 0.83768158    0.83118885  0.76244434
-2      3 1                ground 0.52756188    0.50866435  0.36958913
-4      4 1                  year 0.09627993    0.06013112 -0.07517657
-6      5 2             tax floor 0.92845564    0.92249361  0.89147659
-10     6 2            floor year 0.88440442    0.87477146  0.84393314
-8      7 2          ground floor 0.87329747    0.86273892  0.82431609
-5      8 2            tax ground 0.85575007    0.84372925  0.73078316
-7      9 2              tax year 0.83868576    0.82524290  0.74339806
-9     10 2           ground year 0.52891996    0.48966329  0.31506912
-13    11 3        tax floor year 0.93061720    0.92156727  0.88456609
-11    12 3      tax ground floor 0.92990878    0.92076645  0.88037155
-14    13 3     ground floor year 0.88719183    0.87247773  0.82472001
-12    14 3       tax ground year 0.85907420    0.84069258  0.71427919
-15    15 4 tax ground floor year 0.93127151    0.91877542  0.87187470</code></pre>
+3      1 1                 floor 0.86271916    0.85722792   20.943616
+1      2 1                   tax 0.83768158    0.83118885   28.958146
+2      3 1                ground 0.52756188    0.50866435  128.227503
+4      4 1                  year 0.09627993    0.06013112  266.280912
+6      5 2             tax floor 0.92845564    0.92249361    1.901360
+10     6 2            floor year 0.88440442    0.87477146   16.002160
+8      7 2          ground floor 0.87329747    0.86273892   19.557496
+5      8 2            tax ground 0.85575007    0.84372925   25.174420
+7      9 2              tax year 0.83868576    0.82524290   30.636710
+9     10 2           ground year 0.52891996    0.48966329  129.792782
+13    11 3        tax floor year 0.93061720    0.92156727    3.209442
+11    12 3      tax ground floor 0.92990878    0.92076645    3.436208
+14    13 3     ground floor year 0.88719183    0.87247773   17.109908
+12    14 3       tax ground year 0.85907420    0.84069258   26.110366
+15    15 4 tax ground floor year 0.93127151    0.91877542    5.000000</code></pre>
 </div>
 </div>
 <div class="cell">
@@ -959,9 +957,18 @@ year    1    2.8761 92.319 41.194  0.7165 0.4060</code></pre>
 <p>이러한 단계별 회귀의 결과는 모든 가능한 회귀에 의한 방법과 모형이 일치한다. 독립변수의 수가 많는 경우 이러한 단계별 회귀 방법은 유용하게 사용된다.</p>
 </section>
 <section id="함수-step" class="level3" data-number="M.3.2">
-<h3 data-number="M.3.2" class="anchored" data-anchor-id="함수-step"><span class="header-section-number">M.3.2</span> 함수 <code>step()</code></h3>
+<h3 data-number="M.3.2" class="anchored"><span class="header-section-number">M.3.2</span> 함수 <code>step()</code></h3>
 <p>위에서 논의한 세 종류의 변수선택법은 함수 <code>step()</code>을 이용하여 한 번에 결과를 얻을 수 있다.</p>
-<p>::: {.callout-caution}</p>
+<div class="callout callout-style-default callout-caution callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+주의
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <p>주의할 점은 함수 <code>step()</code>은 변수의 선택 기준이 F-검정이 아니 AIC 를 이용한다는 점이다.</p>
 <ul>
 <li>전진 선택</li>
@@ -1098,7 +1105,6 @@ Coefficients:
     0.39497      0.34835      0.05742  </code></pre>
 </div>
 </div>
-</section>
 <section id="패키지-olsrr-의-이용" class="level3" data-number="M.3.3">
 <h3 data-number="M.3.3" class="anchored" data-anchor-id="패키지-olsrr-의-이용"><span class="header-section-number">M.3.3</span> 패키지 <code>olsrr</code> 의 이용</h3>
 <p>패키지 <code>olsrr</code> 의 함수 <code>ols_step_both_p()</code> 이용하여 F-검정을 이용한 단계별 선택을 할 수 있다.</p>
@@ -1179,7 +1185,7 @@ Final Model Output
                          Model Summary                          
 ---------------------------------------------------------------
 R                       0.964       RMSE                 1.878 
-R-Squared               0.928       MSE                  3.966 
+R-Squared               0.928       MSE                  3.526 
 Adj. R-Squared          0.922       Coef. Var           10.346 
 Pred R-Squared          0.891       AIC                118.645 
 MAE                     1.572       SBC                123.829 
@@ -1238,7 +1244,7 @@ Final Model Output
                          Model Summary                          
 ---------------------------------------------------------------
 R                       0.964       RMSE                 1.878 
-R-Squared               0.928       MSE                  3.966 
+R-Squared               0.928       MSE                  3.526 
 Adj. R-Squared          0.922       Coef. Var           10.346 
 Pred R-Squared          0.891       AIC                118.645 
 MAE                     1.572       SBC                123.829 
@@ -1269,7 +1275,6 @@ Total         1330.580        26
 -------------------------------------------------------------------------------------</code></pre>
 </div>
 </div>
-</section>
 </section>
 <section id="연습문제-6.10" class="level2" data-number="M.4">
 <h2 data-number="M.4" class="anchored" data-anchor-id="연습문제-6.10"><span class="header-section-number">M.4</span> 연습문제 6.10</h2>
@@ -1685,7 +1690,7 @@ Final Model Output
                          Model Summary                          
 ---------------------------------------------------------------
 R                       0.841       RMSE                 2.873 
-R-Squared               0.707       MSE                  8.625 
+R-Squared               0.707       MSE                  8.254 
 Adj. R-Squared          0.697       Coef. Var           10.097 
 Pred R-Squared          0.665       AIC                470.213 
 MAE                     2.139       SBC                482.876 
@@ -1844,7 +1849,7 @@ Final Model Output
                          Model Summary                          
 ---------------------------------------------------------------
 R                       0.844       RMSE                 2.846 
-R-Squared               0.712       MSE                  8.557 
+R-Squared               0.712       MSE                  8.097 
 Adj. R-Squared          0.699       Coef. Var           10.057 
 Pred R-Squared          0.664       AIC                470.436 
 MAE                     2.081       SBC                485.631 
@@ -1966,6 +1971,10 @@ X41 X42 X43 X44 X45 X46 X47 X48 X49 X50
 
 
 </section>
+</div>
+</div>
+</section>
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -2003,18 +2012,7 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
     return false;
   }
-  const clipboard = new window.ClipboardJS('.code-copy-button', {
-    text: function(trigger) {
-      const codeEl = trigger.previousElementSibling.cloneNode(true);
-      for (const childEl of codeEl.children) {
-        if (isCodeAnnotation(childEl)) {
-          childEl.remove();
-        }
-      }
-      return codeEl.innerText;
-    }
-  });
-  clipboard.on('success', function(e) {
+  const onCopySuccess = function(e) {
     // button target
     const button = e.trigger;
     // don't keep focus
@@ -2046,7 +2044,45 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }, 1000);
     // clear code selection
     e.clearSelection();
+  }
+  const getTextToCopy = function(trigger) {
+      const codeEl = trigger.previousElementSibling.cloneNode(true);
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+  }
+  const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+    text: getTextToCopy
   });
+  clipboard.on('success', onCopySuccess);
+  if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+    const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+      text: getTextToCopy,
+      container: window.document.getElementById('quarto-embedded-source-code-modal')
+    });
+    clipboardModal.on('success', onCopySuccess);
+  }
+    var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+    var mailtoRegex = new RegExp(/^mailto:/);
+      var filterRegex = new RegExp('/' + window.location.host + '/');
+    var isInternal = (href) => {
+        return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+    }
+    // Inspect non-navigation links and adorn them if external
+ 	var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+    for (var i=0; i<links.length; i++) {
+      const link = links[i];
+      if (!isInternal(link.href)) {
+        // undo the damage that might have been done by quarto-nav.js in the case of
+        // links that we want to consider external
+        if (link.dataset.originalHref !== undefined) {
+          link.href = link.dataset.originalHref;
+        }
+      }
+    }
   function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
     const config = {
       allowHTML: true,
@@ -2081,7 +2117,11 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       try { href = new URL(href).hash; } catch {}
       const id = href.replace(/^#\/?/, "");
       const note = window.document.getElementById(id);
-      return note.innerHTML;
+      if (note) {
+        return note.innerHTML;
+      } else {
+        return "";
+      }
     });
   }
   const xrefs = window.document.querySelectorAll('a.quarto-xref');
@@ -2129,7 +2169,6 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       if (window.Quarto?.typesetMath) {
         window.Quarto.typesetMath(note);
       }
-      // TODO in 1.5, we should make sure this works without a callout special case
       if (note.classList.contains("callout")) {
         return note.outerHTML;
       } else {
