@@ -415,8 +415,8 @@ y_1 = x_1^2 + x_2, \quad y_2= \exp (x_1) + 3 x_2, \quad y_3 = \sin(x_1) + x_2^3
 \begin{aligned}
 \pardifftwo{  f_1}{ x_1} &amp; = 2x_1, &amp; \quad \pardifftwo{  f_2}{ x_1} &amp; = \exp(x_1), &amp; \quad
 \pardifftwo{  f_3}{ x_1} &amp; = \cos(x_1) \\
-\pardifftwo{  f_1}{ x_2} &amp; = 1,    &amp; \quad \pardifftwo{  f_2}{ x_1} &amp; = 3,         &amp; \quad
-\pardifftwo{  f_3}{ x_1} &amp; = 3 x_2^2 \\
+\pardifftwo{  f_1}{ x_2} &amp; = 1,    &amp; \quad \pardifftwo{  f_2}{ x_2} &amp; = 3,         &amp; \quad
+\pardifftwo{  f_3}{ x_2} &amp; = 3 x_2^2 \\
 \end{aligned}
 \tag{E.2}\]</span></span></p>
 <p>이제 이제 편미분값들을 행렬의 형태로 정리해보자. 편미분을 행렬에 배치할 떄 다음과 같은 규칙을 사용할 것이다.</p>
@@ -467,12 +467,9 @@ y_1 = x_1^2 + x_2, \quad y_2= \exp (x_1) + 3 x_2, \quad y_3 = \sin(x_1) + x_2^3
 </ul>
 <p><span class="math display">\[
 \pardifftwo{\pmb f}{x} =
-\begin{bmatrix}
-\pardifftwo{ f_1}{x} \\
-\pardifftwo{ f_2}{x} \\
-\vdots \\
-\pardifftwo{ f_m}{x}
-\end{bmatrix}
+[
+\pardifftwo{ f_1}{x} , \pardifftwo{ f_2}{x}, \cdots, \pardifftwo{ f_m}{x}
+]
 \]</span></p>
 <p>참고로 <a href="#eq-vec-cal-xy" class="quarto-xref">식&nbsp;<span>E.1</span></a> 에서 정의한 함수 관계를 두 벡터 <span class="math inline">\(\pmb x\)</span> 와 <span class="math inline">\(\pmb y\)</span> 의 사상관계로 보면</p>
 <p><span class="math display">\[ \pmb f : \pmb x \mapsto \pmb y \]</span> 다음과 같이 그레디언트 벡터를 표기할 수 있다.</p>
@@ -566,7 +563,7 @@ a_n
 <li><span class="math inline">\(\pmb f\)</span> 를 미분하는 경우 <span class="math inline">\(\pmb g\)</span> 는 상수 벡터 <span class="math inline">\(\pmb a\)</span> 로 취급한다. 그리고 <a href="#eq-vec-diff-0" class="quarto-xref">식&nbsp;<span>E.5</span></a> 를 적용한다.</li>
 </ul>
 <p><span id="eq-vec-diff-1"><span class="math display">\[
-\pardifftwo{ \pmb f^t \pmb g}{\pmb x} = \pardifftwo{ \pmb f^t \pmb a}{\pmb x} =
+\pardifftwo{ \pmb f^t \pmb g}{\pmb x} = \pardifftwo{ \pmb f^t \pmb a}{\pmb x}
 =  \pardifftwo{ \pmb f^t}{\pmb x} \pmb a=
 \pardifftwo{ \pmb f}{\pmb x} \pmb g
 \tag{E.6}\]</span></span></p>
