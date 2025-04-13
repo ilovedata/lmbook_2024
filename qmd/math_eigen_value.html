@@ -397,7 +397,7 @@ p_{\boldsymbol{A}}(\lambda) &amp; :=\operatorname{det}(\boldsymbol{A}-\lambda \b
 <section id="정의" class="level3" data-number="C.2.1">
 <h3 data-number="C.2.1" class="anchored" data-anchor-id="정의"><span class="header-section-number">C.2.1</span> 정의</h3>
 <p><span class="math inline">\(n\)</span>-차원 정방행렬 <span class="math inline">\(\pmb A\)</span> 이 있을 때, 다음 식을 만족하는 <span class="math inline">\(\lambda\)</span> 와 벡터 <span class="math inline">\(\pmb x\)</span>가 존재하면 <span class="math inline">\(\lambda\)</span> 를 행렬 <span class="math inline">\(\pmb A\)</span> 의 고유값(eigenvalue), <span class="math inline">\(\pmb x\)</span> 를 행렬 <span class="math inline">\(\pmb A\)</span> 의 고유벡터(eigenvector)라고 한다 (부교재 definition 4.6)</p>
-<p><span class="math display">\[ \pmb A \pmb x = \lambda \pmb x \]</span></p>
+<p><span id="eq-char-eigen-def"><span class="math display">\[ \pmb A \pmb x = \lambda \pmb x  \tag{C.2}\]</span></span></p>
 <ul>
 <li>고유벡터는 유일하지 않다. 즉, 벡터 <span class="math inline">\(\pmb x\)</span> 가 고유벡터이면 <span class="math inline">\(c \pmb x\)</span> 도 고유벡터이다.</li>
 </ul>
@@ -408,14 +408,14 @@ p_{\boldsymbol{A}}(\lambda) &amp; :=\operatorname{det}(\boldsymbol{A}-\lambda \b
 <p>다음 4개의 문장은 동치이다</p>
 <ul>
 <li><span class="math inline">\(\lambda\)</span> 는 행렬 <span class="math inline">\(\pmb A\)</span> 의 고유값이다.</li>
-<li>방정식 <span class="math inline">\((\pmb A - \lambda \pmb I)\pmb x = \pmb 0\)</span> 은 영벡터이외의 해를 가진다(nontrivial solution)</li>
-<li><span class="math inline">\(\lambda\)</span> 는 행렬 <span class="math inline">\(\pmb A - \lambda \pmb I\)</span> 의 행렬식이 0 이다.</li>
+<li>방정식 <span class="math inline">\((\pmb A - \lambda \pmb I)\pmb x = \pmb 0\)</span> 은 영벡터이외의 해 <span class="math inline">\(\pmb x\)</span> 를 가진다(nontrivial solution)</li>
+<li>행렬 <span class="math inline">\(\pmb A - \lambda \pmb I\)</span> 의 행렬식이 0 이다.</li>
 </ul>
-<p><span id="eq-char-poly2"><span class="math display">\[ \operatorname{det}(\pmb A - \lambda \pmb I) = 0  \tag{C.2}\]</span></span></p>
+<p><span id="eq-char-poly2"><span class="math display">\[ \operatorname{det}(\pmb A - \lambda \pmb I) = 0  \tag{C.3}\]</span></span></p>
 <ul>
-<li><p><span class="math inline">\(\lambda\)</span> 는 행렬 <span class="math inline">\(\pmb A - \lambda \pmb I\)</span> 의 rank가 <span class="math inline">\(n\)</span> 보다 작다.</p></li>
-<li><p>위에서 행렬식이 0 인 방정식 <a href="#eq-char-poly2" class="quarto-xref">식&nbsp;<span>C.2</span></a> 을 푸는 것은 특성방정식 <a href="#eq-char-poly" class="quarto-xref">식&nbsp;<span>C.1</span></a> 이 0 인 방정식을 을 푸는 것과 동일하다.</p></li>
+<li>행렬 <span class="math inline">\(\pmb A - \lambda \pmb I\)</span> 의 rank가 <span class="math inline">\(n\)</span> 보다 작다.</li>
 </ul>
+<p>위에서 행렬식이 0 인 방정식 <a href="#eq-char-poly2" class="quarto-xref">식&nbsp;<span>C.3</span></a> 을 푸는 것은 특성방정식 <a href="#eq-char-poly" class="quarto-xref">식&nbsp;<span>C.1</span></a> 이 0 인 방정식을 을 푸는 것과 동일하다.</p>
 <div id="exr-Example-20-0" class="theorem exercise">
 <p><span class="theorem-title"><strong>예제 C.1</strong></span> 다음과 같은 <span class="math inline">\(2 \times 2\)</span> 행렬의 고유값과 고유행렬을 구해보자.</p>
 <p><span class="math display">\[
@@ -443,12 +443,21 @@ p_{\pmb{A}}(\lambda) &amp; =\operatorname{det}(\pmb{A}-\lambda \pmb{I}) \\
 \end{aligned}
 \]</span></p>
 <p>위의 방정식에서 <span class="math inline">\(\lambda\)</span>에 대한 다항식 <span class="math inline">\(p_{\pmb{A}}(\lambda)=0\)</span> 의 근 을 구하면 고유값을 구할 수 있다. 따라서 행렬 <span class="math inline">\(\pmb A\)</span> 의 고유값은 <span class="math inline">\(\lambda_1=2\)</span> 와 <span class="math inline">\(\lambda_2=5\)</span> 이다.</p>
-<p>이제 각각의 고유값에 대한 고유행렬을 다음과 같이 고유벡터의 정의에 의하여 구해보자.</p>
+<p>이제 각각의 고유값에 대한 고유행렬을 다음과 같이 고유벡터의 정의 <a href="#eq-char-eigen-def" class="quarto-xref">식&nbsp;<span>C.2</span></a> 에 의하여 구해보자.</p>
 <p><span class="math display">\[
-\left[\begin{array}{cc}
+\begin{bmatrix}
+4 &amp; 2 \\
+1 &amp; 3
+\end{bmatrix}
+\pmb{x} =
+\lambda \pmb{x}
+\quad \rightarrow
+\quad
+\begin{bmatrix}
 4-\lambda &amp; 2 \\
 1 &amp; 3-\lambda
-\end{array}\right] \pmb{x}=\pmb{0}
+\end{bmatrix}
+\pmb{x}=\pmb{0}
 \]</span> 먼저, 고유값 <span class="math inline">\(\lambda_2 = 5\)</span> 고유행렬은 다음과 같이 정의된다.</p>
 <p><span class="math display">\[
 \begin{bmatrix}
@@ -478,7 +487,7 @@ x_1 - 2x_2 = 0
 2 \\
 1
 \end{bmatrix}
-\]</span> 유의할 점은 고유벡터는 방정식을 만족하는 무수히 많은 벡터 중에 하나의 예일 뿐이다. 예를 들어 길이가 1 인 단위벡터를 구하고 싶다면 위의 벡터를 길이가 1인 단위벡터로 바꾸면 된다.</p>
+\]</span> 유의할 점은 고유벡터는 방정식을 만족하는 무수히 많은 벡터 중에 하나의 예일 뿐이다. 예를 들어 길이가 1 인 단위벡터(unit vector)인 고유벡터를 구하고 싶다면 위의 벡터를 길이가 1인 단위벡터로 바꾸면 된다.</p>
 <p><span class="math display">\[
 \pmb x_2 =
 \begin{bmatrix}
@@ -486,7 +495,7 @@ x_1 - 2x_2 = 0
 1/\sqrt{5}
 \end{bmatrix}
 \]</span></p>
-<p>또한 <span class="math inline">\(\lambda_1=2\)</span> 에 대한 고유행렬은 다음과 같이 구할 수 있다.</p>
+<p>또한 <span class="math inline">\(\lambda_1=2\)</span> 에 대한 고유벡터는 다음과 같이 단위벡터로 구할 수 있다.</p>
 <p><span class="math display">\[
 \left[\begin{array}{cc}
 4-2 &amp; 2 \\
@@ -526,6 +535,30 @@ x_1 + x_2 = 0
 -1 &amp; 0 &amp; \lambda-3
 \end{array}\right|=(\lambda-1)(\lambda-2)^2
 \]</span> 참고로 특성방정식을 푸는 경우, 방정식 <span class="math inline">\(\operatorname{det}(\pmb A - \lambda \pmb I)=0\)</span> 이나 <span class="math inline">\(\operatorname{det}(\lambda \pmb I -\pmb A)= 0\)</span> 중 어느 것을 사용해도 상관없다.</p>
+<p>위의 식에서 3차원 행렬의 행렬식은 다음과 같이 구할 수 있다. 첫 번째 행을 기준으로 전개하면</p>
+<p><span class="math display">\[
+\begin{aligned}
+\operatorname{det}(\lambda \pmb I -\pmb A) &amp; =  
+-\lambda \cdot
+\begin{vmatrix}
+2 - \lambda &amp; 1 \\
+0 &amp; 3 - \lambda
+\end{vmatrix}
++ 0 \cdot
+\begin{vmatrix}
+1 &amp; 1 \\
+1 &amp; 3 - \lambda
+\end{vmatrix}
++ (-2) \cdot
+\begin{vmatrix}
+1 &amp; 2 - \lambda \\
+1 &amp; 0
+\end{vmatrix}  \\
+&amp; = -\lambda[(2 - \lambda)(3 - \lambda) - 0]
+-2[(1)(0) - (1)(2 - \lambda)] \\
+&amp; = (\lambda-1)(\lambda-2)^2
+\end{aligned}
+\]</span></p>
 <p>첫번째 고유값은 <span class="math inline">\(\lambda_1=1\)</span> 이다. 고유벡터를 구하기 위해서는 다음과 같은 방정식을 풀면 된다.</p>
 <p><span class="math display">\[ (\lambda_1 \pmb I -\pmb A )\pmb x = \pmb 0  \]</span></p>
 <p>위의 방정식을 풀면</p>
@@ -552,7 +585,7 @@ x_3 \\
 <p>아래와 같이 간단히 할 수 있으며</p>
 <p><span class="math display">\[ x_1 = -2x_3, \quad x_2 = x_3 \]</span> 다음과 같은 고유값과 고유벡터를 얻을 수 있다.</p>
 <p><span class="math display">\[ \lambda_1=1 \quad \rightarrow \quad  {\pmb x}_1=\begin{bmatrix}-2 \\ 1 \\ 1\end{bmatrix} \]</span></p>
-<p><strong>첫번째 고유값은 <span class="math inline">\(\lambda_1=1\)</span> 이며 대수적 중복도는 1이고 기하적 중복도도 1이다.</strong> 이 경우 고유공간 <span class="math inline">\(E_1\)</span> 은 한 개의 고유벡터 <span class="math inline">\(\pmb x_1\)</span> 이 생성하는 부분공간을 의미한다.</p>
+<p><strong>첫번째 고유값은 <span class="math inline">\(\lambda_1=1\)</span> 이며 대수적 중복도는 1이고 기하적 중복도도 1이다.</strong> 기하적 중복도도 1이란 의미는 고유벡터가 선형독립인 1개의 벡터로 이루어져 있다는 의미이다. 이 경우 고유공간 <span class="math inline">\(E_1\)</span> 은 한 개의 고유벡터 <span class="math inline">\(\pmb x_1\)</span> 이 생성하는 부분공간을 의미한다.</p>
 <p><span class="math display">\[
 E_1 = \text{span}\left\{\begin{bmatrix}-2 \\ 1 \\ 1\end{bmatrix} \right\}
 \]</span></p>
@@ -577,7 +610,7 @@ x_3 \\
 \end{bmatrix}
 \]</span></p>
 <p>이 방정식은 아래와 같이 간단히 할 수 있으며</p>
-<p><span class="math display">\[ x_1 = -x_3 \]</span> 다음과 같은 두 개의 고유벡터를 얻을 수 있다.</p>
+<p><span class="math display">\[ x_1 = -x_3 \]</span> 주어진 방정식이 하나이기 떄문에 다음과 같이 서로 선형독립인 두 개의 고유벡터를 얻을 수 있다.</p>
 <p><span class="math display">\[
 \lambda_2=2\quad \rightarrow \quad  {\pmb x}_2=\begin{bmatrix}-1 \\ 0 \\ 1\end{bmatrix}
 \quad {\pmb x}_3=\begin{bmatrix}0 \\ 1 \\ 0\end{bmatrix}
@@ -668,7 +701,7 @@ E_2 = \text{span}\left\{\begin{bmatrix}-2\\ 5 \\ 1\end{bmatrix}\right\}
 </section>
 <section id="대칭행렬의-대각화" class="level2" data-number="C.3">
 <h2 data-number="C.3" class="anchored" data-anchor-id="대칭행렬의-대각화"><span class="header-section-number">C.3</span> 대칭행렬의 대각화</h2>
-<div id="exr-Example-20-2" class="theorem exercise">
+<div id="exr-Example-20-3" class="theorem exercise">
 <p><span class="theorem-title"><strong>예제 C.4</strong></span> 이제 대칭행렬에 대한 고유값과 고유행렬을 구해보자. 대칭행렬은 고유값이 실수이고 서로 다르며, 서로 직교하는 고유벡터를 가진다.</p>
 <p><span class="math display">\[
 \pmb{A}=
@@ -714,11 +747,11 @@ E_2 = \text{span}\left\{\begin{bmatrix}-2\\ 5 \\ 1\end{bmatrix}\right\}
 1 &amp; 1 \\
 -1 &amp; 1
 \end{bmatrix}
-\quad \rightarrow \quad \pmb{P}^t \pmb{P} = \pmb{I}
+\quad \rightarrow \quad \pmb{P} \pmb{P}^t = \pmb{P}^t \pmb{P} = \pmb{I}
 \]</span></p>
 <p>이제 <span class="math inline">\(\pmb{P}\)</span> 의 역행렬은 <span class="math inline">\(\pmb{P}^t\)</span> 이므로 다음과 같이 대칭행렬 <span class="math inline">\(\pmb A\)</span>의 대각화를 유도할 수 있다.</p>
 <p><span class="math display">\[
-\pmb{P}^{-1} \pmb{A} \pmb{P}=
+\pmb{P}^{-t} \pmb{A} \pmb{P}=
 \begin{bmatrix}
 \frac{7}{2} &amp; 0 \\
 0 &amp; \frac{3}{2}
@@ -746,7 +779,7 @@ E_2 = \text{span}\left\{\begin{bmatrix}-2\\ 5 \\ 1\end{bmatrix}\right\}
 \begin{bmatrix}
 1 &amp; -1 \\
 1 &amp; 1
-\end{bmatrix}}_{\pmb P^{-1}}
+\end{bmatrix}}_{\pmb P^{t}}
 \]</span> 또한 위의 식은 다음과 같이 나타낼 수 있다.</p>
 <p><span class="math display">\[
 \begin{aligned}

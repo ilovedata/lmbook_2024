@@ -54,7 +54,27 @@ div.sourceCode
 @media screen {
 pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
 }
-</style>
+/* CSS for citations */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+  margin-bottom: 0em;
+}
+.hanging-indent div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}</style>
 
 
 <script src="../site_libs/quarto-nav/quarto-nav.js"></script>
@@ -376,9 +396,9 @@ window.Quarto = {
   <ul class="collapse">
   <li><a href="#예제-3.3-자료" id="toc-예제-3.3-자료" class="nav-link active" data-scroll-target="#예제-3.3-자료"><span class="header-section-number">J.1</span> 예제 3.3 자료</a></li>
   <li><a href="#중회귀-모형의-적합" id="toc-중회귀-모형의-적합" class="nav-link" data-scroll-target="#중회귀-모형의-적합"><span class="header-section-number">J.2</span> 중회귀 모형의 적합</a></li>
-  <li><a href="#잔차-분석" id="toc-잔차-분석" class="nav-link" data-scroll-target="#잔차-분석"><span class="header-section-number">J.3</span> 잔차 분석</a></li>
+  <li><a href="#제곱합의-종류" id="toc-제곱합의-종류" class="nav-link" data-scroll-target="#제곱합의-종류"><span class="header-section-number">J.3</span> 제곱합의 종류</a></li>
   <li><a href="#부분-f-검정" id="toc-부분-f-검정" class="nav-link" data-scroll-target="#부분-f-검정"><span class="header-section-number">J.4</span> 부분 F 검정</a></li>
-  <li><a href="#선형-가설에-대한-검정" id="toc-선형-가설에-대한-검정" class="nav-link" data-scroll-target="#선형-가설에-대한-검정"><span class="header-section-number">J.5</span> 선형 가설에 대한 검정</a></li>
+  <li><a href="#모형의-진단" id="toc-모형의-진단" class="nav-link" data-scroll-target="#모형의-진단"><span class="header-section-number">J.5</span> 모형의 진단</a></li>
   </ul>
 </nav>
     </div>
@@ -404,11 +424,28 @@ window.Quarto = {
 </header>
 
 
+<p>아래 자료는 <span class="citation" data-cites="kang2016you">강근석 와/과 유형조 (<a href="../references.html#ref-kang2016you" role="doc-biblioref">2016</a>)</span> 의 예제 3.3에 나온 중고차 가격 자료를 이용한 R 실습입니다.</p>
+<p><code>regbook</code> 패키지를 <a href="https://github.com/regbook/regbook">참고서적 사이트</a>에 따라 설치할 수 있습니다.</p>
 <section id="예제-3.3-자료" class="level2" data-number="J.1">
 <h2 data-number="J.1" class="anchored" data-anchor-id="예제-3.3-자료"><span class="header-section-number">J.1</span> 예제 3.3 자료</h2>
-<p>예제 3.3에 나온 중고차 가격자료를 이용한 R 실습입니다.</p>
+<p>중고차 가격에는 어떠한 변수들이 영향을 주는 걸까? 국내의 중고차 사이트에는 기본적으로 연식, 차종, 색, 도어, 엔진, 배기량, 연료, 주행거리 등의 정보가 올라와 있다. 자료 <code>usedcars</code>는 국내 유명 중고차 사이트에서 2007년에 수집한 것으로 가솔린 엔진의 중형차를 대상으로 각 중고차에 대한 가격, 연식, 주행거리, 배기량, 변속기종류를 조사하였다. 예제 3.3에 나온 중고차 가격자료를 이용한 R 실습입니다.</p>
+<p>이 자료는 다음과 같은 열로 구성되어 있다.</p>
+<ul>
+<li><code>price</code> : 가격(만원)</li>
+<li><code>year</code> : 연식(개월)은 현재까지 몇 개월이 지났는지를 계산하였다.</li>
+<li><code>mileage</code> : 주행거리(km)</li>
+<li><code>cc</code>: 배기량(cc)</li>
+<li><code>automatic</code> : 변속기종류. 수동(0), 자동(1).</li>
+</ul>
+<p>먼저 자료와 변수의 개수를 알아보고 자료가 어떻게 구성되어 있는지 살펴봅시다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(usedcars)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">dim</span>(usedcars)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 30  5</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(usedcars)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  price year mileage   cc automatic
 1   790   78  133462 1998         1
@@ -421,12 +458,13 @@ window.Quarto = {
 </div>
 <section id="산점도-행렬" class="level3" data-number="J.1.1">
 <h3 data-number="J.1.1" class="anchored" data-anchor-id="산점도-행렬"><span class="header-section-number">J.1.1</span> 산점도 행렬</h3>
+<p>각 변수간의 산점도를 모두 그려보면 변수들간의 관계를 쉽게 파악할 수 있다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(usedcars)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">pairs</span>(usedcars)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="practice-01_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="practice-01_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -435,12 +473,16 @@ window.Quarto = {
 </section>
 <section id="중회귀-모형의-적합" class="level2" data-number="J.2">
 <h2 data-number="J.2" class="anchored" data-anchor-id="중회귀-모형의-적합"><span class="header-section-number">J.2</span> 중회귀 모형의 적합</h2>
+<p>중고차의 가격을 예측하기 위한 중회귀 모형을 적합해보자. 반응변수는 <code>price</code>(<span class="math inline">\(y\)</span>)이고 설명변수는 <code>year</code>(<span class="math inline">\(x_1\)</span>), <code>mileage</code>(<span class="math inline">\(x_2\)</span>), <code>cc</code>(<span class="math inline">\(x_3\)</span>), <code>automatic</code>(<span class="math inline">\(x_4\)</span>)이다.</p>
+<p><span class="math display">\[ \text{price} = \beta_0 + \beta_1 \text{year} + \beta_2 \text{mileage} + \beta_3 \text{cc} + \beta_4 \text{automatic} + \epsilon \]</span></p>
+<p><span class="math display">\[ y_i  = \beta_0 + \beta_1 x_{1i} + \beta_2 x_{2i} + \beta_3 x_{3i} + \beta_4 x_{4i} + \epsilon_i \]</span></p>
+<p>중회귀 모형을 적합하느 함수 <code>lm</code> 의 결과는 <code>fit0</code>에 저장한다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>fit0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(price <span class="sc">~</span> year <span class="sc">+</span> mileage <span class="sc">+</span> cc <span class="sc">+</span> automatic, usedcars)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>fit0 <span class="ot">&lt;-</span> <span class="fu">lm</span>(price <span class="sc">~</span> year <span class="sc">+</span> mileage <span class="sc">+</span> cc <span class="sc">+</span> automatic, usedcars)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<p>계획행렬은 다음과 같이 구할 수 있다.</p>
+<p>계획행렬 <span class="math inline">\(\pmb X\)</span> 은 다음과 같이 구할 수 있다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(fit0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">model.matrix</span>(fit0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>   (Intercept) year mileage   cc automatic
 1            1   78  133462 1998         1
@@ -479,7 +521,7 @@ attr(,"assign")
 </div>
 <p><code>fit0</code> 에 저장된 결과를 다음과 같이 함수 <code>str</code>을 이용하여 볼 수 있다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(fit0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">str</span>(fit0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>List of 12
  $ coefficients : Named num [1:5] 525.28696 -5.79964 -0.00226 0.38879 165.31263
@@ -543,11 +585,64 @@ attr(,"assign")
  - attr(*, "class")= chr "lm"</code></pre>
 </div>
 </div>
+<p>예를 들어 다음과 같이 회귀계수의 값을 구할 수 있다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>fit0<span class="sc">$</span>coefficients</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  (Intercept)          year       mileage            cc     automatic 
+525.286960604  -5.799637101  -0.002262844   0.388787346 165.312632517 </code></pre>
+</div>
+</div>
+<p>함수 <code>lm</code> 의 결과인 <code>fit0</code> 은 <code>class</code> 함수를 사용하면 <code>lm</code> 객체(object) 라는 것을 알 수 있으며 <code>lm</code> 객체에 적용할 수 있는 함수를 찾는방법은 <code>methods</code> 함수를 사용하면 된다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">class</span>(fit0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "lm"</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">methods</span>(<span class="at">class=</span><span class="fu">class</span>(fit0))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> [1] add1                addterm             alias              
+ [4] anova               Anova               avPlot             
+ [7] avPlot3d            Boot                bootCase           
+[10] boxcox              boxCox              brief              
+[13] case.names          ceresPlot           coerce             
+[16] confidenceEllipse   confint             Confint            
+[19] cooks.distance      crPlot              crPlot3d           
+[22] deltaMethod         deviance            dfbeta             
+[25] dfbetaPlots         dfbetas             dfbetasPlots       
+[28] drop1               dropterm            dummy.coef         
+[31] durbinWatsonTest    effects             emm_basis          
+[34] extractAIC          family              formula            
+[37] fortify             hatvalues           hccm               
+[40] infIndexPlot        influence           influencePlot      
+[43] initialize          inverseResponsePlot kappa              
+[46] labels              leveneTest          leveragePlot       
+[49] linearHypothesis    lmbeta              logLik             
+[52] logtrans            mcPlot              mmp                
+[55] model.frame         model.matrix        ncvTest            
+[58] nextBoot            nobs                ols_regress        
+[61] ols_test_normality  outlierTest         plot               
+[64] powerTransform      predict             Predict            
+[67] press               print               proj               
+[70] qqnorm              qqPlot              qr                 
+[73] recover_data        residualPlot        residualPlots      
+[76] residuals           rpredict            rstandard          
+[79] rstudent            S                   show               
+[82] sigmaHat            simulate            slotsFromS3        
+[85] spreadLevelPlot     stdcoef             sumary             
+[88] summary             symbox              variable.names     
+[91] vcov                vif                
+see '?methods' for accessing help and source code</code></pre>
+</div>
+</div>
+<p><code>lm</code> 객체에 적용할 수 있는 함수는 <code>summary</code>, <code>anova</code>, <code>predict</code>, <code>plot</code> 등이 있다.</p>
 <section id="회귀계수의-추정과-결정계수" class="level3" data-number="J.2.1">
 <h3 data-number="J.2.1" class="anchored" data-anchor-id="회귀계수의-추정과-결정계수"><span class="header-section-number">J.2.1</span> 회귀계수의 추정과 결정계수</h3>
-<p>함수 <code>summary</code> 는 각 계수의 추정값과 가설 <span class="math inline">\(H_0: \beta_i=0\)</span>에 대한 t-검정 결과를 보여준다. 또한 결정계수 <span class="math inline">\(R^2\)</span>도 구해준다.</p>
+<p>함수 <code>summary</code> 는 각 회귀계수의 추정값과 가설 <span class="math inline">\(H_0: \beta_k=0\)</span>에 대한 t-검정 결과를 보여준다. 또한 결정계수 <span class="math inline">\(R^2\)</span>도 구해준다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -572,9 +667,22 @@ Multiple R-squared:  0.9045,    Adjusted R-squared:  0.8892
 F-statistic: 59.21 on 4 and 25 DF,  p-value: 2.184e-12</code></pre>
 </div>
 </div>
-<p>각 회귀 계수에 대한 신뢰구간은 함수 <code>confint</code>로 구할 수 있다.</p>
+<p>위의 결과로 다음과 같은 추정값과 통계량을 알 수 있다.</p>
+<ul>
+<li><code>Estimate</code> : 회귀계수의 추정값</li>
+<li><code>Std. Error</code> : 회귀계수의 표준오차</li>
+<li><code>t value</code> : t-검정 통계량</li>
+<li><code>Pr(&gt;|t|)</code> : p-value</li>
+<li><code>Multiple R-squared</code> : 결정계수 <span class="math inline">\(R^2\)</span></li>
+<li><code>Adjusted R-squared</code> : 수정된 결정계수 <span class="math inline">\(R_{adj}^2\)</span></li>
+<li><code>F-statistic</code> : F-검정 통계량</li>
+<li><code>p-value</code> : F-검정의 p-value</li>
+<li><code>Residual standard error</code> : 오차항의 표준편차에 대한 추정값 (<span class="math inline">\(\sqrt{MSE}= \hat \sigma\)</span>)</li>
+<li><code>degrees of freedom</code> : 잔차 제곱합의 자유도 (<span class="math inline">\(n-p\)</span>)</li>
+</ul>
+<p>각 회귀 계수에 대한 95% 신뢰구간은 함수 <code>confint</code>로 구할 수 있다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(fit0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">confint</span>(fit0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>                    2.5 %        97.5 %
 (Intercept) -2.981256e+02  1.348699e+03
@@ -584,31 +692,35 @@ cc          -2.763072e-02  8.052054e-01
 automatic    8.322275e+01  2.474025e+02</code></pre>
 </div>
 </div>
-</section>
-<section id="분산분석" class="level3" data-number="J.2.2">
-<h3 data-number="J.2.2" class="anchored" data-anchor-id="분산분석"><span class="header-section-number">J.2.2</span> 분산분석</h3>
+<p>예를 들어 설명변수 <code>cc</code> 에 대한 회귀계수의 추정값은 <code>0.3888</code> 이며 배기량이 <code>1cc</code> 증가할 때 가격은 약 0.4만원, 즉 4000원이 평균적으로 증가한다고 해석할 수 있다.</p>
+<p>설명변수 <code>cc</code> 에 대한 회귀계수가 0인지 검정하기 위해서는 t-검정 통계량을 구하고 p-value를 구하면 된다. t-검정 통계량은 다음과 같이 주어지며</p>
+<p><span class="math display">\[
+t_0 = \frac{\hat \beta_3}{SE(\hat \beta_3)} = \frac{0.3888}{0.2022} = 1.923
+\]</span></p>
+<p>p-값은 <code>0.0659852</code> 이다. 즉 귀무가설 <span class="math inline">\(H_0: \beta_k =0\)</span> 을 기각할 수 없다.</p>
+<p>참고로 p-value 를 이용하지 않고 t-검정 통계량을 이용하여 유의수준 <span class="math inline">\(\alpha=0.05\)</span>에서 검정할 수 있다. 즉, 자유도가 25인 것을 이용하면 기각역 <span class="math inline">\(t_{0.975, 25} = 2.059539\)</span> 이므로 <span class="math inline">\(|t_0| &lt; t_{0.975, 25}\)</span> 이므로 귀무가설을 기각할 수 없다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fit0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qt</span>(<span class="fl">0.975</span>, <span class="dv">25</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>Analysis of Variance Table
-
-Response: price
-          Df  Sum Sq Mean Sq  F value    Pr(&gt;F)    
-year       1 2056608 2056608 201.2036 1.841e-13 ***
-mileage    1  135864  135864  13.2919 0.0012228 ** 
-cc         1   52409   52409   5.1273 0.0324794 *  
-automatic  1  175828  175828  17.2018 0.0003389 ***
-Residuals 25  255538   10222                       
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
+<pre><code>[1] 2.059539</code></pre>
+</div>
+</div>
+<p>회귀계수에 대한 95% 신뢰구간은 <code>(-2.763072e-02,  8.052054e-01)</code> 으로 0을 포함하고 있다.</p>
+<p>이제 모든 설명변수에 대한 F-검정을 해보자. 즉, 모든 설명변수의 계수가 0인지 검정해보자. 즉 귀무가설은 다음과 같다.</p>
+<p><span class="math display">\[ H_0: \beta_1 = \beta_2 = \beta_3 = \beta_4 = 0 \]</span> 함수 <code>summary</code> 의 결과에서 <code>F-statistic</code>의 값을 보면 <span class="math inline">\(F_0=59.21\)</span> 이고 p-value는 <code>2.184e-12</code> 이다. 즉 귀무가설을 기각할 수 있다. 즉, 적어도 하나의 설명변수는 반응변수에 영향을 준다고 해석할 수 있다.</p>
+<p>참고로 p-value 를 사용하지 않고 F-검정 통계량을 이용하여 유의수준 <span class="math inline">\(\alpha=0.05\)</span>에서 검정할 수 있다. 즉, 자유도가 4, 25인 것을 이용하면 기각역 <span class="math inline">\(F_{0.95, 4, 25} = 2.75871\)</span> 이므로 <span class="math inline">\(F_0 &gt; F_{0.95, 4, 25}\)</span> 이므로 귀무가설을 기각할 수 있다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qf</span>(<span class="fl">0.95</span>, <span class="dv">4</span>, <span class="dv">25</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2.75871</code></pre>
 </div>
 </div>
 </section>
-<section id="예측값" class="level3" data-number="J.2.3">
-<h3 data-number="J.2.3" class="anchored" data-anchor-id="예측값"><span class="header-section-number">J.2.3</span> 예측값</h3>
-<p>반응변수에 대한 예측값 <span class="math inline">\(\hat {\pmb y} = \pmb X \hat {\pmb \beta}\)</span>는 함수 <code>predict</code>를 이용한다.</p>
+<section id="예측값" class="level3" data-number="J.2.2">
+<h3 data-number="J.2.2" class="anchored" data-anchor-id="예측값"><span class="header-section-number">J.2.2</span> 예측값</h3>
+<p>자료에 주어진 각 반응변수에 대한 예측값 <span class="math inline">\(\hat {\pmb y} = \pmb X \hat {\pmb \beta}\)</span>는 함수 <code>predict</code>를 이용한다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(fit0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(fit0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>        1         2         3         4         5         6         7         8 
  713.0214 1167.3146  321.4025 1194.0114  643.4485 1042.5270  865.9501  559.1876 
@@ -622,73 +734,55 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <p>새로운 자료에 대한 예측값 <span class="math inline">\(\widehat { E(y|x)}\)</span>은 다음과 같이 데이터프레임을 만들고 예측한다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>nw <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">year=</span><span class="dv">60</span>, <span class="at">mileage=</span><span class="dv">10000</span>, <span class="at">cc=</span><span class="dv">200</span>, <span class="at">automatic=</span><span class="dv">1</span>)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>nw</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>nw <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">year=</span><span class="dv">60</span>, <span class="at">mileage=</span><span class="dv">10000</span>, <span class="at">cc=</span><span class="dv">200</span>, <span class="at">automatic=</span><span class="dv">1</span>)</span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>nw</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>  year mileage  cc automatic
 1   60   10000 200         1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(fit0, <span class="at">newdata=</span>nw, <span class="at">interval=</span><span class="st">"confidence"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(fit0, <span class="at">newdata=</span>nw, <span class="at">interval=</span><span class="st">"confidence"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       fit       lwr      upr
 1 397.7504 -342.6272 1138.128</code></pre>
 </div>
 </div>
-<p>새로운 관측값에 대항 예측은 다음과 같이 한다.</p>
+<p>새로운 자료에 대한 예측값(<strong>반응변수의평균에 대한 예측값</strong>)은 다음과 같이 신뢰구간을 구할 수 있다. 주어진 새로운 설병변수 벡터를 <span class="math inline">\(\pmb x_0\)</span> 라고 하면 예측값은 다음과 같이 구할 수 있다.</p>
+<p><span class="math display">\[
+\widehat { E(y|x_0)} = \pmb x_0^T \hat {\pmb \beta}
+\]</span> 새로운 예측값에 대한 분산은 다음과 같이 구할 수 있다.</p>
+<p><span class="math display">\[
+\widehat { Var(E(y|x_0))} = \widehat {Var}(\pmb x_0^T \hat {\pmb \beta} ) = \hat \sigma^2 \pmb x_0^T (\pmb X^T \pmb X)^{-1} \pmb x_0
+\]</span> 따라서 95% 신뢰구간은 다음과 같이 구할 수 있다.</p>
+<p><span class="math display">\[
+\widehat { E(y|x_0)} \pm t_{0.975, n-p} \sqrt{\widehat {Var}(E(y|x_0))}
+\]</span></p>
+<p>새로운 관측값에 대한 예측은 다음과 같이 한다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(fit0, <span class="at">newdata=</span>nw, <span class="at">interval=</span><span class="st">"prediction"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">predict</span>(fit0, <span class="at">newdata=</span>nw, <span class="at">interval=</span><span class="st">"prediction"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       fit       lwr      upr
 1 397.7504 -371.3501 1166.851</code></pre>
 </div>
 </div>
+<p>새로운 관측값은 평균이 아닌 특정한 확률변수의 예측값이다. 즉, 예측값에 대한 불확실성에 대하여 오차항의 분산을 더해주어 95% 신뢰구간은 다음과 같이 구할 수 있다.</p>
+<p><span class="math display">\[
+\widehat { E(y|x_0)} \pm t_{0.975, n-p} \sqrt{\widehat {Var}(E(y|x_0)) + \hat \sigma^2}
+\]</span></p>
 </section>
 </section>
-<section id="잔차-분석" class="level2" data-number="J.3">
-<h2 data-number="J.3" class="anchored" data-anchor-id="잔차-분석"><span class="header-section-number">J.3</span> 잔차 분석</h2>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fit0)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="practice-01_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="practice-01_files/figure-html/unnamed-chunk-13-2.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="practice-01_files/figure-html/unnamed-chunk-13-3.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="practice-01_files/figure-html/unnamed-chunk-13-4.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-</div>
-<section id="제곱합의-종류" class="level3" data-number="J.3.1">
-<h3 data-number="J.3.1" class="anchored" data-anchor-id="제곱합의-종류"><span class="header-section-number">J.3.1</span> 제곱합의 종류</h3>
-<section id="순차제곱합" class="level4" data-number="J.3.1.1">
-<h4 data-number="J.3.1.1" class="anchored" data-anchor-id="순차제곱합"><span class="header-section-number">J.3.1.1</span> 순차제곱합</h4>
+<section id="제곱합의-종류" class="level2" data-number="J.3">
+<h2 data-number="J.3" class="anchored" data-anchor-id="제곱합의-종류"><span class="header-section-number">J.3</span> 제곱합의 종류</h2>
+<p>각 설명변수가 반응변수에 미치는 영향을 알아보기 위해서 가각에 대한 제곱합을 구할 수 있다. 각 설명변수에 대한 제곱합은 순차제곱한(sequential sum of squares)과 편제곱합(partial sum of squares)로 구분할 수 있다.</p>
+<section id="순차제곱합" class="level3" data-number="J.3.1">
+<h3 data-number="J.3.1" class="anchored" data-anchor-id="순차제곱합"><span class="header-section-number">J.3.1</span> 순차제곱합</h3>
 <p>순차제곱합은 모형에 들어가는 변수의 순서에 따라서 제곱합이 틀려진다.</p>
 <p>다음의 예를 보면 두 모형이 같은 변수들로 적합되지만 순서가 달라지면 순차제곱합이 다르다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> price <span class="sc">~</span> year <span class="sc">+</span> mileage <span class="sc">+</span> cc <span class="sc">+</span> automatic</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> price <span class="sc">~</span> mileage <span class="sc">+</span> automatic <span class="sc">+</span> cc <span class="sc">+</span> year</span>
-<span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(model1, usedcars)</span>
-<span id="cb24-4"><a href="#cb24-4" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(model2, usedcars)</span>
-<span id="cb24-5"><a href="#cb24-5" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fit1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a>model1 <span class="ot">&lt;-</span> price <span class="sc">~</span> year <span class="sc">+</span> mileage <span class="sc">+</span> cc <span class="sc">+</span> automatic</span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>model2 <span class="ot">&lt;-</span> price <span class="sc">~</span> mileage <span class="sc">+</span> automatic <span class="sc">+</span> cc <span class="sc">+</span> year</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a>fit1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(model1, usedcars)</span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a>fit2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(model2, usedcars)</span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fit1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -702,7 +796,7 @@ Residuals 25  255538   10222
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fit2)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fit2)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -719,7 +813,7 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 <p>하지만 회귀계수의 추정량은 동일하다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -743,7 +837,7 @@ Residual standard error: 101.1 on 25 degrees of freedom
 Multiple R-squared:  0.9045,    Adjusted R-squared:  0.8892 
 F-statistic: 59.21 on 4 and 25 DF,  p-value: 2.184e-12</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit2)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fit2)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -768,12 +862,11 @@ Multiple R-squared:  0.9045,    Adjusted R-squared:  0.8892
 F-statistic: 59.21 on 4 and 25 DF,  p-value: 2.184e-12</code></pre>
 </div>
 </div>
-</section>
-<section id="편제곱합" class="level4" data-number="J.3.1.2">
-<h4 data-number="J.3.1.2" class="anchored" data-anchor-id="편제곱합"><span class="header-section-number">J.3.1.2</span> 편제곱합</h4>
-<p>편제곱합은 다른 변수들로 보정된 제곱합으로 순서에 관계없이 일정하다.패키지 <code>car</code> 에 있는 함수 <code>Anova</code> 를 사용하면 편제곱합을 구할 수 있다.</p>
+<section id="편제곱합" class="level4" data-number="J.3.1.1">
+<h4 data-number="J.3.1.1" class="anchored" data-anchor-id="편제곱합"><span class="header-section-number">J.3.1.1</span> 편제곱합</h4>
+<p>편제곱합은 주어진 설명변수가 설명하는 부분을 다른 변수들로 보정된 제곱합으로 순서에 관계없이 일정하다.패키지 <code>car</code> 에 있는 함수 <code>Anova</code> 를 사용하면 편제곱합을 구할 수 있다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(fit1, <span class="at">type=</span><span class="st">"III"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(fit1, <span class="at">type=</span><span class="st">"III"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Anova Table (Type III tests)
 
@@ -788,7 +881,7 @@ Residuals   255538 25
 ---
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(fit2, <span class="at">type=</span><span class="st">"III"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="fu">Anova</span>(fit2, <span class="at">type=</span><span class="st">"III"</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Anova Table (Type III tests)
 
@@ -809,15 +902,15 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </section>
 <section id="부분-f-검정" class="level2" data-number="J.4">
 <h2 data-number="J.4" class="anchored" data-anchor-id="부분-f-검정"><span class="header-section-number">J.4</span> 부분 F 검정</h2>
-<p>배기량(cc)에 대항 계수가 0인지 검정해보자.</p>
-<p><span class="math display">\[ H_0: ~ \beta_k =0 \]</span></p>
-<p>하나의 계수에 대한 검정은 분산분석 표의 t-검정으로도 가능하며 결과는 동일하다.</p>
+<p>먼저, 하나의 독립변수 배기량(<code>cc</code>)에 대한 계수가 0인지 검정해보자.</p>
+<p><span class="math display">\[ H_0: ~ \beta_3 =0 \]</span></p>
+<p>배기량이 0일 때의 모형을 <code>reducemodel1</code>로 정의하고, 배기량이 0이 아닐 때의 모형을 <code>fullmodel</code>로 정의한다. 두 모형의 결과를 함수 <code>anova</code>를 이용하여 비교한다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>fullmodel <span class="ot">&lt;-</span> price <span class="sc">~</span> year <span class="sc">+</span> mileage <span class="sc">+</span> cc <span class="sc">+</span> automatic</span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>reducemodel1 <span class="ot">&lt;-</span> price <span class="sc">~</span> year <span class="sc">+</span> mileage <span class="sc">+</span> automatic</span>
-<span id="cb36-3"><a href="#cb36-3" aria-hidden="true" tabindex="-1"></a>fitfull <span class="ot">&lt;-</span> <span class="fu">lm</span>(fullmodel, <span class="at">data=</span>usedcars)</span>
-<span id="cb36-4"><a href="#cb36-4" aria-hidden="true" tabindex="-1"></a>fitreduce1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(reducemodel1, <span class="at">data=</span>usedcars)</span>
-<span id="cb36-5"><a href="#cb36-5" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fitreduce1, fitfull)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a>fullmodel <span class="ot">&lt;-</span> price <span class="sc">~</span> year <span class="sc">+</span> mileage <span class="sc">+</span> cc <span class="sc">+</span> automatic</span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>reducemodel1 <span class="ot">&lt;-</span> price <span class="sc">~</span> year <span class="sc">+</span> mileage <span class="sc">+</span> automatic</span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a>fitfull <span class="ot">&lt;-</span> <span class="fu">lm</span>(fullmodel, <span class="at">data=</span>usedcars)</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a>fitreduce1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(reducemodel1, <span class="at">data=</span>usedcars)</span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fitreduce1, fitfull)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -830,12 +923,48 @@ Model 2: price ~ year + mileage + cc + automatic
 Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
-<p>이제 두 개 이상 의 변수에 대하여 부분 F 검정을 해보자. 설명변수 <code>cc</code> 와 <code>automatic</code>에 대한 계수가 0인지 검정해보자.</p>
-<p><span class="math display">\[ H_0: ~ \beta_k = \beta_l = 0 \]</span></p>
+<p>두 모형의 잔차제곱합은 함수 <code>deviance</code> 를 이용할 수 있으며 구하면 다음과 같다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>reducemodel2 <span class="ot">&lt;-</span> price <span class="sc">~</span> year <span class="sc">+</span> mileage</span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>fitreduce2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(reducemodel2, <span class="at">data=</span>usedcars)</span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fitreduce2, fitfull)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="fu">deviance</span>(fitfull)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 255538.1</code></pre>
+</div>
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="fu">deviance</span>(fitreduce1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 293331.9</code></pre>
+</div>
+</div>
+<p>따라서 부분 F-검정 통계량은 다음과 같이 구할 수 있다.</p>
+<p><span class="math display">\[
+F_0 = \frac{(SSE(R) - SSE(F)) / (df_R - df_F)}{SSE(F) / (df_F)} = \frac{(293331.9-255538.1)/(26-25)}{255538.1/(25)} = 3.6975
+\]</span> <span class="math inline">\(F_0\)</span>의 p-value는 <code>0.06596</code> 이다. 즉 유의수준 <span class="math inline">\(\alpha=0.05\)</span>에서 귀무가설을 기각할 수 없다. 즉 배기량이 0이라는 가설을 기각할 수 없다. 만약 기각역을 사용한다면 <span class="math inline">\(F_{0.95, 1, 25} = 4.241699\)</span> 이므로 <span class="math inline">\(F_0 &lt; F_{0.95, 1, 25}\)</span> 이므로 귀무가설을 기각할 수 없다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="fu">qf</span>(<span class="fl">0.95</span>, <span class="dv">1</span>, <span class="dv">25</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 4.241699</code></pre>
+</div>
+</div>
+<p>하나의 계수에 대한 부분 F-검정은 앞에서 설명한 t-검정으로도 가능하며 부분 F-검정의 결과와 동일하다.</p>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+노트
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>참고로 모형의 잔차제곱합은 <code>summary</code> 함수에서 나오는 <code>Residual standard error</code>의 제곱에 자유도를 곱한값과 같다.</p>
+<p><span class="math display">\[ SSE = \hat \sigma^2 (n-p) = MSE (n-p) \]</span></p>
+</div>
+</div>
+<p>이제 두 개 이상 의 변수에 대하여 부분 F-검정을 해보자. 설명변수 <code>cc</code> 와 <code>automatic</code>에 대한 계수가 0인지 검정해보자.</p>
+<p><span class="math display">\[ H_0: ~ \beta_3 = \beta_4 = 0 \]</span></p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a>reducemodel2 <span class="ot">&lt;-</span> price <span class="sc">~</span> year <span class="sc">+</span> mileage</span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>fitreduce2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(reducemodel2, <span class="at">data=</span>usedcars)</span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(fitreduce2, fitfull)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>Analysis of Variance Table
 
@@ -849,53 +978,109 @@ Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1</code></pre>
 </div>
 </div>
 </section>
-<section id="선형-가설에-대한-검정" class="level2" data-number="J.5">
-<h2 data-number="J.5" class="anchored" data-anchor-id="선형-가설에-대한-검정"><span class="header-section-number">J.5</span> 선형 가설에 대한 검정</h2>
-<p>다음과 같은 선형 가설을 생각자.</p>
-<p><span class="math display">\[ H_0: \pmb L \pmb \beta= \pmb 0\]</span></p>
-<p>교과서 예제 4.4 에서 다음과 같은 가설을 고려한다.</p>
-<p><span class="math display">\[ H_0: \beta_2=0, \beta_3= 2.5 \beta_4 \]</span></p>
+<section id="모형의-진단" class="level2" data-number="J.5">
+<h2 data-number="J.5" class="anchored" data-anchor-id="모형의-진단"><span class="header-section-number">J.5</span> 모형의 진단</h2>
+<p>이제 잔차를 이용하여 등분산성에 대한 진단을 실시해 보자. 아래 그림은 x축에 적합값 <span class="math inline">\(\hat y\)</span>를 두고 y축에 잔차를 두고 그린 그림이다. 즉, 잔차는 적합값에 대한 함수로 그린 그림이다.</p>
+<p>잔차가 0을 기준으로 하여 고르게 분포되어 있는지 확인한다. 즉, 잔차가 적합값에 대하여 독립적이고 등분산성을 만족하는지 확인한다. 아래 그림에서는 0을 기준으로 특별한 패턴이 보이지 않으므로 등분산성을 만족한다고 볼 수 있다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a>modreduce <span class="ot">&lt;-</span> <span class="fu">lm</span>(suneung <span class="sc">~</span> kor <span class="sc">+</span> <span class="fu">I</span>(<span class="fl">2.5</span><span class="sc">*</span>math <span class="sc">+</span> sci), <span class="at">data=</span>suneung)</span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>modfull <span class="ot">&lt;-</span> <span class="fu">lm</span>(suneung <span class="sc">~</span> kor <span class="sc">+</span> eng <span class="sc">+</span> math <span class="sc">+</span> sci, <span class="at">data=</span>suneung)</span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="fu">anova</span>(modreduce, modfull)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Analysis of Variance Table
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(fitfull, <span class="at">which=</span><span class="dv">1</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice-01_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<!---
+
+## 선형 가설에 대한 검정 
+
+다음과 같은 선형 가설을  생각해 보자.
+
+$$ H_0: \pmb L \pmb \beta= \pmb 0$$
+
+참고도서 예제 4.4 에서 다음과 같은 가설을 고려한다.
+
+$$ H_0: \beta_2=0, \beta_3= 2.5 \beta_4 $$
+
+
+
+
+::: {.cell}
+
+```{.r .cell-code}
+modreduce <- lm(suneung ~ kor + I(2.5*math + sci), data=suneung)
+modfull <- lm(suneung ~ kor + eng + math + sci, data=suneung)
+anova(modreduce, modfull)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+Analysis of Variance Table
 
 Model 1: suneung ~ kor + I(2.5 * math + sci)
 Model 2: suneung ~ kor + eng + math + sci
-  Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
+  Res.Df    RSS Df Sum of Sq      F Pr(>F)
 1     22 3136.4                           
-2     20 3023.5  2    112.95 0.3736  0.693</code></pre>
-</div>
-</div>
-<p>위의 검정은 다음과 과 같이 선형행렬 <span class="math inline">\(L\)</span>을 정의하고 함수 <code>car::linearHypothesis</code>를 이용한 결과와 같다.</p>
-<p><span class="math display">\[
-H_0:
+2     20 3023.5  2    112.95 0.3736  0.693
+```
+
+
+:::
+:::
+
+
+
+
+위의 검정은 다음과 과 같이 선형행렬 $L$을 정의하고  함수 `car::linearHypothesis`를 이용한 결과와  같다.
+
+$$
+H_0: 
 \begin{bmatrix}
-0 &amp; 0  &amp; 1 &amp; 0 &amp; 0  \\
-0 &amp; 0  &amp; 0 &amp; 1 &amp;-2.5
+0 & 0  & 1 & 0 & 0  \\
+0 & 0  & 0 & 1 &-2.5 
 \end{bmatrix}
 \begin{bmatrix}
 \beta_0 \\
 \beta_1 \\
 \beta_2 \\
 \beta_3 \\
-\beta_4
+\beta_4 
 \end{bmatrix}
 =\pmb 0
-\]</span></p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb42"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb42-1"><a href="#cb42-1" aria-hidden="true" tabindex="-1"></a>L <span class="ot">&lt;-</span> <span class="fu">matrix</span>(<span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">1</span>,<span class="sc">-</span><span class="fl">2.5</span>),<span class="dv">2</span>,<span class="dv">5</span>, <span class="at">byrow=</span><span class="cn">TRUE</span>)</span>
-<span id="cb42-2"><a href="#cb42-2" aria-hidden="true" tabindex="-1"></a>L</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>     [,1] [,2] [,3] [,4] [,5]
+$$
+
+
+
+
+::: {.cell}
+
+```{.r .cell-code}
+L <- matrix(c(0,0,1,0,0,0,0,0,1,-2.5),2,5, byrow=TRUE)
+L
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+     [,1] [,2] [,3] [,4] [,5]
 [1,]    0    0    1    0  0.0
-[2,]    0    0    0    1 -2.5</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb44"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="fu">linearHypothesis</span>(modfull, <span class="at">hypothesis.matrix=</span>L)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>
+[2,]    0    0    0    1 -2.5
+```
+
+
+:::
+
+```{.r .cell-code}
+linearHypothesis(modfull, hypothesis.matrix=L)
+```
+
+::: {.cell-output .cell-output-stdout}
+
+```
+
 Linear hypothesis test:
 eng = 0
 math - 2.5 sci = 0
@@ -903,13 +1088,26 @@ math - 2.5 sci = 0
 Model 1: restricted model
 Model 2: suneung ~ kor + eng + math + sci
 
-  Res.Df    RSS Df Sum of Sq      F Pr(&gt;F)
+  Res.Df    RSS Df Sum of Sq      F Pr(>F)
 1     22 3136.4                           
-2     20 3023.5  2    112.95 0.3736  0.693</code></pre>
-</div>
-</div>
+2     20 3023.5  2    112.95 0.3736  0.693
+```
 
 
+:::
+:::
+
+
+
+
+--->
+
+
+<div id="refs" class="references csl-bib-body hanging-indent" data-entry-spacing="0" role="list" style="display: none">
+<div id="ref-kang2016you" class="csl-entry" role="listitem">
+강근석, 와/과 유형조. 2016. <em><span>R</span>을 활용한 선형회귀분석</em>. 1st ed. 교우사. <a href="https://github.com/regbook/regbook">https://github.com/regbook/regbook</a>.
+</div>
+</div>
 </section>
 
 </main> <!-- /main -->

@@ -397,7 +397,7 @@ Q(\pmb  x) = \pmb  x^t \pmb  A \pmb  x = \pmb  y^t \pmb  B^t \pmb  A \pmb  B \pm
 </section>
 <section id="대칭행렬의-대각화" class="level2" data-number="G.2">
 <h2 data-number="G.2" class="anchored" data-anchor-id="대칭행렬의-대각화"><span class="header-section-number">G.2</span> 대칭행렬의 대각화</h2>
-<p>앞 절의 예제 <a href="math_eigen_value.html#exr-Example-20-2" class="quarto-xref">예제&nbsp;<span>C.4</span></a> 에서 보았듯이 <span class="math inline">\(n\)</span>차원 대칭행렬 <span class="math inline">\(\pmb  A\)</span> 에 대하여 직교행렬 <span class="math inline">\(\pmb  P\)</span>가 존재하여 다음과 같은 분해가 가능하다.</p>
+<p>앞 절의 예제 <a href="math_eigen_value.html#exr-Example-20-3" class="quarto-xref">예제&nbsp;<span>C.4</span></a> 에서 보았듯이 <span class="math inline">\(n\)</span>차원 대칭행렬 <span class="math inline">\(\pmb  A\)</span> 에 대하여 직교행렬 <span class="math inline">\(\pmb  P\)</span>가 존재하여 다음과 같은 분해가 가능하다.</p>
 <p><span id="eq-symmdecomp1"><span class="math display">\[
 \pmb  P^t \pmb  A \pmb  P = \pmb  \Lambda = diag(\lambda_1, \lambda_2, \dots, \lambda_n)
 \tag{G.2}\]</span></span></p>
@@ -412,7 +412,7 @@ Q(\pmb  x) = \pmb  x^t \pmb  A \pmb  x = \pmb  y^t \pmb  B^t \pmb  A \pmb  B \pm
 <p><span id="eq-spectral"><span class="math display">\[
 \pmb  A  = \pmb  P \pmb  \Lambda \pmb  P^t  = \sum_{i=1}^n \lambda_i \pmb  p_i \pmb  {p}_i^t
 \tag{G.3}\]</span></span></p>
-<p>참고로 대각합과 행렬식에 대한 고유치위 관계를 나타내는 다음의 유용한 두 식을 반드시 기억하자.</p>
+<p>참고로 대각합과 행렬식에 대한 고유치의 관계를 나타내는 다음의 유용한 두 식을 반드시 기억하자.</p>
 <p><span class="math display">\[ tr(\pmb  A) = \sum_i \lambda_i ,\quad |\pmb  A| = \prod_i \lambda_i \]</span></p>
 <p>대칭행렬의 분해 <a href="#eq-symmdecomp1" class="quarto-xref">식&nbsp;<span>G.2</span></a> 를 이용하면 다음과 같은 이차형식의 분해를 얻을 수 있다.</p>
 <p><span id="eq-quaddecomp"><span class="math display">\[
@@ -465,15 +465,19 @@ Q(\pmb  x) = \pmb  x^t \pmb  A \pmb  x = \pmb  x^t \pmb  P \pmb  \Lambda \pmb  P
 V = \frac{Q}{\sigma^2} = \frac {\pmb x^t \pmb A \pmb x}{\sigma^2} ~~ \equiv_d ~~ \sum_{i=1}^n \lambda_i \frac{u^2_i}{\sigma^2}
 \tag{G.5}\]</span></span></p>
 <p>위의 식에서 <span class="math inline">\(x \equiv_d y\)</span> 는 확률변수 <span class="math inline">\(x\)</span>와 <span class="math inline">\(y\)</span>가 동일한 분포를 가진다는 것을 의미한다.</p>
-<p><a href="#eq-quaddist1" class="quarto-xref">식&nbsp;<span>G.5</span></a> 에서 행렬 <span class="math inline">\(\pmb A\)</span>의 스펙트럴 분해는 <span class="math inline">\(\pmb A = \pmb P \pmb \Lambda \pmb P^t\)</span>이며 <span class="math inline">\(\lambda_i\)</span>는 행렬 <span class="math inline">\(\pmb A\)</span>의 고유치, 즉 행렬 <span class="math inline">\(\pmb \Lambda\)</span>의 대각원소이다. 또한 확률변수 <span class="math inline">\(u_i\)</span>들은 서로 독립이며 정규분포 <span class="math inline">\(N(\eta_i, \sigma^2)\)</span>를 따른다. 여기서 <span class="math inline">\(\eta_1, \eta_2,\dots, \eta_n\)</span>는 다음과 같이 정의된다.</p>
+<p><a href="#eq-quaddist1" class="quarto-xref">식&nbsp;<span>G.5</span></a> 에서 행렬 <span class="math inline">\(\pmb A\)</span>의 스펙트럴 분해는 <span class="math inline">\(\pmb A = \pmb P \pmb \Lambda \pmb P^t\)</span>이며 <span class="math inline">\(\lambda_i\)</span>는 행렬 <span class="math inline">\(\pmb A\)</span>의 고유치, 즉 행렬 <span class="math inline">\(\pmb \Lambda\)</span>의 대각원소이다.</p>
+<p><span class="math display">\[ \pmb x^t \pmb A \pmb x = \pmb x^t \pmb P \pmb \Lambda \pmb P^t \pmb x = \pmb u^t \pmb \Lambda \pmb u = \sum_{i=1}^n \lambda_i u_i^2 \]</span></p>
+<p>또한 확률변수 <span class="math inline">\(u_i\)</span>들은 서로 독립이며 정규분포 <span class="math inline">\(N(\eta_i, \sigma^2)\)</span>를 따른다.</p>
+<p><span class="math display">\[ Cov (\pmb u) = Cov(\pmb P^t \pmb x) = \pmb P^t Cov(\pmb x) \pmb P = \pmb P^t (\sigma^2 \pmb I) \pmb P = \sigma^2 \pmb I \]</span> 여기서 <span class="math inline">\(\eta_1, \eta_2,\dots, \eta_n\)</span>는 각각 <span class="math inline">\(u_i\)</span> 들의 평균으로 다음과 같이 정의된다.</p>
 <p><span class="math display">\[
-\pmb \eta =
+E(\pmb u)  = E(\pmb P^t \pmb x) = \pmb P^t \pmb \mu =
 \begin{bmatrix}
 \eta_1 \\
 \eta_2 \\
 \vdots \\
 \eta_n
-\end{bmatrix} = \pmb P^t \pmb \mu
+\end{bmatrix} =
+\pmb \eta
 \]</span></p>
 <p>즉, <a href="#eq-quaddist1" class="quarto-xref">식&nbsp;<span>G.5</span></a> 에서 <span class="math inline">\(u_1^2/\sigma^2, u_2^2/\sigma^2, \dots, u_n^2/\sigma^2\)</span>는 서로 독립이며 각각 자유도가 1 이고 비중심 모수가 <span class="math inline">\(\eta_1^2/\sigma^2, \eta_2^2/\sigma^2, \dots,  \eta_n^2/\sigma^2\)</span>인 비중심 카이제곱-분포를 따른다.</p>
 <p><span class="math inline">\(\blacksquare\)</span></p>
@@ -517,6 +521,9 @@ Q=\pmb {x}^t \pmb {A} \pmb {x}=Q_1+Q_2=\pmb {x}^t \pmb {A}_1 \pmb {x}+\pmb {x}^t
 <section id="코크란의-정리" class="level2" data-number="G.5">
 <h2 data-number="G.5" class="anchored" data-anchor-id="코크란의-정리"><span class="header-section-number">G.5</span> 코크란의 정리</h2>
 <p>선형모형에서 자주 등장하는 제곱합들의 분해, 즉 이차형식의 분해를 생각할 때 각 제곱합들의 분포를 아는 것이 매우 중요하다. 다음에 제시된 코크란의 정리(Cochran’s Theorem)는 총 제곱합을 분해했을 때 각 제곱합의 분포가 카이제곱 분포를 따를 조건을 말해준다.</p>
+<p><span class="math display">\[
+\pmb {x}^t \pmb {x} =\sum_{j=1}^k \pmb {x}^t \pmb {A}_j \pmb {x}
+\]</span></p>
 <div id="thm-cochran" class="theorem">
 <p><span class="theorem-title"><strong>정리 G.4 (COCHRAN’S THEOREM)</strong></span> <span class="math inline">\(n\)</span>-차원의 확률벡터 <span class="math inline">\(\pmb {x}\)</span> 가 <span class="math inline">\(N\left(\pmb {\mu}, \sigma^2 \pmb {I}\right)\)</span> 를 따른다고 하자. <span class="math inline">\(k\)</span> 개의 이차형식 <span class="math inline">\(Q_j=\pmb {x}^t \pmb {A}_j \pmb {x}, j=1,2, \ldots, k\)</span> 를 생각하고 다음과 같은 관계를 가진다고 하자.</p>
 <p><span class="math display">\[

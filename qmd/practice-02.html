@@ -411,6 +411,7 @@ window.Quarto = {
 <li><code>y</code> :생존벌레의 수</li>
 <li><code>time</code> :시간(분)</li>
 </ul>
+<p><span class="math display">\[ y = \beta_0 + \beta_1 time + e \]</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(y<span class="sc">~</span>time, regbook<span class="sc">::</span>bug)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
@@ -435,6 +436,9 @@ window.Quarto = {
 </div>
 </div>
 <p>변환된 자료에 대한 회귀분석을 수행해 보자.</p>
+<p><span class="math display">\[
+\log(y) = \beta_0 + \beta_1 time + e
+\]</span></p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>fitlog <span class="ot">&lt;-</span> <span class="fu">lm</span>(logy<span class="sc">~</span>time, bug2)</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(logy<span class="sc">~</span>time, bug2)</span>
@@ -447,21 +451,14 @@ window.Quarto = {
 </div>
 </div>
 </div>
-</section>
-</section>
-<section id="box-cox-변환" class="level2" data-number="K.2">
-<h2 data-number="K.2" class="anchored" data-anchor-id="box-cox-변환"><span class="header-section-number">K.2</span> Box-Cox 변환</h2>
-<p>Box-Cox 변환은 다음과 같이 수행한다. 패키지 <code>MASS</code> 의 함수 <code>boxcox</code> 를 이용한다.</p>
-<section id="예제-4.10" class="level3" data-number="K.2.1">
-<h3 data-number="K.2.1" class="anchored" data-anchor-id="예제-4.10"><span class="header-section-number">K.2.1</span> 예제 4.10</h3>
-<ul>
-<li><code>foot</code>:발길이(mm), 양말을 벗은 상태로 측정하였고 오른쪽 발만 측정하였다.</li>
-<li><code>forearm</code>: 팔안쪽길이(mm), 손목부터 팔꿈치가 접히는 부분까지의 길이이다. 오른쪽 팔만 측정하였다.</li>
-</ul>
-<p>변환이 필요없는 경우에 대한 예제이다.</p>
+<p>만약 반응변수에 대한 예측값을 구하고 싶다면 다음과 같이 역변환을 이용하면 된다.</p>
+<p><span class="math display">\[
+\hat E(y|x) = e^{\hat \beta_0 + \hat \beta_1 x}
+\]</span></p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot histogram of foot by ggplot2</span></span>
-<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>aflength <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>foot)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth=</span><span class="dv">15</span>, <span class="at">fill=</span><span class="st">"skyblue"</span>, <span class="at">color=</span><span class="st">"black"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>bug2<span class="sc">$</span>pred <span class="ot">&lt;-</span> <span class="fu">exp</span>(fitlog<span class="sc">$</span>fitted.values)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(y<span class="sc">~</span>time, bug2)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">points</span>(bug2<span class="sc">$</span>pred<span class="sc">~</span>bug2<span class="sc">$</span>time, <span class="at">col=</span><span class="st">"red"</span>, <span class="at">pch=</span><span class="dv">19</span>)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -470,8 +467,22 @@ window.Quarto = {
 </div>
 </div>
 </div>
+</section>
+</section>
+<section id="box-cox-변환" class="level2" data-number="K.2">
+<h2 data-number="K.2" class="anchored" data-anchor-id="box-cox-변환"><span class="header-section-number">K.2</span> Box-Cox 변환</h2>
+<p>Box-Cox 변환은 다음과 같이 수행한다. 패키지 <code>MASS</code> 의 함수 <code>boxcox</code> 를 이용한다.</p>
+<section id="예제-4.10" class="level3" data-number="K.2.1">
+<h3 data-number="K.2.1" class="anchored" data-anchor-id="예제-4.10"><span class="header-section-number">K.2.1</span> 예제 4.10</h3>
+<p>의학적으로 정확하지는 않지만 인체의 특성 중에는 양팔을 벌린 길이는 키와 같다든지, 목둘레는 허리둘레 또는 팔목굵기와 관계가 있다든지 하는 흥미로운 사실들이 많이 있다. 자료 <code>aflength</code>는 S대학교 학생들 중 무작위로 남녀 각각 16명을 추출하여 조사한 자료로 발길이와 팔안쪽길이이다.</p>
+<ul>
+<li><code>foot</code>:발길이(mm), 양말을 벗은 상태로 측정하였고 오른쪽 발만 측정하였다.</li>
+<li><code>forearm</code>: 팔안쪽길이(mm), 손목부터 팔꿈치가 접히는 부분까지의 길이이다. 오른쪽 팔만 측정하였다.</li>
+</ul>
+<p>변환이 필요없는 경우에 대한 예제이다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(foot <span class="sc">~</span> forearm, <span class="at">data=</span>aflength)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot histogram of foot by ggplot2</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>aflength <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>foot)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth=</span><span class="dv">15</span>, <span class="at">fill=</span><span class="st">"skyblue"</span>, <span class="at">color=</span><span class="st">"black"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
@@ -479,11 +490,21 @@ window.Quarto = {
 </figure>
 </div>
 </div>
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>ex411 <span class="ot">&lt;-</span> <span class="fu">boxcox</span>(<span class="fu">lm</span>(foot <span class="sc">~</span> forearm, <span class="at">data=</span>aflength))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(foot <span class="sc">~</span> forearm, <span class="at">data=</span>aflength)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="practice-02_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="practice-02_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>ex411 <span class="ot">&lt;-</span> <span class="fu">boxcox</span>(<span class="fu">lm</span>(foot <span class="sc">~</span> forearm, <span class="at">data=</span>aflength))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice-02_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -498,22 +519,34 @@ window.Quarto = {
 <li><code>load</code> : 시편에 가한 하중</li>
 <li><code>amplitude</code> :하중을 가한 폭</li>
 </ul>
-<p>반응변수 <code>cycle</code> 의 히스토그램능 보면 오른쪽으로 매우 치우친 분포로서 정규분포와 매우 다른 모양을 보인다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot histogram of foot by ggplot2</span></span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>wool <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>cycle)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth=</span><span class="dv">200</span>, <span class="at">fill=</span><span class="st">"skyblue"</span>, <span class="at">color=</span><span class="st">"black"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(wool)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>  cycle length amplitude load
+1   674    250         8   40
+2   370    250         8   45
+3   292    250         8   50
+4   338    250         9   40
+5   266    250         9   45
+6   210    250         9   50</code></pre>
+</div>
+</div>
+<p>반응변수 <code>cycle</code> 의 히스토그램을 보면 오른쪽으로 꼬리가 긴 분포로서 정규분포와 매우 다른 모양을 보인다.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># plot histogram of foot by ggplot2</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>wool <span class="sc">%&gt;%</span> <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x=</span>cycle)) <span class="sc">+</span> <span class="fu">geom_histogram</span>(<span class="at">binwidth=</span><span class="dv">200</span>, <span class="at">fill=</span><span class="st">"skyblue"</span>, <span class="at">color=</span><span class="st">"black"</span>) <span class="sc">+</span> <span class="fu">theme_minimal</span>()</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="practice-02_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="practice-02_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
-<p>잔차 분석의 결과를 보면 잔차에</p>
+<p>잔차 분석의 결과를 보면 잔차가 0을 중심으로 고르게 분포하지 않고, 정규성 가정이 만족되지 않음을 알 수 있다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>woolfm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(cycle<span class="sc">~</span>length <span class="sc">+</span> amplitude <span class="sc">+</span> load, <span class="at">data=</span>wool)</span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(woolfm1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>woolfm1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(cycle<span class="sc">~</span>length <span class="sc">+</span> amplitude <span class="sc">+</span> load, <span class="at">data=</span>wool)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(woolfm1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -536,23 +569,38 @@ Residual standard error: 488.1 on 23 degrees of freedom
 Multiple R-squared:  0.7291,    Adjusted R-squared:  0.6937 
 F-statistic: 20.63 on 3 and 23 DF,  p-value: 1.028e-06</code></pre>
 </div>
-</div>
-<p>이제 Box-Cox 변환을 적용해 보자.</p>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxcox</span>(woolfm1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(woolfm1, <span class="at">which=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="practice-02_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="practice-02_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice-02_files/figure-html/unnamed-chunk-10-2.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>이제 Box-Cox 변환을 적용해 보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxcox</span>(woolfm1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="practice-02_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 </div>
 <p>위의 결과에서 <span class="math inline">\(\lambda = 0\)</span>이 가장 좋은 변환으로 나타났다. 이는 로그 변환이 가장 적절하다는 의미이다. 이제 이 변환을 적용해 보자.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>wool<span class="sc">$</span>logcycle <span class="ot">&lt;-</span> <span class="fu">log</span>(wool<span class="sc">$</span>cycle)</span>
-<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>woolfm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(logcycle<span class="sc">~</span>length <span class="sc">+</span> amplitude <span class="sc">+</span> load, <span class="at">data=</span>wool)</span>
-<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(woolfm2)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>wool<span class="sc">$</span>logcycle <span class="ot">&lt;-</span> <span class="fu">log</span>(wool<span class="sc">$</span>cycle)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>woolfm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(logcycle<span class="sc">~</span>length <span class="sc">+</span> amplitude <span class="sc">+</span> load, <span class="at">data=</span>wool)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(woolfm2)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -577,32 +625,18 @@ F-statistic: 216.8 on 3 and 23 DF,  p-value: &lt; 2.2e-16</code></pre>
 </div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(woolfm2)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(woolfm2, <span class="at">which=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="practice-02_files/figure-html/unnamed-chunk-11-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="practice-02_files/figure-html/unnamed-chunk-13-1.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
 <div class="cell-output-display">
 <div>
 <figure class="figure">
-<p><img src="practice-02_files/figure-html/unnamed-chunk-11-2.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="practice-02_files/figure-html/unnamed-chunk-11-3.png" class="img-fluid figure-img" width="672"></p>
-</figure>
-</div>
-</div>
-<div class="cell-output-display">
-<div>
-<figure class="figure">
-<p><img src="practice-02_files/figure-html/unnamed-chunk-11-4.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="practice-02_files/figure-html/unnamed-chunk-13-2.png" class="img-fluid figure-img" width="672"></p>
 </figure>
 </div>
 </div>
@@ -634,7 +668,7 @@ F-statistic: 216.8 on 3 and 23 DF,  p-value: &lt; 2.2e-16</code></pre>
 <p><span class="math display">\[ (\pmb X^t \pmb X) =  \pmb P \pmb \Lambda \pmb P^t,
 \quad (\pmb X^t \pmb X)^{-1} =  \pmb P \pmb \Lambda^{-1} \pmb P^t  \]</span></p>
 <p>고유벡터와 고유값의 정의에 의하여 고유값 <span class="math inline">\(\lambda_k\)</span>이 매우 0에 가까우면 다음이 성립하고</p>
-<p><span class="math display">\[ \pmb p_k^t (\pmb X^t \pmb X) \pmb p_k = (\pmb X \pmb p_k)^t ( \pmb X \pmb p_k) \approx 0   \]</span> 위의 식은 다음과 같이 행렬 <span class="math inline">\(\pmb X\)</span>의 열들간에 선형관계 $ X p_k = $ 이 있다는 것을 의미한다.</p>
+<p><span class="math display">\[ \lambda_i = \pmb p_k^t (\pmb X^t \pmb X) \pmb p_k = (\pmb X \pmb p_k)^t ( \pmb X \pmb p_k) \approx 0   \]</span> 위의 식은 다음과 같이 행렬 <span class="math inline">\(\pmb X\)</span>의 열들간에 선형관계 <span class="math inline">\(\pmb X \pmb p_k = \pmb 0\)</span> 이 있다는 것을 의미한다.</p>
 <p><span class="math display">\[  p_{1k} \pmb x_1 +  p_{2k} \pmb x_2 + \dots  p_{p,k} \pmb x_p \approx 0 \]</span></p>
 <p>위에서 <span class="math inline">\(\pmb p_k\)</span>와 <span class="math inline">\(\pmb X\)</span>는 다음과 같이 표시한다.</p>
 <p><span class="math display">\[ \pmb X=[\pmb x_1~ \pmb x_2~ \dots~\pmb x_{p}], \quad
@@ -660,7 +694,7 @@ var(\hat \beta_k) / \sigma^2 = \frac{p^2_{k1}}{\lambda_1} + \frac{p^2_{k2}}{\lam
 <p><span class="math display">\[ y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + e_i, i=1,2,\cdots,n \]</span></p>
 <p>절편을 제외한 두 개의 표준화된 독립변수들로 이루어진 행렬을 <span class="math inline">\(\pmb X\)</span>로 표시하자.</p>
 <p><span class="math display">\[  \pmb X = [ \pmb x_1 ~ \pmb x_2 ]   \]</span></p>
-<p>위에서 디자인 행렬 <span class="math inline">\(\pmb X\)</span>는 원래 독립변수의 디자인 행렬 <span class="math inline">\(X\)</span>의 열들을 표준화한 변수로 구성된 것이다..</p>
+<p>위에서 계획 행렬 <span class="math inline">\(\pmb X\)</span>는 원래 독립 변수의 계획 행렬 <span class="math inline">\(X\)</span>의 열들을 표준화한 변수로 구성된 것이다..</p>
 <p><span class="math display">\[ \sum_{i=1}^n x_{i1} =0, \quad \sum_{i=1}^n x_{i2} =0, \quad \sum_{i=1}^n x_{i1}^2 =1, \quad \sum_{i=1}^n x_{i2}^2 =1, \quad \sum_{i=1}^n x_{i1} x_{i2} =\rho \]</span></p>
 <p>이제 <span class="math inline">\(\pmb X^t \pmb X\)</span>는 두 독립변수의 상관계수 행렬임을 알 수 있다.</p>
 <p><span class="math display">\[  \pmb X^t \pmb X =
@@ -881,9 +915,9 @@ Var(\hat \beta_k)/\sigma^2
 <h3 data-number="K.3.3" class="anchored" data-anchor-id="예제-4.13"><span class="header-section-number">K.3.3</span> 예제 4.13</h3>
 <p>중고차 예제에서 가상의 변수를 만들어 적합할 때 완벽한 선형관계가 존재하면 적합 시 변수를 제거하는 것을 알 수 있다.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>usedcars2 <span class="ot">&lt;-</span> usedcars <span class="sc">%&gt;%</span>  <span class="fu">mutate</span>(<span class="at">ccmile =</span> cc <span class="sc">+</span> mileage)</span>
-<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>fitcoll1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(price <span class="sc">~</span> year <span class="sc">+</span> mileage <span class="sc">+</span> cc <span class="sc">+</span> automatic <span class="sc">+</span> ccmile, usedcars2)</span>
-<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fitcoll1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>usedcars2 <span class="ot">&lt;-</span> usedcars <span class="sc">%&gt;%</span>  <span class="fu">mutate</span>(<span class="at">ccmile =</span> cc <span class="sc">+</span> mileage)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>fitcoll1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(price <span class="sc">~</span> year <span class="sc">+</span> mileage <span class="sc">+</span> cc <span class="sc">+</span> automatic <span class="sc">+</span> ccmile, usedcars2)</span>
+<span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(fitcoll1)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -913,10 +947,31 @@ F-statistic: 59.21 on 4 and 25 DF,  p-value: 2.184e-12</code></pre>
 </section>
 <section id="예제-4.14" class="level3" data-number="K.3.4">
 <h3 data-number="K.3.4" class="anchored" data-anchor-id="예제-4.14"><span class="header-section-number">K.3.4</span> 예제 4.14</h3>
-<p>모형을 적합해 보자.</p>
+<p>자료 <code>hald</code>는 1932년 미국 화학공학 학회지에 발표된 것으로 시멘트가 굳을 때 발생하는 열량에 시멘트의 네 가지 성분들이 미치는 영향을 분석한 것이다.</p>
+<p>이 데이터프레임은 다음과 같은 열로 구성되어 있다.</p>
+<ul>
+<li><code>y</code> : 시멘트 1g당 발생하는 열량(cal)</li>
+<li><code>x1</code> : 성분1의 무게의 구성비(%)</li>
+<li><code>x2</code> : 성분2의 무게의 구성비(%)</li>
+<li><code>x3</code> : 성분3의 무게의 구성비(%)</li>
+<li><code>x4</code> : 성분4의 무게의 구성비(%)</li>
+</ul>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a>hald.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span> ., <span class="at">data=</span>hald)</span>
-<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(hald.lm)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">head</span>(hald)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>      y x1 x2 x3 x4
+1  78.5  7 26  6 60
+2  74.3  1 29 15 52
+3 104.3 11 56  8 20
+4  87.6 11 31  8 47
+5  95.9  7 52  6 33
+6 109.2 11 55  9 22</code></pre>
+</div>
+</div>
+<p>모든 변수가 포함된 모형을 적합해 보자.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>hald.lm <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span> ., <span class="at">data=</span>hald)</span>
+<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(hald.lm)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -943,8 +998,8 @@ F-statistic: 111.5 on 4 and 8 DF,  p-value: 4.756e-07</code></pre>
 </div>
 <p>상관계수 행렬의 고유값을 계산해 보자.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="fu">cor</span>(hald[<span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>])</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>R</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>R <span class="ot">&lt;-</span> <span class="fu">cor</span>(hald[<span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>])</span>
+<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>R</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>           x1         x2         x3         x4
 x1  1.0000000  0.2285795 -0.8241338 -0.2454451
@@ -952,7 +1007,7 @@ x2  0.2285795  1.0000000 -0.1392424 -0.9729550
 x3 -0.8241338 -0.1392424  1.0000000  0.0295370
 x4 -0.2454451 -0.9729550  0.0295370  1.0000000</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">solve</span>(R)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">solve</span>(R)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>         x1        x2        x3       x4
 x1 38.49621  94.11969  41.88410  99.7858
@@ -960,29 +1015,29 @@ x2 94.11969 254.42317 105.09139 267.5394
 x3 41.88410 105.09139  46.86839 111.1451
 x4 99.78580 267.53942 111.14509 282.5129</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(<span class="fu">solve</span>(R))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="fu">diag</span>(<span class="fu">solve</span>(R))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       x1        x2        x3        x4 
  38.49621 254.42317  46.86839 282.51286 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>eigenval <span class="ot">&lt;-</span> <span class="fu">eigen</span>(R)<span class="sc">$</span>values</span>
-<span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>eigenval</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a>eigenval <span class="ot">&lt;-</span> <span class="fu">eigen</span>(R)<span class="sc">$</span>values</span>
+<span id="cb30-2"><a href="#cb30-2" aria-hidden="true" tabindex="-1"></a>eigenval</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1] 2.235704035 1.576066070 0.186606149 0.001623746</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">max</span>(eigenval)<span class="sc">/</span>eigenval)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a><span class="fu">sqrt</span>(<span class="fu">max</span>(eigenval)<span class="sc">/</span>eigenval)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>[1]  1.000000  1.191022  3.461339 37.106342</code></pre>
 </div>
 </div>
 <p>VIF를 구해보자.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb28"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">vif</span>(hald.lm)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a>car<span class="sc">::</span><span class="fu">vif</span>(hald.lm)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>       x1        x2        x3        x4 
  38.49621 254.42317  46.86839 282.51286 </code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(regbook<span class="sc">::</span><span class="fu">vif</span>(hald.lm))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(regbook<span class="sc">::</span><span class="fu">vif</span>(hald.lm))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 VIF:
@@ -999,8 +1054,8 @@ Variance Proportion:
 </div>
 <p><span class="math inline">\(x_2\)</span>를 제외하고 분석해 보자.</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1" aria-hidden="true" tabindex="-1"></a>hald.lm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span> x1 <span class="sc">+</span> x3 <span class="sc">+</span> x4, <span class="at">data=</span>hald)</span>
-<span id="cb32-2"><a href="#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(hald.lm2)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a>hald.lm2 <span class="ot">&lt;-</span> <span class="fu">lm</span>(y<span class="sc">~</span> x1 <span class="sc">+</span> x3 <span class="sc">+</span> x4, <span class="at">data=</span>hald)</span>
+<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(hald.lm2)</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 Call:
@@ -1023,7 +1078,7 @@ Residual standard error: 2.377 on 9 degrees of freedom
 Multiple R-squared:  0.9813,    Adjusted R-squared:  0.975 
 F-statistic: 157.3 on 3 and 9 DF,  p-value: 4.312e-08</code></pre>
 </div>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(regbook<span class="sc">::</span><span class="fu">vif</span>(hald.lm2))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(regbook<span class="sc">::</span><span class="fu">vif</span>(hald.lm2))</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>
 VIF:

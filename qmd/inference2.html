@@ -876,14 +876,14 @@ x2           4.16172306</code></pre>
 \tag{3.14}\]</span></span></p>
 <p>참고로 최대모형 <a href="#eq-lmtest-fullmodel" class="quarto-xref">식&nbsp;<span>3.13</span></a> 의 계획행렬 <span class="math inline">\(\pmb  X = [\pmb  X_1, \pmb  X_2]\)</span> 의 차원은 <span class="math inline">\(n \times (p+q+1)\)</span>이고 축소 모형 <a href="#eq-lmtest-redmodel" class="quarto-xref">식&nbsp;<span>3.14</span></a> 의 계획행렬 <span class="math inline">\(\pmb  X_1\)</span> 의 차원은 <span class="math inline">\(n \times (p+1)\)</span> 이다.</p>
 <p>여기서 유의할 점은 최대 모형은 축소모형을 포함한다는 것이다. 만약 최대모형에서 마지막 <span class="math inline">\(q\)</span>개의 설명변수들에 대한 회귀계수들이 모두 0이면, 즉 <span class="math inline">\(\beta_{p+1} = \cdots \beta_{p+q}=0\)</span> 이면 축소모형이 된다.</p>
-<p>교재에서는 추가제곱합을 이용한 부분 F-검정(교과서 p.158-161)을 설명한다. 즉, 다음과 같은 가설을 검정하고자 한다.</p>
+<p>교재에서는 추가제곱합을 이용한 부분 F-검정을 설명한다. 즉, 다음과 같은 가설을 검정하고자 한다.</p>
 <p><span id="eq-lmtest-hypothesis"><span class="math display">\[
 H_0: \beta_{p+1} = \beta_{p+2} =\cdots = \beta_{p+q}=0 \text{ (Reduced)} \quad \text{ vs.} \quad H_1: \text{ not } H_0 \text{  (Full)}  
 \tag{3.15}\]</span></span></p>
 <p>위와 같은 가설을 검정하기 위한 부분 F-검정의 검정 통계량 <span class="math inline">\(F_0\)</span> 는 다음과 같이 주어진다 (교과서 식 4.4).</p>
-<p><span class="math display">\[
+<p><span id="eq-lmtest-teststat"><span class="math display">\[
 F_0 = \frac{[SSE(R) - SSE(F)]/(df_R - df_F)}{SSE(F)/df_F}   
-\]</span></p>
+\tag{3.16}\]</span></span></p>
 <p>만약 <span class="math inline">\(H_0\)</span> 가 참이면 검정 통계량 <span class="math inline">\(F_0\)</span> 는 자유도가 각각 <span class="math inline">\(df_R-df_F\)</span>와 <span class="math inline">\(df_F\)</span> 를 가지는 F-분포를 따르므로 이를 이용하여 모형에 새로운 변수를 추가하는 검정을 수행하는 부분 F-검정을 실시할 수 있다.</p>
 <p>참고로 위의 식들에서 자유도 <span class="math inline">\(df_R\)</span> 과 <span class="math inline">\(df_F\)</span>는 다음과 같이 주어진다.</p>
 <p><span class="math display">\[ df_R = n - (p+q+1), \quad df_F = n - (p+1)\]</span></p>
@@ -915,7 +915,7 @@ F_0 = \frac{[SSE(R) - SSE(F)]/(df_R - df_F)}{SSE(F)/df_F}
 <p>위의 결과를 가능도 함수로 표시하면</p>
 <p><span id="eq-lmtest-flike"><span class="math display">\[
 \underset{\pmb  \mu, \pmb  \tau }{\max} L_n( \pmb  \theta_F; \pmb  y)  =(2 \pi e)^{-n/2} [SSE(F)/n]^{-n/2}
-\tag{3.16}\]</span></span></p>
+\tag{3.17}\]</span></span></p>
 <p>축소모형 <a href="#eq-lmtest-redmodel" class="quarto-xref">식&nbsp;<span>3.14</span></a> 에 대해서도 같은 방법으로 최대 가능도 춛정량을 구하면 다음과 같이 주어지며</p>
 <p><span class="math display">\[ \hat \mu_1 = \pmb  X_1 \hat {\pmb  \beta_1} = \pmb  P_1 \pmb  y, \quad \hat \tau_R = \frac{1}{n} \norm{ \pmb  Q_1 \pmb  y}^2 = \frac{1}{n} SSE(R)   \]</span></p>
 <p>로그 가능도 함수에 넣어면 다음과 같은 결과가 주어진다.</p>
@@ -924,21 +924,67 @@ F_0 = \frac{[SSE(R) - SSE(F)]/(df_R - df_F)}{SSE(F)/df_F}
 \]</span></p>
 <p>위의 결과를 가능도 함수로 표시하면 <span id="eq-lmtest-rlike"><span class="math display">\[
 \underset{\pmb  \mu, \pmb  \tau }{\max} L_n( \pmb  \theta_R; \pmb  y)  =(2 \pi e)^{-n/2} [SSE(R)/n]^{-n/2}
-\tag{3.17}\]</span></span></p>
+\tag{3.18}\]</span></span></p>
 <p>최대 가능도 추정에서 만약 최대 모형 <span class="math inline">\(F\)</span> 가 축소모형 <span class="math inline">\(R\)</span> 을 포함하면 가설 <a href="#eq-lmtest-hypothesis" class="quarto-xref">식&nbsp;<span>3.15</span></a> 에 대한 검정이 가능하다.</p>
-<p>위의 가설 검정에서 두 모형의 가능도 함수 <a href="#eq-lmtest-flike" class="quarto-xref">식&nbsp;<span>3.16</span></a> 와 <a href="#eq-lmtest-rlike" class="quarto-xref">식&nbsp;<span>3.17</span></a> 의 비, 즉 가능도 비(Likelihood Ratio) <span class="math inline">\(\Lambda\)</span> 는 다음과 같이 주어진다.</p>
+<p>위의 가설 검정에서 두 모형의 가능도 함수 <a href="#eq-lmtest-flike" class="quarto-xref">식&nbsp;<span>3.17</span></a> 와 <a href="#eq-lmtest-rlike" class="quarto-xref">식&nbsp;<span>3.18</span></a> 의 비, 즉 가능도 비(Likelihood Ratio) <span class="math inline">\(\Lambda\)</span> 는 다음과 같이 주어진다.</p>
 <p><span id="eq-lmtest-lr"><span class="math display">\[
 \Lambda= \frac{ \underset{\pmb  \mu_1, \pmb  \tau }{\max} L_n( \pmb  \theta_R; \pmb  y)}{\underset{\pmb  \mu, \pmb  \tau }{\max} L_n( \pmb  \theta_F; \pmb  y) } =  \left [ \frac{SSE(F)}{SSE(R)} \right ]^{n/2}
-\tag{3.18}\]</span></span></p>
+\tag{3.19}\]</span></span></p>
 <p>위의 가능도 비 <span class="math inline">\(\Lambda\)</span>가 작으면 귀무가설 <span class="math inline">\(H_0\)</span>을 기각한다.</p>
 <p><span class="math display">\[ \text{if } \Lambda &lt; c', \text{ then reject } H_0 \]</span></p>
-<p>식 <a href="#eq-lmtest-lr" class="quarto-xref">식&nbsp;<span>3.18</span></a> 에 나타난 가능도 비를 다시 표현해 보자</p>
+<p>식 <a href="#eq-lmtest-lr" class="quarto-xref">식&nbsp;<span>3.19</span></a> 에 나타난 가능도 비를 다시 표현해 보자</p>
 <p><span class="math display">\[ \Lambda = \left [ \frac{SSE(F)}{SSE(R)} \right ]^{n/2} = \left [ 1 +\frac{SSE(R) - SSE(F)}{SSE(F)} \right ]^{-n/2} \equiv (1 + F^*)^{-n/2} \]</span> 위의 식을 보면 <span class="math inline">\(\Lambda\)</span>가 <span class="math inline">\(F^*\)</span>에 반비례하므로 다음과 같이 <span class="math inline">\(F^*\)</span>가 크면 <span class="math inline">\(H_0\)</span>를 기각할 수 있다. 이제 회귀분석에서 주로 쓰이는 부분 F-검정 통계량을 위의 식에서 나타난 <span class="math inline">\(F^*\)</span>로 표시해보면 다음과 같이 쓸수 있다. <span id="eq-lmtest-ftest"><span class="math display">\[
 \text{if } F = \frac{n-(p+q+1)}{q} F^* = \frac{[SSE(R) - SSE(F)]/q}{SSE(F)/[n-(p+q+1)]} &gt; c, \text{ then reject } H_0  
-\tag{3.19}\]</span></span></p>
-<p>위의 <a href="#eq-lmtest-ftest" class="quarto-xref">식&nbsp;<span>3.19</span></a> 에 있는 가설검정의 절차는 추가제곱합을 이용한 부분 F-검정(교과서 p.158-161)과 동일한 검정이다. 따라서 부분 F-검정은 가능도비 검정이다.</p>
+\tag{3.20}\]</span></span></p>
+<p>위의 <a href="#eq-lmtest-ftest" class="quarto-xref">식&nbsp;<span>3.20</span></a> 에 있는 가설검정의 절차는 추가제곱합을 이용한 부분 F-검정(교과서 p.158-161)과 동일한 검정이다. 따라서 부분 F-검정은 가능도비 검정이다.</p>
+<section id="부분-f-검정-통계량의-분포" class="level3" data-number="3.3.1">
+<h3 data-number="3.3.1" class="anchored" data-anchor-id="부분-f-검정-통계량의-분포"><span class="header-section-number">3.3.1</span> 부분 F-검정 통계량의 분포</h3>
+<p>위 <a href="#eq-lmtest-teststat" class="quarto-xref">식&nbsp;<span>3.16</span></a> 에서 나온 부분 F-검정 통계량 <span class="math inline">\(F_0\)</span>는 <span class="math inline">\(H_0: \pmb \beta_2 = \pmb 0\)</span> 가 참일 때 자유도가 각각 <span class="math inline">\(q\)</span>와 <span class="math inline">\(n-(p+q+1)\)</span>인 F-분포를 따른다. 검정통계량의 분포를 부록에서 배운 이차형식의 분포 이론으로 유도해 보자.</p>
+<p>일단 검정통계량 <a href="#eq-lmtest-teststat" class="quarto-xref">식&nbsp;<span>3.16</span></a> 에서 분자 <span class="math inline">\(SSE(R) - SSE(F)\)</span>의 분포를 귀무가설 <a href="#eq-lmtest-hypothesis" class="quarto-xref">식&nbsp;<span>3.15</span></a> 하에서 구해 보자. 두 잔차제곱합의 차는 다음과 같이 주어진다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+SSE(R) - SSE(F) &amp; = \pmb y^t (\pmb I- \pmb P_1) \pmb y - \pmb y^t (\pmb I-\pmb P) \pmb y  \\
+&amp; = \pmb y^t (\pmb P - \pmb P_1) \pmb y
+\end{aligned}
+\]</span></p>
+<p>이 떄 <span class="math inline">\(\pmb P - \pmb P_1\)</span> 은 대칭이며 멱등행렬임을 보일 수 있다.</p>
+<p><span class="math display">\[
+\begin{aligned}
+(\pmb P - \pmb P_1)^2  &amp; = \pmb P^2 - \pmb P \pmb P_1 - \pmb P_1 \pmb P + \pmb P_1^2 \\
+&amp; = \pmb P -  \pmb P_1 - \pmb P_1 + \pmb P_1 \\
+&amp; = \pmb P - \pmb P_1
+\end{aligned}
+\]</span> 위의 결과는 부록 <a href="math_vector_space.html#sec-projection" class="quarto-xref"><span>섹션 B.9</span></a> 에서 설명한 포함관계에 있는 두 열공간의 사영에 대한 사실을 이용하여 유도한 것이다.</p>
+<p>따라서 <span class="math inline">\(SSE(R) - SSE(F)\)</span>의 분포는 다음과 같은 비중심 카이제곱 분포로 주어진다.</p>
+<p><span class="math display">\[
+\frac{SSE(R) - SSE(F)}{\sigma^2} \sim \chi^2(q, \lambda_1^2)
+\]</span></p>
+<p>여기서 자유도 <span class="math inline">\(tr(\pmb P - \pmb P_1)=q\)</span> 이고 비중심모수 <span class="math inline">\(\lambda_1\)</span> 는 다음과 같이 주어진다.</p>
+<p><span class="math display">\[
+\lambda_1^2 = \tfrac{1}{\sigma^2} \pmb \beta^t \pmb X^t  \left ( \pmb P - \pmb P_1 \right )  \pmb X \pmb \beta
+\]</span> 만약 <span class="math inline">\(H_0\)</span>가 참이면 <span class="math inline">\(\pmb \beta_2 = \pmb 0\)</span> 이므로</p>
+<p><span class="math display">\[ \pmb X \pmb \beta = \pmb X_1 \pmb \beta_1 + \pmb X_2 \pmb \beta_2 =  \pmb X_1 \pmb \beta_1 + \pmb 0  = \pmb X_1 \pmb \beta_1\]</span> 따라서</p>
+<p><span class="math display">\[
+\begin{aligned}
+\left ( \pmb P - \pmb P_1 \right )  \pmb X \pmb \beta &amp; =
+\left ( \pmb P - \pmb P_1 \right )  \pmb X_1 \pmb \beta_1 \\
+&amp; = \pmb P \pmb X_1 \pmb \beta_1 - \pmb P_1 \pmb X_1 \pmb \beta_1    \\
+&amp; = \pmb X_1 \pmb \beta_1 - \pmb X_1 \pmb \beta_1 \\
+&amp; = \pmb 0
+\end{aligned}
+\]</span></p>
+<p>따라서 비중심모수 <span class="math inline">\(\lambda_1\)</span>는 0이 된다. 즉 <span class="math inline">\(H_0\)</span>가 참이면 <span class="math inline">\(SSE(R) - SSE(F)\)</span>는 자유도가 <span class="math inline">\(q\)</span> 인 중심 카이제곱 분포를 따른다.</p>
+<p>또한 <span class="math inline">\(SSE(F)\)</span>는 자유도가 <span class="math inline">\(n-(p+q+1)\)</span> 인 중심 카이제곱 분포를 따르며 <span class="math inline">\(SSE(R) - SSE(F)\)</span> 는 독립이다. 왜냐하면 <a href="quadratic.html#thm-quaddist-indep" class="quarto-xref">정리&nbsp;<span>G.2</span></a> 에 의하여</p>
+<p><span class="math display">\[
+\begin{aligned}
+(\pmb I - \pmb P)(\pmb P - \pmb P_1) &amp;  = \pmb P - \pmb P_1 - \pmb P \pmb P +\pmb P \pmb P_1 \\
+  &amp; =  \pmb P - \pmb P_1 - \pmb P + \pmb P_1 \\
+  &amp; = \pmb 0
+\end{aligned}
+\]</span></p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->
