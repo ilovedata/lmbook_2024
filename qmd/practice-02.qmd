@@ -18,11 +18,15 @@ source(here::here("common", "_preprocess.R"))
 - `y` :생존벌레의 수
 - `time` :시간(분)
 
+$$ y = \beta_0 + \beta_1 time + e $$
+
 ```{r}
 plot(y~time, regbook::bug)
 ```
 
 이제 로그변화을 고려해 보자.
+
+
 
 ```{r}
 bug2 <-regbook::bug
@@ -33,17 +37,37 @@ plot(logy~time, bug2)
 
 변환된 자료에 대한 회귀분석을 수행해 보자.
 
+
+$$
+\log(y) = \beta_0 + \beta_1 time + e
+$$
+
 ```{r}
 fitlog <- lm(logy~time, bug2)
 plot(logy~time, bug2)
 abline(fitlog)
 ```
 
+만약 반응변수에 대한 예측값을 구하고 싶다면 다음과 같이 역변환을 이용하면 된다.
+
+$$
+\hat E(y|x) = e^{\hat \beta_0 + \hat \beta_1 x}
+$$
+
+```{r}
+bug2$pred <- exp(fitlog$fitted.values)
+plot(y~time, bug2)
+points(bug2$pred~bug2$time, col="red", pch=19)
+```
+
+
 ## Box-Cox 변환
 
 Box-Cox 변환은 다음과 같이 수행한다. 패키지 `MASS` 의 함수 `boxcox` 를 이용한다.
 
 ### 예제 4.10
+
+의학적으로 정확하지는 않지만 인체의 특성 중에는 양팔을 벌린 길이는 키와 같다든지, 목둘레는 허리둘레 또는 팔목굵기와 관계가 있다든지 하는 흥미로운 사실들이 많이 있다. 자료 `aflength`는 S대학교 학생들 중 무작위로 남녀 각각 16명을 추출하여 조사한 자료로 발길이와 팔안쪽길이이다.
 
 - `foot`:발길이(mm), 양말을 벗은 상태로 측정하였고 오른쪽 발만 측정하였다.
 - `forearm`: 팔안쪽길이(mm), 손목부터 팔꿈치가 접히는 부분까지의 길이이다. 오른쪽 팔만 측정하였다.
@@ -70,18 +94,23 @@ ex411 <- boxcox(lm(foot ~ forearm, data=aflength))
 - `load` : 시편에 가한 하중
 - `amplitude` :하중을 가한 폭
 
-반응변수 `cycle` 의 히스토그램능 보면 오른쪽으로 매우 치우친 분포로서 정규분포와 매우 다른 모양을 보인다.
+```{r}
+head(wool)
+```
+
+반응변수 `cycle` 의 히스토그램을 보면 오른쪽으로 꼬리가 긴 분포로서 정규분포와 매우 다른 모양을 보인다.
 
 ```{r}
 # plot histogram of foot by ggplot2
 wool %>% ggplot(aes(x=cycle)) + geom_histogram(binwidth=200, fill="skyblue", color="black") + theme_minimal()
 ```
 
-잔차 분석의 결과를 보면 잔차에 
+잔차 분석의 결과를 보면 잔차가 0을 중심으로 고르게 분포하지 않고, 정규성 가정이 만족되지 않음을 알 수 있다.
 
 ```{r}
 woolfm1 <- lm(cycle~length + amplitude + load, data=wool)
 summary(woolfm1)
+plot(woolfm1, which=c(1,2))
 ```
 이제 Box-Cox 변환을 적용해 보자.
 
@@ -99,7 +128,7 @@ summary(woolfm2)
 ```
 
 ```{r}
-plot(woolfm2)
+plot(woolfm2, which=c(1,2))
 ```
 
 ## 다중공선성
@@ -149,8 +178,8 @@ $$ (\pmb X^t \pmb X) =  \pmb P \pmb \Lambda \pmb P^t,
 
 고유벡터와 고유값의 정의에 의하여 고유값 $\lambda_k$이 매우 0에 가까우면 다음이 성립하고 
 
-$$ \pmb p_k^t (\pmb X^t \pmb X) \pmb p_k = (\pmb X \pmb p_k)^t ( \pmb X \pmb p_k) \approx 0   $$
-위의 식은 다음과 같이 행렬 $\pmb X$의 열들간에 선형관계 $ \pmb X \pmb p_k = \pmb 0$ 이 있다는 것을 의미한다.
+$$ \lambda_i = \pmb p_k^t (\pmb X^t \pmb X) \pmb p_k = (\pmb X \pmb p_k)^t ( \pmb X \pmb p_k) \approx 0   $$
+위의 식은 다음과 같이 행렬 $\pmb X$의 열들간에 선형관계 $\pmb X \pmb p_k = \pmb 0$ 이 있다는 것을 의미한다.
 
 $$  p_{1k} \pmb x_1 +  p_{2k} \pmb x_2 + \dots  p_{p,k} \pmb x_p \approx 0 $$
 
@@ -188,7 +217,7 @@ $$ y_i = \beta_0 + \beta_1 x_{i1} + \beta_2 x_{i2} + e_i, i=1,2,\cdots,n $$
 
 $$  \pmb X = [ \pmb x_1 ~ \pmb x_2 ]   $$
 
-위에서 디자인 행렬 $\pmb X$는 원래 독립변수의 디자인 행렬 $X$의 열들을 표준화한 변수로 구성된 것이다..
+위에서 계획 행렬 $\pmb X$는 원래 독립 변수의 계획 행렬 $X$의 열들을 표준화한 변수로 구성된 것이다..
 
 $$ \sum_{i=1}^n x_{i1} =0, \quad \sum_{i=1}^n x_{i2} =0, \quad \sum_{i=1}^n x_{i1}^2 =1, \quad \sum_{i=1}^n x_{i2}^2 =1, \quad \sum_{i=1}^n x_{i1} x_{i2} =\rho $$
 
@@ -457,7 +486,21 @@ summary(fitcoll1)
 
 ### 예제 4.14
 
-모형을 적합해 보자.
+자료 `hald`는 1932년 미국 화학공학 학회지에 발표된 것으로 시멘트가 굳을 때 발생하는 열량에 시멘트의 네 가지 성분들이 미치는 영향을 분석한 것이다.
+
+이 데이터프레임은 다음과 같은 열로 구성되어 있다.
+
+- `y` : 시멘트 1g당 발생하는 열량(cal)
+- `x1` : 성분1의 무게의 구성비(%)
+- `x2` : 성분2의 무게의 구성비(%)
+- `x3` : 성분3의 무게의 구성비(%)
+- `x4` : 성분4의 무게의 구성비(%)
+
+```{r}
+head(hald)
+```
+
+모든 변수가 포함된 모형을 적합해 보자.
 
 ```{r}
 hald.lm <- lm(y~ ., data=hald)

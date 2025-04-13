@@ -483,7 +483,7 @@ $$  {#eq-lmtest-redmodel}
 여기서 유의할 점은 최대 모형은 축소모형을 포함한다는 것이다. 만약 최대모형에서 마지막 $q$개의 설명변수들에 대한  회귀계수들이 모두 0이면, 즉 $\beta_{p+1} = \cdots \beta_{p+q}=0$ 이면 축소모형이 된다. 
 
 
-교재에서는 추가제곱합을 이용한 부분 F-검정(교과서 p.158-161)을 설명한다.  즉, 다음과 같은 가설을 검정하고자 한다. 
+교재에서는 추가제곱합을 이용한 부분 F-검정을 설명한다.  즉, 다음과 같은 가설을 검정하고자 한다. 
 
 $$ 
 H_0: \beta_{p+1} = \beta_{p+2} =\cdots = \beta_{p+q}=0 \text{ (Reduced)} \quad \text{ vs.} \quad H_1: \text{ not } H_0 \text{  (Full)}  
@@ -493,7 +493,7 @@ $$ {#eq-lmtest-hypothesis}
 
 $$
 F_0 = \frac{[SSE(R) - SSE(F)]/(df_R - df_F)}{SSE(F)/df_F}   
-$$
+$$ {#eq-lmtest-teststat}
 
 만약 $H_0$ 가 참이면 검정 통계량 $F_0$ 는 자유도가 각각 $df_R-df_F$와 $df_F$ 를 가지는 F-분포를 따르므로 이를 이용하여 모형에 새로운 변수를 추가하는 검정을 수행하는 부분 F-검정을 실시할 수 있다.
 
@@ -594,5 +594,68 @@ $$ {#eq-lmtest-ftest}
 위의 @eq-lmtest-ftest  에 있는 가설검정의 절차는 추가제곱합을 이용한 부분 F-검정(교과서 p.158-161)과 동일한 검정이다.
 따라서 부분 F-검정은 가능도비 검정이다.
 
+
+### 부분 F-검정 통계량의 분포
+
+위 @eq-lmtest-teststat 에서 나온 부분 F-검정 통계량 $F_0$는 $H_0: \pmb \beta_2 = \pmb 0$ 가 참일 때 자유도가 각각 $q$와 $n-(p+q+1)$인 F-분포를 따른다. 검정통계량의 분포를 부록에서 배운 이차형식의 분포 이론으로 유도해 보자.
+
+일단 검정통계량 @eq-lmtest-teststat 에서 분자 $SSE(R) - SSE(F)$의 분포를 귀무가설 @eq-lmtest-hypothesis 하에서 구해 보자.
+두 잔차제곱합의 차는 다음과 같이 주어진다.
+
+$$
+\begin{aligned}
+SSE(R) - SSE(F) & = \pmb y^t (\pmb I- \pmb P_1) \pmb y - \pmb y^t (\pmb I-\pmb P) \pmb y  \\
+& = \pmb y^t (\pmb P - \pmb P_1) \pmb y 
+\end{aligned}
+$$
+
+이 떄 $\pmb P - \pmb P_1$ 은 대칭이며 멱등행렬임을 보일 수 있다.
+
+$$ 
+\begin{aligned}
+(\pmb P - \pmb P_1)^2  & = \pmb P^2 - \pmb P \pmb P_1 - \pmb P_1 \pmb P + \pmb P_1^2 \\
+& = \pmb P -  \pmb P_1 - \pmb P_1 + \pmb P_1 \\
+& = \pmb P - \pmb P_1
+\end{aligned}
+$$
+위의 결과는 부록 @sec-projection 에서 설명한 포함관계에 있는 두 열공간의 사영에 대한 사실을 이용하여 유도한 것이다.
+
+따라서 $SSE(R) - SSE(F)$의 분포는 다음과 같은 비중심 카이제곱 분포로 주어진다.
+
+$$ 
+\frac{SSE(R) - SSE(F)}{\sigma^2} \sim \chi^2(q, \lambda_1^2)
+$$
+
+여기서 자유도 $tr(\pmb P - \pmb P_1)=q$ 이고 비중심모수 $\lambda_1$ 는 다음과 같이 주어진다.
+
+$$
+\lambda_1^2 = \tfrac{1}{\sigma^2} \pmb \beta^t \pmb X^t  \left ( \pmb P - \pmb P_1 \right )  \pmb X \pmb \beta 
+$$
+만약 $H_0$가 참이면 $\pmb \beta_2 = \pmb 0$ 이므로 
+
+$$ \pmb X \pmb \beta = \pmb X_1 \pmb \beta_1 + \pmb X_2 \pmb \beta_2 =  \pmb X_1 \pmb \beta_1 + \pmb 0  = \pmb X_1 \pmb \beta_1$$
+따라서 
+
+$$
+\begin{aligned}
+\left ( \pmb P - \pmb P_1 \right )  \pmb X \pmb \beta & =
+\left ( \pmb P - \pmb P_1 \right )  \pmb X_1 \pmb \beta_1 \\
+& = \pmb P \pmb X_1 \pmb \beta_1 - \pmb P_1 \pmb X_1 \pmb \beta_1    \\
+& = \pmb X_1 \pmb \beta_1 - \pmb X_1 \pmb \beta_1 \\
+& = \pmb 0
+\end{aligned}
+$$
+
+따라서 비중심모수 $\lambda_1$는 0이 된다. 즉 $H_0$가 참이면 $SSE(R) - SSE(F)$는 자유도가 $q$ 인 중심 카이제곱 분포를 따른다.
+
+또한 $SSE(F)$는 자유도가 $n-(p+q+1)$ 인 중심 카이제곱 분포를 따르며 $SSE(R) - SSE(F)$ 는 독립이다. 왜냐하면 @thm-quaddist-indep 에 의하여 
+
+$$ 
+\begin{aligned}
+(\pmb I - \pmb P)(\pmb P - \pmb P_1) &  = \pmb P - \pmb P_1 - \pmb P \pmb P +\pmb P \pmb P_1 \\
+  & =  \pmb P - \pmb P_1 - \pmb P + \pmb P_1 \\
+  & = \pmb 0
+\end{aligned}
+$$
 
 

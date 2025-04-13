@@ -19,8 +19,9 @@ library(leaps)
 library(mvtnorm)
 library(nlstools)
 
-#library(ElemStatLearn)
+library(ElemStatLearn)
 library(faraway)
+library(regbook)
 
 
 # 아래 3 문장은 한글을 포함한 ggplot 그림이 포함된 HTML, PDF로 만드는 경우 사용

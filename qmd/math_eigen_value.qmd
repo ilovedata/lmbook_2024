@@ -31,7 +31,7 @@ $$ {#eq-char-poly}
 
 $n$-차원 정방행렬 $\pmb A$ 이 있을 때, 다음 식을 만족하는 $\lambda$ 와 벡터 $\pmb x$가 존재하면 $\lambda$ 를 행렬 $\pmb A$ 의 고유값(eigenvalue), $\pmb x$ 를 행렬 $\pmb A$ 의 고유벡터(eigenvector)라고 한다 (부교재 definition 4.6)
 
-$$ \pmb A \pmb x = \lambda \pmb x $$
+$$ \pmb A \pmb x = \lambda \pmb x $$ {#eq-char-eigen-def}
 
 -   고유벡터는 유일하지 않다. 즉, 벡터 $\pmb x$ 가 고유벡터이면 $c \pmb x$ 도 고유벡터이다.
 
@@ -42,14 +42,15 @@ $$ \pmb A (c \pmb x) = c \pmb A \pmb x = c \lambda \pmb x = \lambda (c \pmb x) $
 다음 4개의 문장은 동치이다
 
 -   $\lambda$ 는 행렬 $\pmb A$ 의 고유값이다.
--   방정식 $(\pmb A - \lambda \pmb I)\pmb x = \pmb 0$ 은 영벡터이외의 해를 가진다(nontrivial solution)
--   $\lambda$ 는 행렬 $\pmb A - \lambda \pmb I$ 의 행렬식이 0 이다.
+-   방정식 $(\pmb A - \lambda \pmb I)\pmb x = \pmb 0$ 은 영벡터이외의 해 $\pmb x$ 를 가진다(nontrivial solution)
+-   행렬 $\pmb A - \lambda \pmb I$ 의 행렬식이 0 이다.
 
 $$ \operatorname{det}(\pmb A - \lambda \pmb I) = 0 $$ {#eq-char-poly2}
 
--   $\lambda$ 는 행렬 $\pmb A - \lambda \pmb I$ 의 rank가 $n$ 보다 작다.
+-   행렬 $\pmb A - \lambda \pmb I$ 의 rank가 $n$ 보다 작다.
 
--   위에서 행렬식이 0 인 방정식 @eq-char-poly2 을 푸는 것은 특성방정식  @eq-char-poly 이 0 인 방정식을 을 푸는 것과 동일하다.
+
+위에서 행렬식이 0 인 방정식 @eq-char-poly2 을 푸는 것은 특성방정식  @eq-char-poly 이 0 인 방정식을 을 푸는 것과 동일하다.
 
 ::: {#exr-Example-20-0}
 
@@ -85,13 +86,22 @@ $$
 위의 방정식에서 $\lambda$에 대한 다항식 $p_{\pmb{A}}(\lambda)=0$ 의 근 을 구하면 고유값을 구할 수 있다. 따라서 행렬 $\pmb A$ 의 고유값은
 $\lambda_1=2$ 와 $\lambda_2=5$ 이다.
 
-이제 각각의 고유값에 대한 고유행렬을 다음과 같이 고유벡터의 정의에 의하여 구해보자. 
+이제 각각의 고유값에 대한 고유행렬을 다음과 같이 고유벡터의 정의 @eq-char-eigen-def 에 의하여 구해보자. 
 
 $$
-\left[\begin{array}{cc}
+\begin{bmatrix}
+4 & 2 \\
+1 & 3
+\end{bmatrix}
+\pmb{x} =
+\lambda \pmb{x}
+\quad \rightarrow 
+\quad
+\begin{bmatrix}
 4-\lambda & 2 \\
 1 & 3-\lambda
-\end{array}\right] \pmb{x}=\pmb{0}
+\end{bmatrix}
+ \pmb{x}=\pmb{0}
 $$
 먼저, 고유값 $\lambda_2 = 5$ 고유행렬은 다음과 같이 정의된다.
 
@@ -127,7 +137,7 @@ $$
 1 
 \end{bmatrix}
 $$
-유의할 점은 고유벡터는 방정식을 만족하는 무수히 많은 벡터 중에 하나의 예일 뿐이다. 예를 들어 길이가 1 인 단위벡터를 구하고 싶다면 위의 벡터를 길이가 1인 단위벡터로 바꾸면 된다. 
+유의할 점은 고유벡터는 방정식을 만족하는 무수히 많은 벡터 중에 하나의 예일 뿐이다. 예를 들어 길이가 1 인 단위벡터(unit vector)인 고유벡터를 구하고 싶다면 위의 벡터를 길이가 1인 단위벡터로 바꾸면 된다. 
 
 $$
 \pmb x_2 =
@@ -137,7 +147,7 @@ $$
 \end{bmatrix}
 $$
 
-또한 $\lambda_1=2$ 에 대한 고유행렬은 다음과 같이 구할 수 있다.
+또한 $\lambda_1=2$ 에 대한 고유벡터는 다음과 같이 단위벡터로 구할 수 있다.
 
 $$
 \left[\begin{array}{cc}
@@ -197,6 +207,33 @@ $$
 참고로 특성방정식을 푸는 경우, 방정식  $\operatorname{det}(\pmb A - \lambda \pmb I)=0$
 이나 $\operatorname{det}(\lambda \pmb I -\pmb A)= 0$ 중 어느 것을 사용해도 상관없다.
 
+
+위의 식에서 3차원 행렬의 행렬식은 다음과 같이 구할 수 있다. 첫 번째 행을 기준으로 전개하면
+
+$$ 
+\begin{aligned}
+\operatorname{det}(\lambda \pmb I -\pmb A) & =  
+ -\lambda \cdot 
+\begin{vmatrix}
+2 - \lambda & 1 \\
+0 & 3 - \lambda
+\end{vmatrix}
++ 0 \cdot 
+\begin{vmatrix}
+1 & 1 \\
+1 & 3 - \lambda
+\end{vmatrix}
++ (-2) \cdot 
+\begin{vmatrix}
+1 & 2 - \lambda \\
+1 & 0
+\end{vmatrix}  \\
+& = -\lambda[(2 - \lambda)(3 - \lambda) - 0]
+-2[(1)(0) - (1)(2 - \lambda)] \\
+& = (\lambda-1)(\lambda-2)^2
+\end{aligned}
+$$
+
 첫번째 고유값은 $\lambda_1=1$ 이다. 고유벡터를 구하기 위해서는 다음과 같은  방정식을 풀면 된다.  
 
 $$ (\lambda_1 \pmb I -\pmb A )\pmb x = \pmb 0  $$ 
@@ -232,7 +269,9 @@ $$ x_1 = -2x_3, \quad x_2 = x_3 $$
 
 $$ \lambda_1=1 \quad \rightarrow \quad  {\pmb x}_1=\begin{bmatrix}-2 \\ 1 \\ 1\end{bmatrix} $$
 
-**첫번째 고유값은 $\lambda_1=1$ 이며  대수적 중복도는 1이고 기하적 중복도도 1이다.** 이 경우 고유공간 $E_1$ 은 한 개의 고유벡터 $\pmb x_1$ 이 생성하는 부분공간을 의미한다.
+**첫번째 고유값은 $\lambda_1=1$ 이며  대수적 중복도는 1이고 기하적 중복도도 1이다.** 기하적 중복도도 1이란 의미는 고유벡터가 선형독립인 1개의 벡터로 이루어져 있다는 의미이다. 이 경우 고유공간 $E_1$ 은 한 개의 고유벡터 $\pmb x_1$ 이 생성하는 부분공간을 의미한다.
+
+
 
 $$
 E_1 = \text{span}\left\{\begin{bmatrix}-2 \\ 1 \\ 1\end{bmatrix} \right\}
@@ -264,7 +303,7 @@ $$
 이 방정식은 아래와 같이 간단히 할 수 있으며 
 
 $$ x_1 = -x_3 $$
-다음과 같은 두 개의 고유벡터를 얻을 수 있다.
+주어진 방정식이 하나이기 떄문에 다음과 같이 서로 선형독립인 두 개의 고유벡터를 얻을 수 있다.
 
 $$ 
 \lambda_2=2\quad \rightarrow \quad  {\pmb x}_2=\begin{bmatrix}-1 \\ 0 \\ 1\end{bmatrix} 
@@ -396,7 +435,7 @@ $\blacksquare$
 ## 대칭행렬의 대각화
 
 
-::: {#exr-Example-20-2}
+::: {#exr-Example-20-3}
 
 
 이제 대칭행렬에 대한 고유값과 고유행렬을 구해보자. 대칭행렬은 고유값이 실수이고 서로 다르며, 서로 직교하는 고유벡터를 가진다.
@@ -461,13 +500,13 @@ $$
 1 & 1 \\
 -1 & 1
 \end{bmatrix}
-\quad \rightarrow \quad \pmb{P}^t \pmb{P} = \pmb{I}
+\quad \rightarrow \quad \pmb{P} \pmb{P}^t = \pmb{P}^t \pmb{P} = \pmb{I}
 $$
 
 이제 $\pmb{P}$ 의 역행렬은 $\pmb{P}^t$ 이므로 다음과 같이 대칭행렬 $\pmb A$의 대각화를  유도할 수 있다.
 
 $$
-\pmb{P}^{-1} \pmb{A} \pmb{P}=
+\pmb{P}^{-t} \pmb{A} \pmb{P}=
 \begin{bmatrix}
 \frac{7}{2} & 0 \\
 0 & \frac{3}{2}
@@ -498,7 +537,7 @@ $$
 \begin{bmatrix}
 1 & -1 \\
 1 & 1
-\end{bmatrix}}_{\pmb P^{-1}}
+\end{bmatrix}}_{\pmb P^{t}}
 $$
 또한 위의 식은 다음과 같이 나타낼 수 있다.
 

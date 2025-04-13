@@ -63,7 +63,7 @@ $\pmb  B^t \pmb  A \pmb  B$도 양(반)정치 행렬이다.
 
 ## 대칭행렬의 대각화
 
-앞 절의 예제 @exr-Example-20-2 에서 보았듯이 $n$차원 대칭행렬 $\pmb  A$ 에 대하여 직교행렬 $\pmb  P$가 존재하여 다음과
+앞 절의 예제 @exr-Example-20-3 에서 보았듯이 $n$차원 대칭행렬 $\pmb  A$ 에 대하여 직교행렬 $\pmb  P$가 존재하여 다음과
 같은 분해가 가능하다.
 
 $$
@@ -92,7 +92,7 @@ $$
 \pmb  A  = \pmb  P \pmb  \Lambda \pmb  P^t  = \sum_{i=1}^n \lambda_i \pmb  p_i \pmb  {p}_i^t 
 $$  {#eq-spectral}
 
-참고로 대각합과 행렬식에 대한 고유치위 관계를 나타내는 다음의 유용한 두 식을 반드시 기억하자.
+참고로 대각합과 행렬식에 대한 고유치의 관계를 나타내는 다음의 유용한 두 식을 반드시 기억하자.
 
 $$ tr(\pmb  A) = \sum_i \lambda_i ,\quad |\pmb  A| = \prod_i \lambda_i $$
 
@@ -180,17 +180,26 @@ $$ {#eq-quaddist1}
 
 위의 식에서 $x \equiv_d y$ 는 확률변수 $x$와 $y$가 동일한 분포를 가진다는 것을 의미한다. 
 
-@eq-quaddist1 에서   행렬 $\pmb A$의 스펙트럴 분해는 $\pmb A = \pmb P \pmb \Lambda \pmb P^t$이며   $\lambda_i$는 행렬 $\pmb A$의 고유치, 즉 행렬 $\pmb \Lambda$의 대각원소이다. 또한 확률변수 $u_i$들은 서로 독립이며 정규분포 $N(\eta_i, \sigma^2)$를 따른다. 여기서 $\eta_1, \eta_2,\dots, \eta_n$는 다음과 같이 정의된다.
+@eq-quaddist1 에서   행렬 $\pmb A$의 스펙트럴 분해는 $\pmb A = \pmb P \pmb \Lambda \pmb P^t$이며   $\lambda_i$는 행렬 $\pmb A$의 고유치, 즉 행렬 $\pmb \Lambda$의 대각원소이다. 
+
+$$ \pmb x^t \pmb A \pmb x = \pmb x^t \pmb P \pmb \Lambda \pmb P^t \pmb x = \pmb u^t \pmb \Lambda \pmb u = \sum_{i=1}^n \lambda_i u_i^2 $$
+
+또한 확률변수 $u_i$들은 서로 독립이며 정규분포 $N(\eta_i, \sigma^2)$를 따른다. 
+
+
+$$ Cov (\pmb u) = Cov(\pmb P^t \pmb x) = \pmb P^t Cov(\pmb x) \pmb P = \pmb P^t (\sigma^2 \pmb I) \pmb P = \sigma^2 \pmb I $$
+여기서 $\eta_1, \eta_2,\dots, \eta_n$는 각각 $u_i$ 들의 평균으로 다음과 같이 정의된다.
 
 
 $$ 
-\pmb \eta =
+E(\pmb u)  = E(\pmb P^t \pmb x) = \pmb P^t \pmb \mu = 
 \begin{bmatrix}
 \eta_1 \\
 \eta_2 \\
 \vdots \\
 \eta_n 
-\end{bmatrix} = \pmb P^t \pmb \mu
+\end{bmatrix} = 
+\pmb \eta
 $$
 
 
@@ -271,7 +280,9 @@ $\blacksquare$
 
 선형모형에서 자주 등장하는 제곱합들의 분해, 즉 이차형식의 분해를 생각할 때 각 제곱합들의 분포를 아는 것이 매우 중요하다. 다음에 제시된 코크란의 정리(Cochran's Theorem)는 총 제곱합을 분해했을 때 각 제곱합의 분포가 카이제곱 분포를 따를 조건을 말해준다.
 
-
+$$
+\pmb {x}^t \pmb {x} =\sum_{j=1}^k \pmb {x}^t \pmb {A}_j \pmb {x}
+$$
 
 ::: {#thm-cochran}
 
