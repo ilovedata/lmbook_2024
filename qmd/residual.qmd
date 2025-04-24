@@ -197,7 +197,7 @@ $$
 \begin{aligned}
 \hat{ \pmb \beta}_{-i} & =  (\pmb X_{-i}^t \pmb X_{-i})^{-1} \pmb X_{-i}^t \pmb y_{-i}\\
 & = (\pmb X^t \pmb X - \pmb x_{i} \pmb x_{i}^t)^{-1} (\pmb X^t \pmb y -  \pmb x_{i} y_{i}) \\
-& = \left [ (\pmb X^t \pmb X)^{-1} - \frac { (\pmb X^t \pmb X)^{-1}  \pmb x_{i} \pmb x_{i}^t
+& = \left [ (\pmb X^t \pmb X)^{-1}+ \frac { (\pmb X^t \pmb X)^{-1}  \pmb x_{i} \pmb x_{i}^t
   (\pmb X^t \pmb X)^{-1}  }{ 1- \pmb x_{i}^t (\pmb X^t \pmb X)^{-1}  \pmb x_{i} } \right ]
 (\pmb X^t \pmb y -  \pmb x_{i} y_{i})  \\
 & = \hat{ \pmb \beta} + \frac{1}{1-h_{ii}} (\pmb X^t \pmb X)^{-1}  \pmb x_i \left [ \pmb x_i^t \hat{ \pmb \beta} - (1-h_{ii}) y_i - h_{ii} y_i \right ] \\
