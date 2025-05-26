@@ -31,7 +31,7 @@ df31
 
 ```
 
-각 수준에 대한 표보 평균을 구해보자.
+각 수준에 대한 표본 평균을 구해보자.
 
 ```{r}
 df31s <- df31 %>% group_by(company)  %>%  summarise(mean=mean(response), median= median(response), sd=sd(response), min=min(response), max=max(response))
