@@ -438,7 +438,7 @@ window.Quarto = {
 16       4     2.25</code></pre>
 </div>
 </div>
-<p>각 수준에 대한 표보 평균을 구해보자.</p>
+<p>각 수준에 대한 표본 평균을 구해보자.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df31s <span class="ot">&lt;-</span> df31 <span class="sc">%&gt;%</span> <span class="fu">group_by</span>(company)  <span class="sc">%&gt;%</span>  <span class="fu">summarise</span>(<span class="at">mean=</span><span class="fu">mean</span>(response), <span class="at">median=</span> <span class="fu">median</span>(response), <span class="at">sd=</span><span class="fu">sd</span>(response), <span class="at">min=</span><span class="fu">min</span>(response), <span class="at">max=</span><span class="fu">max</span>(response))</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>df31s</span></code><button title="클립보드 복사" class="code-copy-button"><i class="bi"></i></button></pre></div>
