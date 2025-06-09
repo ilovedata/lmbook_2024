@@ -918,7 +918,7 @@ $$   \beta_0 = a_1, \quad \beta_1 = b_1, \quad \beta_2 =b_2-b_2 , \quad \beta_3 
 
 $$
 \begin{aligned} 
-SSE &  = \sum_{x_i \in B_1} (y_i -\beta_0 -\beta_1 x_i)^2 + \sum_{x_i \in B_2} [y_i - \beta_0  - \beta_1 x_i  -\beta_3 (x_i - \xi_1)]^2  \\ \notag
+SSE &  = \sum_{x_i \in B_1} (y_i -\beta_0 -\beta_1 x_i)^2 + \sum_{x_i \in B_2} [y_i - \beta_0  - \beta_1 x_i  -\beta_2 (x_i - \xi_1)]^2  \\ \notag
 & \quad + \sum_{x_i \in B_3} [y_i - \beta_0  - \beta_1 x_i - \beta_2 (x_i - \xi_1)  -\beta_3 ( x_i - \xi_2) ]^2
 \end{aligned}
 $$ {#eq-sse2} 
