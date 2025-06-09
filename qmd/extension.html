@@ -752,6 +752,8 @@ Residual standard error: 2.038 on 19 degrees of freedom</code></pre>
 
 
 
+
+
 ::: {.cell}
 
 ```{.r .cell-code}
@@ -810,6 +812,8 @@ df3 %>% ggplot(aes(x=reserved, y=boarding)) +
 ![](extension_files/figure-html/unnamed-chunk-8-1.png){width=672}
 :::
 :::
+
+
 
 
 
@@ -1488,7 +1492,7 @@ a_3 &amp; = a_2 + (b_2 - b_3 ) \xi_2 \\
 <p>오차제곱합 SSE는 다음과 같이 전개할 수 있다.</p>
 <p><span id="eq-sse2"><span class="math display">\[
 \begin{aligned}
-SSE &amp;  = \sum_{x_i \in B_1} (y_i -\beta_0 -\beta_1 x_i)^2 + \sum_{x_i \in B_2} [y_i - \beta_0  - \beta_1 x_i  -\beta_3 (x_i - \xi_1)]^2  \\ \notag
+SSE &amp;  = \sum_{x_i \in B_1} (y_i -\beta_0 -\beta_1 x_i)^2 + \sum_{x_i \in B_2} [y_i - \beta_0  - \beta_1 x_i  -\beta_2 (x_i - \xi_1)]^2  \\ \notag
 &amp; \quad + \sum_{x_i \in B_3} [y_i - \beta_0  - \beta_1 x_i - \beta_2 (x_i - \xi_1)  -\beta_3 ( x_i - \xi_2) ]^2
 \end{aligned}
 \tag{10.15}\]</span></span></p>
